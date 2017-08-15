@@ -1,0 +1,10 @@
+#execute "cp  Android.mk.kan Android.mk" one before
+# execute in the project
+. /g/src/arm/ndkenv.sh       #set PATH
+cp -p Android.mk.osa Android.mk
+NDK=/home3/androidndk/android-ndk-r7
+ERR=err
+export TRACE=-DNOTRACE
+#cd jni
+$NDK/ndk-build APP_PLATFORM=$PLATFORM  $1 $2 >$ERR  2>&1
+cat $ERR

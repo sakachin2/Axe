@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
+<resources>
+    <string name="app_name">Axe</string>
+    <string name="Version">Axe V1.18 (xe1.28H)</string>
+    <string name="VerDate">2017/02/26</string>
+
+    <string name="OptionMenu_Stop">Exit</string>
+    <string name="OptionMenu_Menu">Menu</string>
+    <string name="OptionMenu_Help">Help</string>
+
+    <string name="ContextMenu_File">File</string>
+    <string name="ContextMenu_FileNew">New</string>
+    <string name="ContextMenu_FileOpen">Open</string>
+    <string name="ContextMenu_FileOpenPopup">File-Open</string>
+    <string name="ContextMenu_FileSave">Save</string>
+    <string name="ContextMenu_FileDownload">Download/Expand</string>
+    <string name="ContextMenu_FileSaveAs">SaveAs</string>
+    <string name="ContextMenu_FileDiscard">Discard</string>
+    <string name="ContextMenu_FileEnd">End</string>
+    <string name="ContextMenu_FileOpenWith">OpenWith</string>
+    <string name="ContextMenu_Edit">Edit</string>
+    <string name="ContextMenu_EditCut">Cut</string>
+    <string name="ContextMenu_EditCopy">Copy</string>
+    <string name="ContextMenu_EditClear">Clear</string>
+    <string name="ContextMenu_EditPaste">Paste</string>
+    <string name="ContextMenu_EditPasteIns">PastIns</string>
+    <string name="ContextMenu_EditPasteRep">PastRep</string>
+    <string name="ContextMenu_Setup">Settings</string>
+    <string name="ContextMenu_SetupFont">Font</string>
+    <string name="ContextMenu_SetupColor">Color</string>
+    <string name="ContextMenu_SetupOther">Other XE Options</string>
+    <string name="ContextMenu_Button_Config">Button Configuration</string>
+    <string name="ContextMenu_Button_Layout">Buttons layout</string>
+    <string name="ContextMenu_Kbd_Config">Kbd Layout</string>
+    <string name="ContextMenu_SetupOtherArm">Android Related Options</string>
+    <string name="ContextMenu_DownloadAsset">Download additional Asset</string>
+    <string name="ContextMenu_Help">Help</string>
+    <string name="ContextMenu_HelpXe">xe Help(Html)</string>
+    <string name="ContextMenu_HelpAxe">Axe Help</string>
+    <string name="ContextMenu_HelpVersion">Version</string>
+    <string name="ContextMenu_ShortcutkeyMap">Shortcut Key Assign</string>
+    <string name="ContextMenu_ShiftkeyMap">Shift Key Mapping</string>
+    <string name="ContextMenu_AltGrMap">AltGr Key Mapping</string>
+    <string name="ContextMenu_TerminalBtn">Terminal Button Usage</string>
+
+    <string name="HelpTitle_OptionHelp">About Axe</string>
+    <string name="Help_OptionHelp">
+   		"This is Android porting of Hybrid Editor \"xe\",\n"
+        "  Source code:http://www.geocities.jp/sakachin2/index.htm\n"
+        "    By Mizumaki-machi\n"
+        "\n"
+   		"    Currently following functions are not yet supported.\n"
+   		"       Printing, Remote file access.\n"
+        "\n"
+   		"Push \"Menu\" button for Configuration and detail Helps.\n"
+   		"(After Android-3,touch titlebar).\n"
+   		"Help:\n"
+   		"    Axe Help:Related to Android version.\n"
+   		"    XE Help :Common help for all version.\n"
+        "             It requres Asset installation.\n"
+        "               Menu-->Settings\n"
+        "                   -->Download addtional asset.\n"
+   		"    National language support for Help text.\n"
+   		"      You can prepare UTF-8 encoded text file on sdcard.\n"
+        "      (/sdcard folder depends the device,\n"
+        "       it may be /mnt/sdcard.)\n"
+        "        /sdcard/Axe/nls/nls/subject.txt.\"\n"
+        "            subject:same as Help dialog title replacing\n"
+        "              space to under score.\n"
+        "            ex) \"About_Axe\".\n"
+        "       When using multiple language,\n"
+        "       Prepare /sdcard/Axe/nls/nls_xx/subject.txt\n"  
+        "         for each language.\n"  
+        "           xx:language like as \"de\" or \"ja\".\n"
+   		"Settings:\n"
+   		"  select \"Android Related Options\"for screen,soft keyboard option.\n"
+        "\n"
+        "Buttons on bottom:\n"
+        "\n"
+        "  Use Usb/Bluetooth keyboard if you have.\n"
+        "  Even without such keyboard,\n"
+        "  with limited terminal keyboard or IM-soft-kbd,\n"
+        "  you cau utilize function keys by these buttons setting.\n"
+        "\n"
+        "  Kbd:show xe\'s soft keyboard enabling operations\n"
+        "        like as on PC keyboard/mouse.\n"
+        "      See \"Axe Help\" for keyboard usage.\n"
+        "      Button setting has no effect to input from xe\' soft-kbd.\n"
+        "  IM :pop-up default Input Method.\n"
+        "      You can change it by \"Settings\"\n"
+        "        ==>\"Android Related Option\"==>\"Current Input Method\".\n"
+        "      (Android IM will not popup when hardware kbd is connected.)\n"
+        "  S.C:Shortcut. For ex, pressing \"1\" key\n"
+        "        on hardware keyboard or IM soft kbd\n"
+        "        after touching \"S.C\" button will generate\n"
+        "        \"F1\" as default setting.\n"
+        "      Note. \"S.C\",\"Shift\",\"1\"==>S.C+\"@\"\n"
+        "            \"Shift\",\"S.C\",\"1\"==>Shift+\"F1\".\n"
+        "      (\"Settings\"==>\"Button Configuration\"\n"
+        "       ==>\"Shortcut Key Assign\")\n"
+        "      Terminal Button such as \"Search\", \"Camera\"\n"
+        "        can be used as Shortcut.\n"
+        "      (\"Button Configuration\"==>\"Terminal Button Usage\")\n"
+        "  Shift/AltG:When your hardware kbd has no AltG key \n"
+        "    or you want to change keycode mapping with +Shift key,\n"
+        "    use this to change mapping.\n"
+        "      (\"Button Configuration\"\n"
+        "       ==>\"Shift Key mapping\"/\"AltGr Key mapping\")\n"
+        "  \n"
+        "  Buttons layout is configurable.\n"
+        "      (\"Button Configuration\"==>\"Button Layout\")\n"
+        "    Long press on the button pop-ups dialog\n"
+        "      to change button\'s function.\n"
+        "    For directionkeys long press with "S.C" on.\n"
+	</string>
+
+    <string name="DialogTitle_OptionHelpAxe">Help Axe</string>
+    <string name="Help_OptionHelpAxe">
+        "==Keyboard:\n"
+        "  Function key usage is almost same as PC version.\n"
+        "  (Enter \"A\" on top panel, Key:Function mapping will be shown.\n"
+   		"  xe has originally config file:xe.ini for function key\n"
+   		"    configuration.\n"
+   		"  \"ini\" cmd write xe.ini, edit it by \"e ::xe.ini\" cmd. See \"XE Help\")\n"
+        "  If your terminal has not hardware keyboard,\n"
+        "  Touch \"Kbd\" button to pop-up PC like keyboard to enables\n"
+        "    function key input.\n"
+        "  You can customize this keyboard layout\n"
+        "    (\"Menu\"==>\"Settings\"==>\"Kbd Layout\").\n"
+        "  Max 4 additional key(Shift/AltGr/Shift+AltGr/FunctionKey) is\n"
+        "    assignable to each key, and those are corresponding\n"
+        "    to flick left/right/up/down action.\n"
+        "  You can set On/Off of displaying flick action keycode\n"
+        "    on Android Related Options dialog.\n"
+        "  Long press pop-ups mini-keyboard to select it\n"
+        "    for non-repeatable keys.\n"
+        "  Non-repeatable is Shift, Alt, Ctrl, IM and Esc.\n"
+        "  For repeatable keys, mini-keyboard is shown\n"
+        "    when pop-up mode.\n"
+        "  To switch to pop-up mode, long press \"IM\" on the keyboard\n"
+        "    and select \"Pop\".\n"
+        "    (back to \"IM\" when re-touched \"Pop\")\n"
+        "  \n"
+        "  Click \"IM\" to switch to native Input Method\n"
+        "    for composite characters.\n"
+        "  To activate S.C(shortcut) Flick-Right on \"IM\" button.\n"
+        "    (or select \"S.C\" from mini-keyboard)\n"
+        "  S.C is effective only for next one key event.\n"
+   		"  Flick right/up on \"Alt\" key shows AltGr/Shift+AltGr characters.\n"
+   		"  Flick up/right on \"Shift\" key shows \"Caps\"/\"SYM\".\n"
+   		"  \"SYM\" means \"Caps\" and ASCII symbol character.\n"
+   		"    defined on the 4th(code for Flick-Down).\n"
+        "\n"
+        "==Mouse:\n"
+        "  Click/DoubleClick/Drag/RightButtonClick are available\n"
+        "    by finger touch.\n"
+        "    (\n"
+        "     RightButtonClick is by long click, timeout value is one of\n"
+        "     Android Related Options.\n"
+        "     But after dragging for Cut and Paste,\n"
+        "     use menu popup-ed by titlebar touch.\n"
+        "     (right most 1/3 of titlebar is shortcut to FileChooser\n"
+        "      dialog for &lt;Android3.0)\n"
+        "\n"
+        "     Use not kbd but menu to paste for clipboard contents\n"
+        "       copyed out of xe.\n"
+        "    )\n"
+        "  It may be hard to point the character cell on small screen,\n"
+        "  you can alternatively assign these mouse action\n"
+        "    to keyboard\'s action.\n"
+        "  Assign those to S.C. ex) S.C+\"w\":DoubleClick.\n"
+        "  (\"Button Configuration\"==>\"ShortCut Key Assign\")\n"
+        "  or Terminal button such as \"Search\" \"Camera\".\n"
+        "  (\"Button Configuration\"==>\"Terminal Button Usage\").\n"
+        "  Note. When using DoubleClick key, pay attention\n"
+        "        to the current cursor position\n"
+        "        which may changes the function derived.\n"
+        "\n"
+        "==Ruler:\n"
+        "  You can optionally show ruler(Vertical/Horizontal/CrossHair)\n"
+        "    at cursor position.\n"
+        "  (\"Settings\"==>\"Other XE Options\"==>\"Ruler Type\".\n"
+        "\n"
+        "==Font:\n"
+        "  When you installed or selected new font, restart xe\n"
+        "    to clear internal memory related to font glyph width.\n"
+        "  It takes considerable time at next start\n"
+        "    if font style was changed.\n"
+        "\n"
+        "==HomeDir:\n" 
+        "  \"~/\" and environment variable HOME is as following.\n" 
+        "      /data/data/com.xe.Axe/files/myhome\n" 
+        "  Current directory set to HomeDir by \"cd\" cmd,\n"
+        "    \"cd\" is effective also for next session.\n"
+        "\n"
+        "==WorkDir:\n"
+        "  xe\'s work directory referenced by \"::\" like as \"e ::filename\"\n"
+        "    is as following.\n"
+        "      /data/data/com.xe.Axe/files/xewd\n"
+        "\n"
+        "==Intent :\n"
+        "  -xe can accept following intent from othor application.\n"
+        "     Action:ACTION_VIEW and ACTION_EDIT\n"
+        "     filter:scheme=\"file:\", mimeType=\"*/*\" not-specified\n"
+        "     (eg. data=\"file://xxx\")\n"
+        "  -\"ase\" cmd sends \"ACTION_SEND\" intent\n"
+        "     expecting some mailer will handle it.\n"
+        "       ase [*|-|text-file]\n"
+        "           [attachement-file|@attachment-filelist-file]\n"
+        "     You can also include following information in text-file\n"
+        "       in this sequence.\n"
+        "         To:address-send-to(it may be myltiple lines)\n"
+        "         Subject:title\n"
+        "         File:attachment-file(it may be multiple lines)\n"
+        "         Text:(start of text)\n"
+        "     On dir-list panel attachment file is selected\n"
+        "       also by touch(click).\n"
+        "     After \"ase\" cmd entry like as \"ase -\",\n"
+        "       select file by touch before push \"Enter\".\n"
+        "     To select multiple files, Ctrl+click adds the file\n"
+        "       to attchement file list.\n"
+        "     Shift+click adds the range of files to attchement file list.\n"
+        "     \"Enter\" executes to send at last.\n"
+        "     Drag-and-drop to titlebar line executes\n"
+        "       the equaibalent function.\n"
+        "  -line command \"!\" on dirlist panel,\n"
+        "     issue \"ACTION_SEND\" intent\n"
+        "       with MIME determined by file extention name.\n"
+        "     The application declared to receive the MIME type\n"
+        "       will be kicked.\n"
+        "\n"
+        "==EnvironmentVariable:\n"
+        "  \"env\" command is missing, use \"set\" command.\n"
+        "  Following PATH is added for additional shell-script\n"
+        "    and utility PGM.\n"
+        "       files/sh:files/bin:/data/busybox\n"
+        "  (\n"
+        "   xe\'s utility will be installed into files/bin\n"
+        "   by unzipping AxeAsset.zip at files/.\n"
+        "   xe\'s utility will be installed into files/bin\n"
+        "     by unzipping AxeAsset.zip at files/\n"
+        "   Asset installation:Menu-->Settings\n"
+        "     -->Download addtional asset.\n"
+        "  )\n"
+        "   You would be better to install busybox\n"
+        "     which contains env, find, grep etc.\n"
+        "   You can adjust PATH env-var on ArmRelatedOptions dialog\n"
+        "     when you installed some utility commands\n"
+        "     and use on =6 panel.\n"
+        "   I recomend to install from web \"busybox\"\n"
+        "     which contains mandatory tools such as \"grep\".\n"
+        "   \"LANG\" may be UTF8, so to edit file by locale encoding,\n"
+        "     specify \"CPLC\" for each file at 1st open time\n"
+        "     like as \"e file1 CPLC\"."
+        "\n"
+        "==ICU support\n"
+        "  You can display EBCDIC file if you installed EBCDIC cnv file.\n"
+        "  Folowings are contained in this package.\n"
+        "    ibm37, ibm930(jp), ibm939(jp),\n"
+        "    ibm1047(Latin1/OpenSystem)\n"
+        "    1141(Germany-Euro), 1144(Italy-Euro), 1145(Spain-Euro)\n"
+        "    1146(UK-Euro), 1147(France-Euro),\n"
+        "    1148(International-Euro)\n"
+        "  For details,reffer html help\n"
+        "\n"
+        "==Syntax Highlight\n"
+        "  highlight-2.16 by Andre Simon will be used.\n"
+        "    (Install AxeAsset.zip)\n"
+        "  To use highlight modify ::xesyna.cfg.\n"
+        "    	OPEN = n   ==>   OPEN = y\n"
+        "\n"
+        "==Download\n"
+        "   You can download from specified URL,\n"
+        "   and unzip into the specified local folder.\n"
+        "\n"
+        "==Crash Report\n"
+        "   Configured to send mail of crash report to developer,\n"
+        "   send it after checked contents of mail text.\n"
+	</string>
+
+    <string name="DialogTitle_SetupOther">Other XE Options</string>
+    <string name="HelpTitle_SetupOther">Other XE Options</string>
+    <string name="Setup_Ruler">Select Ruler Type</string>
+    <string name="Setup_RulerVertical">Vertical</string>
+    <string name="Setup_RulerHorizontal">Horizontal</string>
+    <string name="Setup_RulerCrossfier">CrossHair</string>
+    <string name="Setup_RulerNone">No Ruler</string>
+    <!--string name="Setup_Accelerator">Accelerator</string-->
+    <string name="Setup_FreeCursor">FreeCursor</string>
+    <string name="Setup_Beep">Beep</string>
+    <string name="Setup_QuietExit">QuietExit</string>
+    <string name="Help_SetupOther">
+   		"\"Ruler\":vertical/Horizontal/Cross Hair line at the cursor position.\n"
+        "\"FreeCursor\":if ON, cursor wraps from edge of screen to another edge.\n"
+        "               if OFF, screen shift occurs on file/directory panel\n"
+        "               except when cursor is out of text area such as lineno field\n"
+        "\"Beep\":Beep when error detected.\n"
+        "\"QuietExit\":no confirmation at exit XE by Keyboard Function key.\n"
+        "              \"Exit\" on option menu requires always confirmation.\n"
+	</string>
+
+    <string name="DialogTitle_SetupColor">Color</string>
+    <string name="HelpTitle_SetupColor">Color</string>
+    <string name="Setup_BackgroundColor">Background Color</string>
+    <string name="Setup_RulerColor">Ruler Color</string>
+    <string name="Setup_Red">Red</string>
+    <string name="Setup_Green">Green</string>
+    <string name="Setup_Blue">Blue</string>
+    <string name="Help_SetupColor">
+   		"You can set Background-color and Ruler-color.\n"
+        "Ruler is optionally shown by selecting Ruler-type on \"Other XE Options\".\n"
+	</string>
+
+    <string name="DialogTitle_SetupFont">Font</string>
+    <string name="HelpTitle_SetupFont">Font</string>
+    <string name="Setup_FontSize">Font Size</string>
+    <string name="Setup_FontH">Font H</string>
+    <string name="Setup_FontW">Font W</string>
+    <string name="Setup_CellH">Row H</string>
+    <string name="Setup_CellW">Column W</string>
+    <string name="Setup_Ligature">Ligature</string>
+    <string name="Setup_FontNormal">Normal</string>
+    <string name="Setup_FontBold">Bold</string>
+    <string name="Setup_FontItalic">Italic</string>
+    <string name="Setup_FontBoldItalic">BoldItalic</string>
+    <string name="Prompt_FontList">Select a FontName</string>
+    <string name="Help_SetupFont">
+   		"Input is evaluated when focus was lost, and sample text is re-drawn.\n"
+   		"Select font family from drop down list.\n"
+   		"if \"Font Size\"=0,it is determined by \"Row-H\" and \"Column-W\".\n"
+        "if \"Row H\"=0, set to same as \"Font Size\"\n"
+        "if \"Column W\"=0, set to half of \"Row H\".\n"
+   		"if all values are =0, \"Font Size\" is determined as to fit to screen size by row=24 and col=80.\n"
+	</string>
+
+    <string name="DialogTitle_TerminalButton">Terminal Button Usage</string>
+    <string name="HelpTitle_TerminalButton">Terminal Button Usage</string>
+    <string name="Help_TerminalButton">
+   		"You can use Terminal button as alternative of function key\n"
+   		"You can use up to max 9 entry for other not-predefined terminal button.\n"
+        "\n"
+   		"ex) To assign \"Back\" button to \"F3\" key,\n"
+   		"    select \"F3\" from drop down list after focused to \"Back\" line\n"
+        "You can select mouse action from the drop down.\n"
+   		"  \"Mouse-Rbtn\":Mouse right button for context menu pop-up\n"
+   		"  \"Mouse-Drag\":use at the point Drag-start and Drag-end\n"
+   		"                 to specify Cut and Paste range.\n"
+   		"To use User_(_:1==>9), enter decimal Android keycode at first, the select function from dropdown\n"
+   		"ex) After entered \"168\"(keycode:ZOOM_IN), select \"Esc\".\n"
+   		"Then, \"ZOOM_IN\" button is treated as \"Esc\" key.\n"
+	</string>
+
+    <string name="DialogTitle_Download">Download</string>
+    <string name="HelpTitle_Download">Download</string>
+    <string name="Title_DL_URL">URL:</string>
+    <string name="Title_DL_Local">Local Folder:</string>
+    <string name="Title_DL_Unzip">Expand after download</string>
+    <string name="Title_DL_DelZipfile">Delete after expanded the file</string>
+    <string name="Title_DL_Unziponly">Only expand the local file</string>
+    <string name="DL_BtnLocalRefCD">Open File Chooser</string>
+    <string name="Help_Download">
+   		"Download and Expand file.(zip,tar,tgz,tar.gz,bz2,tbz2)\n"
+   		"When expand only,specify local file in Local File:,\n"
+   		"or folder in Local File: and filename in URL:.\n"
+   		"And also used to download following addtional asstes files\n"
+   		"(Menu-->Settings-->Download additional Asset)\n"
+   		"  help html files.\n"
+   		"  commandline utilities executed on terminal soft.\n"
+   		"  highlight data used by syntax highlight function.\n"
+   		"These files (about 14MB) ware split from apk to reduce apk size.\n"
+   		"This asset file is not mandatry, but to use above functions, download once.\n"
+	</string>
+    <string name="progress_dialog_title_downloading">Downloading...</string>
+    <string name="progress_dialog_title_connecting">Connecting...</string>
+    <string name="progress_dialog_message_prefix_downloading">Downloading file</string>
+    <string name="progress_dialog_message_prefix_connecting">Connecting to</string>
+    <string name="user_message_download_complete">Download complete!</string>
+    <string name="user_message_download_canceled">Download canceled!</string>
+    <string name="error_message_bad_url">Error: Invalid URL!</string>
+    <string name="error_message_nofile_inurl">Specify compressed filename in URL column</string>
+    <string name="error_message_bad_local">Error:Invalid Local Folder!</string>
+    <string name="error_message_file_not_found">Error: File not found!</string>
+    <string name="error_message_general">Error downloading file!</string> 
+    <string name="error_message_connerr">Connection Failed!</string> 
+    <string name="error_message_ioerr">I/O error!</string> 
+
+    <string name="progress_dialog_title_unzipping">Expanding...</string>
+    <string name="progress_dialog_message_prefix_unzipping">Extracting file</string>
+    <string name="user_message_unzip_complete">Expand complete!</string>
+    <string name="user_message_unzip_canceled">Expand canceled!</string>
+    <string name="error_message_unzip_general">Error expanding file!</string> 
+
+    <string name="Err_InputTerminalButton">"Enter Non-alphanumeric 1 byte Char or Hex notation Unicode"</string>
+
+    <string name="DialogTitle_KbdLayout">Soft Keyboard Layout</string>
+    <string name="HelpTitle_KbdLayout">Soft Keyboard Layout</string>
+    <string name="Help_KbdLayout">
+   		"Qwerty layout will be changed such as exchange \"Y\" and \"Z\",\n"
+   		"and assignable max 4 code to a key such as function key, symbol character and unicode.\n"
+        "Each are corresponding to modifier keys of Shift, AltGr, Shift+AltGr and 4th is for Flick-Down.\n"
+   		"You can select it by flick operation. Flick-Left:Shift, Right:AltGr, Up:Shift+AltGr\n"
+   		"Flick right/up on \"Alt\" key shows AltGr/Shift+AltGr characters.\n"
+   		" (See \"Axe Help\")\n"
+        "\n"
+        "Input Alpha-numeric(ex. \"Q\"), Symbol(ex. \"#\") or Unicode by Hex notation(ex. \"a2\").\n"
+        "To set ExtendedKey(ex. \"F12\") select from pull-down after cursor setting to the line.\n"
+        "Use 4 byte unicode like as \"00f1\" to distinguish FunctionKey-F1.\n"
+	</string>
+    <string name="Prompt_KbdLayout">"Key : "</string>
+    <string name="Prompt_KbdLayout_Not_Selected">Line is not Selected</string>
+
+    <string name="DialogTitle_Version">Version</string>
+    <string name="DialogTitle_Extkey">"Shortcut by "</string>
+                                      <!-- followed by key-name -->
+    <string name="DialogTitle_ArmOption">"Android Related Option"</string>
+    <string name="Setup_ArmOpt_Orientation">Orientation:</string>
+    <string name="Setup_ArmOpt_FixLandscape">Landscape</string>
+    <string name="Setup_ArmOpt_FixPortrait">Portrait</string>
+    <string name="Setup_ArmOpt_Rotate">Rotate</string>
+    <string name="Setup_ArmOpt_Reset_Modifier">Reset Shift/Ctrl/Alt each time</string>
+    <string name="Setup_ArmOpt_Outside_Touch">Close XeKbd by outside touch</string>
+    <string name="Setup_ArmOpt_HomeButtonKey">Keycode when Home Icon clicked</string>
+    <string name="Setup_ArmOpt_HomeButton_None">NotUse</string>
+    <string name="Setup_ArmOpt_HomeButton_Home">Home</string>
+    <string name="Setup_ArmOpt_HomeButton_Escape">Esc</string>
+    <string name="Setup_ArmOpt_HomeButton_Enter">Enter</string>
+    <string name="Setup_ArmOpt_LongPress_Timeout">Long press timeout for Mouse Right Button(ms)</string>
+    <string name="Setup_ArmOpt_IME">Current Input Method</string>
+    <string name="Setup_LocaleCharset">Locale Charset</string> <!-- vad2 -->
+    <string name="Setup_IM_Picker">Change</string>
+    <string name="Setup_EnvPath">env-PATH</string>
+    <!--string name="Setup_Internal_Option">(Internal Use)</string-->
+    <string name="Setup_Trace_Off">NoTrace</string>
+    <string name="Setup_Trace_On">On</string>
+    <string name="Setup_Trace_On2">On2</string>
+    <string name="Setup_Log">Console Log</string>
+    <string name="Setup_Dump_Off">NoDump</string>
+    <string name="Setup_Dump_On">On</string>
+    <string name="Setup_Dump_On2">On2</string>
+    <string name="Setup_Remap">Recreate sbcs map table</string>
+    <string name="Setup_Abend">xe sigsegv by double Esc</string>
+    <string name="Setup_Uerrexit">xe uerrexit by double Esc</string>
+    <string name="Setup_Repeat_Delay">Repeat Start Delay(ms)</string>
+    <string name="Setup_Repeat_Speed">Repeat Speed(ms)</string>
+    <string name="Setup_Display_Flick_KeyCode">Display Flick KeyCode</string>
+    <string name="Setup_Swipe_Timeout">Flick TimeOut(ms)</string>
+    <string name="Setup_Swipe_Travel">Flick Distance(% of screen)</string>
+    <string name="Err_InternalOption">"Invalid Internal Option Parameter:"</string>
+    <string name="Err_CharsetChange">"Not Supported Charset:"</string>               <!-- vad2 -->
+    <string name="Info_CharsetChanged">"Charset Changed, Restart Axe"</string>       <!-- vad2 -->
+    <string name="HelpTitle_ArmOption">Android Related Options</string>
+    <!--string name="Help_ArmOption"-->
+    <string name="Help_ArmOption" formatted="false">  <!--vb11-->
+   		"Orientation:fix to Landscape/Portrait or Rotate by sensor.\n"
+   		"Current Input Method:Default Input Method; push \"Change\" button to select the other.\n"
+        "Close XeKbd by outside touch:If Off,outside touch is effective as usual.\n"
+        "Reset Shift/Ctrl/Alt each time:reset modifier after input.\n"
+        "Keycode when Home Icon clicked:kecode generated by Home Icon Click.\n"
+        "Long press timeout for Mouse Right Button:Event fires by long pressing in this time(ms).\n"
+   		"Locale Charset:Locale Codepage used to translate to/from UTF-8.\n"                       <!-- vad20 -->
+   		"               Default is ISO-8859-1/EUC-JP/EUC_KR/Big5/GB18030 depending to locale code.\n" <!-- vad20 -->
+   		"Repeat Delay:on xe\'s soft keyboard, repeatable key\'s delay(milisec) to generate key event.\n"
+   		"             Adjust enough not to generate key event before flick detection.\n"
+   		"Repeat Speed:interval(milisec) to generate repeated event.\n"
+       "Display Flick KeyCode:Display Keycode on Keyboard generated by Flick operation.\n"
+   		"Flick Timeout:Flick operation should end within this milisec.\n"
+   		"              On Soft-Keyboard, KeyDown Event is delayed until this period expire.\n"
+   		"              On Screen, it is \"Drag\" operation if you did not touch-up in this time.\n"
+   		"Flick Distance:minimum swipe distance for \"Flick\". % of screen height/width.\n"
+   		"               (On soft-keyboard, this is fixed ro 50% of the key height/width.)\n"
+   		"env-PATH: ex) /data/busybox:$PATH\n"
+	</string>
+
+    <!--string name="DialogTitle_ImeType">"IME option"</string-->
+    <!--string name="Setup_ImeType">IME type</string-->
+    <!--string name="Setup_ImeType_Dialog">Show Pre-edit Line</string-->
+    <!--string name="Setup_ImeType_NoDialog">Without Pre-edit Line</string-->
+    <!--string name="Setup_ImeType_ConfirmAlsoNext">Confirm at also Next time</string-->
+    <!--string name="HelpTitle_ImeType">IME type</string-->
+    <!--string name="Help_ImeType">
+   		"Select IME mode with/without Pre-Edit line\n"
+		"You can back to confirmation mode\n"
+        "by \"Android Related Options\".\n"
+	</string-->
+
+    <string name="DialogTitle_ImePreedit">"IME pre-edit"</string>
+
+    <string name="Qexit">Exit?</string>
+    <string name="Qstop">Exit?</string>
+
+    <string name="Close">Close</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Clear">Clear</string>
+    <string name="OK">OK</string>
+    <string name="ResetToDefault">Default</string>
+    <string name="ResetKbdLayout">SetDefault</string>
+    <string name="Help">Help</string>
+    <string name="Delete">Delete</string>
+    <string name="Replace">Replace</string>
+    <string name="InsertAfter">Insert After</string>
+    <string name="InsertBefore">Insert Before</string>
+    <string name="Move">Move</string>
+	
+    <string name="LabelButtonNo1">1st line Button count</string>
+    <string name="LabelButtonNo2">2nd line Button count</string>
+    <string name="Prompt_Extkey">Select a KeynName</string>
+    <string name="Label_ResetToDefaultButtonLayout">Default</string>
+    <string name="Label_Repeatable">Disable direction button\'s Repeatable</string>
+    <!--string name="Label_StickyModifier">Sticky Modifier</string -->
+    <!--string name="Label_UseLandscape">all buttons in a line if Landscape</string-->
+
+
+    <string name="Err_Numeric">"Numeric Error"</string>
+    <string name="Err_ButtonNo">"Button count should be 0 to "</string>
+    <string name="Err_DialogContainsError">"Contains Error"</string>
+    <string name="Err_InputShiftkeyData">"Enter Non-alphanumeric 1 byte Char or Hex notation Unicode"</string>
+    <string name="Err_InputShortcutData">"Invalid Unicode or Extended-key-Name."</string>
+    <string name="Err_InputAltGrData">"Enter Non-alphanumeric 1 byte Char or Hex notation Unicode for AltGr Char."</string>
+    <string name="Err_InvalidUnicode">"Invalid Unicode"</string>
+    <string name="Err_DefaultShift_NoneChecked">"select default Keyboard Layout"</string>
+    <string name="Err_BtnUpdate_NoneChecked">"select update type"</string>
+    <string name="Err_BtnUpdate_InvalidMoveValue">"Invalid Move count"</string>
+    <string name="Err_BtnUpdate_Overflow">"No space to insert Button"</string>
+
+    <string name="Info_ShiftkeyMap">Enter Char-code or Unicode when with Shift Button</string>
+    <string name="Info_ShortcutkeyMap">Enter Extended-key Name or Select from DropDdwn list</string>
+    <string name="Info_AltGrMap">Enter Char-code or Unicode when with AltGr/Shift+AltGr button</string>
+    <string name="Info_TerminalButton">Terminal Button Usage</string>
+    <string name="Info_ToolInstalling">Installing command line tool:</string>
+    <string name="Info_UnzipToolComp">Command line tool installation completed</string>
+    <string name="Info_HighlightInstalling">Installing syntax highlight tool:</string>
+    <string name="Info_UnzipHilightComp">syntax highlight tool installation completed</string>
+    <string name="Info_HighlightInstallFailed">failed to install highlight to bin folder</string>
+    <string name="Info_UnzipHelp">Expanding Html Help Files</string>
+    <string name="Info_UnzipHelpComp">Expanded Html Help Files</string>
+    <string name="Info_UnzipExecuting">Expanded entry</string>
+    <string name="Info_UnzipExecuted">Expanded total entry</string>
+    <string name="Info_ICUInstalling">Installing ICU converter:</string>
+    <string name="Info_UnzipICUComp">ICU converter installation completed</string>
+    <string name="Info_FirstTimeProcComp">First time process was completed</string>
+    <string name="Info_SbcsTblStart">Initially createing Unicode Table</string>
+    <string name="Info_SbcsTblEnd">Unicode Table was created</string>
+    <string name="Prompt_TerminalButton">Select a Key for Button:</string>
+    <string name="Prompt_TerminalButton_Not_Selected">Button name is not Selected</string>
+
+    <string name="DialogTitle_ButtonLayout">Buttons Arrangement</string>
+    <string name="HelpTitle_ButtonLayout">Button Arrangement</string>
+    <string name="Help_ButtonLayout">
+   		"Set Button count of 2 lines to be displayed at bottom when portrait style.\n"
+   		"Valid count is 0 to 8.\n"
+        "\n"
+   		"You can use long-click on the button to maintain each\n"
+   		" except direction buttons(Left,Right,Up/Down).\n"
+   		"To enable long-click for direction buttons,\n"
+   		" temporally check-on \"Disable repeatable\" on \"Buttons Layout\" dialog\n"
+   		" or long-click with Shortcut:On.\n"
+   		"You may delete some buttons to widen editor panel,\n"
+        "if you have terminal with appropriate hardware key.\n"
+        "(Move value is shift count and minus means forward shift.)\n"
+        "\n"
+        "all buttons in a line if Landscape: show buttons in a line if landscape mode\n"
+	</string>
+    <string name="DialogTitle_ShiftkeyMap">Shift Key Map</string>
+    <string name="HelpTitle_ShiftKeyMap">Shift Key Map</string>
+    <string name="Help_ShiftKeyMap">
+   		"Specify one byte ASCII symbol character or Unicode by Hex-Notation to be generated by the key with \"Shift\" button.\n"
+        "For ex, if you set \"3e\" on the line \"2e (.)\",\n"
+   		"code U-003e is generated when pressed key \".\" accompanied with \"Shift\" button.\n"
+        "\n"
+   		"You can back to default 101 or 106(Japanese default) keyboard layout.\n"
+	</string>
+
+    <string name="DialogTitle_DefaultShiftMap">Shortcut Key Assign</string>
+    <string name="RadioButtonMap">Default</string>
+    <string name="RadioButtonMap101">Reset To Kbd-101</string>
+    <string name="RadioButtonMap106">Reset To Kbd-106(jp)</string>
+
+    <string name="DialogTitle_ShortcutkeyMap">Shortcut Key Assign</string>
+    <string name="HelpTitle_ShortcutKeyMap">Shortcut Key Map</string>
+    <string name="Help_ShortcutKeyMap">
+   		"Specify keycode generated when the key is pressed accompanied with \"S.C\" button.\n"
+		"You can enter Keyname or Hex-Notation Unicode\n"
+		"If combination required, pay attention to touching sequence.\n"
+        "\"S.C\",\"Shift\",\"1\" : S.C+\"@\",   \"Shift\",\"S.C\",\"1\" : Shift+\"F1\"\n"
+        "\n"
+        "Pop-up dialog will assist your input when you click the line.\n"
+   		"Select Extended key from drop-down or enter Unicode by Hex-Notation after checking \"unicode\" on.\n"
+        "You can set Modifier Key (Shift/Control/Alt) CheckBox\n"
+   		"to generate such as Alt+F1 key.\n".
+   		"(Note)Extended key:\"PEnt\":Enter on NumPad\n"
+   		"                  :\"Mouse-Rbtn\":Mouse right button for context menu pop-up\n"
+   		"                  :\"Mouse-Drag\":use at the point Drag-start and Drag-end\n"
+   		"                                  to specify Cut and Paste range.\n"
+	</string>
+
+    <string name="DialogTitle_AltGrMap">AltGr Char Mapping</string>
+    <string name="HelpTitle_AltGrMap">AltGr Map</string>
+    <string name="Help_AltGrMap">
+   		"Specify one byte Character or Unicode by Hex-Notation to be generated by the key with \"AltGr\" button.\n"
+        "For AltGr+Shift case, define it at the shifted char.\n"
+        "ex). define for not \"8\" but \"*\", then touch in the sequence of \"AltGr\", \"Shift\" and \"8\".\n"
+	</string>
+
+    <string name="DialogTitle_BtnUpdate">Button:"</string>
+    <string name="Hint_MoveValue">shift count</string>
+    <string name="Prompt_ButtonName">Select a Button Type</string>
+    <string name="HelpTitle_ButtonUpdate">Button Update</string>
+    <string name="Help_ButtonUpdate">
+   		"Select button\'s function type from drop down list except for Delete/Move case\n"
+        "Move value is position shift count and minus means forward shift.\n"
+        "\n"
+		"To enable this pop-up dialog for direction key button,\n"
+		"those work as repeatable key, disable repeatable\n"
+        "on \"Buttons layout\" dialog from button configuration menu.\n"
+	</string>
+
+    <string name="DialogTitle_FileChooser">FileChooser:"</string>
+    <string name="LabelFilter">Filter</string>
+    <string name="BtnFilterCD">Apply Filter</string>
+    <string name="BtnFilterClearCD">Clear Input</string>
+    <string name="SortName">Sort-N</string>
+    <string name="SortAttr">Sort-T</string>
+    <string name="LabelNewName">Name</string>
+    <string name="Detail">Detail</string>
+    <string name="DirUp">Parent</string>
+    <string name="BtnNameClearCD">Clear Input</string>
+    <string name="Edit">Edit</string>
+    <string name="Browse">Browse</string>
+    <string name="Save">Save</string>
+    <string name="NoSDCard">"No SD-Card is available"</string>
+    <string name="FailedListDirBySecurity">"List Folder failed by security reason"</string>
+    <string name="FailedListDir">"List Folder failed"</string>
+    <string name="Err_CurrentIsNotFilePanel">"Currently focused is not File panel"</string>
+    <string name="Warning_ItemNotSelected">"No line selected."</string>
+    <string name="Warning_PressButtonToProcessTheFile">"Press Button to process the File."</string>
+    <string name="Warning_PressButtonToProcessCurrentDir">"Press Button to process the current folder."</string>
+    <string name="Warning_MissingFilenameForSave">"Filename is not spacified for Save."</string>
+    <string name="Err_EnterFilename">"fill Name field"</string>
+    <string name="Warning_ReachedToRoot">"Current is root(no Parent)."</string>
+    <string name="Info_Sorted_NameA">"Sorted by Ascending Name."</string>
+    <string name="Info_Sorted_NameD">"Sorted by Descending Name."</string>
+    <string name="Info_Sorted_AttrA">"Sorted by Ascending Timestamp."</string>
+    <string name="Info_Sorted_AttrD">"Sorted by Descending Timestamp."</string>
+    <string name="HelpTitle_FileChooser">FileChooser</string>
+    <string name="Help_FileChooser">
+   		"--- Dialog for file \"Open\",\"New\" and \"SaveAs\" ---\n"
+        "\n"
+        "Filter: Enter file selection by extension list or wildcard.\n"
+        "        enclose by \" for regular expression.\n"
+        "  ex) .c  .c|.h  xe*   xe?cmd*  \".*\\.cpp$|.*\\.h$\"\n"
+        "Apply: apply Filetr.\n"
+        "Sort-N: Sort by filename. Asc/Des is toggled.\n"
+        "Sort-T: Sort by timestamp.\n"
+   		"Detail: Show/Hide timestamp.\n"
+   		"Parent: back to the parent folder.\n"
+        "\n"
+   		"Listview when \"Open\"\n"
+   		"  click: select the line.\n"
+   		"  click selected folder: open the folder.\n"
+   		"  click selected file: open the folder.\n"
+   		"Listview when \"SaveAs\"\n"
+   		"  click:set to \"NewName\", you can use it for renaming.\n"
+        "\n"
+   		"Edit: open the selected file/folder by Edit mode.\n"
+   		       When \"NewFile\", Edit \"NewName\" of the selected folder.\n"
+   		"Browse: open the selected file/folder by Browse mode.\n"
+   		"Save : save to \"NewName\" in the selected folder.\n"
+	</string>
+
+    <string name="Btnnm_BACK">Back</string>
+    <string name="Btnnm_CENTER">DPAD_Center</string>
+    <string name="Btnnm_SEARCH">Search</string>
+    <string name="Btnnm_CAMERA">Camera</string>
+    <string name="Btnnm_VOLUP">Volume Up</string>
+    <string name="Btnnm_VOLDN">Volume Down</string>
+    <string name="Btnnm_CALL">Call</string>
+    <string name="Btnnm_ENDCALL">End Call</string>
+    <string name="Html_BACK">&lt;&lt;</string>
+    <string name="Html_FWD">&gt;&gt;</string>
+    <string name="Html_Zin">+</string>
+    <string name="Html_Zout">-</string>
+    <string name="Html_TryDoubleTap">Try double tap if U could not scroll to bottom</string>
+
+    <string name="Err_FileNotFound">"Not found:"</string>
+    <string name="Err_NotZipFile">"Not a zip file:"</string>
+    <string name="Err_TextFileTooLarge">"Too large text file, specify as attach file."</string>
+    <string name="Err_FileAndAttachment">"Only text mail accepts file attachment."</string>
+    <string name="Err_NotFile">"Not normal file:"</string>
+    <string name="Err_ACRA">"Unhandled Exception occurred.\nPlease agree to mail Crash-Report to developer."</string>
+
+    <string name="Info_Smb_Connecting">"Testing Connection: "</string>
+    <string name="Info_Smb_Connected">"Connection OK: "</string>
+    <string name="Info_Smb_Busy">"Wait until end of previous request"</string>
+
+    <string name="Info_StartInitialize">"Now start first time setup."</string>
+    <string name="Warning_WaitingInitialize">"Be paitient,\ndoing first time setup."</string>
+    <!-- NDKCrash-->
+    <string name="NDKCrash_alertHeader">Axe JNI Crash.\n(Please agree to mail Crash-Report to developer.)\n================================"</string>
+</resources>

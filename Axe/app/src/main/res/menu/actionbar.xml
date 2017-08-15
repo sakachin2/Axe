@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- actionbar for alternative of menu button for apilevel>=11 -->
+	<!--item
+	    android:id="@+id/MENU_MENU"
+    	android:title="@string/OptionMenu_Menu"
+        android:showAsAction="ifRoom|withText"
+       	android:icon="@android:drawable/ic_menu_more" 
+    /-->
+	<!--item
+	    android:id="@+id/MENU_OPEN"
+    	android:title="@string/OptionMenu_FileOpen"
+        android:showAsAction="ifRoom|withText"
+    /-->
+	<item
+	    android:id="@+id/ACTIONBAR_FILE"
+    	android:title="@string/ContextMenu_File"
+        android:showAsAction="ifRoom|withText"
+    />
+    <!--   	android:icon="@android:drawable/ic_menu_save"--> 
+	<item
+	    android:id="@+id/ACTIONBAR_EDIT"
+    	android:title="@string/ContextMenu_Edit"
+        android:showAsAction="ifRoom|withText"
+    />
+    <!--   	android:icon="@android:drawable/ic_menu_edit" --> 
+	<item
+	    android:id="@+id/ACTIONBAR_SETUP"
+    	android:title="@string/ContextMenu_Setup"
+        android:showAsAction="never"
+       	android:icon="@android:drawable/ic_menu_preferences" 
+    />
+	<item
+	    android:id="@+id/ACTIONBAR_HELP"
+    	android:icon="@android:drawable/ic_menu_help"
+    	android:title="@string/ContextMenu_Help"
+        android:showAsAction="never"
+    />
+	<item
+	    android:id="@+id/ACTIONBAR_STOP"
+    	android:icon="@android:drawable/ic_delete"
+    	android:title="@string/OptionMenu_Stop"
+        android:showAsAction="never"
+    />
+</menu>

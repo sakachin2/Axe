@@ -1,0 +1,6 @@
+# created by /home3/jdk1.6.../bin/javah com.xe.Axe.AxeJNI at bin dir
+javabin=/home3/jdk1.6.0_25/bin
+apkdir=/x/eclipse-workspace/Axe/bin
+outdir=/x/eclipse-workspace/Axe/jni
+cd $apkdir
+$javabin/javah $1  -o $outdir/javahout com.xe.Axe.AxeJNI 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/OM_STOP"
+        android:icon="@android:drawable/ic_delete"
+        android:title="@string/OptionMenu_Stop"
+    />
+    <item android:id="@+id/OM_MENU"
+        android:icon="@android:drawable/ic_menu_more"
+        android:title="@string/OptionMenu_Menu"
+    />
+    <item android:id="@+id/OM_HELP"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="@string/OptionMenu_Help"
+    />
+<!--    android:icon="@android:drawable/ic_menu_preferences" -->
+</menu>

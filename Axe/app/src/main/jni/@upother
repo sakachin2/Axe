@@ -1,0 +1,6 @@
+data=/data/data/com.xe.Axe/files
+adb push @setenv /data
+adb push @setenv $data/sh
+adb push @axe $data/sh
+adb push @lnbusybox $data/sh
+adb push /g/src/xe/busybox $data/bin

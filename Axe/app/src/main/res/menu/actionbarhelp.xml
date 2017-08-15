@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+		    <item android:id="@+id/CM_HELPVERSION"
+        		android:title="@string/ContextMenu_HelpVersion"
+    		/>
+		    <item android:id="@+id/CM_HELPAXE"
+        		android:title="@string/ContextMenu_HelpAxe"
+    		/>
+		    <item android:id="@+id/CM_HELPXE"
+        		android:title="@string/ContextMenu_HelpXe"
+    		/>
+</menu>

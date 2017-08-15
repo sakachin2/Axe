@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/CM_FILE"
+        android:title="@string/ContextMenu_File"
+    >
+	    <menu>
+		    <item android:id="@+id/CM_OPEN"
+        		android:title="@string/ContextMenu_FileOpen"
+    		/>
+		    <item android:id="@+id/CM_DOWNLOAD"
+        		android:title="@string/ContextMenu_FileDownload"
+    		/>
+	    </menu>
+    </item>
+    <item android:id="@+id/CM_EDIT"
+        android:title="@string/ContextMenu_Edit"
+    >
+	    <menu>
+		    <item android:id="@+id/CM_CUT"
+        		android:title="@string/ContextMenu_EditCut"
+    		/>
+		    <item android:id="@+id/CM_COPY"
+        		android:title="@string/ContextMenu_EditCopy"
+    		/>
+		    <item android:id="@+id/CM_CLEAR"
+        		android:title="@string/ContextMenu_EditClear"
+    		/>
+		    <item android:id="@+id/CM_PASTEV"
+        		android:title="@string/ContextMenu_EditPaste"
+    		/>
+		    <item android:id="@+id/CM_PASTEINS"
+        		android:title="@string/ContextMenu_EditPasteIns"
+    		/>
+		    <item android:id="@+id/CM_PASTEREP"
+        		android:title="@string/ContextMenu_EditPasteRep"
+    		/>
+	    </menu>
+    </item>
+    <item android:id="@+id/CM_SETUP"
+        android:title="@string/ContextMenu_Setup"
+    >    
+	    <menu>
+		    <item android:id="@+id/CM_FONT"
+        		android:title="@string/ContextMenu_SetupFont"
+    		/>
+		    <item android:id="@+id/CM_COLOR"
+        		android:title="@string/ContextMenu_SetupColor"
+    		/>
+		    <item android:id="@+id/CM_BUTTON_CONFIG"
+        		android:title="@string/ContextMenu_Button_Config"
+    		/>
+		    <item android:id="@+id/CM_KBD_CONFIG"
+        		android:title="@string/ContextMenu_Kbd_Config"
+    		/>
+		    <item android:id="@+id/CM_OTHER"
+        		android:title="@string/ContextMenu_SetupOther"
+    		/>
+		    <item android:id="@+id/CM_OTHER_ARM"
+        		android:title="@string/ContextMenu_SetupOtherArm"
+    		/>
+		    <item android:id="@+id/CM_DL_ASSET"
+        		android:title="@string/ContextMenu_DownloadAsset"
+    		/>
+	    </menu>    
+    </item>
+    <item android:id="@+id/CM_HELP"
+        android:title="@string/ContextMenu_Help"
+    >    
+	    <menu>
+		    <item android:id="@+id/CM_HELPVERSION"
+        		android:title="@string/ContextMenu_HelpVersion"
+    		/>
+		    <item android:id="@+id/CM_HELPAXE"
+        		android:title="@string/ContextMenu_HelpAxe"
+    		/>
+		    <item android:id="@+id/CM_HELPXE"
+        		android:title="@string/ContextMenu_HelpXe"
+    		/>
+	    </menu>
+    </item>
+</menu>

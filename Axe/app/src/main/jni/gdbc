@@ -1,0 +1,34 @@
+####################################################################
+# for jni debug
+#"debug-instyall": instal gdbserver
+#adb shell ps -->chk pid 
+#"debug-run"      gdbserver listen port 1234  modify pid before execute
+#"debug" client on another console; bind by gdbtarget remote :1234 ###
+####################################################################
+APP=Axe
+SHARELIB=libaxejni.so
+
+#TOPDIR=/home3
+TOPDIR=/home2
+PROJ=/x/eclipse-workspace/Axe
+INSTALL_DIR=/data/tmp
+INSTALL_DIR2=/data/data/com.xe.Axe/lib
+TARGET_PLATFORM=android-4
+
+NDK_ROOT=$TOPDIR/androidndk/android-ndk-r5b
+NDK_HOST=linux-x86
+SDK_ROOT=$TOPDIR/android/android-sdk-linux_x86
+PREBUILD=$NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt
+BIN=$PREBUILD/$NDK_HOST/bin
+ADB=$SDK_ROOT/platform-tools/adb
+ARM=$NDK_ROOT/platforms/$TARGET_PLATFORM/arch-arm
+DEBUGSO=$PROJ/obj/local/armeabi/$SHARELIB
+
+USERLIB=$ARM/usr/lib
+OBJ=./obj/local/armeabi
+
+STRIP=$BIN/arm-linux-androideabi-strip
+
+GDB_CLIENT=$BIN/arm-linux-androideabi-gdb
+#   $GDB_CLIENT /data/data/com.xe.Axe/lib/libaxejni.so
+	$GDB_CLIENT $1 $2 $DEBUGSO

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.xe.Axe"
+      android:versionCode="118"
+      android:versionName="1.18">
+    <!--  uses-permission android:name="android.permission.BIND_INPUT_METHOD"></uses-permission-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="15"/> 
+    <application android:icon="@drawable/wxe" android:label="@string/app_name"
+     					android:name="AxeACRA"
+    >
+    <!--				android:debuggable="true" -->
+ <!--					android:debuggable="false" true for gdbndk  -->
+        <activity android:name=".Axe"
+                  android:label="@string/app_name"
+                  android:screenOrientation="unspecified"
+                  android:configChanges="orientation|screenSize|keyboardHidden|keyboard|screenLayout"
+                  android:windowSoftInputMode="adjustResize"
+                  android:launchMode="singleTask"
+     	        		android:theme="@style/ThemeV10"      
+		>
+<!--                  android:windowSoftInputMode="adjustPan"-->
+<!--              android:configChanges="orientation|keyboardHidden"-->
+<!--api13 requires screenSize        android:configChanges="orientation|keyboardHidden|keyboard|screenLayout"-->
+<!--              android:screenOrientation="sensor" -->
+<!--              android:screenOrientation="portrait" -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter
+                  android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+            </intent-filter>
+            <intent-filter
+                  android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AxeChild"
+                  android:label="Axe:exit by error"
+			      android:process=":AxeUerrexit"
+		>
+             <!--     android:launchMode="singleTask" -->
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+			    android:name=".AxeNDKCrash"
+                android:label="Axe:exit by NDK crash"
+			    android:configChanges="keyboard|keyboardHidden|orientation"
+			    android:exported="false"
+			    android:process=":AxeNDKCrash"
+			    android:stateNotNeeded="true"
+			    android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter
+                  android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+
+</manifest> 

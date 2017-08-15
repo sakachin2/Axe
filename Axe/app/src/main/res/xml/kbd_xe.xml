@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--Keyboard xmlns:android="http://schemas.android.com/apk/res/android"-->
+<Keyboard xmlns:xe="http://schemas.android.com/apk/res/com.xe.Axe"
+    xe:keyWidth="10%p"
+    xe:horizontalGap="0px"
+    xe:verticalGap="0px"
+    xe:keyHeight="9%p"
+    >
+<!--xe:keyHeight="@dimen/key_height" -->
+
+  <!--1st line 1:0 --> 
+    <Row>
+        <Key xe:codes="49" xe:keyLabel="1"
+             xe:keyEdgeFlags="left"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_1"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="50" xe:keyLabel="2"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_2"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="51" xe:keyLabel="3"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_3"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="52" xe:keyLabel="4"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_4"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="53" xe:keyLabel="5"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_5"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="54" xe:keyLabel="6"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_6"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="55" xe:keyLabel="7"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_7"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="56" xe:keyLabel="8"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_8"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="57" xe:keyLabel="9"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_9"
+                xe:isRepeatable="true"
+             />
+        <Key xe:codes="48" xe:keyLabel="0"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_0"
+             xe:keyEdgeFlags="right"
+                xe:isRepeatable="true"
+             />
+    </Row>
+
+  <!--2nd line Q:P --> 
+    <Row>
+        <Key xe:codes="113" xe:keyLabel="q"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_q"
+        	 xe:keyEdgeFlags="left"
+                xe:isRepeatable="true" />
+        <Key xe:codes="119" xe:keyLabel="w"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_w"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="101" xe:keyLabel="e"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_e"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="114" xe:keyLabel="r"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_r"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="116" xe:keyLabel="t"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_t"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="121" xe:keyLabel="y"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_y"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="117" xe:keyLabel="u"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_u"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="105" xe:keyLabel="i"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_i"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="111" xe:keyLabel="o"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_o"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="112" xe:keyLabel="p"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_p"
+        	 xe:keyEdgeFlags="right"
+                xe:isRepeatable="true"
+        	 />
+    </Row>
+    
+  <!--3rd line A:L --> 
+    <Row>
+        <Key xe:codes="97" xe:keyLabel="a"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_a"
+             xe:keyEdgeFlags="left"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="115" xe:keyLabel="s"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_s"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="100" xe:keyLabel="d"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_d"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="102" xe:keyLabel="f"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_f"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="103" xe:keyLabel="g"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_g"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="104" xe:keyLabel="h"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_h"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="106" xe:keyLabel="j"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_j"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="107" xe:keyLabel="k"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_k"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="108" xe:keyLabel="l"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_l"
+                xe:isRepeatable="true"
+        	 />
+      <!-- Delete forawrd -->
+        <!--Key xe:codes="\uffff" xe:keyLabel="Del"-->
+        <Key xe:codes="65535" xe:keyLabel="Del"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_delete"
+                xe:isRepeatable="true"
+             xe:keyEdgeFlags="right"/>
+    </Row>
+    
+  <!--4th line Z:M --> 
+    <Row>
+        <Key xe:codes="-1" xe:keyIcon="@drawable/sym_keyboard_shift" 
+                xe:isModifier="true"
+	         	xe:popupKeyboard="@xml/kbd_popup_template"
+				xe:popupCharacters="@string/popup_xekbd_shift"
+                xe:isRepeatable="false"
+                xe:isSticky="true" xe:keyEdgeFlags="left"/>
+        <Key xe:codes="122" xe:keyLabel="z"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_z"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="120" xe:keyLabel="x"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_x"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="99" xe:keyLabel="c"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_c"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="118" xe:keyLabel="v"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_v"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="98" xe:keyLabel="b"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_b"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="110" xe:keyLabel="n"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_n"
+                xe:isRepeatable="true"
+        	 />
+        <Key xe:codes="109" xe:keyLabel="m"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_m"
+                xe:isRepeatable="true"
+        	 />
+      <!-- Tab -->
+        <!--Key xe:codes="\uff09" xe:keyLabel="Tab"-->
+        <Key xe:codes="65289" xe:keyLabel="Tab"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_tab"
+                xe:isRepeatable="true"
+                />
+      <!-- backspace -->
+        <Key xe:codes="-5" xe:keyIcon="@drawable/sym_keyboard_delete" 
+                xe:iconPreview="@drawable/sym_keyboard_delete_preview"
+	         	xe:popupKeyboard="@xml/kbd_popup_template"
+				xe:popupCharacters="@string/popup_xekbd_backspace"
+                xe:keyEdgeFlags="right"
+                xe:isRepeatable="true"/>
+    </Row>
+  <!--5th line--> 
+    <Row xe:rowEdgeFlags="bottom">
+      <!-- Alt-Left/Right(AltGr) -->
+        <Key xe:codes="-6" 
+        	 xe:keyLabel="Alt"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_alt"
+                xe:isModifier="true"
+                xe:isRepeatable="false"
+                xe:isSticky="true" xe:keyEdgeFlags="left"/>
+      <!-- Control-Left/Right -->
+        <!--Key xe:codes="113"--> 
+        <Key xe:codes="-13" 
+        	 xe:keyLabel="Ctrl"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_ctl"
+                xe:isModifier="true"
+                xe:isRepeatable="false"
+                xe:isSticky="true"/>
+      <!-- Switch keyboard -->
+        <Key xe:codes="-2" xe:keyLabel="IM"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_swkbd"
+                xe:isRepeatable="false"
+                />
+        <!--Key xe:codes="\uff51"-->
+        <Key xe:codes="65361"
+             xe:keyIcon="@drawable/btn_keyboard_key_left_normal" 
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_left"
+                xe:isRepeatable="true"
+                />
+        <Key xe:codes="65363"
+             xe:keyIcon="@drawable/btn_keyboard_key_right_normal" 
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_right"
+                xe:isRepeatable="true"
+                />
+        <Key xe:codes="32" xe:keyIcon="@drawable/sym_keyboard_space" 
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_space"
+                xe:isRepeatable="true"/>
+        <Key xe:codes="65362"
+             xe:keyIcon="@drawable/btn_keyboard_key_up_normal" 
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_up"
+                xe:isRepeatable="true"
+                />
+        <Key xe:codes="65364"
+             xe:keyIcon="@drawable/btn_keyboard_key_down_normal" 
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_down"
+                xe:isRepeatable="true"
+                />
+      <!-- Escape -->
+        <!--Key xe:codes="\uff1b" xe:keyLabel="Esc"-->
+        <Key xe:codes="65307" xe:keyLabel="Esc"
+         	 xe:popupKeyboard="@xml/kbd_popup_template"
+			 xe:popupCharacters="@string/popup_xekbd_esc"
+                xe:isRepeatable="false"
+        	 />
+      <!-- Return:Enter -->
+        <!--Key xe:codes="\uff0d"-->
+        <Key xe:codes="65293"
+                xe:keyIcon="@drawable/sym_keyboard_return"
+                xe:iconPreview="@drawable/sym_keyboard_return_preview"
+	         	xe:popupKeyboard="@xml/kbd_popup_template"
+                xe:isRepeatable="true"
+                xe:keyEdgeFlags="right"/>
+    </Row>
+</Keyboard>
+    

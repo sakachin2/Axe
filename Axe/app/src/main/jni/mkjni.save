@@ -1,0 +1,6 @@
+# execute in the project
+NDK=/home2/androidndk/android-ndk-r5b
+ERR=err
+#cd jni
+$NDK/ndk-build $1 $2 >$ERR  2>&1
+cat $ERR

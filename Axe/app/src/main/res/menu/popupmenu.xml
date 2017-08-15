@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+		    <item android:id="@+id/CM_OPEN"
+        		android:title="@string/ContextMenu_FileOpenPopup"
+    		/>
+		    <item android:id="@+id/CM_CUT"
+        		android:title="@string/ContextMenu_EditCut"
+    		/>
+		    <item android:id="@+id/CM_COPY"
+        		android:title="@string/ContextMenu_EditCopy"
+    		/>
+		    <item android:id="@+id/CM_CLEAR"
+        		android:title="@string/ContextMenu_EditClear"
+    		/>
+		    <item android:id="@+id/CM_PASTEV"
+        		android:title="@string/ContextMenu_EditPaste"
+    		/>
+		    <item android:id="@+id/CM_PASTEINS"
+        		android:title="@string/ContextMenu_EditPasteIns"
+    		/>
+		    <item android:id="@+id/CM_PASTEREP"
+        		android:title="@string/ContextMenu_EditPasteRep"
+    		/>
+		    <item android:id="@+id/CM_SAVE"
+        		android:title="@string/ContextMenu_FileSave"
+    		/>
+		    <item android:id="@+id/CM_END"
+        		android:title="@string/ContextMenu_FileEnd"
+    		/>
+		    <item android:id="@+id/CM_DISCARD"
+        		android:title="@string/ContextMenu_FileDiscard"
+    		/>
+		    <item android:id="@+id/CM_OPENWITH"
+        		android:title="@string/ContextMenu_FileOpenWith"
+    		/>
+</menu>

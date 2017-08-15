@@ -1,0 +1,17 @@
+####################################################################
+#to start app; "gdbndk --start" ####################################
+echo "to start app" "gdbndk --start" ###############################
+TOPDIR=/home3
+PROJ=/x/eclipse-workspace/Axe
+#NDK_ROOT=$TOPDIR/androidndk/android-ndk-r5c
+NDK_ROOT=$TOPDIR/androidndk/android-ndk-r7
+
+export PATH=$NDK_ROOT:$PATH
+#cd $PROJ
+echo "pwd=" `pwd`
+echo $PATH
+#$NDK_ROOT/ndk-gdb $1 $2 $3
+#sh -x  ndk-gdb $1 $2 $3
+cd ..    #required for ndk-r7 GDBSETUP= changed from absolute path to relative path
+#sh -x  $NDK_ROOT/ndk-gdb $1 $2 $3
+$NDK_ROOT/ndk-gdb --verbose $1 $2 $3

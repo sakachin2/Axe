@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--AltGr for US international -->
+    <string name="popup_xekbd_1">"1!eF1;\u00b9\u00a1"</string>
+    <string name="popup_xekbd_2">"2@eF2;\u00b2\u00aa"</string>
+    <string name="popup_xekbd_3">"3#eF3;\u00b3\u00ba"</string>
+    <string name="popup_xekbd_4">"4$eF4;\u00a5\u00a3"</string>
+    <string name="popup_xekbd_5">"5%eF5;\u20ac\u00a2"</string>
+    <string name="popup_xekbd_6">"6^eF6;\u00bc\u00f7"</string>
+    <string name="popup_xekbd_7">"7&amp;eF7;\u00bd\u00d7"</string>
+    <string name="popup_xekbd_8">"8*eF8;\u00be\u00b1"</string>
+    <string name="popup_xekbd_9">"9(eF9;\u2018\u00ab"</string>
+    <string name="popup_xekbd_0">"0)eF10;\u2019\u00bb "</string>
+
+    <string name="popup_xekbd_q">"qQeF11;\u00e4\u00c4"</string>
+    <string name="popup_xekbd_w">"wWeF12;\u00e5\u00c5"</string>
+    <string name="popup_xekbd_e">"eE\"\u00e9\u00c9"</string>
+    <string name="popup_xekbd_r">"rR'\u00ae\u00a0"</string>
+    <string name="popup_xekbd_t">"tT+\u00fe\u00de"</string>
+    <string name="popup_xekbd_y">"yY-\u00fd\u00dd"</string>
+    <string name="popup_xekbd_u">"uU=\u00fa\u00da"</string>
+    <string name="popup_xekbd_i">"iI_\u00ed\u00cd"</string>
+    <string name="popup_xekbd_o">"oO{\u00f3\u00d3"</string>
+    <string name="popup_xekbd_p">"pP}\u00f8\u00d8"</string>
+
+    <string name="popup_xekbd_a">"aA[\u00e1\u00c1"</string>
+    <string name="popup_xekbd_s">"sS]\u00df\u00a7"</string>
+    <string name="popup_xekbd_d">"dD|\u00a6\u00d0"</string>
+    <string name="popup_xekbd_f">"fF\\\u00b6\u00b8"</string>
+    <string name="popup_xekbd_g">"gG:\u00b4\u00a8"</string>
+    <string name="popup_xekbd_h">"hH;\u00ff\u0178"</string>
+    <string name="popup_xekbd_j">"jJ,\u00fc\u00dc"</string>
+    <string name="popup_xekbd_k">"kK.\u00ef\u00cf"</string>
+    <string name="popup_xekbd_l">"lL\u00ac\u00f6\u00d6"</string>
+    <string name="popup_xekbd_delete">"eDel;   eIns;"</string>
+
+    <string name="popup_xekbd_shift">"eShift; eSYM;eCaps;eFn;"</string> <!-- vaaw -->
+    <string name="popup_xekbd_z">"zZ&lt;\u00e6\u00c6"</string>
+    <string name="popup_xekbd_x">"xX&gt;\u00e7\u00c7"</string>
+    <string name="popup_xekbd_c">"cC/\u00a9\u00a4"</string>
+    <string name="popup_xekbd_v">"vV?\u00bf\u00f0"</string>
+    <string name="popup_xekbd_b">"bB`\u00b7\u00b0"</string>
+    <string name="popup_xekbd_n">"nN~\u00f1\u00d1"</string>
+    <string name="popup_xekbd_m">"mM\u00af\u00b5\u00ad"</string>
+    <string name="popup_xekbd_tab">"eTab;    "</string>
+    <string name="popup_xekbd_backspace">"eBkSp;    "</string>
+
+    <string name="popup_xekbd_alt">"eAlt;  eAltG;eAltGS;"</string>
+    <string name="popup_xekbd_ctl">"eCtrl;    "</string>
+    <string name="popup_xekbd_swkbd">"eIM;ePop;eS.C;  "</string>
+    <string name="popup_xekbd_space">"eSp;     "</string>
+    <string name="popup_xekbd_left">"eLeft;eHome;   "</string>
+    <string name="popup_xekbd_right">"eRight; eEnd;  "</string>
+    <string name="popup_xekbd_up">"eUp;ePgUp;   "</string>
+    <string name="popup_xekbd_down">"eDown; ePgDn;  "</string>
+    <string name="popup_xekbd_esc">"eEsc;    "</string>
+</resources>

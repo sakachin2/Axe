@@ -1,0 +1,172 @@
+-------------------------------------------------------------------------------
+---  HIGHLIGHT LANGUAGE LIST --------------------------------- October 2009 ---
+-------------------------------------------------------------------------------
+
+All supported languages and the syntax definition file names are listed below.
+The parens contain filename extensions configured in filetypes.conf.
+By default, the *.lang files are located in /usr/share/highlight/langDefs/.
+
+Since release 2.12, it is possible to highlight source files with multiple
+languages (ie HTML+PHP), see the NESTED instruction in README.
+
+Installed language definitions (located in /usr/share/highlight/langDefs/):
+
+Informix            : 4gl
+ASCEND              : a4c
+ABAP/4              : abp
+ABNF                : abnf
+ADA95               : ada ( a adb ads gnad )
+Agda                : agda
+AutoHotKeys         : ahk
+AMPL                : ampl ( dat run )
+AMTrix              : amtrix ( hnd s4 s4h s4t t4 )
+AppleScript         : applescript
+Arc                 : arc
+ARM                 : arm
+Action Script       : as
+Assembler           : asm ( 29k 68s 68x a51 x68 )
+ASP                 : asp ( asa )
+Abstract            : aspect ( was wud )
+Applied Type System : ats ( dats )
+AutoIt              : au3
+Avenue              : avenue
+(G)AWK              : awk
+DOS Batch           : bat ( cmd )
+Blitz Basic         : bb
+BibTeX              : bib
+BM Script           : bms
+BNF                 : bnf
+Boo                 : boo
+C and C++           : c ( c++ cc cpp cxx h hh hpp hxx )
+ClearBasic          : cb
+ColdFusion MX       : cfc ( cfm )
+CHILL               : chl
+Clipper             : clipper
+Clojure             : clojure
+Clips               : clp
+COBOL               : cob ( cbl )
+C#                  : cs
+CSS                 : css
+D                   : d
+Diff                : diff ( patch )
+Graphviz            : dot
+Dylan               : dylan
+Eiffel              : e ( se )
+EBNF                : ebnf
+Erlang              : erl ( hrl )
+Euphoria            : euphoria ( eu ew ex exu exw )
+Express             : exp
+Fortran 77          : f77 ( f for ftn )
+Fortran 90          : f90 ( f95 )
+Felix               : flx
+Frink               : frink
+F#                  : fs ( fsx )
+Go                  : go
+Haskell             : haskell ( hs )
+Hecl                : hcl
+HTML                : html ( htm xhtml )
+Apache Config       : httpd
+haXe                : hx
+Clean               : icl
+Icon                : icn
+IDL                 : idl
+Interactive Data Language: idlang
+INTERLIS            : ili
+Lua (for LuaTeX)    : inc_luatex
+INI                 : ini
+FAME                : inp
+IO                  : io
+Inno Setup          : iss
+Jasmin              : j
+Java                : java ( groovy grv )
+Javascript          : js
+JSP                 : jsp
+Luban               : lbn
+LDAP                : ldif
+Logtalk             : lgt
+Haskell LHS         : lhs
+Lisp                : lisp ( cl clisp el lsp sbcl )
+Lotos               : lotos
+Lotus               : ls
+Linden Script       : lsl
+Lua                 : lua
+Lilypond            : ly
+Matlab              : m
+Make                : make ( mak mk )
+Maya                : mel
+Mercury             : mercury
+SNMP                : mib ( smi )
+Miranda             : miranda
+Objective Caml      : ml ( mli ocaml )
+Modelica            : mo
+Modula2             : mod2 ( mod def )
+Modula3             : mod3 ( m3 i3 )
+Maple               : mpl
+MaxScript           : ms
+MSSQL               : mssql
+Nemerle             : n
+Nasal               : nas
+NBC                 : nbc
+Nice                : nice
+NetRexx             : nrx
+NSIS                : nsi
+Squirrel            : nut
+NXC                 : nxc
+Oberon              : oberon ( ooc )
+Objective C         : objc
+Octave              : octave
+Open Object Rexx    : oorexx
+Object Script       : os
+Oz                  : oz
+Pascal              : pas
+PHP                 : php ( php3 php4 php5 php6 )
+Pike                : pike ( pmod )
+Perl                : pl ( cgi perl plex plx pm )
+PL/1                : pl1 ( bdy ff fp fpp rpp sf sp spb spe spp sps wf wp wpb wpp wps )
+POV-Ray             : pov
+Prolog              : pro
+Progress            : progress ( i p w )
+PostScript          : ps
+Pure                : pure
+Microsoft PowerShell: ps1
+PATROL              : psl
+Python              : py
+Pyrex               : pyx
+Qore                : q
+QMake Project       : qmake
+Qu                  : qu
+R                   : r
+Ruby                : rb ( pp rjs ruby )
+Rebol               : rebol
+Rexx                : rexx ( rex rx the )
+Relax NG            : rnc
+PowerPC Assembler   : s
+SAS                 : sas
+Paradox             : sc
+Scala               : scala
+Scilab              : scilab
+Bash                : sh ( bash ebuild eclass )
+SMALL               : sma
+Smalltalk           : smalltalk ( gst sq st )
+Standard ML         : sml
+SNOBOL              : sno
+RPM Spec            : spec
+SPIN SQL            : spn
+PL/SQL              : sql
+Sybase SQL          : sybase
+Tcl/Tk              : tcl ( itcl wish )
+TCSH                : tcsh
+Regex tests         : test_re
+TeX and LaTeX       : tex ( cls sty )
+TTCN3               : ttcn3
+Plain text          : txt
+Vala                : vala
+Visual Basic        : vb ( bas basic bi vbs )
+Verilog             : verilog ( v )
+VHDL                : vhd
+XML                 : xml ( dtd ecf ent hdr hub jnlp nrm sgm sgml svg tld vxml wml xsl )
+SuperX++            : xpp
+Bison               : y
+Zonnon              : znn
+
+Use the name of the desired language with the --syntax option.

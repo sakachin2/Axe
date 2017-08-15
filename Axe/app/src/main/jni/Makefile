@@ -1,0 +1,62 @@
+####################################################################
+# for jni debug
+#debug-install  : instal gdbserver
+#adb shell ps -->chk pid 
+#debug-run       gdbserver listen port 1234 
+## debug client on another console; bind by (gdb)target remote :1234 ###
+####################################################################
+APP:=Axe
+SHARELIB:=libaxejni.so
+
+TOPDIR:=/home3
+PROJ:=/x/eclipse-workspace/Axe
+INSTALL_DIR:=/data/tmp
+#INSTALL_DIR:=/data/data/com.xe.Axe/files/myhome
+TARGET_PLATFORM:=android-9
+#TARGET_PLATFORM:=android-10
+#TARGET_PLATFORM:=android-4
+
+#NDK_ROOT:=$(TOPDIR)/androidndk/android-ndk-r5c
+#NDK_ROOT:=$(TOPDIR)/androidndk/android-ndk-r6
+NDK_ROOT:=$(TOPDIR)/androidndk/android-ndk-r7
+NDK_HOST:=linux-x86
+SDK_ROOT:=$(TOPDIR)/android/android-sdk-linux_x86
+PREBUILD:=$(NDK_ROOT)/toolchains/arm-linux-androideabi-4.4.3/prebuilt
+BIN:=$(PREBUILD)/$(NDK_HOST)/bin
+ADB:=$(SDK_ROOT)/platform-tools/adb
+ARM:=$(NDK_ROOT)/platforms/$(TARGET_PLATFORM)/arch-arm
+
+USERLIB:=$(ARM)/usr/lib
+OBJ=./obj/local/armeabi
+
+STRIP:=$(BIN)/arm-linux-androideabi-strip
+
+GDB_CLIENT:=$(BIN)/arm-linux-androideabi-gdb
+
+
+all:$(APP)
+#install:$(APP)
+#        $(ADB) push $(APP) $(INSTALL_DIR)/$(APP)
+#        $(ADB) push $(SHARELIB) $(INSTALL_DIR)/$(SHARELIB)
+#        $(ADB) shell chmod 777 $(INSTALL_DIR)/$(APP)
+#        $(ADB) shell chmod 777 $(INSTALL_DIR)/$(SHARELIB)
+#	$(ADB) install$(INSTALL_DIR)/$(SHARELIB)
+debug-install:
+		$(ADB) push $(PREBUILD)/gdbserver $(INSTALL_DIR)/gdbserver
+		$(ADB) shell chmod 777 $(INSTALL_DIR)/gdbserver
+shell:
+		$(ADB) shell
+run:
+		$(ADB) shell $(INSTALL_DIR)/$(APP)
+## debug server ###
+debug-run:
+		$(ADB) forward tcp:1234: tcp:1234
+#   	$(ADB) shell $(INSTALL_DIR)/gdbserver :1234 $(INSTALL_DIR)/$(APP)
+		$(ADB) shell $(INSTALL_DIR)/gdbserver :1234 --attach 23421
+## debug client on another console; bind by (gdb)target remote :1234 ###
+debug:
+	$(GDB_CLIENT) libaxejni.so
+clean:
+		@rm -f $(APP).o $(APP)
+copy:
+		@cp -p $(APP) $(AJAGOC)/$(APP).png
