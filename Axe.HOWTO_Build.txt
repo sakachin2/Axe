@@ -1,0 +1,50 @@
+#Axe.HOWTO_Build.txt
+*************************************************************************
+(1)build Ahigthtlight  && copyAhightlight2Axe.bat as bellow (hightlight)
+    set ASP=x:\AndroidStudioProjects
+    set DBG=debug
+    set ARM=armeabi-v7a
+    set SRC=%ASP%\Aiconv114\app\.externalNativeBuild\cmake\%DBG%\%ARM%
+    set SRCBIN=%ASP%\Aiconv114\app\bin
+    set TGT=%ASP%\Axe\app\src\main\jnilibs
+    set TGTASSET=%ASP%\AxeAssets\bin
+         copy %SRCBIN%\highlight.pie %TGTASSET%\highlight 
+
+(2)build Aiconv114     && copyAiconv2Axe.bat as bellow     (libiconv.a, iconv)
+    set ASP=x:\AndroidStudioProjects
+    set DBG=debug
+    set ARM=armeabi-v7a
+    set SRC=%ASP%\Aiconv114\app\.externalNativeBuild\cmake\%DBG%\%ARM%
+    set SRCBIN=%ASP%\Aiconv114\app\bin
+    set TGT=%ASP%\Axe\app\src\main\jnilibs
+    set TGTASSET=%ASP%\AxeAssets\bin
+         copy %SRC%\libiconv.a   %TGT% 
+         copy %SRCBIN%\iconv.pie %TGTASSET%\iconv 
+(3)build Aulib         && copyAulib2Axe.bat as bellow     (libuserxxe.a, libxxe.a, xcv,...)
+    set ASP=x:\AndroidStudioProjects
+    set SRC=%ASP%\Aulib\app\libs
+    set TGT=%ASP%\Axe\app\src\main\jnilibs
+    set SRCBIN=%ASP%\Aulib\app\bin
+    set TGTASSET=%ASP%\AxeAssets\bin
+         copy %SRC%\libuserxxe.a %TGT% 
+         copy %SRC%\libxxe.a     %TGT%
+    @rem copy %SRC%\ulibnc\libuser_nc.a
+         copy %SRCBIN%\xbc    %TGTASSET%
+         copy %SRCBIN%\xci    %TGTASSET%
+         copy %SRCBIN%\xcv    %TGTASSET%
+         copy %SRCBIN%\xdc    %TGTASSET%
+         copy %SRCBIN%\xdd    %TGTASSET%
+         copy %SRCBIN%\xdig   %TGTASSET%
+         copy %SRCBIN%\xds    %TGTASSET%
+         copy %SRCBIN%\xfc    %TGTASSET%
+         copy %SRCBIN%\xff    %TGTASSET%
+         copy %SRCBIN%\xfg    %TGTASSET%
+         copy %SRCBIN%\xfmt   %TGTASSET%
+         copy %SRCBIN%\xfs    %TGTASSET%
+         copy %SRCBIN%\xlow   %TGTASSET%
+         copy %SRCBIN%\xmj    %TGTASSET%
+         copy %SRCBIN%\xpe    %TGTASSET%
+         copy %SRCBIN%\xts    %TGTASSET%
+
+(4)AxeAsset.zip is optionally loaded from Axe on android device.
+

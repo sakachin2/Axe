@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+
+android {
+//  compileSdkVersion 15
+    compileSdkVersion 16
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        applicationId "com.xe.Axe"
+        minSdkVersion 16
+        targetSdkVersion 16
+//      targetSdkVersion 15
+//      minSdkVersion 15
+
+        ndk {
+            moduleName "axejni"
+    		abiFilters  'armeabi-v7a'
+        }
+    }
+
+    sourceSets {
+        main {
+            jni.srcDirs = ['src/main/jni']
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path "src/main/jni/Android.mk"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+}
+
+dependencies {
+    compile files('libs/acra-4.5.0.jar')
+    compile files('libs/ant.jar')
+}

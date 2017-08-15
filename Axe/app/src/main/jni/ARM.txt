@@ -1,0 +1,24 @@
+####PLATFORM -DARMAPI4 ndk-rn####
+when APIlevel changed 
+    manifest, default.property
+    /home3/androidndk/Projects/Aiconv/jni/cfg.setenv
+    /g/src/arm/ndkenv.sh
+    /g/src/ulib/mkxxearm.osa kan
+    /g/src/xe/mkxxearm.osa   kand
+    /x/eclipse-workspace/Axe/jni/Makefile.osa
+	/x/eclipse-workspace/Axe/jni/Android.mk
+when ndk version changed
+  /h/objlinux/sh/ndk
+  /home3/androidndk/Projects/Aiconv/jni/cfg.setenv
+  /g/src/arm/ndkenv.sh   -->re-make ulib/xe/xsub
+  /x/eclipse-workspace/Axe/jni/Makefile.osa
+  /x/eclipse-workspace/Axe/jni/gdbndk.osa
+  /x/eclipse-workspace/Axe/jni/mkjni.osa
+no acs
+C&P:no primary clipboard, standard clipboard only
+no toolbar button
+##not yet drag/drop file(between  split panel)
+##not yet,cv title filename to utf8
+##not yet,cv fontname to ucs4
+##not yet,file association
+test sleep atcmd

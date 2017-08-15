@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ThemeV10" parent="@android:style/Theme">
+        <!--item name="android:buttonStyle">?android:buttonStyleSmall</item-->
+        <item name="android:buttonStyle">@style/SmallButton</item>
+        <item name="android:checkboxStyle">@style/SmallCheckBox</item>
+        <item name="android:radioButtonStyle">@style/SmallRadioButton</item>
+        <!--item name="android:listViewStyle">@style/SmallListView</item-->
+        <item name="android:popupMenuStyle">@android:style/TextAppearance.Widget.PopupMenu.Small</item>
+        <item name="android:dialogTheme">@style/DialogSmallParts</item>
+        <item name="android:textAppearance">@android:attr/textAppearanceSmall</item>
+        <item name="android:editTextStyle">@style/SmallEditText</item>
+        <item name="android:textViewStyle">@style/SmallTextView</item>
+        <!--item name="android:windowTitleStyle">@style/DialogSmallTitle</item no effect-->
+    </style>
+    <style name="SmallButton" parent="@android:style/Widget.Button.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="SmallCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:textAppearance">@android:attr/textAppearanceSmall</item>
+        <item name="android:button">@xml/checkbox_button_small</item>
+    </style>
+    <style name="SmallRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:textAppearance">@android:attr/textAppearanceSmall</item>
+        <item name="android:button">@xml/radio_button_small</item>
+        <item name="android:layout_height">10dp</item>
+        <item name="android:height">10dp</item>
+    </style>
+    <!--style name="SmallListView" parent="@android:style/Widget.ListView">       //not avail
+        <item name="android:textSize">14sp</item>
+        <item name="android:height">20dp</item>
+        <item name="android:textAppearance">@android:attr/textAppearanceSmall</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:listPreferredItemHeight">28dp</item>
+    </style-->
+        <!--item name="android:dropdownListPreferredItemHeight">28dip</item-->
+    <style name="DialogSmallParts" parent="@android:style/Theme.Dialog">
+        <item name="android:buttonStyle">@style/SmallButton</item>
+        <item name="android:windowTitleStyle">@style/DialogSmallTitle</item>
+        <item name="android:editTextStyle">@style/SmallEditText</item>
+        <item name="android:textViewStyle">@style/SmallTextView</item>
+    </style>
+    <style name="DialogSmallTitle" parent="@android:style/TextAppearance.DialogWindowTitle">
+        <item name="android:windowTitleSize">20dp</item>
+        <!--item name="android:height">30dp</item-->
+        <!--item name="android:textSize">18sp</item-->
+    </style>
+    <style name="SmallEditText" parent="@android:style/Widget.EditText">
+        <item name="android:textAppearance">@android:style/TextAppearance.Small</item>
+        <!--item name="android:layout_height">10dp</item-->
+        <!--item name="android:textSize">6sp</item-->
+    </style>
+    <style name="SmallTextView" parent="@android:style/Widget.TextView">
+        <item name="android:textAppearance">@android:style/TextAppearance.Small</item>
+        <!--item name="android:textSize">8sp</item-->
+        <!--item name="android:layout_height">10dp</item-->
+    </style>
+</resources>

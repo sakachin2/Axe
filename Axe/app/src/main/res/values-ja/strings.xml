@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
+<resources>
+    <string name="app_name">Axe</string>
+    <string name="Version">Axe V1.18 (xe1.28H)</string>
+    <string name="VerDate">2016/02/26</string>
+
+    <string name="OptionMenu_Stop">終了</string>
+    <string name="OptionMenu_Menu">メニュー</string>
+    <string name="OptionMenu_Help">ヘルプ</string>
+
+    <string name="ContextMenu_File">ファイル</string>
+    <string name="ContextMenu_FileOpenPopup">ファイル-開く</string>
+    <string name="ContextMenu_FileNew">新規</string>
+    <string name="ContextMenu_FileOpen">開く</string>
+    <string name="ContextMenu_FileSave">保存</string>
+    <string name="ContextMenu_FileSaveAs">別名保存</string>
+    <string name="ContextMenu_FileDownload">ダウンロード,展開</string>
+    <string name="ContextMenu_FileDiscard">破棄</string>
+    <string name="ContextMenu_FileEnd">保存終了</string>
+    <string name="ContextMenu_FileOpenWith">プログラムで開く</string>
+    <string name="ContextMenu_Edit">編集</string>
+    <string name="ContextMenu_EditCut">切取</string>
+    <string name="ContextMenu_EditCopy">複写</string>
+    <string name="ContextMenu_EditClear">クリアー</string>
+    <string name="ContextMenu_EditPaste">貼付</string>
+    <string name="ContextMenu_EditPasteIns">挿入貼付</string>
+    <string name="ContextMenu_EditPasteRep">置換貼付</string>
+    <string name="ContextMenu_Setup">設定</string>
+    <string name="ContextMenu_SetupFont">フォント</string>
+    <string name="ContextMenu_SetupColor">色</string>
+    <string name="ContextMenu_SetupOther">その他 XE 設定</string>
+    <string name="ContextMenu_Button_Config">ボタン設定</string>
+    <string name="ContextMenu_Button_Layout">ボタン配置</string>
+    <string name="ContextMenu_Kbd_Config">キーボード配置</string>
+    <string name="ContextMenu_SetupOtherArm">アンドロイド関連</string>
+    <string name="ContextMenu_DownloadAsset">追加のAssetダウンロード</string>
+    <string name="ContextMenu_Help">ヘルプ</string>
+    <string name="ContextMenu_HelpXe">XE ヘルプ(Html)</string>
+    <string name="ContextMenu_HelpAxe">Axe ヘルプ</string>
+    <string name="ContextMenu_HelpVersion">バージョン</string>
+    <string name="ContextMenu_ShortcutkeyMap">ショートカットキー</string>
+    <string name="ContextMenu_ShiftkeyMap">Shift マッピング</string>
+    <string name="ContextMenu_AltGrMap">AltGr マッピング</string>
+    <string name="ContextMenu_TerminalBtn">端末ボタン使用</string>
+
+    <string name="HelpTitle_OptionHelp">About Axe</string>
+    <string name="Help_OptionHelp">
+   		"このアプリはHybrid Editor \"xe\"のアンドロイド移植版です\n"
+        "  ソースコードは http://www.geocities.jp/sakachin2/index.htm\n"
+        "      By 水巻マチ\n"
+        "\n"
+   		"    現在以下の機能はアンドロイド版ではサポートされません\n"
+   		"        印刷、リモートファイルアクセス\n"
+        "\n"
+   		"設定と詳細ヘルプは\"Menu\"ボタンから入ります\n"
+   		"(Android-3以降ではタイトルバータッチ).\n"
+   		"ヘルプ:\n"
+   		"  Axe ヘルプ:アンドロイド版のヘルプ\n"
+   		"  XE ヘルプ :PC版と共通のヘルプ\n"
+   		"             追加のasset をダウンロードする必要があります\n"
+        "   　　　　　  Menu-->設定-->追加のAssetダウンロード.\n"
+   		"  ヘルプの各国語サポート\n"
+   		"    sdcard に以下のような UTF-8 ファイルを置けば\n"
+   		"    表示されます\n"
+        "    (sdcardフォルダーは/mnt/sdcardなど機種依存です)\n"
+        "      /sdcard/Axe/nls/nls/subject.txt.\"\n"
+        "    ここで subject はヘルプ表示のタイトルと同じ名前\n"
+        "      (スペースは下線に置換）\n"
+        "         例) \"About_Axe\"\n"
+        "    複数の言語を使用する場合は言語ごとのフォルダーを\n"
+        "    作成して置いてください\n"
+        "      /sdcard/Axe/nls/nls_xx/subject.txt for each language.\n"  
+        "    ここで xx 例えば \"de\" や \"ja\" とします\n"
+   		"設定:\n"
+   		"  画面,ソフトキーボード関連は\"アンドロイD関連\"にあります\n"
+        "\n"
+        "下端のボタン列について\n"
+        "  Usb/Bluetoothキーボードを用意したほうが良いですが\n"
+        "  ない場合でも限定的なハードウェアKbdやIMソフトKbd入力を\n"
+        "  このボタン列で修飾してファンクションキーも利用できます。\n"
+        "  Kbd:xe 固有のqwerty ソフトキーボードを表示。\n"
+        "      PCのキーボード、マウス操作が出きます\n"
+        "      キーボード操作は \"Axeヘルプ\"を参照\n"
+        "      このxeソフトKbdからの入力はボタン列のON/OFFの影響を受けません\n"
+        "  IM :アンドロイドのIM(ソフトキーボード)を表示\n"
+        "      その設定は \"設定\"==>\"アンドロイド関連\"\n"
+        "                  ==>\"現在の Input Method\":変更\n"
+        "      尚ハードウェアーキーボード接続中は\n"
+        "      アンドロイドのソフトKbdはポップアップしません\n"
+        "  S.C:ショートカット\n"
+        "      デフォルトの設定では、例えば \"S.C\"ボタンタッチ後\n"
+        "      ハードウェアーKbdかIMソフトKbdで\"1\"を押すと\n"
+        "      \"F1\"が押されたことになります\n"
+        "      注. \"Shift+F1\"などモディファイヤーキーを\n"
+        "          使用するときは順番に注意\n"
+        "          \"S.C\",\"Shift\",\"1\" は S.C+\"@\"\n"
+        "          \"Shift\",\"S.C\",\"1\" は Shift+\"F1\".\n"
+        "      (\"設定\"==>\"ボタン設定\"==>\"ショートカットキー\")\n"
+        "      端末ボタン（\"Search\", \"Camera\"など）も\n"
+        "      ショートカットに利用できます\n"
+        "      (\"ボタン設定\"==>\"端末ボタン使用\")\n"
+        "  Shift/AltG:ハードウェアキーボードにAltGキーがない場合や\n"
+        "      Shiftキーとの組み合わせのキーコードを変更したい場合\n"
+        "      マッピングを設定変更できます.\n"
+        "      (\"ボタン設定\"==>\"Shift マッピング\"/\"AltGr マッピング\")\n"
+        " \n"
+        "  ボタンの配置は設定変更できます\n"
+        "      (\"ボタン設定\"==>\"ボタン配置\")\n"
+        "    ボタンを長押しするとボタンの機能割り当て変更ができます\n"
+        "    但し方向キーの場合は"S.C"をオンにしてから\n"
+        "    長押ししてください\n"
+	</string>
+
+    <string name="DialogTitle_OptionHelpAxe">Help Axe</string>
+    <string name="Help_OptionHelpAxe">
+        "==キーボード:\n"
+        "  拡張キーへの機能の割り当てはPC版と同じです\n"
+        "  (トップメニューパネルで \"A\", Enter と入力すると キー:機能 の対応が表示されます\n"
+   		"  この割り当ての変更は ini ファイルで設定します\n"
+   		"  \"ini\" コマンドでデフォルト値を出力、\"e ::xe.ini\"で編集。 \"XE Help\"を参照)\n"
+        "  使用する端末が Qwerty ハードウェアーキーボードを備えていない場合\n"
+        "  下端の \"Kbd\" ボタンで PC のキーボードと同様に機能キーを入力できるソフトキーボードが表示されます\n"
+        "  このキーボードは \"Menu\"==>\"Settings\"==>\"Kbd Layout\" でカスタマイズできます\n"
+        "  １つのキーに４個(Shift/AltGr/Shift+AltGr/FunctionKey)までの追加割り当てができます\n"
+        "  それらはフリック操作（左/右/上/下跳ねに対応）で入力できます\n"
+        "  Android Related Optionsダイアログでフリック操作での生成コードの表示をOn/Offできます\n"
+        "  リピータブルキー以外はキーの長押しで表示されるミニキーボードからも選択できます\n"
+        "  リピータブルキーでないのは \"Shift\" \"Alt\" \"Ctrl\" \"IM\" \"Esc\" です\n"
+        "  リピータブルキーの場合は\"Pop\"モードにするとミニキーボードが表示されます\n"
+        "  \"Pop\"モードにするには \"IM\"を長押しして \"Pop\"を選択、\n"
+        "  \"Pop\"を再タッチすると\"IM\"に戻ります\n"
+        "  \n"
+        "  \"IM\"はデフォルトの各国語を入力するために\"Input Method\"を表示します\n"
+        "  ショートカットを使用するには\"IM\"ボタンを右フリックするか長押しミニキーボードから\"S.C\"を選択\n"
+        "  ショートカットはキー入力ごとにセットが必要です\n"
+   		"  \"Alt\" 上でのフリック右/上で AltGr/Shift+AltGr で入力される文字が各キーのラベルに表示されます\n"
+   		"  \"Shift\" 上でのフリック上で \"Caps\"文字、フリック右で\"SYM\"文字をラベルに表示\n"
+   		"  \"SYM\"文字とは\"Caps\"、但し追加の4番め(フリックダウンに対応)にASCIIシンボル文字が定義されていればその文字です\n"
+        "\n"
+        "  xeの外でコピーされたクリップボードの内容の貼り付けは\n"
+        "  キーボードでなくメニューから実行してください\n"
+        "\n"
+        "==マウス:\n"
+        "  クリック/ダブルクリック/ドラッグ/右ボタンクリックは指操作も可能です\n"
+        "  (\n"
+        "   右ボタンクリックは長押しで対応、長押しタイムは 設定:アンドロイド関連。\n"
+        "   但し、カット&amp;ペーストの領域をドラッグした後はタイトルバータッチで\n"
+        "   コンテキストメニューを呼び出してください\n"
+        "   (Android3.0 未満の場合タイトルバーの右側1/3は\"ファイル選択\"\n"
+        "   ダイアログへのショートカットです)\n"
+        "  )\n"
+        "  小さな画面でカーソル位置を正確に位置付けることが難しい場合\n"
+        "  代わりにこれらのマウス操作をキーボード操作に設定して使用できます\n"
+        "  ショートカットに割り当てます。例）S.C+\"w\":ダブルクリック\n"
+        "  (\"ボタン設定\"==>\"ショートカットキー\")\n"
+        "  あるいは\"サーチ\" \"カメラ\"など端末ボタンに割り当てる\n"
+        "  (\"ボタン設定\"==>\"端末ボタン使用\").\n"
+        "  注。ダブルクリックをキー操作でする場合はカーソル位置に注意、\n"
+        "      xe ではダブルクリック位置で実行される機能が変わってきます\n"
+        "\n"
+        "==ルーラー:\n"
+        "  カーソル位置が確認しやすいようにオプションでルーラー（縦線、横線、十字線)を表示できます\n"
+        "  (\"設定\"==>\"その他 XE 設定\"==>\"ルーラータイプ\")\n"
+        "\n"
+        "==フォント:\n"
+        "  新しいフォントをインストールした場合は一度フォントダイアログを開き\"閉じる\"を押してください\n"
+        "  xe を再立ち上げするときフォントグリフ幅の内部情報が再作成されます\n"
+        "  フォントスタイルを変更すると次回立ち上げに多少時間がかかります\n"
+        "\n"
+        "==HomeDir:\n"
+        "  \"~/\" そして HOME 環境変数は以下に設定されます\n"
+        "    /data/data/com.xe.Axe/files/myhome\n" 
+        "  \"cd\"コマンドでHomeDirが現行Dirになります\n"
+        "  \"cd\" コマンドの効果は次のセッションでも有効です\n"
+        "\n"
+        "==WorkDir:\n"
+        "  \"e ::filename\" のように \"::\" で参照される xe のワークディレクトリーは以下になります\n"
+        "     /data/data/com.xe.Axe/files/xewd\n"
+        "\n"
+        "==インテント:\n"
+        "  -他のアプリからの次のようなインテントをうけいれます\n"
+        "      Action:ACTION_VIEW and ACTION_EDIT\n"
+        "      filter:scheme=\"file:\", mimeType=\"*/*\" not-specified\n"
+        "     (即ち \"file://xxx\"の形式のデータ)\n"
+        "  -\"ase\" コマンドでメーラーが処理することを期待して\"ACTION_SEND\"インテントを出します\n"
+        "     ase [*|-|text-file] [attachement-file|@attachment-filelist-file]\n"
+        "       text-file にこの順で以下の指定を入れることもできます\n"
+        "       To:宛先(複数行可)\n"
+        "       Subject:タイトル\n"
+        "       File:添付ファイル(複数行可)\n"
+        "       Text:(本文の開始の指定)\n"
+        "     デレクトリー画面では添付ファイルをタッチで指定できます\n"
+        "     \"ase\" コマンドをコマンド行に\"ase -\"のように入力後\"Enter\"を押さずに\n"
+        "     ファイル名をタッチ、複数選択する場合はCtrl+タッチでそのファイルを追加\n"
+        "     Shift+タッチでそれまでの範囲のファイルを追加\n"
+        "     最後に\"Enter\"で実行\n"
+        "     タッチ操作も出来ます。\n"
+        "     ファイル選択後タイトル行までドラッグしてください\n"
+        "   -ディレクトリー画面の行コマンド\"!\" は\n"
+        "    ファイルの拡張子からMIMEタイプを判定して\n"
+        "    \"ACTION_SEND\"インテントを出します\n"
+        "    そのMIMEタイプの受け入れを宣言したアプリがあれば\n"
+        "    そのファイルを渡します\n"
+        "==環境変数:\n"
+        "   \"env\" コマンドのかわりに\"set\"を使用してください\n"
+        "   PATH には次のパスが追加されます。シェルスクリプト、追加のPGMを入れてください\n"
+        "     files/sh:files/bin:/data/busybox\n"
+        "  (\n"
+        "   xeのユーテリティーはAxeAsset.zipを/data/data/com.xe.Axe/filesでunzipすることでfiles/bin導入されます\n"
+        "   インストール:Menu-->設定-->追加のAssetダウンロード.\n"
+        "  )\n"
+        "   何かユーティリティーコマンドを導入しそれを =6 画面で使用する場合は\n"
+        "   アンドロイド関連オプションダイアログのPATH環境変数で設定してください\n"
+        "   尚、\"busybox\" は grep など Linux必須のプログラムが含まれています、是非導入してください\n"
+        "\n"
+        "   \"LANG\"は UTF8 のようなのでロケール言語でファイルを編集する場合は\n"
+        "   \"e file1 CPLC\"のように各ファイル、最初に開く時\"CPLC\"指定してください\n"
+        "\n"
+        "==ICU サポート\n"
+        "   .cnv ファイルを持ち込めばEBCDIC変換も可能になります\n"
+        "   以下のコンバーターはデフォルトで含んであります\n"
+        "     ibm37,ibm930(jp),ibm939(jp),ibm1047(Latin1/OpenSystem)\n"
+        "     1141(Germany-Euro),1144(Italy-Euro),1145(Spain-Euro)\n"
+        "     1146(UK-Euro),1147(France-Euro),1148(International-Euro)\n"
+        "   詳細はhtmlヘルプを参照\n"
+        "\n"
+        "==シンタックスハイライト\n"
+        "   Andre Simon氏のhighlight-2.16をAxeAsset.zipに同梱しています\n"
+        "   利用する場合はこれを展開し ::xesyna.cfg を変更してください\n"
+        "    	OPEN = n   ==>   OPEN = y\n"
+        "\n"
+        "==ダウンロード\n"
+        "   Menu-->ファイル-->ダウンロードで指定のＵＲＬから\n"
+        "   ファイルをダウンロードできます。\n"
+        "   zipファイルなら指定のダウンロード場所で解凍します。\n"
+        "\n"
+        "==クラッシュレポート\n"
+        "   クラッシュが発生すると 開発者あてにメールする\n"
+        "   仕組みを取り入れています\n"
+        "   メール内容をみて出来れば送信ボタンを押してください\n"
+	</string>
+
+    <string name="DialogTitle_SetupOther">その他 XE 設定</string>
+    <string name="HelpTitle_SetupOther">Other XE Options</string>
+    <string name="Setup_Ruler">ルーラータイプ</string>
+    <string name="Setup_RulerVertical">縦線</string>
+    <string name="Setup_RulerHorizontal">横線</string>
+    <string name="Setup_RulerCrossfier">十字線</string>
+    <string name="Setup_RulerNone">なし</string>
+    <!--string name="Setup_Accelerator">Accelerator</string-->
+    <string name="Setup_FreeCursor">フリーカーソル</string>
+    <string name="Setup_Beep">ビープ音</string>
+    <string name="Setup_QuietExit">確認なし終了</string>
+    <string name="Help_SetupOther">
+   		"\"ルーラー\":カーソル位置を示す縦横線を表示\n"
+        "\"フリーカーソル\":オン：カーソルは画面の端から出たら反対側から入る\n"
+        "               オフ：ファイル/ディレクトリー画面では端から出ずにスクロールする\n"
+        "                     但しカーソルが行番号欄などテキストエリア外のときはスクロールしません\n"
+        "\"ビープ音\":エラーがあると音を出す\n"
+        "\"確認なし終了\":\"F3\" などxe の機能キーで終了するとき終了確認なしで終了する\n"
+        "                 \"メニュー\"==>\"終了\"では個の設定いかんに関わらず確認がとられます\n"
+	</string>
+
+    <string name="DialogTitle_SetupColor">カラー</string>
+    <string name="HelpTitle_SetupColor">Color</string>
+    <string name="Setup_BackgroundColor">背景色</string>
+    <string name="Setup_RulerColor">ルーラー色</string>
+    <string name="Setup_Red">赤</string>
+    <string name="Setup_Green">緑</string>
+    <string name="Setup_Blue">青</string>
+    <string name="Help_SetupColor">
+   		"背景色とルーラー色を設定する\n"
+        "ルーラー表示は \"その他 XE 設定\"で選択します\n"
+	</string>
+
+    <string name="DialogTitle_SetupFont">フォント</string>
+    <string name="HelpTitle_SetupFont">Font</string>
+    <string name="Setup_FontSize">フォントサイズ</string>
+    <string name="Setup_FontH">フォント高</string>
+    <string name="Setup_FontW">フォント幅</string>
+    <string name="Setup_CellH">行高</string>
+    <string name="Setup_CellW">桁幅</string>
+    <string name="Setup_Ligature">リガチャー</string>
+    <string name="Setup_FontNormal">プレイン</string>
+    <string name="Setup_FontBold">ボールド</string>
+    <string name="Setup_FontItalic">イタリック</string>
+    <string name="Setup_FontBoldItalic">ボールドイタリック</string>
+    <string name="Prompt_FontList">フォント名を選択</string>
+    <string name="Help_SetupFont">
+   		"入力欄からフォーカスが外れたときに入力が評価されサンプル窓描画されます\n"
+   		"フォント名はドロップダウンリストから選択します\n"
+   		"\"フォントサイズ\"=0 のときそれは\"行高\" and \"桁幅\"から設定されます\n"
+        "\"行高\"=0 のときそれは\"フォントサイズ\"におなじです\n"
+        "\"桁幅\"=0 のときそれは\"行高\"の 1/2 です\n"
+   		"すべてが 0 のとき\"フォントサイズ\"は画面が 24行-80桁 になるように決定されます\n"
+	</string>
+
+    <string name="DialogTitle_Download">ダウンロード</string>
+    <string name="HelpTitle_Download">ダウンロード</string>
+    <string name="Title_DL_URL">URL:</string>
+    <string name="Title_DL_Local">ローカルフォルダー名:</string>
+    <string name="Title_DL_Unzip">ダウンロード後に展開</string>
+    <string name="Title_DL_DelZipfile">展開済みローカルファイルは削除</string>
+    <string name="Title_DL_Unziponly">ローカルファイルの展開のみ実行</string>
+    <string name="DL_BtnLocalRefCD">ファイル選択ダイアログを開く</string>
+    <string name="Help_Download">
+   		"ファイルをダウンロード、展開(zip,tar,tgz,tar.gz,bz2,tbz2)\n"
+   		"展開のみの場合はファイル名を ローカルフォルダー名: に指定する\n"
+   		"あるいはファイル名を URL： に、パスを ローカルフォルダー名: に指定する\n"
+   		"またの以下の内容の追加のAssetファイルをダウンロードにも使用\n"
+   		"(メニュー-->設定-->追加のAssetダウンロード)\n"
+   		"  ヘルプ Html ファイル\n"
+   		"  コマンドラインユーティリティ(Terminalsソフト上で実行).\n"
+   		"  シンタックスハイライト用のDataファイル.\n"
+   		"合計14MB程度でapkのサイズを小さくするために分離したものです.\n"
+   		"このAssetファイルは必須ではありませんが、一度ダウンロードすれば上記の機能が使用できます.\n"
+	</string>
+    <string name="progress_dialog_title_downloading">ダウンロード中...</string>
+    <string name="progress_dialog_title_connecting">接続中...</string>
+    <string name="progress_dialog_message_prefix_downloading">ダウンロード ファイル</string>
+    <string name="progress_dialog_message_prefix_connecting">接続：</string>
+    <string name="user_message_download_complete">ダウンロード完了!</string>
+    <string name="user_message_download_canceled">ダウンロード キャンセルされました!</string>
+    <string name="error_message_bad_url">エラー: 不正なURL!</string>
+    <string name="error_message_bad_local">ローカルパス指定エラー!</string>
+    <string name="error_message_nofile_inurl">URLに圧縮ファイル名を指定してください</string>
+    <string name="error_message_file_not_found">エラー: ファイルが見つかりません!</string>
+    <string name="error_message_general">ダウンロード中のエラー!</string> 
+
+    <string name="progress_dialog_title_unzipping">展開中...</string>
+    <string name="progress_dialog_message_prefix_unzipping">展開中</string>
+    <string name="user_message_unzip_complete">展開完了!</string>
+    <string name="user_message_unzip_canceled">展開キャンセルされました!</string>
+    <string name="error_message_unzip_general">ファイル展開エラー!</string> 
+    <string name="error_message_connerr">接続エラー!</string> 
+    <string name="error_message_ioerr">入出力エラー!</string> 
+
+
+    <string name="DialogTitle_TerminalButton">端末ボタン使用</string>
+    <string name="HelpTitle_TerminalButton">Terminal Button Usage</string>
+    <string name="Help_TerminalButton">
+   		"端末ボタンを機能キーとして使用できます\n"
+   		"事前定義以外にボタン装備があれば最大9個までユーザー定義で利用できます\n"
+        "\n"
+   		"例) \"戻る\" ボタンを\"F3\" キーとして使用するには\n"
+   		"    \"戻る\" の行にフォーカスをあててドロップダウンリストから\"F3\"を選択\n"
+        "ドロップダウンからはマウス操作も割り当てることができます\n"
+   		"  \"Mouse-Rbtn\":コンテキストメニューをポップアップ\n"
+   		"  \"Mouse-Drag\":カットアンドペーストの範囲を指定するのにドラッグ開始点と終了点で使用します\n"
+   		"ユーザー定義行を利用するにはまずアンドロイドキーコードを10進数で入力後、ドロップダウンから選択する\n"
+   		"例えば \"168\"(キーコード:ZOOM_IN)と入力後、\"Esc\"を選択する\n"
+   		"そうすると\"ZOOM_IN\"ボタンが\"Esc\"キーとみなされます\n"
+	</string>
+    <string name="Err_InputTerminalButton">"1桁英数字以外ユニコードをHex表記で指定する"</string>
+
+    <string name="DialogTitle_KbdLayout">ソフトキーボード レイアウト</string>
+    <string name="HelpTitle_KbdLayout">Soft Keyboard Layout</string>
+    <string name="Help_KbdLayout">
+   		"\"Y\"と\"Z\"の入れ替えなど Qwerty レイアウトは変更できます\n"
+   		"各キーには4個まで機能キー、シンボル文字、ユニコードを割り当てることができます\n"
+   		"各々Shift, AltGr, Shift+AltGr と対応し最後はフリックダウン操作で入力します\n"
+   		"フリックアクションとの対応は 左:Shift, 右:AltGr, 上:Shift+AltGr です\n"
+   		"  (\"Axeヘルプ\"参照)\n"
+        "\n"
+        "英数字(\"Q\"など) ASCIIシンボルl\"#\"など) Hex表記のユニコード(\"a2\"など)を入力します\n"
+        "拡張キー(\"F12\"など)を入力する場合はフォーカスをあわせてドロップダウンリストから選択する\n"
+        "\"F1\"などと紛らわしいユニコードは\"00f1\"のように入力する\n"
+	</string>
+    <string name="Prompt_KbdLayout">"キー: "</string>
+    <string name="Prompt_KbdLayout_Not_Selected">行を選択する</string>
+
+    <string name="DialogTitle_Version">バージョン</string>
+    <string name="DialogTitle_Extkey">"ショートカット： "</string>
+                                      <!-- followed by key-name -->
+    <string name="DialogTitle_ArmOption">"アンドロイド関連"</string>
+    <string name="Setup_ArmOpt_Orientation">画面方向:</string>
+    <string name="Setup_ArmOpt_FixLandscape">横広固定</string>
+    <string name="Setup_ArmOpt_FixPortrait">縦長固定</string>
+    <string name="Setup_ArmOpt_Rotate">センサー回転</string>
+    <string name="Setup_ArmOpt_Reset_Modifier">Shift/Ctrl/Alt を毎回リセット</string>
+    <string name="Setup_ArmOpt_Outside_Touch">外部タッチで XeKbd を閉じる</string>
+    <string name="Setup_ArmOpt_HomeButtonKey">ホームアイコン割り当て</string>
+    <string name="Setup_ArmOpt_HomeButton_None">不使用</string>
+    <string name="Setup_ArmOpt_HomeButton_Home">Home</string>
+    <string name="Setup_ArmOpt_HomeButton_Escape">Esc</string>
+    <string name="Setup_ArmOpt_HomeButton_Enter">Enter</string>
+    <string name="Setup_ArmOpt_LongPress_Timeout">マウス右ボタンのための長押し時間(ms)</string>
+    <string name="Setup_ArmOpt_IME">現在のInput Method</string> <!-- vad2 -->
+    <string name="Setup_LocaleCharset">ロケール文字コード</string> <!-- vad2 -->
+    <string name="Setup_IM_Picker">変更</string>                   <!-- vad2 -->
+    <!--string name="Setup_Internal_Option">(内部使用)</string-->
+    <string name="Setup_Trace_Off">NoTrace</string>
+    <string name="Setup_Trace_On">On</string>
+    <string name="Setup_Trace_On2">On2</string>
+    <string name="Setup_Log">Console Log</string>
+    <string name="Setup_Dump_Off">NoDump</string>
+    <string name="Setup_Dump_On">On</string>
+    <string name="Setup_Dump_On2">On2</string>
+    <string name="Setup_Remap">Recreate sbcs map table</string>
+    <string name="Setup_Abend">xe sigsegv by double Esc</string>
+    <string name="Setup_Uerrexit">xe uerrexit by double Esc</string>
+    <string name="Setup_Repeat_Delay">反復開始待ち時間(ms)</string>
+    <string name="Setup_Repeat_Speed">反復間隔(ms)</string>
+    <string name="Setup_Display_Flick_KeyCode">フリックKeyCode表示</string>
+    <string name="Setup_Swipe_Timeout">フリックタイムアウト</string>
+    <string name="Setup_Swipe_Travel">フリック距離(％)</string>
+    <string name="Setup_EnvPath">PATH環境変数</string>
+    <string name="Err_CharsetChange">"無効な文字セットです:"</string>
+    <string name="Info_CharsetChanged">"文字セットが変更されました。Axeのリスタートが必要です</string>
+    <string name="Err_InternalOption">"内部オプションエラー:"</string>
+    <string name="HelpTitle_ArmOption">Android Related Options</string>
+    <string name="Help_ArmOption">
+   		"画面方向:横広固定、縦長固定、センサーで回転する\n"
+        "Shift/Ctrl/Alt を毎回リセット:1文字入力の度に修飾キーをリセットする\n"
+        "外部タッチで XeKbd を閉じる:オフの場合ソフトキーボードの外部タッチは通常の効果です\n"
+        "ホームアイコン割り当て:ホームアイコンクリックで生成するキーコード\n"
+        "マウス右ボタンのための長押し時間:この時間(ミリ秒)長押しするとイベント発生\n"
+   		"現在のInput Method:デフォルトのInput Method名; 変更する時は\"変更\" ボタンを押す\n"
+   		"(ソフトキーボードのレイアウトを変更したい場合はアンドロイドの設定で\n"
+   		" 言語と入力のIMEを選択し、例えばiWinnの場合キーボードタイプを設定します)\n"
+   		"ロケール文字コード:UTF8でないローカルの文字コード.\n"                       <!-- vad20 -->
+   		"                   省略値はISO-8859-1/EUC-JP/EUC_KR/Big5/GB18030 などロケールに依存\n" <!-- vad20 -->
+   		"反復待ち時間:xe のソフトキーボードで長押ししたときキー反復を発生させるまでの待ち時間、ミリ秒\n"
+   		"             フリック判定される前にキーイベントが発生しないように長めに調整してください\n"
+   		"反復間隔:長押しのときキー反復を発生させる間隔、ミリ秒\n"
+        "フリックKeyCode表示:フリック操作で生成されるコードをソフトキーボード上に表示する\n"
+   		"フリックタイムアウト:制限時間内にタッチアップしないとフリックと判定されない。ミリ秒\n"
+   		"                     ソフトキーボードではキーダウンイベント発生は待たされる\n"
+   		"                     画面では制限時間内にタッチアップしないとドラッグとみなす\n"
+   		"フリック距離:フリックとみなされる最小移動距離を画面サイズのパーセンテージで指定する\n"
+   		"             (ソフトキーボードではキーの高さ/幅の50%%に固定)\n"
+   		"PATH環境変数:例 /data/busybox:$PATH。\n"
+	</string>
+
+    <!--string name="DialogTitle_ImeType">"IME option"</string-->
+    <!--string name="Setup_ImeType">IME type</string-->
+    <!--string name="Setup_ImeType_Dialog">Show Pre-edit Line</string-->
+    <!--string name="Setup_ImeType_NoDialog">Without Pre-edit Line</string-->
+    <!--string name="Setup_ImeType_ConfirmAlsoNext">Confirm at also Next time</string-->
+    <!--string name="HelpTitle_ImeType">IME type</string-->
+    <!--string name="Help_ImeType">
+   		"Select IME mode with/without Pre-Edit line\n"
+		"You can back to confirmation mode\n"
+        "by \"Android Related Options\".\n"
+	</string-->
+
+    <string name="DialogTitle_ImePreedit">"IME 事前編集"</string>
+
+    <string name="Qexit">終了?</string>
+    <string name="Qstop">終了?</string>
+
+    <string name="Close">閉じる</string>
+    <string name="Cancel">キャンセル</string>
+    <string name="Clear">クリアー</string>
+    <string name="OK">ＯＫ</string>
+    <string name="ResetToDefault">既定値</string>
+    <string name="ResetKbdLayout">既定値を設定</string>
+    <string name="Help">ヘルプ</string>
+    <string name="Delete">削除</string>
+    <string name="Replace">置換</string>
+    <string name="InsertAfter">後に挿入</string>
+    <string name="InsertBefore">前に挿入</string>
+    <string name="Move">移動</string>
+	
+    <string name="LabelButtonNo1">1行めのボタン数</string>
+    <string name="LabelButtonNo2">2行めのボタン数</string>
+    <string name="Prompt_Extkey">キー名を選択</string>
+    <string name="Label_ResetToDefaultButtonLayout">既定値</string>
+    <string name="Label_Repeatable">方向キーはリピータブルキーとしない</string>
+    <!--string name="Label_StickyModifier">Sticky Modifier</string -->
+    <!--string name="Label_UseLandscape">all buttons in a line if Landscape</string-->
+
+
+    <string name="Err_Numeric">"数字を入力"</string>
+    <string name="Err_ButtonNo">"ボタン数は０以上で最大は "</string>
+    <string name="Err_DialogContainsError">"エラーあり"</string>
+    <string name="Err_InputShiftkeyData">"英数字以外のASCII 1文字かユニコードをHex表記で入力する"</string>
+    <string name="Err_InputShortcutData">"無効なユニコードないし拡張キー名"</string>
+    <string name="Err_InputAltGrData">"英数字以外のASCII 1文字かユニコードをHex表記で入力する"</string>
+    <string name="Err_InvalidUnicode">"無効なユニコード"</string>
+    <string name="Err_DefaultShift_NoneChecked">"デフォルト キーボードレイアウトを選択する"</string>
+    <string name="Err_BtnUpdate_NoneChecked">"アップデートタイプを選択する"</string>
+    <string name="Err_BtnUpdate_InvalidMoveValue">"無効な移動数"</string>
+    <string name="Err_BtnUpdate_Overflow">"ボタンを挿入する余地がありません"</string>
+
+    <string name="Info_ShiftkeyMap">\"Shift+\" で生成する文字を設定する</string>
+    <string name="Info_ShortcutkeyMap">\"S.C+\" で生成する文字コード、拡張キーを設定する</string>
+    <string name="Info_AltGrMap">\"AltGr+\"/\"Shift+AltGr+\" で生成する文字を設定する</string>
+    <string name="Info_TerminalButton">端末ボタンのショートカット使用を設定する</string>
+    <string name="Info_ToolInstalling">コマンドラインツール導入中：</string>
+    <string name="Info_UnzipToolComp">コマンドラインツール導入完了</string>
+    <string name="Info_HighlightInstalling">シンタックスハイライトツール導入中:</string>
+    <string name="Info_UnzipHilightComp">シンタックスハイライトツール導入完了</string>
+    <string name="Info_HighlightInstallFailed">highlightのbinフォルダーへの導入失敗</string>
+    <string name="Info_UnzipExecuting">展開済 エントリー</string>
+    <string name="Info_UnzipExecuted">展開完了 全エントリー</string>
+    <string name="Info_UnzipHelp">Htmlヘルプ展開中</string> 
+    <string name="Info_UnzipHelpComp">Htmlヘルプ展開完了</string>
+    <string name="Info_ICUInstalling">ICU コンバーター 導入中：</string>
+    <string name="Info_UnzipICUComp">ICU コンバーター導入完了</string>
+    <string name="Info_FirstTimeProcComp">初回処理完了</string>
+    <string name="Info_SbcsTblStart">初回ユニコードTbl作成中</string>
+    <string name="Info_SbcsTblEnd">ユニコードTbl作成完了</string>
+    <string name="Prompt_TerminalButton">ボタンで生成する拡張キーを設定する:</string>
+    <string name="Prompt_TerminalButton_Not_Selected">ボタン名を選択する</string>
+
+    <string name="DialogTitle_ButtonLayout">ボタン配置</string>
+    <string name="HelpTitle_ButtonLayout">Button Arrangement</string>
+    <string name="Help_ButtonLayout">
+   		"縦長画面の時下端2行に表示するボタンの数を指定する\n"
+   		"有効な数は０から８\n"
+        "\n"
+   		"ボタンは方向ボタン以外は長押しするとダイアログで変更できます\n"
+   		"方向ボタンはリピータブルなので長押しで変更するには一時的に反復不可にしてください\n"
+   		"あるいは \"S.C\" を On にして長押ししてください\n"
+   		"ハードウェアーキーボードがある場合不要なボタンを削除すれば1行にすれば画面が広く使えます\n"
+        "(移動数はシフトカウントで負値は前方移動です)\n"
+        "\n"
+        "横広画面の時はすべてのボタンが1行表示になります\n"
+	</string>
+    <string name="DialogTitle_ShiftkeyMap">シフトキーマッピング</string>
+    <string name="HelpTitle_ShiftKeyMap">Shift Key Map</string>
+    <string name="Help_ShiftKeyMap">
+   		"シフトキーでマッピングされるASCIIシンボルないしHex表記で1文字ユニコードを指定する\n"
+        "例）\"2e (.)\"の行に\"3e\" を設定すると シフトボタンをアクティブにした後の\n"
+        "\".\"キーで U-003e が送られる\n"
+        "\n"
+   		"\"既定値\"ボタンで 101 または 106(日本語) キーボードに戻せます\n"
+	</string>
+
+    <string name="DialogTitle_DefaultShiftMap">ショートカットキー</string>
+    <string name="RadioButtonMap">既定値</string>
+    <string name="RadioButtonMap101">101キーボード</string>
+    <string name="RadioButtonMap106">106日本語キーボード</string>
+
+    <string name="DialogTitle_ShortcutkeyMap">ショートカットキー</string>
+    <string name="HelpTitle_ShortcutKeyMap">Shortcut Key Map</string>
+    <string name="Help_ShortcutKeyMap">
+   		"\"S.C\"ボタンとの組み合わせで生成するキーコードを設定する\n"
+		"拡張キー名ないしはHex表記のユニコードを指定できます\n"
+		"Shift/Altなど他のモディファイヤーと組み合わせる時はタッチする順番に注意してください\n"
+        "\"S.C\",\"Shift\",\"1\" は S.C+\"@\"   \"Shift\",\"S.C\",\"1\" は Shift+\"F1\"\n"
+        "\n"
+        "入力は素の行をタッチしてポップアップするダイアログを使います\n"
+   		"拡張キーを設定するときはドロップダウンリストから選択し\n"
+   		"Alt+F1など必要ならモディファイヤーキーもチェックを入れる\n"
+        "ユニコードを設定する時は\"ユニコード\"にチェックをいれてHex表記で入力します\n"
+   		"(注)拡張キーで　\"PEnt\" はNumPadの\"Enter\"、\n"
+   		"    \"Mouse-Rbtn\" はコンテキストメニュー表示のマウス右ボタンクリック、\n"
+   		"    \"Mouse-Drag\" はマウスドラッグでカットアンドペーストの開始/終了位置を指定するために使用されます\n"
+	</string>
+
+    <string name="DialogTitle_AltGrMap">AltGrマッピング</string>
+    <string name="HelpTitle_AltGrMap">AltGr Map</string>
+    <string name="Help_AltGrMap">
+   		"\"AltGr\"ボタンがアクティブの時に生成する文字を設定する。\n"
+		"1文字入力するか Hex 表記でユニコードを設定\n"
+        "AltGr+Shift を設定する場合はシフトマッピングに設定した文字に設定してください\n"
+        "例) \"8\" ではなく\"*\"に設定し \"AltGr\",\"Shift\",\"8\"の順にタッチする\n"
+	</string>
+
+    <string name="DialogTitle_BtnUpdate">ボタン:"</string>
+    <string name="Hint_MoveValue">移動数</string>
+    <string name="Prompt_ButtonName">ボタンタイプを選択</string>
+    <string name="HelpTitle_ButtonUpdate">Button Update</string>
+    <string name="Help_ButtonUpdate">
+   		"\"置換\"/\"挿入\"の場合ドロップダウンリストから割り当る機能を選択\n"
+        "\"移動数\"は現在位置からのシフトカウントで負値は前方です\n"
+        "\n"
+		"方向キーボタンはリピータブルキーなので方向キーボタンに個のダイアログを表示するには\n"
+		"\"ボタン配置\"でリピータブルを一時的に無効にしてください\n"
+	</string>
+
+    <string name="DialogTitle_FileChooser">ファイル選択:"</string>
+    <string name="LabelFilter">フィルタ</string>
+    <string name="BtnFilterCD">フィルタを適用</string>
+    <string name="BtnFilterClearCD">入力クリア</string>
+    <string name="SortName">名前</string>
+    <string name="SortAttr">時間</string>
+    <string name="LabelNewName">ファイル名</string>
+    <string name="Detail">詳細</string>
+    <string name="DirUp">上へ</string>
+    <string name="BtnNameClearCD">入力クリア</string>
+    <string name="Edit">編集</string>
+    <string name="Browse">表示</string>
+    <string name="Save">保存</string>
+    <string name="NoSDCard">"SD カードフォルダが見つかりません"</string>
+    <string name="FailedListDirBySecurity">"セキュリティ例外です"</string>
+    <string name="FailedListDir">"フォルダーのリストに失敗"</string>
+    <string name="Err_CurrentIsNotFilePanel">"現パネルはファイルを開いていません"</string>
+    <string name="Warning_ItemNotSelected">"行が選択されていません"</string>
+    <string name="Warning_PressButtonToProcessTheFile">"ファイルを処理するには下端のボタンを押す"</string>
+    <string name="Warning_PressButtonToProcessCurrentDir">"現行フォルダを処理するには下端のボタンを押す"</string>
+    <string name="Warning_MissingFilenameForSave">"保存先のファイル名の指定がありません"</string>
+    <string name="Err_EnterFilename">"ファイル名を入力してください"</string>
+    <string name="Warning_ReachedToRoot">"現在ルートフォルダです"</string>
+    <string name="Info_Sorted_NameA">"名前順で整列しました"</string>
+    <string name="Info_Sorted_NameD">"名前の逆順で整列しました"</string>
+    <string name="Info_Sorted_AttrA">"時間順で整列しました"</string>
+    <string name="Info_Sorted_AttrD">"時間の逆順で整列しました"</string>
+    <string name="HelpTitle_FileChooser">ヘルプ:ファイル選択</string>
+    <string name="Help_FileChooser">
+        "フィルタ: 拡張子、ワイルドカード、正規表現でファイル名をフィルタにかけます\n"
+        "  正規表現は二重引用符で囲む\n"
+        "  横のボタンは入力クリアとフィルタの適用です\n"
+        "  例) .c  .c|.h  xe*   xe?cmd*  \".*\\.cpp$|.*\\.h$\"\n"
+        "名前: 名前順に整列。もう一度押すと逆順\n"
+        "時間: 時間順に整列。もう一度押すと逆順\n"
+   		"詳細: ファイルの更新時間/サイズの表示/非表示の切り替え\n"
+   		"上へ: 親フォルダを表示\n"
+        "\n"
+   		"ファイル名: 新規ファイル、別名保存のときファイル名を入力\n"
+   		"  リストでのファイルの行にタッチするとここにセットされます\n"
+   		"  右のボタンは入力クリア用\n"
+        "\n"
+   		"ファイル名リスト: フォルダ行は2回タッチするとそれを開きます\n"
+        "\n"
+   		"編集: 選択行のファイル/フォルダを編集モードで開く\n"
+   		"表示: 選択行のファイル/フォルダを表示モードで開く\n"
+   		"保存: 選択行のフォルダに\"ファイル名\"の名前で保存\n"
+   		"ＯＫ: ダウンロードの参照のダイアログにファイル名を戻す\n"
+	</string>
+
+    <string name="Btnnm_BACK">Back</string>
+    <string name="Btnnm_CENTER">DPAD_Center</string>
+    <string name="Btnnm_SEARCH">Search</string>
+    <string name="Btnnm_CAMERA">Camera</string>
+    <string name="Btnnm_VOLUP">Volume Up</string>
+    <string name="Btnnm_VOLDN">Volume Down</string>
+    <string name="Btnnm_CALL">Call</string>
+    <string name="Btnnm_ENDCALL">End Call</string>
+    <string name="Html_BACK">戻</string>
+    <string name="Html_FWD">進</string>
+    <string name="Html_Zin">拡</string>
+    <string name="Html_Zout">縮</string>
+    <string name="Html_TryDoubleTap">スクロールしない場合はダブルタップしてみてください</string>
+
+    <string name="Err_FileNotFound">"見つかりません:"</string>
+    <string name="Err_NotZipFile">"zipファイルではない:"</string>
+    <string name="Err_TextFileTooLarge">"テキストファイルのサイズが大きすぎる。添付ファイルで指定してください。"</string>
+    <string name="Err_FileAndAttachment">"添付ファイル指定は本文がテキストのときです"</string>
+    <string name="Err_NotFile">"普通のファイルではない:"</string>
+    <string name="Err_ACRA">"クラッシュ発生です\nレポートを開発者にメールすることに同意をお願いします。"</string>
+
+    <string name="Info_Smb_Connecting">"接続テスト中: "</string>
+    <string name="Info_Smb_Connected">"接続 OK: "</string>
+    <string name="Info_Smb_Busy">"前のコマンドの処理中"</string>
+
+    <string name="Info_StartInitialize">"初回処理の開始"</string>
+    <string name="Warning_WaitingInitialize">"お待ちください\n初回処理を実行中です"</string>
+    <!-- NDKCrash-->
+    <string name="NDKCrash_alertHeader">Axe JNI クラッシュ。\nクラッシュレポートを開発者にメールしてください。\n================================"</string>
+</resources>

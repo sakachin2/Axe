@@ -1,0 +1,4 @@
+data=data/data/com.xe.Axe/files
+export PATH=$data/sh:/$data/bin:$PATH
+. @axe
+echo CURDIR=`pwd`

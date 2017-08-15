@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/CM_BUTTON_LAYOUT"
+        android:title="@string/ContextMenu_Button_Layout"
+    />
+    <item android:id="@+id/CM_TERMINAL_BUTTON"
+        android:title="@string/ContextMenu_TerminalBtn"
+    />
+    <item android:id="@+id/CM_SHORTCUT_KEY"
+        android:title="@string/ContextMenu_ShortcutkeyMap"
+    />
+    <item android:id="@+id/CM_SHIFT_KEY"
+        android:title="@string/ContextMenu_ShiftkeyMap"
+    >
+    </item>
+    <item android:id="@+id/CM_ALTGR_KEY"
+        android:title="@string/ContextMenu_AltGrMap"
+    >
+    </item>
+</menu>

@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META name="GENERATOR" content="IBM WebSphere Studio Homepage Builder Version 6.5.0.0 for Windows">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>今回の変更点</TITLE>
+<STYLE TYPE="text/css">
+<!--
+a:hover{font-weight:bold;}-->
+</STYLE>
+</HEAD>
+<BODY bgcolor="#FFFFE2">
+<PRE><SPAN STYLE="color:#000000;font-size:12pt;font-family:ＭＳ ゴシック">
+######################################################################
+  .v128C &lt;--v127S:                                        (2016/06/24)
+   v128D &lt;--v128C:                                        (2016/08/25)
+   v128E &lt;--v128D:                                        (2016/09/08)
+   v128F &lt;--v128E:                                        (2016/12/20)
+   v128G &lt;--v128F:                                        (2017/02/02)
+   v128H &lt;--v128G:                                        (2017/02/18)
+
+     1.BUGs
+       -(Win)コピーコマンド(XCopy, &quot;c&quot; ディレクトリーリスト行コマンド
+        prn,com1 など特殊なファイル名が含まれているとで失敗する
+        特にAUX,COMxではWait(ハング)する
+        (注)xeでは特殊ファイル名に対応しましたが
+            =6 の画面で grep などの未対応コマンドを使用すると
+            xe が Wait し Ctrl+C でとめなければならなくなります
+            wxe の場合は DOS窓:xesyscmd で Ctrl+C を押せば
+            コマンドをブレークし再開できます
+            コマンドがユーザーの応答待ちになっている場合なども
+            あります、Ctrl+Cでブレークしてください
+       -(Win)SELectコマンド 新規ファイルを作成したファイルの
+        ディレクトリーリスト上の挿入位置がいつもトップになる
+       -XMOve コマンドで /y オプション(同盟ファイルの置換)が無視される
+
+       -日本語環境でないときディレクトリーリストで
+        未定義の行コマンドを入力するとクラッシュする
+
+       -DBCSやUTF8コードがディレクトリーリストの改名欄にあると
+        表示が乱れることがある
+       -改名コマンドなどワイルドカード('*','?')を使用したファイル名編集が
+        DBCS や UTF8 があるとき意図しない宛先になることがある
+       -ディレクトリーリストのサブディレクトリー展開(&quot;-&quot;,&quot;&gt;&quot;)行コマンドが失敗する
+       -ディレクトリーリストの改名欄に&quot;貼付け&quot;するとその行の表示が乱れることがある
+       -ディレクトリーリストの改名(&quot;r&quot;)行コマンドが改名欄に不正な文字コードがあると
+        ハング(loop)したりクラッシュすることがある
+
+       -(wxe)wxeをメニューから終了しないと Setup/Preview ダイアログでの変更が保存されない
+       -ディレクトリーリストでSORtコマンドを使用するとクラッシュすることがある
+       -CPU8 ファイルの縦Hex表示で右スクロール状態のとき文字行とHex行のカーソールが一致しないケースがある
+        (Hex行の更新が文字行の異なる文字を更新する)
+       -SPF ファイルの行番号欄が自動更新されないことがある
+       -固定長ファイル上でのAlt+m(カット&amp;ペーストの移動)が同一行なのに桁あふれエラーになる
+
+       -(Win)画面幅が奇数桁のとき表示がおかしい
+       -(Win)UCS4(ユニコード&gt;0xffff) の時のバグ修正
+     (128C)
+       -(Lnx)mtoolsを使用した(マウントせずに)フロッピーのディレクトリーリストの
+        日付がmdirの表示形式によっては誤る事がある
+       -(Win)Ligature:Off のとき ディレクトリーリスト表示が桁ずれを起こす
+       -ワイルドカードによるディレクトリーリストのとき LOCate コマンドが失敗する
+     (128D)
+       - FINd コマンド P'pics' 形式で pics に '@':英数字 を指定のとき A-Z,a-z 以外とマッチする
+       - (WXE) ウィンドウサイズの変更が次回の立ち上げに反映されない
+       - Sambaを利用したリモートファイルアクセスでASCII文字以外のファイル名が
+         あるとディレクトリーリストが正しく表示されない
+     (128E)
+       -ファイル名の拡張子がUTF8文字のとき &quot;Invalid Name Format&quot;(::profile フォルダー)
+        エラーメッセージがでる
+       -ディレクトリスト画面の&quot;FINd all&quot; コマンドが長いファイル名が属性表示欄に
+        隠れているとLoop する
+       -(LNX:Console版)v12DのBUG; Ligature mode かつ Combine mode でないとき ASCII 文字が表示されない
+     (128F)
+       -(Win:Console)DBCS 表示が桁ずれすることがある
+       -(LNX)最近のディストリビューションで deprecated API が link エラーを起こす
+       -(LNX)ディレクトリーリスト表示でクラッシュすることがある
+        ファイル名がEUC-JPなどのロケールコードでシンボリックリンク先がUTF8のメンバーがあるとき
+       -(LNX)fedora-25 で gxe がクラッシュ
+        (Gtk3 で 環境変数 WAYLAND_DISPLAY が設定されているとき XkbUseExtension() で SIGSEGV が発生)
+     (128G)
+       -JOIn { X | NX | n[-b-s] } コマンドで &quot;n[-b-s]&quot; 形式のオプションがエラーとなる
+       -(Win)Ligature OFF のとき CPU8ファイルでユニコードが代替文字表示になる(例えばA-Umrlut が A になる)
+       -長いファイルパス名の制限(Windows:260,Linux:4096)を超えるとクラッシュする
+        (Delete行コマンドで削除戻しディレクトリー(xe_undel...)に移動する場合など
+         ディレクトリーの移動で制限を超える状況がが発生することがある)
+       -(LNX)日本語環境で export LANG=C とすると クラッシュする
+       -(LNX)Gtk3での不具合
+        .Fedora25(Waylandが省略値のディスプレイサーバー)で Drag 操作をするとフリーズする
+          ==&gt;Waylandのときは GDK_BACKEND=x11 を指定してください
+             export GDK_BACKEND=x11 とするか コマンドを &quot;GDK_BACKEND=x11 gxe&quot; とする
+        .Copy &amp; Paste による gxe からのファイルのコピーができない
+        .マウス中ボタンの回転で画面がスクロールしない
+       -(LNX)ファイルをDragしようとするをスクロールが発生することがある
+     (128H)
+       -(64Bit) =0.1(ショートカットコマンド)画面の更新でエラーが出る
+       -(Linux) リモートのサンバサーバー上のファイル編集で権限エラーなどのエラーの時
+　              新規ファイルとして開く
+       -(Linux) リモートのFTPサーバー上のファイル編集でシンボリックリンクを開くときエラーMSGがでる
+       -xpr ** 処理で最大ページ数を誤ることがある
+
+     2.機能追加
+       -Alt+n (nは1-9,h,v) キーでの文字入力機能でユニコード指定をサポート
+        ::xelch{win|lnx}.ini[.locale] ファイルで u-xxxx指定する
+            例) 2=u-102222,41; u2550
+     (128D)
+       - Find コマンド 画面別 機能
+        . { FINd | IFInd | FNX | INX } [find-options] [-{PSP|PSF}[X|R|D]]
+            PSP:この分割画面で有効（分割してない場合でもよい）
+            PSF:このファイル/ディレクトリーリストでのみ有効
+            X:-PSPX/-PSFX のみを指定し、直近に使用したした PSP/PSF コマンドを実行する
+            R:-PSPR/-PSFR のみを指定し、直近に使用したした PSP/PSF コマンドをコマンド行にセットする
+            D:-PSPD/-PSFD のみを指定し、現在有効な PSP/PSF コマンドを表示する
+        . PSD コマンド (オペランドなし)
+            現在有効なPSP/PSF オプション付き Find コマンドを表示
+            STDの表示は通常のFind コマンド
+
+        . Ctrl+F5 は PSP コマンドで再探索、Alt+F5 は PSF コマンドで最探索
+          Ctrl+Shift+F5, Alt+Shift+F5 はそれぞれ 前探索/後探索を切り替える
+          PFキーを使うときコマンド行に find-options を指定すると
+          F5/C+F5/A+F5に違いはなくオペランドの-PSP/-PSFオプションの有無が機能を分ける
+          PSF コマンドの記憶ははファイルを閉じたときに失われ、
+          PSP は次のスタート時に直近の２つを 分割画面1/2として設定する
+
+        . Linux では Alt+F5 は 規定のショートカットキーとして使用されている場合があります
+          Linux の 設定--&gt;ショートカット で無効にするか xe の =0.2 画面で機能割り当てキーを変更してください
+
+        . これにより一つのファイルで３つの探索ができる
+             F abcS
+             F abcP -psp
+             F abcF -psf
+          とした後
+          F5 で abcS を、Ctrl+F5 で abcP を、Alt+F5 で abcF を探索する
+          それぞれの探索を継続するには同じキーを使用する
+          例えば &quot;F abcP -psp&quot;, C+F5, C+F5, S+C+F5
+        . Changeコマンドはサポートしていません
+        . -PSP などを文字列として探索する場合は引用符を使用する, 例えば  F &quot;-PSP&quot;
+     (128E)
+       - Shift+Alt+Fn, Shift+Ctrl+Fn キーの利用
+        . =0.2 画面 あるいは INI ファイル(::xe.ini) で 設定可能
+        . Linux の場合 ショートカット キーとして設定されている場合もあるので
+          その場合 これらのキーを利用する場合は Linux の設定の変更が必要になります
+          Shiftキー無し(A+Fn,C+Fn)がショートカットキー設定されている場合
+          そちらもソートカットキーを無効にする必要があるかもしれません
+        . Fn(n:1-12)以外にも方向キー、Ins,Del も使用できます
+
+       - Tab コマンド altch オプション追加
+        . Windows コマンドプロンプトは Properties--&gt;Font の設定によっては
+          TAB表示文字の字幅が異なり桁位置が不正になることがあります
+          表示文字に ASCII 文字を設定すれば桁ずれの問題はなくなりますが
+          適切なユニコードを使用したい場合に altch オプションを使用してください
+          wxe,gxe,Linux xe では桁ずれは起こらないと思います
+        . TAB { on [altch] | off | clear | =default | nn [asdefault] }
+        . altch で TAB/DBCS空白 表示文字を変更
+          INI file の下記の指定を上書きします
+            (J)Tab_disp_char  =FFFF #(FFFF)# Tab display char for Japanese mode. (FFFF means U-21be &amp; U-21c0)
+            (E)Tab_disp_char  =FFFF #(FFFF)# Tab display char for English  mode. (FFFF means U-21be &amp; U-21c0)
+            DBCSspace_dispchar=FF #(FF)# DBCS space display char. (FF means U-2591)
+        . &quot;tab on 000&quot; で省略値(u21be-21c0,2591)あるいは INI 設定に戻ります
+        . 例)  tab on &quot;^-&quot; ,   tab on u25b8-25b9 ,  tab on &quot;^-!&quot; ,  tab on u25b8-25b9-21be.
+        . altch に ASCII でない文字を指定したとき &quot;xpr -tabon&quot; コマンドの TAB 印刷文字は
+          CPU8 ファイルではその altch が使用されますが、そうでない場合は 0x18 と 0x1a が
+          使用されます
+     (128F)
+       - Select コマンド
+        . 行番号指定:  S -lineno
+          行番号指定がない場合ディレクトリーリストの最初のメンバーを開く
+          ex)  &quot;S -5&quot; で 行番号 5 のメンバーを開く
+     (128G)
+       -制限値を超えたファイルパス名の処理
+        .(Win)Linuxのファイル名はMAX:4096、サンバサーバーに NET USE コマンドでつないだとき
+          長いファイル名にを処理できるように対応
+        .(Win)WindowsではレジストリーのNTFS long path を設定すれば
+          ファイル名は特殊な形式を使うことで32Kまで処理できるので
+          ローカルファイルの長いファイル名にも対応
+        .(LNX)削除の場合のみ改名でパスを短くできる場合は
+          改名後に削除するようにした
+
+        ==&gt;この対応によりini ファイルのサイズが変わるので一旦 ini ファイルを削除してください
+           (ワークディレクトリーのファイル Win=::XE!SAVE!, Linux=::xe_save_)
+
+     3.その他
+       -EDIt/BROwse/SELect コマンド、ディレクトリーリストの Open 行コマンドの
+        FN{U8|LC} オプション指定でファイル名をコード変換する(UTF8&lt;--&gt;ロケールコード)。
+        Alt+u キーで入力キーのコード変換をする手間を省ける。
+        ファイル名のコードページタイプは &quot;TOP-OF-LINE&quot; 行に表示
+        表示例。
+            *****|*l*t**Lu** TOP OF LINE *******************************
+                        ^^
+                        ||
+                        |+---------&gt;LinuxでデレクトリーがあるデバイスのIOCHARSETがutf8か特に指定が無い場合
+                        +----------&gt;ファイル名のコードタイプ
+     (128C)
+       -WXP コマンドに /tabon オプション追加
+       -(Lnx)iniファイルのDisp_trans_tbl(コンソール版の表示不能文字の指定）パラメータの
+        省略値の変更、制御文字(&lt;0x20)の大部分は表示可能とした。
+        (注)Windowsコンソール版ではコマンドプロンプトのフォント設定によっては
+            制御文字(&lt;0x20)を表示可能にすると制御文字の表示桁数が２桁になって
+            表示位置がずれる場合があります。
+            適当なフォントを設定するかiniファイルで表示不能にする(Disp_trans_tbl)、
+            代替表示文字を指定する(Disp_trans_char)などの対応が必要になります
+     (128D)
+       - ::linech.ini ファイル(A+1,2,... など罫線用キーに入力文字列を指定する)で
+         コメント行(start with &quot;#&quot;)をサポート
+       - 結合文字列の表示方法の変更
+          コマンド
+            Linux コンソール版
+              OPT UNICOMB [ COMB | SPLIT | UNPR ] [ SHADOW | ITSELF | PADDING | U-xxxx ]
+           それ以外
+              OPT UNICOMB [ COMB | SPLIT | UNPR ] [ U-xxxx ]
+        . Linux コンソール版以外で U-xxxx (UNPRモードのとき結合文字を代替表示する文字)指定をサポート
+          また、U-00 で省略値(':'=u-3a)に戻す
+          ファイル編集画面では':'固定だったが U-xxxx 指定の文字を表示する
+          gxeでも UNPR モードを反映させる
+        . コマンド入力行ではキーボードで修正できるように常にSPLIT モード(２桁で別々に表示)扱いとする
+        . wxe/gxeでは Edit/Browse 画面ではCOMB モードでないときも Ligature ON のときは左詰表示する
+        . Windole console版 xe を使うときはコマンドプロンプトのフォントは TrueType を選んでください
+       - ::xehosts(リモートファイルアクセス用ホスト定義ファイル)
+         ipaアドレスパラメータでURLが指定できるようにオペランド長制限を緩和
+     (128E)
+       - A+PgDn, A+PgUp キーを Top-Of-File, End-Of-File にそれぞれ追加割り当て
+       -(W32)Console版でコマンドプロンプトのフォントがプロポーショナルのときも
+        カラムゲージ行、縦ヘキサ行は固定幅にする
+       -(Lnx:Console版) Debian で使用されているキーの組み合わせを追加
+        (Debian では A+F1 など使用できなかった)
+     (128F)
+       - Fedora-15 では root で gxe を立ち上げると Gconf エラーがでます
+         &quot;su -&quot; で root になるか root になった後 export DBUS_SESSION_BUS_ADDRESS=&quot;&quot;
+         とするとよいようです
+     (128G)
+       -(LNX)Gtk3で廃止されたAPIの対応
+     (128H)
+       -メモリアロケーションの効率化
+        メンバーあたり 約 Windows 9000-&gt;300 Byte, Linux 450-&gt;250 Byte
+        ディレクトリーリストで大きな(メンバー数の多い)ディレクトリーを開ける
+
+     4.ツール。
+       -xfg v1.18
+        ./F で対象のファイル名のワイルドカード指定が複数指定可能
+        ./X パラメータ(対象外のファイル名指定)サポート
+        .ワイルドカードマスクはサブディレクトリー自体には適用しない
+         サブディレクトリーを対象外にしたいときは -X で指定する
+         例) xfg -rgt -fABC* -xAsubdir word
+       -xdc v2.26
+        ./F+ で追加の対象のファイル名のワイルドカード指定が可能
+        ./X パラメータ(対象外のファイル名指定)サポート
+       -xdd v2.1
+        .-q[n] オプション追加
+         削除メッセージを 10**n 件毎に出力する、n の指定なしは 3(=1000件)
+        ./r オプションで長すぎるパス名の削除を行う
+       -xprint v9.37
+        .(Win) UCS4(ユニコード&gt;u-ffff)サポート
+        .(Bug)xe からの xpr ** 処理で最大ページ数を誤ることがある
+       -xdig v1.12
+        .(Bug)64Bit でクラッシュ
+
+
+
+</SPAN></PRE>
+</BODY>
+</HTML>

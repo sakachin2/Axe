@@ -1,0 +1,12 @@
+# execute in the project
+#cp -p Android.mk.osa Android.mk
+#NDK=/home3/androidndk/android-ndk-r5c
+#NDK=/home3/androidndk/android-ndk-r7
+NDK=/home3/androidndk/android-ndk-r6
+export TRACE=-DNOTRACE
+#cd jni
+#cd ../
+#ERR=jni/err
+ERR=err
+sh -x $NDK/ndk-build $1 $2 >$ERR  2>&1
+cat $ERR

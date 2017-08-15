@@ -1,0 +1,3 @@
+2012/01/21
+This is Android porting of highlight 2.16 by Andre Simon.
+Package contains only commandline "highlight" and language data.

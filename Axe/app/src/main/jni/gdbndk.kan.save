@@ -1,0 +1,11 @@
+####################################################################
+#to start app; "gdbndk --start" ####################################
+TOPDIR=/home2
+PROJ=/x/eclipse-workspace/Axe
+NDK_ROOT=$TOPDIR/androidndk/android-ndk-r7
+
+export PATH=$NDK_ROOT:$PATH
+#cd $PROJ
+echo `pwd`
+#   ndk-gdb $1 $2 $3
+sh -x $NDK_ROOT/ndk-gdb $1 $2 $3 2>&1 |tee gdbndk.log

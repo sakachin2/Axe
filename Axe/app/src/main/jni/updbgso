@@ -1,0 +1,1 @@
+adb push ../obj/local/armeabi/libaxejni.so /data/data/com.xe.Axe/lib
