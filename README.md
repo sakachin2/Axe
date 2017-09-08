@@ -1,6 +1,6 @@
 #Axe.README.md 
 *************************************************************************
-#"Axe" Android Studio Project Source
+#"Axe" Android Studio Project Source 2017/09/07 V119
 *************************************************************************
 
 This editor is Android porting of SPF like PC editor "xe".
@@ -12,7 +12,7 @@ See also Axe.HOWTO_Build.txt
 
 *************************************************************************
 (Japanese)
-# "Axe" Android Studio プロジェクト ソース
+# "Axe" Android Studio プロジェクト ソース  2017/09/07 V119
 *************************************************************************
 PC版SPFライクEditor "xe"のアンドロイド移植版です。
 大画面のタブレットで Bluetooth または USB キーボードがある方がよい。
