@@ -2,8 +2,8 @@
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <resources>
     <string name="app_name">Axe</string>
-    <string name="Version">Axe V1.18 (xe1.28H)</string>
-    <string name="VerDate">2016/02/26</string>
+    <string name="Version">Axe V1.19 (xe1.29C)</string>
+    <string name="VerDate">2017/09/04</string>
 
     <string name="OptionMenu_Stop">終了</string>
     <string name="OptionMenu_Menu">メニュー</string>

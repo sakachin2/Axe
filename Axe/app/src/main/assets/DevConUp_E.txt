@@ -6,8 +6,10 @@ It is recommended to use on tablet device with Bluetooth or USB Keyboard.
 Html help files and utility binary files are included in AxeAsset(additional asset file),
 install it from my HP by ...(3 Dot:Menu)-->"Settings"-->"Download".
 
-Source code is open on http://www.geocities.jp/sakachin2/index.htm
+Source code is open on http://www.geocities.jp/sakachin2/index.htm and GitHub/sakachin2
 **************************************************
+2017/09/04 v1.19
+    xe 1.29C level
 2017/03/06 v1.18
     xe 1.28H level.
     all tools is by PIE format(ApiLevel>=16:Android4.1:Jelly Bean).

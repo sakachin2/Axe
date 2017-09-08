@@ -13,7 +13,7 @@ a:hover{font-weight:bold;}-->
 <PRE>
 <SPAN STYLE="color:#000000;font-size:12pt;font-family:ＭＳ ゴシック">    = 簡易計算
 
-        XBC  value1 [ operation value2 ] [/output-type] [R]
+        XBC value1 [ operation value2 ] [op value3 [... op value10] ] [[/output-type] [R] [Vn[R]]
 
             -value1/2: [type]digit 形式
                type: z:10進数, x:16進数, o:8進数, t:hhmmss.xxx 形式の時間。
@@ -26,6 +26,8 @@ a:hover{font-weight:bold;}-->
                例えば abcdef01..23456789。
                Hex/Octal指定のときワード溢れは無視されるので 0x00..12345678*0x100
                ダブルワードの結果が表示される
+            -value3..: !,&lt;,&gt;,&amp;,|,^ 以外を最大１０演算を連結することができる
+               演算子に優先順位はなく左から順に計算する
             -operation: +,-,*,!,/,%,   &lt;,&gt;,|,&amp;,^
                （'!'は累乗、'&lt;','&gt;'はシフト、^は排他OR。）
                シフト、ビット演算は時間には無効。
@@ -50,9 +52,13 @@ a:hover{font-weight:bold;}-->
                x と o では余りを表示する。
             -R:結果をコマンド入力行に表示する。
                結果を利用した次の計算を行う時に使用する。
+            -Vn[R]:結果を小数点以下n桁とする。R：四捨五入
+
           (例) XBC T010100 ; XBC xfe0100  ; XBC o177 ; XBC e8ff&gt;3
                XBC T012159.12+t005212.333 ; XBC xabcdef+1000
                XBC 12345678..abcdef0/30a2 ; XBC 3acf19fe/l
+               xbc 1234.56*7.89 v2r ; xbc 123.45/6.789 vr
+               xbc 200/3.3*35 v2r ; xbc 1+2+3+4+5+6+7+8+9+10
 
 
           (注) XBC は <a href="HID00000456.htm">単独の exe もパッケージング</a>しています.

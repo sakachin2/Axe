@@ -1,2 +1,0 @@
-#adb push   /x/eclipse-workspace/Axe/libs/armeabi/libaxejni.so /data/data/com.xe.Axe/lib/libaxejni.so
-adb push  /x/eclipse-workspace/Axe/obj/local/armeabi/libaxejni.so /data/data/com.xe.Axe/lib/libaxejni.so
