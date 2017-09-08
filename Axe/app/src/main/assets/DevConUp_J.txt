@@ -7,9 +7,11 @@ Html ヘルプファイルとユーティリティーバイナリーファイルは
 追加のAssetファイルに含まれています。
 ...(メニュー)-->"設定"-->"ダウンロード"でインストールしてください
 
-ソースコードはhttp://www.geocities.jp/sakachin2/index.htm
+ソースコードはhttp://www.geocities.jp/sakachin2/index.htm または GitHub/sakachin2
 にあります。
 **********************************
+2017/09/04 v1.19
+    xe 1.29C 相当 
 2017/03/06 v1.18
     xe 1.28H 相当 
     tool は PIE 形式に統一(Apilevel>=16:Android4.1:Jelly Bean)

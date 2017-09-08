@@ -147,6 +147,7 @@ add_library(
                     ${XE}/xefcmd43.c
                     ${XE}/xefcmd5.c
                     ${XE}/xefcmd6.c
+                    ${XE}/xefcmd7.c
                     ${XE}/xefile.c
                     ${XE}/xefile12.c
                     ${XE}/xefile13.c

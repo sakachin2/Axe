@@ -2052,6 +2052,248 @@ a:hover{font-weight:bold;}-->
            -For PuTTY 0.63, additional function key by modifier+Fn key combination.
            -Expanded record display width from 9999 to 32760.
 ######################################################################
+  .v128C <--v127S:                                        (2016/06/24)
+   v128D <--v128C:                                        (2016/08/25)
+   v128E <--v128D:                                        (2016/09/08)
+   v128F <--v128E:                                        (2016/12/20)
+   v128G <--v128F:                                        (2017/02/02)
+   v128H <--v128G:                                        (2017/02/12)
+   v128K <--v128H:   =v129                                (2017/03/29)
+     1.BUGs
+       -(Win)Copy command(XCOpy and "c" directory line command) failes
+        if the directory contains special file name such as prn or com1.
+        Especially hung for AUX and COMx.
+        (Waring) xe is now able to process reserved filename,
+                 but when external cmd such as grep is used on =6 panel,
+                 you may need to break(Ctrl+C) xe session.
+                 For wxe, use Ctrl+C on DOS prompt:xesyscmd
+                 to break command response wait.
+                 The cmd may waiting user interaction,
+                 use Ctrl+C in that case.
+       -(Win)New file created by SELect command was inserted to TOP
+        of the directory list.
+       -XMOve cmd ignores /y (replace same name)
+
+       -Under not Japanese envirinment,
+        crashes for invalid line command on directory list panel.
+
+       -Corrupted disply on dirlist rename field if DBCS or UTF8 code is included.
+       -On dirlist,cmd may fail if wildcard('*','?') is specified with
+        DBCS or UTF8 code.
+       -On dirlist, display expanded cmd("-",">") fails.
+       -On dirlist, paste on rename field may cause corrupted display.
+       -On dirlist, xe may crash/loop by rename cmd if invalid code is on rename filed.
+
+       -(wxe)Update on Setup/Preview dialog was not save if not terminate from menu.
+       -Sort cmd on dirlist mau cause crash.
+       -Charcter and hex line position unmatch on vertical hex dump display mode of CPU8 file,
+        (Update on hexline changes character of not corresponding posion)
+       -Auto renumbering of SPF file dose not work in some case.
+       -Line overflow error by Alt+m(move by cut & paste) even when in the same line
+        for fixed length record file.
+
+       -(Win)Corrupted screen when the width is odd number of colomns.
+       -(WIN)Bugs for UCS4(unicode>u-ffff)
+     (128C)
+       -(Lnx)Timestamp of directory list of floppy disk was invalid
+        when floppy disk was not mounted and mtools was used.
+       -(Win)On directory list,display column position was invalid when Ligature:Off.
+       -LOCate cmd failed when the directory list was opened using wildcard.
+     (128D)
+       - '@' of FIND P'pics' format means alphabetic, but matched to other than A-Za-z.
+       - (WXE) Windows size at termination was not keept at next session.
+       - Corrupted remote directory list if remote filename is not ASCII
+         when using Samba.
+     (128E)
+       -Error msg "Invalid Name Format"(::profile folder) is issued
+        when filename extention is UTF8 encoded.
+       -"FINd all" cmd on dirlist loops when long filename is hidden
+        by attr column.
+     (128F)
+       -(LNX:Console0)Bug of v12D; ASCII string disappear when Ligature mode and not Combine mode.
+       -(Win:Console)Invalid column position display for Japanese DBCS.
+       -(LNX)Deprecated API may cause Link error in the recent distributuion.
+       -(LNX)Crashes may occur when display directory list
+        in the case filename is locale encoded(sush as EUC-JP) and simbolic link is UTF-8 encoded.
+       -(LNX)gxe crashes on fedora-25.
+        (under the condition Gtk3 environment and env-var WAYLAND_DISPLAY is set)
+     (128G)
+       -JOIn { X | NX | n[-b-s] } cmd was rejected by "n[-b-s]" is invalid.
+       -(Win)When Ligature OFF, unicode of CPU8 file may be displayed by alternate chracter,
+        for ex, "A-Umrlut" by "A".
+       -Crushes by long file path name over limit(Windows:260,Linux:4096).
+        (Delete line cmd moves the directory/file to the xe_undel... directory
+         for later undelete. It may generate the status the path name is over the limit.)
+       -(LNX)Crashes when set export LANG=C on Japanese Environment.
+       -(LNX)failure on Gtk3 environment.
+         .Freeze by Drag operation on Fedora25(Wayland is default display server).
+          ==>Set GDK_BACKEND=x11 on Fedora25.
+             export GDK_BACKEND=x11 or use command "GDK_BACKEND=x11 gxe".
+         .File could not be copyed out by Copy & Paste.
+         .Mouse wheel did not scroll contents.
+       -(LNX)Dragging a file may cause dir-list scrolling.
+     (128H)
+       -(64Bit) Error when update on =0.1(Define shortcut key) panel.
+       -(Linux) Open remote file on Samba Server as New file when error was detected such as parmission error.
+       -(Linux) Err msg was issued when open remote file through FTP client if it is symbolic link.
+     (128K)
+       -XBC cmd.
+         .time calculation crash for large time value
+         .cancellation of significant digits at time calculation if hours>0x7fff
+
+     2.Additional function.
+       -Unicode input by Alt+n (n:1-9,h,v)
+        use u-xxxx format in the file ::xelch{win|lnx}.ini[.locale]
+            ex) 2=u-102222,41; u2550
+     (128D)
+       - Find cmd new option.
+        . { FINd | IFInd | FNX | INX } [find-options] [-{PSP|PSF}[X|R|D]]
+            PSP:applyed to the split screen, applyed also to not split screen.
+            PSF:applyed to the Edit/Browse file/directory panel.
+            X:specify -PSPX/-PSFX alone, excecute latest PSP/PSF command.
+            R:specify -PSPX/-PSFX alone, set latest PSP/PSF command to cmd line.
+            D:specify -PSPX/-PSFX alone, display PSP/PSF command effective now.
+        . PSD (no operand) command
+            Display PSP/PSF/STD command effective now.
+            STD:normal Find cmd.
+
+        . Ctrl+F5 (re)find using PSP cmd, Alt+F5 (re)find using PSF cmd.
+          Ctrl+Shift+F5, Alt+Shift+F5 switches search direction.
+          If find cmd operand is set on cmd line,
+          PSP/-PSF option is selected from cmd line regardress function key used(F5, C+F5 or A+F5).
+          PSF cmd saved is lost when the file is closed.
+          Latest two PSP cmds saved are recovered at restart as for SPLIT(1) and SPLIT(2).
+        . On Linux, Alt+F5 may be assinged as default shortcut key.
+          Inactivate it by Linux Settings-->Shortcut, chnage Function-Key assignmeny on xe =0.2 panel.
+
+        . This function enable 3 pattern's search on a file.
+          After followings
+             F abcS
+             F abcP -psp
+             F abcF -psf
+          F5 searches "abcS", Ctrl+F5 searches "abcP" and Alt+F5 searches "abcF".
+          To continue search same pattern, use same key.
+          (ex) "F abcP -psp", C+F5, C+F5, S+C+F5
+        . Change cmd is not supported.
+        . Enclose by quotation to search "-PSP" itself. (ex) F "-PSP".
+     (128E)
+       - Utilizes Shift+Alt+Fn, Shift+Ctrl+Fn keys.
+        . Specify on =0.2 panel or INI file(::xe.ini).
+        . Linux may define those keys as shortcut.
+          In that case, to utilize these keys change Linux Settings->Shortcut.
+          When key widthout Shift(A+Fn,C+Fn) is defined as shortcut,
+          it mey be required to set it disable.
+        . Destination(Up,Down,Left,Right), Ins, Del keys are also accepted.
+
+       - Tab cmd, new altch option.
+        . On Windows command prompt, unicode charcter display-column-width depends its Properties-->Font setting.
+          If you use ASCII char as alt-displaying-char of TAB and TAB padding space char.
+          If you yet use prefered unicode for TAB and TAB padding, use this altch option.
+          On wxe,gxe,Linux xe, it may not be occur.
+        . TAB { on [altch] | off | clear | =default | nn [asdefault] }
+          [altch] option overrides following INI file options.
+            (J)Tab_disp_char  =FFFF #(FFFF)# Tab display char for Japanese mode. (FFFF means U-21be & U-21c0)
+            (E)Tab_disp_char  =FFFF #(FFFF)# Tab display char for English  mode. (FFFF means U-21be & U-21c0)
+            DBCSspace_dispchar=FF #(FF)# DBCS space display char. (FF means U-2591)
+        . "tab on 000" is used to back to default(u21be-21c0,2591) or INI settings.
+        . ex)  tab on "^-" ,   tab on u25b8-25b9 ,  tab on "^-!" ,  tab on u25b8-25b9-21be.
+        . When Non-ASCII is specified as altch, "xpr -tabon" cmd use the altch
+          for printing CPU8 file and use 0x18 and 0x1a for non-CPU8 file.
+     (128F)
+       - Select command.
+        . new lineno option:  "S -lineno" (1st member if lineno is missing)
+          ex)  "S -5" to open member of lineno=5.
+     (128G)
+       -Deal long path name file/directory.
+        .(Win)File system connected by "NET USE" cmd on Linux Samba Server
+         has longer path name than windows local file.
+        .(Win)Windows support long path name up to 32KB
+         by using ""\\?\" prefix if set registory "NTFS long path".
+        .(LNX)If available to rename directory containing long path name,
+         delete after rename.
+
+        ==>Ini file format was changed, you need to once delete ini file
+           by this modification.
+           (ini file: Win=::XE!SAVE!, Linux=::xe_save_)
+     (128K)
+       -XBC accept multiple(Max 10) operator.
+        e.g. xbc 200/3.3*35.7 , xbc 1+2+3+4+5+6+7+8+9+10
+       -command verb "LIG" to toggle ligature mode(A+";" key)
+        and "CMB" to toggle combine mode(A+":" key) was added.
+
+     3.Miscellaneous.
+       -On EDIt/BROwse/SELect cmd and "o" cmd on dirlist,
+        translates filename encoding(UTF8<-->locale code) by FN{U8|LC} option,
+        for the abridgement of input key mode changing by Alt+u key.
+        Filename encoding is displayed on the line of "TOP-OF-LINE".
+        ex).
+            *****|*l*t**Lu** TOP OF LINE *******************************
+                        ^^
+                        ||
+                        |+--------->by IOCHARSET mount option of the directory's device.
+                        +---------->Filename encoding(U/L/u/l)
+     (128C)
+       -WXP cmd;option /tabon was added.
+       -(Lnx)Deafualt value of Disp_trans_tbl on ini file(non-displayable character parameter)
+        was changed. Control character(<0x20) may be almost displayable.
+        (Note)Font setting of CommandPrompt profile may be cause of shift of character position.
+              Select proper font.
+              Or set properly Display_tans_tbl/Displaytrans_char parameter of ini file.
+     (128D)
+       - ::linech.ini file is used to convinient unicode input enabling graphic line character
+         which assigned to A+1,2.. key.
+         Comment line(start width "#") is supported.
+       - Modification to displaying unicode combining character.
+          Command
+            Linux console version.
+              OPT UNICOMB [ COMB | SPLIT | UNPR ] [ SHADOW | ITSELF | PADDING | U-xxxx ]
+            the other
+              OPT UNICOMB [ COMB | SPLIT | UNPR ] [ U-xxxx ]
+        . supports U-xxxx (alternative character code to display combining character under UNPR mode).
+          And U-00 means restore default value(':'=u-3a).
+          It is applyed to Edit/Browse panel.(previously it was fixed to ':').
+          gxe also supports UNPR mode.
+        . On 2nd(command input) line,to enable to modify command,use always SPLIT mode
+        . On Edit/Browse panel,wxe/gxe apply ligature mode even when not COMB mode.
+        . Select TrueType font for command prompt to use Windows console version xe.
+       - ::xehosts(hots file for remote file access function)
+         expands operand length limit to enable to spacify not IP addr but URL.
+     (128E)
+       - Key A+PgDn and  A+PgUp is assigned to Top-Of-File and  End-Of-File each.
+       - (W32)Draw Col gauge line, vertical hex line by fixed pitch even when
+         propotional font is set to cmd prompt property.
+       -(Lnx:Console) Curses string for key combination of Debian is registed.
+        (A+F1,.. was not available on Debian previously)
+     (128G)
+       -(LNX)For deprecated function under Gtk3.
+     (128H)
+       -Reduced memory allocation for directory list.
+        Windows 9000->300 Byte, Linux 450->250 Byte about.
+     (128K)
+       -XBC time calculation output days when hors>24.
+
+     4.Tools.
+       -xfg v1.18
+        .new option
+          /F :file selection wildcard mask.
+          /X :excluding file wildcard mask.
+        .Wildcard mask is not applied to sub-dir name itself.
+         To exclude th sub-dir, use -X option.
+         ex) xfg -rgt -fABC* -xAsubdir word
+        .(BUG)Crushes wby long path name.
+       -xdc v2.26
+        .new option
+          /F+ :file selection wildcard mask.
+          /X  :excluding file wildcard mask.
+       -xdd v2.1
+        .new -q[n] option.
+         Displays msg each 10**n deletion, n=3(=1000) when n is missing.
+        ./r option is required to delete too long path name.
+       -xprint v9.34
+        .(Win) support UCS4(unicode>u-ffff).
+       -xdig v1.12
+        .(Bug)64Bit version crashes.
+
 </SPAN></PRE>
 </BODY>
 </HTML>
