@@ -1,4 +1,4 @@
-//*CID://+vayeR~:                             update#=   55;       //~vayeR~
+//*CID://+vayeR~:                             update#=   56;       //~vayeR~
 //*****************************************************************************************//~vabeR~
 //vaye:141125 (Axe)orientationfix allow to change to reverse orientation//~vayeI~
 //vaya:141125 (Axe)utilize actionbar:home button click event(customizable by settion,default is home)//~vayaI~
@@ -296,9 +296,9 @@ public class Axe extends Activity                                  //~vaiqR~
     	 destroying=true;                                           //~1607I~
         if (Dump.Y) Dump.println("OnDestroy configchange="+Integer.toHexString(getChangingConfigurations())+",isfinishing="+isFinishing()+",initfirsttime sw="+initFirsttime);//~vayeR~
         Dump.close();                                              //~1607I~
-//    if (isFinishing())                                           //+vayeR~
-//language change calls onDestry , app restart after it.           //+vayeI~
-//thaen cause illeagal state exception at AxeView:initScreen.add screen to frame(already parented)//+vayeI~
+//    if (isFinishing())                                           //~vayeR~
+//language change calls onDestry , app restart after it.           //~vayeI~
+//thaen cause illeagal state exception at AxeView:initScreen.add screen to frame(already parented)//~vayeI~
         Utils.exit(0,true);	//System.exit() to kill myself to clear static variable//~1607I~
     }                                                              //~1607I~
 //*********                                                        //~1607I~
@@ -312,6 +312,7 @@ public class Axe extends Activity                                  //~vaiqR~
     @Override                                                      //~1607I~
     public boolean onKeyDown(int keyCode,KeyEvent event)           //~1607I~
 	{                                                              //~1607I~
+        if (Dump.Y) Dump.println("Axe.onKeyDown keycoed="+keyCode);//+vayeI~
         if (!scrinitialized)                                       //~1607I~
             return false;                                          //~1607I~
         try                                                        //~1607I~
@@ -328,6 +329,7 @@ public class Axe extends Activity                                  //~vaiqR~
     @Override                                                      //~1607I~
     public boolean onKeyUp(int keyCode,KeyEvent event)             //~1607I~
 	{                                                              //~1607I~
+        if (Dump.Y) Dump.println("Axe.onKeyUp keycoed="+keyCode);  //+vayeI~
         if (!scrinitialized)                                       //~1607I~
             return false;                                          //~1607I~
         try                                                        //~1607I~

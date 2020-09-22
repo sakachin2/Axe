@@ -1,0 +1,8 @@
+Privacy Policy of Axe. 2020/09/22
+
+Use android permission.
+    android.permission.BIND_INPUT_METHOD:	This is one of Text Editor.
+    android.permission.INTERNET:	This provides file downloading
+    android.permission.WRITE_EXTERNAL_STORAGE:	This privides Filer function.
+
+Advetisement: is not contaioned.
