@@ -2,7 +2,7 @@
 # library. You should either keep the default value or only pass a
 # value of 3.4.0 or lower.
 
-cmake_minimum_required(VERSION 3.4.1)
+#cmake_minimum_required(VERSION 3.4.1)
 
 ###############
 set(PTOP x:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
@@ -16,6 +16,11 @@ set(SRC_CLI
 				${P}/main.cpp
               )
 #set (P src/main/cpp/cli)
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    set(OPT_STRIP "")
+else()
+    set(OPT_STRIP -Wl,-s)
+endif()
 
 set(CF_PIE -fPIE)
 set(LF_PIE "-fPIE -pie")
@@ -43,4 +48,11 @@ set_target_properties(highlight_pie
 target_link_libraries( # Specifies the target library.
                        highlight_pie
                        core_pie
+                       ${OPT_STRIP}
                       )
+set(OUT_SUBDIR ${CMAKE_BUILD_TYPE}/${ANDROID_ABI})
+set(DEVCONUP x:/AndroidStudioProjects/Ahighlight/DevConUp)
+set(DEVCONUP_BIN ${DEVCONUP}/bin/${OUT_SUBDIR})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/bin/${OUT_SUBDIR})
+add_custom_command (TARGET highlight_pie POST_BUILD
+	 COMMAND ${CMAKE_COMMAND} -E copy ${EXECUTABLE_OUTPUT_PATH}/highlight_pie ${DEVCONUP_BIN}/highlight)

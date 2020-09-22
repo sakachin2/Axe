@@ -1,7 +1,8 @@
-//*CID://+vb03R~: update#= 428;                                    //~vb03R~
+//*CID://+vc1xR~: update#= 430;                                    //+vc1xR~
 //**********************************************************************
 //*ListView
 //**********************************************************************
+//vc1x 2020/07/08 member variable is initialized when defualt constructor defined(not non default constructor is define)//+vc1xI~
 //vb03 2014/11/30 FileDialog:keep also sort type between reopen dialog//~vb01I~
 //vb01 2014/11/29 FileDialog:selected filename is invalid after list sorted if filter was set//~vb02I~
 //vayi:141125 (Axe)redundant / for filedialog fullpath setting     //~vayiI~
@@ -67,17 +68,28 @@ public class AxeLstFileChooser extends AxeList                     //~4629R~
 	public static final int SORT_ATTR_D=3;                        //~4703I~//~4704R~
     private String[] extentionList;                                //~vaxcI~
 //*****************
-    public AxeLstFileChooser(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,int Popt)//~4629R~
-    {
-		super(PdialogId,PlayoutView,Pmenuid,Prowid,Popt);
-    }
+//    public AxeLstFileChooser(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,int Popt)//~4629R~//+vc1xR~
+//    {                                                            //+vc1xR~
+//        super(PdialogId,PlayoutView,Pmenuid,Prowid,Popt);        //+vc1xR~
+//    }                                                            //+vc1xR~
+    public AxeLstFileChooser()                                     //+vc1xI~
+    {                                                              //+vc1xI~
+        if (Dump.Y) Dump.println("AxeLstFileChooser.defaultConstructor");//+vc1xI~
+    }                                                              //+vc1xI~
+    public static AxeLstFileChooser newInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,int Popt)//+vc1xI~
+    {                                                              //+vc1xI~
+	    AxeLstFileChooser al=new AxeLstFileChooser();              //+vc1xI~
+        al.initInstance(PdialogId,PlayoutView,Pmenuid,Prowid,Popt);//+vc1xI~
+        return al;
+    }                                                              //+vc1xI~
 //*****************
     public static AxeLstFileChooser setupListView(AxeDialog Pdialog,int PdialogId,ViewGroup PlayoutView)//~4629R~
     {
         Sdialog=(AxeDlgFileChooser)Pdialog;                         //~4629I~//~4630I~
 //      int opt=OPT_CLICKABLEVIEW|OPT_NOITEMCLICK;//|OPT_LONGITEMCLICK;                //~4703R~//~4704R~
         int opt=0;//|OPT_LONGITEMCLICK;                            //~4704I~
-        AxeLstFileChooser al=new AxeLstFileChooser(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID,opt);//~4629R~//~4703R~
+//      AxeLstFileChooser al=new AxeLstFileChooser(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID,opt);//~4629R~//~4703R~//+vc1xR~
+        AxeLstFileChooser al=newInstance(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID,opt);//+vc1xI~
         mode=AxeDlgFileChooser.Smode;	                           //~4630I~
     	al.setListViewDataFileChooser();                              //~4701I~
         return al;
@@ -208,10 +220,10 @@ public class AxeLstFileChooser extends AxeList                     //~4629R~
             }                                                      //~4629I~
         }                                                          //~4629I~
         else                                                       //~vb03I~
-        {                                                          //+vb03I~
+        {                                                          //~vb03I~
 		    sortType=SORT_FILE_A;//for the dir opened by parent or dir double tap//~vb03I~
-		    AxeProp.putPreference(DIRLISTSORT,sortType);           //+vb03I~
-        }                                                          //+vb03I~
+		    AxeProp.putPreference(DIRLISTSORT,sortType);           //~vb03I~
+        }                                                          //~vb03I~
         dirname=path;                                              //~4629I~
         try{                                                       //~4629I~
         	if (Dump.Y) Dump.println("FileDialog path="+path);     //~4629I~
@@ -423,7 +435,7 @@ public class AxeLstFileChooser extends AxeList                     //~4629R~
     	int selectedstatus;                                        //~1403I~//~4629I~//~vaxbM~//~4630M~
         boolean rc=false;                                          //~1403I~//~4629I~//~vaxbM~//~4630M~
     //***                                                          //~1403I~//~4629I~//~vaxbM~//~4630M~
-	    if (Dump.Y) Dump.println("AxeDlgFileChooser openSelected");//~4630I~
+	    if (Dump.Y) Dump.println("AxeLstFileChooser openSelected");//~4630I~//~vb03R~
     	selectedstatus=chkSelectedFilename();                      //~1403I~//~4629I~//~vaxbM~//~4630I~
         switch(selectedstatus)                                     //~1403I~//~4629I~//~vaxbM~//~4630M~
         {                                                          //~1403I~//~4629I~//~vaxbM~//~4630M~
@@ -481,7 +493,7 @@ public class AxeLstFileChooser extends AxeList                     //~4629R~
     public void toggleDetail()                                     //~4630I~
     {                                                              //~4630I~
     	swDetail=!swDetail;                                        //~4630I~
-	    if (Dump.Y) Dump.println("AxeDlgFileChooser toggleDetail to="+swDetail);//~4630I~
+	    if (Dump.Y) Dump.println("AxeLstFileChooser toggleDetail to="+swDetail);//~4630I~//~vb03R~
         resetAdapter();	//notify changed                           //~4703R~
         AxeProp.putPreference(DIRLISTSHOWATTR,swDetail?1:0);       //~4703I~
     }                                                              //~4630I~
@@ -490,7 +502,7 @@ public class AxeLstFileChooser extends AxeList                     //~4629R~
     //**********************************************************************//~4630I~
     public void listParent()                                       //~4630I~
     {                                                              //~4630I~
-	    if (Dump.Y) Dump.println("AxeDlgFileChooser toggleDetail to="+swDetail);//~4630I~
+	    if (Dump.Y) Dump.println("AxeLstFileChooser toggleDetail to="+swDetail);//~4630I~//~vb03R~
         String parent=(new File(dirname)).getParent();             //~4630I~
         if (parent==null)                                          //~4630I~
         {                                                          //~4630I~
@@ -504,7 +516,7 @@ public class AxeLstFileChooser extends AxeList                     //~4629R~
     //**********************************************************************//~4630I~
     public void setNewName(int Ppos)                               //~4630I~
     {                                                              //~4630I~
-	    if (Dump.Y) Dump.println("AxeDlgFileChooser setNewName pos="+Ppos);//~4630I~
+	    if (Dump.Y) Dump.println("AxeLstFileChooser setNewName pos="+Ppos);//~4630I~//~vb03R~
         if (Ppos<=0||Ppos>=namelist.length)                        //~4630I~
         	return;                                                //~4630I~
         String fnm=namelist[Ppos];                                 //~4630I~

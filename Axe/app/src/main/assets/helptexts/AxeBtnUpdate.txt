@@ -1,0 +1,7 @@
+Change Button's function.
+----------------------------------------------------------------------------
+Select button's function type from drop down list for Replace/Insert.
+For Move, specify shift count, minus means forward shift.
+
+----------------------------------------------------------------------------
+2020/08/11 AxeBtnLayout

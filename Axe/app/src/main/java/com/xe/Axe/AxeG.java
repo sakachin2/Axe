@@ -1,5 +1,20 @@
-//CID://+vaydR~:     update#=    20                                //~vaydR~
+//CID://+vc2XR~:     update#=    63                                //~vc2SR~//~vc2XR~
 //*************************************************************    //~va15I~
+//vc2X 2020/09/19 return sdpath even no write permission for utrace//~vc2XI~
+//vc2S 2020/09/12 add ruler width option                           //~vc2SI~
+//vc2R 2020/09/11 Debug option:reverse HelpLang                    //~vc2LI~
+//vc2L 2020/09/02 display TMPDIR                                   //~vc2LI~
+//vc2K 2020/08/28 receive intent(View/Edit)                        //~vc2KI~
+//vc2D 2020/08/19 (Bug)kbd send not to Dialog but to AxeScreen when KbdDialogHW opened after AxeDialog Open//~vc2DI~
+//vc2j 2020/07/27 IMopen key on hardKbd                            //~vc2jI~
+//vc2g 2020/07/26 AltGr key option                                 //~vc2gI~
+//vc1w 2020/07/06 AxeKbd updatelog extends KbdLayoutHW             //~vc1wI~
+//vc1v 2020/07/06 (Bug)isLangJP setting                            //~vc1vI~
+//vc1r 2020/06/26 avoid ime popup implicitly                       //~vc1pI~
+//vc1p 2020/06/24 display path env                                 //~vc1pI~
+//vc1h 2020/06/22 set UTRACE default option to console             //~vc1hI~
+//vc1c 2020/06/19 /proc/version access denied, use Build.VERSION.SDK_INT R RELEASE//~vc1cI~
+//vc10 2020/06/14 update Dump to write to terminal(copy from BTMJ5)//~vc10I~
 //vayd:141125 (Axe)modifier reset option                           //~vaydI~
 //vayb:141125 (Axe)Disply:getWidth/getHeight was deprecated at aoi13(HONNEYCOMB_MR2) change to getSize//~vaybI~
 //vaya:141125 (Axe)utilize actionbar:home button click event(customizable by settion,default is home)//~vayaI~
@@ -28,11 +43,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.os.Build;                                           //~vab0R~
+
+import com.xe.Axe.kbd.AxeKbdDialogHW;
 import com.xe.Axe.kbd.ims.KeyboardView;
 public class AxeG                                                  //~va15R~
 {                                                                  //~va15I~
@@ -58,7 +76,7 @@ public class AxeG                                                  //~va15R~
 	public static final boolean DEFAULT_OUTSIDE_TOUCH=false;       //~vaihR~//~vaiiR~
     public static boolean cancelXekbdByOutsideTouch=DEFAULT_OUTSIDE_TOUCH;//~vaihR~
 	public static String PREFKEY_RESET_MODIFIER="ResetModifier";   //~vaydI~
-	public static final boolean DEFAULT_RESET_MODIFIER=true;       //+vaydR~
+	public static final boolean DEFAULT_RESET_MODIFIER=true;       //~vaydR~
     public static boolean resetModifier=DEFAULT_RESET_MODIFIER;    //~vaydI~
                                                                    //~vai3I~
 	public static String PREFKEY_REPEAT_SPEED="RepeatSpeed";       //~1A09I~
@@ -71,6 +89,11 @@ public class AxeG                                                  //~va15R~
 	public static int MIN_SWIPE_TIMEOUT=100;                       //~1A09I~
     public static int swipeTimeout;                                //~1A09I~
                                                                    //~1A03I~
+	public static String PREFKEY_RULER_WIDTH="RulerWidth";         //~vc2SI~
+	public static int DEFAULT_RULER_WIDTH=1;                       //~vc2SI~
+	public static int MAX_RULER_WIDTH=10;                          //~vc2SI~
+    public static int RulerWidth;                                  //~vc2SI~
+                                                                   //~vc2SI~
 	public static String PREFKEY_LONGPRESS_TIMEOUT="LongPressTimeout";//~vaimI~
 	public static int DEFAULT_LONGPRESS_TIMEOUT=1000;              //~vaimI~
 	public static int MIN_LONGPRESS_TIMEOUT=500;                   //~vaimR~
@@ -83,10 +106,19 @@ public class AxeG                                                  //~va15R~
                                                                    //~1A06I~
 	public static String PREFKEY_HELPSZ="HelpSize";                //~1A06I~
 	public static String PREFKEY_TOOLBINSZ="ToolBinSize";          //~1A25I~
+	public static String PREFKEY_HTMLHELPSZ="HtmlHelpSize";        //~vc1hI~
 	public static String PREFKEY_HIGHLIGHTSZ="HighlightSize";      //~vaaDI~
                                                                    //~1A03I~
     public static final String PKEY_STARTUPCTR="startupctr";       //~vaiqI~
     public static int startupCtr;                                  //~vaiqI~
+                                                                   //~vc2gI~
+    public static final String PREFKEY_ALTGRKEY="AltGrKey";           //~vc2gI~
+    public static final int    DEFAULT_ALTGRKEY=0;	//none         //~vc2gI~
+    public static final String PREFKEY_OPENIMKEY="OpenIMKey";      //~vc2jI~
+    public static final int    DEFAULT_OPENIMKEY=0;	//none         //~vc2jI~
+    private static final String DEFAULT_TMPDIR="/data/local/tmp";  //~vc2LR~
+    public static int keyAltGr;                                    //~vc2gI~
+    public static int keyOpenIM;                                   //~vc2jI~
                                                                    //~vaiqI~
 	public static Activity activity;                                      //~va15I~
 	public static SharedPreferences pref;
@@ -114,10 +146,13 @@ public class AxeG                                                  //~va15R~
     public static final int TRACEO_REOPEN=0x10;                    //~1926I~
     public static final int TRACEO_LOGCAT=0x08;                    //~1926I~
     public static final int TRACEO_REMAP=0x0100;  //sbcsmap tbl recreate//~v6k1I~
+//  public static final int TRACEO_NOTREMAP=0x0100;  //sbcsmap tbl recreate//~vc2XI~
+    public static final int TRACEO_NOTREMAP=0x0200;  //sbcsmap tbl recreate//+vc2XI~
     public static int optDump;                                     //~1922I~
     public static int optDebug;                                    //~vay0I~
     public static final int DEBUGO_ABEND=0x01;  //ndk sigsegv by double Esc//~vay0R~
     public static final int DEBUGO_UERREXIT=0x02;  //ndk sigsegv by double Esc//~vay0I~
+    public static final int DEBUGO_HELP_REVERSELANG=0x04;  //ndk sigsegv by double Esc//~vc2RR~
     public static String encoding="UTF-8";	                       //~1A09R~
                           //~1715I~
                                                                    //~1527I~
@@ -144,6 +179,7 @@ public class AxeG                                                  //~va15R~
 	public static String PREFKEY_BOTTOMSPACE_HIGHT="BottomSpaceHeight";//~vab0I~
                                                                    //~vab0I~
     public static int osVersion;                                   //~vab0I~
+    public static int osVersionRelease;                            //~vc1cI~
     public static final int GINGERBREAD=9; //android2.3            //~vab7I~
     public static final int HONEYCOMB=11; //android3.0 (GINGERBREAD=9)//~vab0I~
     public static final int HONEYCOMB_MR2=13; //android3.2         //~vaybI~
@@ -159,16 +195,26 @@ public class AxeG                                                  //~va15R~
 	public static Thread mainThread;                               //~1126I~//~1827I~
 	public static String intentData;                               //~1A17R~
 	public static String intentAction;                             //~1A17I~
+	public static int hardKeyboard=-1;                             //~vc1rR~
+	public static AxeKbdDialogHW axeKbdDialogHW;                   //~vc1rI~
+	public static AxeDlgKbdLayoutHW axeDlgKbdLayoutHW;             //~vc1rR~
+	public static AxeDlgKbdLayout axeDlgKbdLayout;                 //~vc1wI~
+	public static AxeDialog axeDialog;                             //~vc2DI~
+	public static AxeBCR axeBCR;                                   //~vc2KI~
 //*********************************************                    //~va15I~
 	public static void init(Axe Paxe)                    //~va15I~
     {                                                              //~va15I~
     	osVersion=Build.VERSION.SDK_INT;                //~vab0I~
     	Gxeh.osVersion=osVersion;	//notify to xe through Gxeh    //~vab7I~
+    	osVersionRelease=Utils.strToNum(Build.VERSION.RELEASE,0);                    //~vc1cI~
+    	Gxeh.osVersionRelease=osVersionRelease;	//notify to xe through Gxeh//~vc1cI~
     	main=Paxe;
 		activity=(Activity)Paxe;                                   //~1527R~
     	context=(Context)Paxe;                                     //~1527R~
                                                                    //~1A17I~
         isDebuggable=Utils.isDebuggable(context);             //~v107I~//~vai3I~
+        if (isDebuggable)                                          //~vc10I~
+        	Dump.open("");	//write all to Terminal log,not exception only//~vc10I~
         startupCtr=AxeProp.getPreference(PKEY_STARTUPCTR,0);     //~vaiqI~
         AxeProp.putPreference(PKEY_STARTUPCTR,startupCtr+1);     //~vaiqI~
                                                                    //~vai3I~
@@ -189,7 +235,10 @@ public class AxeG                                                  //~va15R~
 		Gxeh.envPath=AxeDlgArmOption.chkEnvPath(true/*axeG*/,Gxeh.envPath);//~1A26R~
 //  	internalOptions=getParameter(PREFKEY_INTERNAL_OPTIONS);//~1824I~//~vay9R~
 //  	internalOptions=AxeDlgArmOption.chkInternalOptions(true/*axeG*/,internalOptions);//~vay9R~
-  		int trace=getParameter(PREFKEY_DEBUG_TRACE,0);             //~vay9I~
+//		int trace=getParameter(PREFKEY_DEBUG_TRACE,0);             //~vay9I~//~vc1hR~
+//  	int trace=getParameter(PREFKEY_DEBUG_TRACE,TRACEO_LOGCAT); //~vc1hI~//~vc2SR~
+//  	int trace=getParameter(PREFKEY_DEBUG_TRACE,TRACEO_ON|TRACEO_LOGCAT);//~vc2SR~
+    	int trace=getParameter(PREFKEY_DEBUG_TRACE,TRACEO_ON);   //TODO test//~vc2SI~
   		int dump=getParameter(PREFKEY_DEBUG_DUMP,0);               //~vay9I~
 	  	int debug=getParameter(PREFKEY_DEBUG_DEBUG,0);             //~vay9I~
     	AxeDlgArmOption.chkInternalOptions(true/*axeG*/,trace,dump,debug);//~vay9I~
@@ -202,7 +251,8 @@ public class AxeG                                                  //~va15R~
 //      language=",lang="+locale.getLanguage();   //ja             //~1820R~
 //      language=",name"+locale.getDisplayName(); //nihongo(nihon) by japanese//~1820R~
         language=locale.getLanguage();   //ja(Locale.JAPANESE) or ja_JP(Locale.JAPAN)//~1531R~
-        isLangJP=language.substring(0,2).equals(Locale.JAPANESE);
+//      isLangJP=language.substring(0,2).equals(Locale.JAPANESE);  //~vc1vR~
+        isLangJP=language.substring(0,2).equals(Locale.JAPANESE.getLanguage());  //~@@@@I~//~v102I~//~vc1vI~
 //      maxKeyCode=KeyEvent.getMaxKeyCode();  //not versiondependent//~1815R~
 //    	imm=(InputMethodManager)AxeG.context.getSystemService(Context.INPUT_METHOD_SERVICE);//~va15I~//~1825I~//~1826R~
 		mainThread=Thread.currentThread();                      //~1126I~//~1827I~
@@ -221,11 +271,34 @@ public class AxeG                                                  //~va15R~
         KeyboardView.REPEAT_INTERVAL=repeatSpeed;               //~1A09I~
 		swipeTimeout=getParameter(PREFKEY_SWIPE_TIMEOUT,DEFAULT_SWIPE_TIMEOUT);//~1A03I~
 		swipeTravel=getParameter(PREFKEY_SWIPE_TRAVEL,DEFAULT_SWIPE_TRAVEL);//~1A03I~
+                                                                   //~vc2SI~
+		RulerWidth=getParameter(PREFKEY_RULER_WIDTH,DEFAULT_RULER_WIDTH);//~vc2SI~
                                                                    //~vai3I~
 		cancelXekbdByOutsideTouch=getParameter(PREFKEY_OUTSIDE_TOUCH,DEFAULT_OUTSIDE_TOUCH);//~vaihR~
 		resetModifier=getParameter(PREFKEY_RESET_MODIFIER,DEFAULT_RESET_MODIFIER);//~vaydI~
 		longPressTimeout=getParameter(PREFKEY_LONGPRESS_TIMEOUT,DEFAULT_LONGPRESS_TIMEOUT);//~vaimI~
+		Gxeh.envVarPATH=System.getenv("PATH");                     //~vc1pI~
+		Gxeh.envVarNativePATH=new String(Gxeh.envVarPATH);         //~vc1pI~
+		Gxeh.envVarTMPDIR=System.getenv("TMPDIR");                 //~vc2LI~
+        if (Gxeh.envVarTMPDIR==null)                               //~vc2LI~
+	        Gxeh.envVarTMPDIR=DEFAULT_TMPDIR;                      //~vc2LI~
+		getAltGrKey();                                             //~vc2gR~
+		keyOpenIM=getParameter(PREFKEY_OPENIMKEY,DEFAULT_OPENIMKEY);//~vc2jI~
+		axeBCR=new AxeBCR();                                       //~vc2KI~
     }                                                              //~va15I~
+//*********************************************                    //~vc2gI~
+	private static void getAltGrKey()                              //~vc2gR~
+    {                                                              //~vc2gI~
+		keyAltGr=getParameter(PREFKEY_ALTGRKEY,DEFAULT_ALTGRKEY);  //~vc2gI~
+        AxeDlgKbdLayoutHW.setAltGrKey();                           //~vc2gI~
+	}                                                              //~vc2gI~
+//*********************************************                    //~vc2gI~
+	public static void putAltGrKey(int PaltGrKey)                  //~vc2gR~
+    {                                                              //~vc2gI~
+    	keyAltGr=PaltGrKey;                                        //~vc2gI~
+		setParameter(PREFKEY_ALTGRKEY,PaltGrKey);                  //~vc2gI~
+        AxeDlgKbdLayoutHW.setAltGrKey();                           //~vc2gI~
+	}                                                              //~vc2gI~
 //*********************************************                    //~1827I~
     public static boolean isMainThread()                           //~1126M~//~1827I~
     {                                                              //~1126M~//~1827I~
@@ -277,4 +350,17 @@ public class AxeG                                                  //~va15R~
     {                                                              //~1824I~
         Dump.setOption(Popt);                                  //~1824I~
     }                                                              //~1824I~
+//*********************                                            //~vc1rI~
+	public static void setHardKeyboard(Configuration Pcfg)         //~vc1rR~
+    {                                                              //~vc1rI~
+    	hardKeyboard=Pcfg.hardKeyboardHidden;                     //~vc1rR~
+        if (Dump.Y) Dump.println("AxeG.serHardKeyboardActive hardKeyboard="+hardKeyboard);//~vc1rR~
+    }                                                              //~vc1rI~
+//*********************                                            //~vc1rI~
+	public static boolean isHardKeyboardActive()                   //~vc1rI~
+    {                                                              //~vc1rI~
+    	boolean rc=hardKeyboard== Configuration.HARDKEYBOARDHIDDEN_NO/*1*/;//~vc1rI~
+        if (Dump.Y) Dump.println("AxeG.isHardKeyboardActive hardKeyboard="+hardKeyboard+",rc="+rc);//~vc1rI~
+        return rc;                                                 //~vc1rI~
+    }                                                              //~vc1rI~
 }//class                                                           //~va15R~

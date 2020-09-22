@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="axe.Alibiconv116">
+
+    <application
+        android:allowBackup="true"
+        android:label="iconv116"
+        android:supportsRtl="true"
+        >
+    </application>
+
+</manifest>

@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    4;       //+vc19I~
+//******************************************************************//+vc19I~
+//vc19 2020/06/18 Warning Map type                                 //+vc19I~
+//******************************************************************//+vc19I~
 /* jcifs msrpc client library in Java
  * Copyright (C) 2006  "Michael B. Allen" <jcifs at samba dot org>
  *                     "Eric Glass" <jcifs at samba dot org>
@@ -24,6 +28,7 @@ import java.util.Iterator;
 
 import jcifs.dcerpc.msrpc.*;
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public class DcerpcBinding {
 
     private static HashMap INTERFACES;

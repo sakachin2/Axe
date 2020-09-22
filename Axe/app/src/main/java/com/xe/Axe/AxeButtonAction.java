@@ -1,4 +1,4 @@
-//CID://+vaigR~:                update#=     66                    //~vaigR~
+//CID://+vaigR~:                update#=     68                    //~vaigR~
 //*************************************************************    //~va15I~
 //vaig:130531 Axe:disable by ShortCut:On for direction button for update button function//~vaigI~
 //vab4:120120 (Axe:BUG)bottom edge button generate duplicated key event for repeatable key(direction key)//~vab4I~
@@ -90,7 +90,7 @@ public class AxeButtonAction                                       //~1528R~
         {                                                          //~1528I~
             try                                                    //~1810I~
             {                                                      //~1810I~
-	            if (Dump.Y) Dump.println("AxeButtonAction onclick hh="+Pv.getHeight());//+vaigI~
+	            if (Dump.Y) Dump.println("AxeButtonAction onclick hh="+Pv.getHeight());//~vaigI~
         		if ((action.isRepeatable && !AxeButtonAction.disableRepeatable))   	//generate key(left,right,up,down)//~vab4I~
         			return;		//processed by onTouch             //~vab4I~
                 action.onClickButtonAction(Pv);                 //~1602R~//~1810R~
@@ -221,7 +221,7 @@ public class AxeButtonAction                                       //~1528R~
         AxeButtonAction goneaction=null;                           //~1824I~
     //*********************
         int actionidx=Pbutton.actionIndex;//~va15I~//~1824M~
-        if (Dump.Y) Dump.println("AxeButton OnTerminalButtonKey buttonid="+Pbutton.buttonId+",name="+Pbutton.name);//~va15I~//~1824M~
+        if (Dump.Y) Dump.println("AxeButton.OnTerminalButtonKey buttonid="+Pbutton.buttonId+",name="+Pbutton.name);//~va15I~//~1824M~//+vaigR~
         AxeButtonAction action=AxeButtonLayout.getAction(actionidx,Pbutton);//~va15I~//~1824M~
         if (action!=null)                                          //~1824I~
         {                                                          //~1824I~
@@ -328,7 +328,7 @@ public class AxeButtonAction                                       //~1528R~
     public void onTouch(MotionEvent Pevent)                        //~1923I~
     {                                                              //~1923I~
         int action = Pevent.getAction();                           //~1923I~
-        if (Dump.Y) Dump.println("AxeButtonAction aonTouch action=="+action+",repeatable="+isRepeatable);//~1923I~
+        if (Dump.Y) Dump.println("AxeButtonAction onTouch action=="+action+",repeatable="+isRepeatable);//~1923I~//~vaigR~
         if (!(isRepeatable && !disableRepeatable))   	//generate key(left,right,up,down)//~1923I~
         	return;		//process onClick,onLongClick              //~1923I~
         switch(action)                                             //~1923I~

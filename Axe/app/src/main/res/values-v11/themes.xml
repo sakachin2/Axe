@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!-- minsdk=15 this is applied -->
     <style name="ThemeV10" parent="@android:style/Theme.Holo">
         <item name="android:windowActionBar">true</item>
         <item name="android:windowNoTitle">false</item>
         <!--item name="android:buttonStyle">@android:style/Widget.Holo.Button</item-->
         <item name="android:buttonStyle">@android:style/Widget.Button</item> <!-- black on white(Holo is white on black-->
         <item name="android:actionBarStyle">@style/NoActionBarIcon</item>
+        <item name="android:dropDownListViewStyle">@style/myDropDownListView</item>
+        <item name="android:itemTextAppearance">@style/myDropDownItemText</item>
     </style>  
     <style name="NoActionBarIcon" parent="@android:style/Widget.Holo.ActionBar">
         <!--item name="android:displayOptions">showTitle</item-->
         <item name="android:height">30dp</item>
     </style>  
+    <style name="myDropDownListView" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
+        <!--item name="android:textColor">@color/menu_fg</item-->
+        <item name="android:divider">@color/menu_divider</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:background">@color/menu_bg</item>
+    </style>
+    <style name="myDropDownItemText">
+        <item name="android:textColor">@color/menu_fg</item>
+    </style>
 </resources>

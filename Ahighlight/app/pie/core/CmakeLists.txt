@@ -2,7 +2,7 @@
 # library. You should either keep the default value or only pass a
 # value of 3.4.0 or lower.
 
-cmake_minimum_required(VERSION 3.4.1)
+#cmake_minimum_required(VERSION 3.4.1)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -16,12 +16,15 @@ cmake_minimum_required(VERSION 3.4.1)
 # completing its build.
 ###############################################
 set(PTOP x:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
+set(UPDATE x:/AndroidStudioProjects/Ahighlight/app/srcupdate)
 set(SRCTOP ${PTOP}/src)
 set(P ${SRCTOP}/core)
 set(Q ${P}/astyle)
 set(R ${P}/re)
+set(U ${UPDATE}/core)
 set(SRC_CORE
- ${P}/configurationreader.cpp 
+#${P}/configurationreader.cpp 
+ ${U}/configurationreader.cpp 
  ${P}/stylecolour.cpp         
  ${P}/stringtools.cpp         
  ${P}/xhtmlgenerator.cpp      
@@ -64,6 +67,9 @@ set(LDFLGS ${LF_PIE}
 set(LDFLGS "${LF_PIE}"
    )
 ###############################################
+include_directories(
+				${P}
+             )
 add_definitions(
 				 ${UDEF}
 				 ${CFLGS}

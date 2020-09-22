@@ -1,5 +1,10 @@
-//*CID://+vay2R~: update#=  166;                                   //+vay2R~
+//*CID://+vc31R~: update#=  184;                                   //~vc31R~
 //*************************************************************    //~vab0I~
+//vc31 2020/09/21 change titlebar icon when debuggable             //~vc31I~
+//vc2z 2020/08/12 Button label for user,recover over restart       //~vc2zI~
+//vc2l 2020/07/29 (Bug)large button height when changed to HWKbd layout(one line)//~vc2lI~
+//vc1u 2020/07/06 helpdialog for asset/helptexts                   //~vc1uI~
+//vc1r 2020/06/26 avoid ime popup implicitly                       //~vc1rI~
 //vaye:141125 (Axe)orientationfix allow to change to reverse orientation//~vayeI~
 //vayb:141125 (Axe)Disply:getWidth/getHeight was deprecated at aoi13(HONNEYCOMB_MR2) change to getSize//~vaybI~
 //vay5:141122 (Axe)actionBar as alternative of menu button for api>=11(android3)//~vay5I~
@@ -24,11 +29,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.ahsv.utils.UView;
+
 public class AxeView                                               //~1606R~
 {                                                                  //~0914I~
 	private static final int PARENTVIEW=R.id.MainView;//parent of frame view//~1606R~
 //@	private static final int FRAMEVIEW=R.id.ClientArea;//parent of frame view//~1606I~
 	private static final int LL_BUTTONS=R.id.Buttons;//parent of frame view//~1606I~
+	private static final int LL_BUTTONS1=R.id.Buttons1;//parent of frame view//~vc2lI~
 	private static final int LL_BUTTONSDMZ=R.id.MainViewDMZ;
 //  private Canvas[] canvasPL=new Canvas[2];     //portrate and landscape//~1608R~
     private Bitmap[] bitmapPL=new Bitmap[2];                      //~1606I~
@@ -40,7 +48,8 @@ public class AxeView                                               //~1606R~
 //@ private FrameLayout frameView;                                 //~1606R~
 //@ private ImageView   frameView;                                 //~1606R~
 //  private LinearLayout llbuttons;                                //~vay5R~
-    public static LinearLayout llbuttons;//see from AxeMenu for popupMenu//~vay5I~
+//  public static LinearLayout llbuttons;//see from AxeMenu for popupMenu//~vay5I~//~vc2lR~
+    public static LinearLayout llbuttons1;//see from AxeMenu for popupMenu//~vc2lI~
     private AxeScreen screen;                                      //~1606I~
     private int buttonHeight,buttonHeight2;                        //~1822I~
     private int buttonDMZHeight;                                   //~1922I~
@@ -48,6 +57,7 @@ public class AxeView                                               //~1606R~
 	public AxeView()                                               //~1528R~
     {   
 	    AxeProp.initFiles();                                       //~1A11R~
+    	AxeDlgArmOption.updateEnvPath(false/*PswJNICall*/);	//update Gxeh.envPath(contain $Data1) by Gxeh.addPath(~/sh:_/bin/)        //~vc1pI~//~vay2I~
         AxeG.axeJNI=new AxeJNI();   //avoid GC by static ref       //~1713I~
         AxeG.axecsub=new Axecsub();                                //~1A22R~
         AxeG.axeActivity=new AxeActivity();   //avoid GC by static ref//~1A18I~
@@ -57,14 +67,16 @@ public class AxeView                                               //~1606R~
         AxeG.axeMenu=new AxeMenu();                                   //~1528I~
 		AxeG.axeMenu.registerContextMenu(AxeG.mainView);           //~1609R~
 //      getDisplaySize();                                          //~1606R~
+        AxeG.axeKey=new AxeKey();    //before AxeButtonLayout      //~vc2zI~
         AxeG.axeButtonLayout=new AxeButtonLayout();                   //~1528I~
-        AxeG.axeKey=new AxeKey();//~1528R~
+//      AxeG.axeKey=new AxeKey();//~1528R~                         //~vc2zR~
         AxeG.axeMouse=new AxeMouse();                              //~1621I~
         parentView=(LinearLayout)AxeG.mainView.findViewById(PARENTVIEW);//~1217I~//~1606R~
 	    if (Dump.Y) Dump.println("AxeView initial parentview="+parentView.toString());//~1821I~
 //@     frameView=(FrameLayout)AxeG.mainView.findViewById(FRAMEVIEW);//~1606R~
 //@     frameView=(ImageView)AxeG.mainView.findViewById(FRAMEVIEW);//~1606R~
-        llbuttons=(LinearLayout)AxeG.mainView.findViewById(LL_BUTTONS);//~1606I~
+//      llbuttons=(LinearLayout)AxeG.mainView.findViewById(LL_BUTTONS);//~1606I~//~vc2lR~
+        llbuttons1=(LinearLayout)AxeG.mainView.findViewById(LL_BUTTONS1);//~vc2lI~
 //        measureSize();                                           //~1606R~
 //  	int orientationFix=AxeButtonLayout.getOrientationFix();    //~vayeR~
 //      requestOrientationFix(orientationFix);                     //~vayeR~
@@ -85,11 +97,11 @@ public class AxeView                                               //~1606R~
     {                                                              //~1714I~
     	boolean rc;                                                //~1715I~
     //**************                                               //~1715I~
-//        if (parentView!=null & screen!=null)    //after orientation change//+vay2R~
-//        {                                                        //+vay2R~
-//            if (parentView==screen.getParent())                  //+vay2R~
-//                parentView.removeView(screen);   //create new screen//+vay2R~
-//        }                                                        //+vay2R~
+//        if (parentView!=null & screen!=null)    //after orientation change//~vay2R~
+//        {                                                        //~vay2R~
+//            if (parentView==screen.getParent())                  //~vay2R~
+//                parentView.removeView(screen);   //create new screen//~vay2R~
+//        }                                                        //~vay2R~
 		rc=setScreenSize();                                        //~1715R~
         return rc;                                                 //~1715I~
     }                                                              //~0914I~
@@ -101,7 +113,7 @@ public class AxeView                                               //~1606R~
 		setContentView();                                          //~1606I~
         parentView=(LinearLayout)AxeG.mainView.findViewById(PARENTVIEW);//~1607I~
 	    if (Dump.Y) Dump.println("AxeView orientation changed new parentview:"+parentView.toString());//~1821I~
-        llbuttons=(LinearLayout)AxeG.mainView.findViewById(LL_BUTTONS);//~1607I~
+//      llbuttons=(LinearLayout)AxeG.mainView.findViewById(LL_BUTTONS);//~1607I~//~vc2lR~
 		setScreenSize();    //createScreen                         //~1822R~
         AxeG.axeButtonLayout.orientationChanged();                 //~1606I~
 //@     createBitmap(AxeG.screenW,AxeG.screenH);	//bitmap and canvas//~1822R~
@@ -111,7 +123,6 @@ public class AxeView                                               //~1606R~
     public void layoutChanged(boolean PisALine)                    //~1607I~
     {                                                              //~1607M~
         int h;                                                   //~1607M~
-	    if (Dump.Y) Dump.println("AxeView updatebitmap 1line="+PisALine);//~1607M~
 //        if (AxeG.displayPL!=0 && AxeButtonLayout.getUseLand())	//landscape 1line mode//~1607M~
 //       	return;                                                //~1607M~
         h=scrHeight[AxeG.displayPL];                               //~1607M~
@@ -119,6 +130,7 @@ public class AxeView                                               //~1606R~
         	h+=buttonHeight;                                       //~1607M~
         else                                                       //~1607M~
         	h-=buttonHeight;                                       //~1607M~
+	    if (Dump.Y) Dump.println("AxeView updatebitmap 1line="+PisALine+",h="+h);//~vc1uI~
 	    screenHeightChanged(h);                                    //~1607I~
     }                                                              //~1607M~
 //*************************                                        //~1822I~
@@ -170,7 +182,12 @@ public class AxeView                                               //~1606R~
             if (AxeG.axeMenu!=null)                                //~1609I~
 				AxeG.axeMenu.registerContextMenu(v);               //~1609R~
 //*titlebar icon                                                   //~1811I~
-            int iconRid=R.drawable.wxe;                            //~1811I~
+//          int iconRid=R.drawable.wxe;                            //~1811I~//~vc31R~
+            int iconRid;                                           //~vc31I~
+          	if (AxeG.isDebuggable)                                 //~vc31I~
+				iconRid=R.drawable.wxe_debug;                      //~vc31R~
+          	else                                                   //~vc31I~
+				iconRid=R.drawable.wxe;                            //~vc31I~
           if (AxeG.osVersion<AxeG.HONEYCOMB)  //<android3=api-11 required?//~vay5R~
     		AxeG.activity.getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,iconRid);//~1811I~
         }                                                          //~1607I~
@@ -226,7 +243,7 @@ public class AxeView                                               //~1606R~
 //        }                                                        //~1822R~
 	    if (Dump.Y) Dump.println("AxeView addToParent parent="+parentView.toString());//~1821M~
         parentView.addView(screen,lp);                             //~1607I~
-	    if (Dump.Y) Dump.println("AxeView addToParent parent=("+AxeG.screenW+","+AxeG.screenH);//~1607I~
+	    if (Dump.Y) Dump.println("AxeView addToParent parent=("+AxeG.screenW+","+AxeG.screenH+")");//~1607I~//~vc2zR~
         AxeG.axeMouse.initScreenMouse(screen);	//after parent set //~1924I~
     }                                                              //~1607I~
 //*********************************                                //~1822I~
@@ -264,7 +281,8 @@ public class AxeView                                               //~1606R~
         AxeG.screenDip2Pix=scrDip2Pix[AxeG.displayPL];              //~1606I~
         if (AxeG.screenW>0 && AxeG.screenH>0)                      //~1715I~
         {                                                          //~1715I~
-	        AxeG.axeScreen=createScreen();                         //~1715I~
+//          AxeG.axeScreen=createScreen();                         //~1715I~//~vc1rR~
+            createScreen();                                        //~vc1rI~
 	        AxeJNI.setScreenSize(AxeG.screenW,AxeG.screenH);       //~1715R~
             if (AxeG.optDump==2)                                   //~1922I~
         		Dump.setOption(true);     //if dump2 internal option, strat dump from this point//~1922I~
@@ -335,6 +353,7 @@ public class AxeView                                               //~1606R~
         scrWidth[pl]=w;                                            //~1606I~
         scrHeight[pl]=h;                                           //~1606I~
         scrDip2Pix[pl]=dip2pix;                                    //~1606I~
+        UView.getScreenSize();                                     //~vc1uI~
         return pl;                                                 //~1606I~
     }                                                              //~1606I~
     public void getTitleBarHeight()                            //~1606I~
@@ -358,18 +377,20 @@ public class AxeView                                               //~1606R~
     	if (buttonHeight==0)	//initial                          //~1607I~
         {                                                          //~1607I~
 	        buttonDMZHeight=((LinearLayout)AxeG.mainView.findViewById(LL_BUTTONSDMZ)).getHeight();//~1922I~
-			btnh=llbuttons.getHeight();//0 at orientation changed  //~1607I~
+//  		btnh=llbuttons.getHeight();//0 at orientation changed  //~1607I~//~vc2lR~
+    		btnh=llbuttons1.getHeight()*2;//0 at orientation changed//~vc2lI~
 //      	if (AxeG.displayPL==0||!AxeButtonLayout.getUseLand())  //~1607I~//~1822R~
-            if (AxeG.displayPL==AxeG.PORTRAIT && btnno1!=0)        //~1822I~
-            {                                                      //~1822I~
+//          if (AxeG.displayPL==AxeG.PORTRAIT && btnno1!=0)        //~1822I~//~vc2lR~
+//          {                                                      //~1822I~//~vc2lR~
         		buttonHeight2=btnh; //2line height                 //~1822I~
         		buttonHeight=(btnh+1)/2; //1line height,round down canvas height                //~1607I~
-            }                                                      //~1822I~
-            else                                                   //~1607I~
-            {                                                      //~1822I~
-        		buttonHeight2=btnh*2; //2line height               //~1822I~
-        		buttonHeight=btnh;	//1line height                 //~1607I~
-            }                                                      //~1822I~
+//          }                                                      //~1822I~//~vc2lR~
+//          else                                                   //~1607I~//~vc2lR~
+//          {                                                      //~1822I~//~vc2lR~
+//      		buttonHeight2=btnh*2; //2line height               //~1822I~//~vc2lR~
+//      		buttonHeight=btnh;	//1line height                 //~1607I~//~vc2lR~
+//          }                                                      //~1822I~//~vc2lR~
+        	if (Dump.Y) Dump.println("AxeView.getButtonHeight llbuttons.getHeight()="+btnh+",height2="+buttonHeight2);//~vc1uI~
         }                                                          //~1607I~
 //      int btnno1=AxeG.axeButtonLayout.buttonNo1;                 //~1822R~
 //      if ((AxeG.displayPL==0 && btnno1!=0)                       //~1822R~
@@ -380,7 +401,7 @@ public class AxeView                                               //~1606R~
         else                                                       //~1607R~
         	btnh=buttonHeight;                                     //~1607R~
         btnh+=buttonDMZHeight;                                     //~1922R~
-        if (Dump.Y) Dump.println("AxeView ButtonHeight="+btnh+",1lineH="+buttonHeight+",btnNo1="+btnno1);//~1607R~
+        if (Dump.Y) Dump.println("AxeView.getButtonHeight rc="+btnh+",DMZ="+buttonDMZHeight+",buttonHeight="+buttonHeight+",btnNo1="+btnno1+",height2="+buttonHeight2);//~1607R~//~vc1uR~
         return btnh;
     }                                                              //~1607I~
 	public static boolean isMeasured()                             //~1606I~
@@ -430,6 +451,7 @@ public class AxeView                                               //~1606R~
     //******************************************                   //~vaiqI~
     public static void waitInitializeWarning()                     //~vaiqI~
     {                                                              //~vaiqI~
+        if (Dump.Y) Dump.println("AxeView.waitInitializeWarning"); //+vc31I~
         int flag=AxeAlert.BUTTON_CLOSE/*OK*/|AxeAlert.CB_ONSHOW|AxeAlert.CB_DISMISS;//~vaiqR~
         AxeAlert dlg=AxeAlert.simpleAlertDialog(AxeG.main/*callback*/,0/*title*/,R.string.Warning_WaitingInitialize,flag);//~vaiqR~
 //      dlg.pdlg.getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);//~vaiqR~

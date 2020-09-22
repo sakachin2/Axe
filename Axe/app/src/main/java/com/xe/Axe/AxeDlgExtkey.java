@@ -1,6 +1,9 @@
-//*CID://+dateR~: update#= 160;                                    //~1107R~
+//*CID://+vc2GR~: update#= 168;                                    //+vc2GR~
 //**********************************************************************//~1107I~
-//*AlerDialog                                                      //~1527R~
+//vc2G 2020/08/23 chk validity of unicode value                    //+vc2GR~
+//vc2r 2020/08/07 (BUG)Shortcut modifier was not saved             //~vc2rI~
+//**********************************************************************//~vc2rI~
+//*AlerDlgExtKey                                                   //~1527R~//~0807R~
 //**********************************************************************//~1107I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1527R~
 
@@ -9,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.ahsv.utils.Utils;
 
 
 //**********************************************************************//~1107I~
@@ -58,6 +61,7 @@ public class AxeDlgExtkey extends AxeDialog                        //~1602R~
             extkey=AxeKey.chkInputShortcut(editdata);              //~1602M~
         else                                                       //~1602M~
         	extkey=listData.key2;                                  //~1602M~
+        if (Dump.Y) Dump.println("AxeDlgExtKey.setupDialogExtend extkey="+Integer.toHexString(extkey)+",editdata="+editdata);//~0807I~
         switch(extkey)                                             //~1602M~
         {                                                          //~1602M~
         case AxeKey.KEYVALUE_ERR:                                  //~1602M~
@@ -145,70 +149,80 @@ public class AxeDlgExtkey extends AxeDialog                        //~1602R~
 //*dialog close                                                    //~1608I~
 //************************************************                 //~1608I~
 	@Override
-    protected boolean onClickClose()                               //+1821R~
+    protected boolean onClickClose()                               //~1821R~
     {                                                              //~1531I~
     	boolean rc=true;	//dismiss                              //~1531I~
-        int mod,intval;                                            //+1821R~
+        int mod,intval;                                            //~1821R~
         String value="";                                           //~1601I~
     //**************                                               //~1601I~
-        mod=getExtkeyOption();                                     //+1821R~
-        if (AxeKeyValue.isUnicodeKeyValue(mod))                    //+1821R~
-        {                                                          //+1821R~
-            TextView tv=(TextView)layoutView.findViewById(VIEWID_TV_UNICODE);//+1821R~
-            String str=tv.getText().toString();                    //+1821R~
-            value=str;                                             //+1821R~
-            int unicode=Utils.hexstrToNum(str,AxeKey.KEYVALUE_ERR);//+1821R~
-            if (unicode==AxeKey.KEYVALUE_ERR)                      //+1821R~
-            {                                                      //+1821R~
-                Utils.showToastLong(R.string.Err_InvalidUnicode);  //+1821R~
-                return false;   //no dismiss                       //+1821R~
-            }                                                      //+1821R~
-            intval=AxeKeyValue.setUnicodeId(unicode);              //+1821R~
-        }                                                          //+1821R~
-        else                                                       //+1821R~
-        {                                                          //+1821R~
-            int pos=axeSpinner.getSelectedPos();                   //+1821R~
-            if (pos<0)  //no selection                             //+1821R~
-                pos=0;                                             //+1821R~
-            KeyData kd=AxeKeyValue.getKeyData(pos);                //+1821R~
-            intval=kd.keyGDK;                                      //+1821R~
-            if (intval!=AxeKey.KEYVALUE_NOTDEF)                    //+1821R~
-            {                                                      //+1821R~
-                value=AxeKeyValue.modifierToString(mod,kd.keyName);//+1821R~
-            }                                                      //+1821R~
-        }                                                          //+1821R~
-    	updateItem(intval,value);                          //+1821I~
+        mod=getExtkeyOption();                                     //~1821R~
+        if (Dump.Y) Dump.println("AxeDlgExtKey.onClickClose mod="+Integer.toHexString(mod));//~vc2rI~
+        if (AxeKeyValue.isUnicodeKeyValue(mod))                    //~1821R~
+        {                                                          //~1821R~
+            TextView tv=(TextView)layoutView.findViewById(VIEWID_TV_UNICODE);//~1821R~
+            String str=tv.getText().toString();                    //~1821R~
+            value=str;                                             //~1821R~
+            int unicode=Utils.hexstrToNum(str,AxeKey.KEYVALUE_ERR);//~1821R~
+            if (unicode!=AxeKey.KEYVALUE_ERR)                      //+vc2GR~
+            	if (!Utils.isValidUnicode(unicode))                //+vc2GR~
+	            	unicode=AxeKey.KEYVALUE_ERR;                   //+vc2GR~
+            if (unicode==AxeKey.KEYVALUE_ERR)                      //~1821R~
+            {                                                      //~1821R~
+              unicode=value.charAt(0);                             //~vc2rI~
+              if (value.length()>1 || unicode<0x80)                  //~vc2rI~
+              {                                                    //~vc2rI~
+                Utils.showToastLong(R.string.Err_InvalidUnicode);  //~1821R~
+                return false;   //no dismiss                       //~1821R~
+              }                                                    //~vc2rI~
+            }                                                      //~1821R~
+            intval=AxeKeyValue.setUnicodeId(unicode);              //~1821R~
+        }                                                          //~1821R~
+        else                                                       //~1821R~
+        {                                                          //~1821R~
+            int pos=axeSpinner.getSelectedPos();                   //~1821R~
+            if (pos<0)  //no selection                             //~1821R~
+                pos=0;                                             //~1821R~
+            KeyData kd=AxeKeyValue.getKeyData(pos);                //~1821R~
+            intval=kd.keyGDK;                                      //~1821R~
+            if (intval!=AxeKey.KEYVALUE_NOTDEF)                    //~1821R~
+            {                                                      //~1821R~
+                value=AxeKeyValue.modifierToString(mod,kd.keyName);//~1821R~
+                intval|=mod;                                       //~vc2rR~
+            }                                                      //~1821R~
+        }                                                          //~1821R~
+    	updateItem(intval,value);                          //~1821I~
  
         return rc;                                                 //~1531I~
     }                                                              //~1531I~
-//************************************************                 //+1821I~
-//*dialog close                                                    //+1821I~
-//************************************************                 //+1821I~
-	@Override                                                      //+1821I~
-    protected boolean onClickOther(int PbuttonId)                  //+1821I~
-    {                                                              //+1821I~
-    	boolean rc=true;	//dismiss                              //+1821I~
-        int intval=AxeKey.KEYVALUE_NOTDEF;                         //+1821I~
-        String value="";                                           //+1821I~
-    //**************                                               //+1821I~
-        switch(PbuttonId)                                          //+1821I~
-        {                                                          //+1821I~
-        case R.id.Clear:                                           //+1821I~
-	    	updateItem(intval,value);                      //+1821I~
-            break;                                                 //+1821I~
-        }                                                          //+1821I~
-        return rc;                                                 //+1821I~
-    }                                                              //+1821I~
-    private void updateItem(int Pintvalue,String Pstrvalue)//+1821I~
-    {                                                              //+1821I~
-        TextView textView2;                                        //+1821I~
-    //**************                                               //+1821I~
-        listData.isUpdated=true;                                      //+1821I~
-        listData.key2=Pintvalue;                                      //+1821I~
-        textView2=listData.textView2;                              //+1821I~
-        textView2.setText(Pstrvalue);                              //+1821I~
-        invalidateListView();	//background redraw                //+1821I~
-    }                                                              //+1821I~
+//************************************************                 //~1821I~
+//*dialog close                                                    //~1821I~
+//************************************************                 //~1821I~
+	@Override                                                      //~1821I~
+    protected boolean onClickOther(int PbuttonId)                  //~1821I~
+    {                                                              //~1821I~
+    	boolean rc=true;	//dismiss                              //~1821I~
+        int intval=AxeKey.KEYVALUE_NOTDEF;                         //~1821I~
+        String value="";                                           //~1821I~
+    //**************                                               //~1821I~
+        switch(PbuttonId)                                          //~1821I~
+        {                                                          //~1821I~
+        case R.id.Clear:                                           //~1821I~
+	    	updateItem(intval,value);                      //~1821I~
+            break;                                                 //~1821I~
+        }                                                          //~1821I~
+        return rc;                                                 //~1821I~
+    }                                                              //~1821I~
+    private void updateItem(int Pintvalue,String Pstrvalue)//~1821I~
+    {                                                              //~1821I~
+        TextView textView2;                                        //~1821I~
+    //**************                                               //~1821I~
+        if (Dump.Y) Dump.println("AxeDlgExtKey.updateItem value="+Integer.toHexString(Pintvalue)+"="+Pstrvalue);//~0807I~
+        listData.isUpdated=true;                                      //~1821I~
+        listData.key2=Pintvalue;                                      //~1821I~
+        textView2=listData.textView2;                              //~1821I~
+        textView2.setText(Pstrvalue);                              //~1821I~
+        invalidateListView();	//background redraw                //~1821I~
+    }                                                              //~1821I~
 //*****************                                                //~1817I~
     private void invalidateListView()                                //~1817I~
     {                                                              //~1817I~
@@ -238,6 +252,7 @@ public class AxeDlgExtkey extends AxeDialog                        //~1602R~
             if (cb.isChecked())                                    //~1601R~
                 mod|=AxeKeyValue.KBF_ALT;                       //~1601R~
         }                                                          //~1601I~
+        if (Dump.Y) Dump.println("AxeDlgExtKey.getExtKeyOption mod="+Integer.toHexString(mod));//~0807I~
         return mod;
     }                                                              //~1601I~
     private void setExtkeyOption(int Pmod)                          //~1601I~
@@ -245,6 +260,7 @@ public class AxeDlgExtkey extends AxeDialog                        //~1602R~
     	CheckBox cb;                                               //~1601I~                                            //~1601I~
         boolean isunicode;                                         //~1601I~
     //************                                                 //~1601I~
+        if (Dump.Y) Dump.println("AxeDlgExtKey.setExtKeyOption mod="+Integer.toHexString(Pmod));//~0807I~
     	cb=(CheckBox)layoutView.findViewById(VIEWID_CB_UNICODE);   //~1601I~
         isunicode=AxeKeyValue.isUnicodeKeyValue(Pmod);             //~1601I~
         cb.setChecked(isunicode);                                  //~1601I~

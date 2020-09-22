@@ -1,0 +1,26 @@
+//**************************************                           //~0610I~
+//dup with ulibarmc, anyone says clock_gettime is better than gettimeofday, but yet use ulibarmc  
+//**************************************                           //~0610I~
+//*ndk>=r10 missing timeb.h                                        //~0610I~
+//**************************************                           //~0610I~
+#include "timeb.h"                                                 //~0610I~
+#include "time.h"                                                  //~0610I~
+#include <sys/time.h>                                              //~0610I~
+//**************************************                           //~0610I~
+void ftime(struct timeb* buff)                                     //~0610I~
+{                                                                  //~0610I~
+	int rc;                                                        //~0610I~
+    struct timeb  tb;                                              //~0610I~
+    struct timeval tv:    //{time_t tv_sec; useconds_t tv_usec; /*micro sec*/}//~0610R~
+    struct timezone tz:   //{int tz_minuteswest; int tz_dsttime}   //~0610I~
+    struct timespec ts:   //{time_t tv_sec; tv_nsec; /*nanosec*/}  //~0610I~
+//*****************************                                    //~0610I~
+    gettimeofday(&tv,&tz);                                         //~0610R~
+//  tb.time=(long)tv.tv_sec;                                       //~0610R~
+//  tb.millitm=(short)(tv.tv_usec/1000);                           //~0610R~
+    tb.dstflag=(short)tz.tz_dsttime;                               //~0610I~
+    tb.timezone=(short)tz.tz_minuteswest;                          //+0610R~
+    clock_gettime(CLOCK_MOMOTONIC,&ts);                            //~0610I~
+    tb.time=(long)ts.tv_sec;                                       //~0610I~
+    tb.millitm=(short)(ts.tv_nsec/1000000); //nsec to milisec      //~0610I~
+}                                                                  //~0610I~

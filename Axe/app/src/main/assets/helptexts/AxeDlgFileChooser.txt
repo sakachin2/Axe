@@ -1,0 +1,25 @@
+Dialog for file "Open", "New" and "SaveAs"
+----------------------------------------------------------------------------
+Filter: Enter file selection by extension list or wildcard.
+        enclose by " for regular expression.
+  e.g.) .c  .c|.h  xe*   xe?cmd*  ".*\\.cpp$|.*\\.h$"
+
+Sort-N: Sort by filename. Ascendant/Desendant is toggled.
+Sort-T: Sort by timestamp. Ascendant/Desendant is toggled.
+Detail: Show/Hide timestamp and file size.
+Parent: back to the parent folder.
+
+Name:
+	Specify file name when New or SaveAs.
+    And it is filled if touched a listview line.
+    Backspace button is for clearing input.
+    Search button is to apply filter.
+
+Listview:
+	Touching twice will open the file/folder.
+
+Edit: open the selected file/folder by Edit mode.
+Browse: open the selected file/folder by Browse mode.
+Save : save to the file of "Name" in the selected folder.
+----------------------------------------------------------------------------
+2020/09/13 AxeDlgFileChooser

@@ -1,4 +1,4 @@
-//*CID://+vaxdR~: update#=  211;                                   //~vaxdR~
+//*CID://+vaxdR~: update#=  219;                                   //~vaxdR~
 //********************************************************************//~vaaBI~
 //vaxd:140706 (Axe)Show IM even when hardware kbsd is connected    //~vaxdI~
 //vaaC:120110 close preedit when IM was closed by back key         //~vaaCI~
@@ -8,6 +8,7 @@ package com.xe.Axe;                                                //~@@@@I~
 
 import android.content.DialogInterface;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
 //**********************************                               //~1725I~
     public static AxeDlgImePreedit showDialog()                 //~1821R~//~1826R~
     {                                                              //~1725I~
+        if (Dump.Y) Dump.println("AxeDlgImePreedit.showDialog");   //~vaxdI~
     	AxeDlgImePreedit dlg=new AxeDlgImePreedit();                 //~1821R~//~1826R~
         String title=Utils.getResourceString(TITLE);               //~1821R~
 		dlg.showDialog(title);                                     //~1725I~
@@ -63,36 +65,37 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
 //      etPreedit.setFocusableInTouchMode(true);	//DOC says "FocusableInTouch then Focusable"//~1325I~//~1828R~
 //      etPreedit.setFocusable(true);                                     //~1127I~//~1828R~
 	    etPreedit.setText("");                                     //~1826I~
-//      addFocusChangeListener(etPreedit);//showKbd by OnShowListener    //~1826I~//~1828R~
+        addFocusChangeListener(etPreedit);//showKbd by OnShowListener //TODO test    //~1826I~//~1828R~//~vaxdR~
 //      etPreedit.requestFocus();                                  //~1826I~//~1828I~
         etPreedit.requestFocusFromTouch();                         //~1828R~
         etPreedit.setOnEditorActionListener(new EditorActionListener());//~1826I~
         setIMFocus();                                              //~1827I~
-        if (Dump.Y) Dump.println("AxeDlgImePreedit Open");         //~1827I~
+        if (Dump.Y) Dump.println("AxeDlgImePreedit.setupDialogExtend Open");         //~1827I~//~vaxdR~
     }                                                              //~1826I~
-//    @Override                                                      //~1827I~
-//    public void onWindowFocusChanged(boolean Phasfocus)            //~1827I~
-//    {                                                              //~1827I~
-//        if (Dump.Y) Dump.println("AxeDlgImePreedit onWindowFocusChanged");//~1827I~
-//    }                                                              //~1827I~
-//    //****************                                             //~1826I~//~1828R~
-//    public void addFocusChangeListener(EditText PeditText)         //~1826I~//~1828R~
-//    {                                                              //~1826I~//~1828R~
-//        if (Dump.Y) Dump.println("AxeDlgImePreedit addfocuschange listener");//~1827I~//~1828R~
-//        FocusListener l=new FocusListener(PeditText);              //~1826I~//~1828R~
-//        PeditText.setOnFocusChangeListener(l);                     //~1826I~//~1828R~
-//    }                                                              //~1826I~//~1828R~
+    @Override                                                      //~1827I~//~vaxdR~
+    public void onWindowFocusChanged(boolean Phasfocus)            //~1827I~//~vaxdR~
+    {                                                              //~1827I~//~vaxdR~
+        if (Dump.Y) Dump.println("AxeDlgImePreedit onWindowFocusChanged hasFocus="+Phasfocus);//~1827I~//~vaxdR~
+    }                                                              //~1827I~//~vaxdR~
+    //****************                                             //~1826I~//~1828R~//~vaxdR~
+    public void addFocusChangeListener(EditText PeditText)  //TODO test       //~1826I~//~1828R~//~vaxdR~
+    {                                                              //~1826I~//~1828R~//~vaxdR~
+        if (Dump.Y) Dump.println("AxeDlgImePreedit.addFocusChangeListener PeditText="+PeditText);//~1827I~//~1828R~//~vaxdR~
+        FocusChangeListener l=new FocusChangeListener(PeditText);              //~1826I~//~1828R~//~vaxdR~
+        PeditText.setOnFocusChangeListener(l);                     //~1826I~//~1828R~//~vaxdR~
+    }                                                              //~1826I~//~1828R~//~vaxdR~
     //****************                                             //~1828I~
     private void setShownListener()                                //~1828I~
     {                                                              //~1828I~
-        if (Dump.Y) Dump.println("AxeDlgImePreedit setShownListener");//~1828I~
+        if (Dump.Y) Dump.println("AxeDlgImePreedit.setShownListener");//~1828I~//~vaxdR~
         /*androidDialog.*/setOnShowListener(                          //~1828I~
         	new OnShowListener()                  //~1828I~
             {                                                      //~1828I~
             	@Override                                          //~1828I~
                 public void onShow(DialogInterface Pdialog)        //~1828I~
                 {                                                  //~1828I~
-					if (Dump.Y) Dump.println("AxeDlgImePreedit:onshow"); 
+					if (Dump.Y) Dump.println("AxeDlgImePreedit:onShow");//~vaxdR~
+					etPreedit.requestFocus();	//TODO test        //+vaxdM~
             		AxeG.axeIME.showDefaultKbd(etPreedit);                //~1828I~
 					requestedHideIME=false;                        //~vaaCI~
                 }                                                  //~1828I~
@@ -158,12 +161,12 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
 	@Override                                                      //~vaaCI~
 	protected void onDismiss()                                     //~vaaCI~
     {                                                              //~vaaCI~
-        if (Dump.Y) Dump.println("AxeDlgImePreedit:OnDismiss");    //~vaaCI~
+        if (Dump.Y) Dump.println("AxeDlgImePreedit.OnDismiss");    //~vaaCI~//~vaxdR~
 		hideIME();                                                 //~vaaCI~
     }                                                              //~vaaCI~
-	public void hideIME()                                          //~vaaCR~
+	private void hideIME()                                          //~vaaCR~//~vaxdR~
     {                                                              //~vaaCI~
-        if (Dump.Y) Dump.println("AxeDlgImePreedit:hideIME requested="+requestedHideIME);//~vaaCI~
+        if (Dump.Y) Dump.println("AxeDlgImePreedit.hideIME requested="+requestedHideIME);//~vaaCI~//~vaxdR~
 		if (!requestedHideIME)                                     //~vaaCI~
         {                                                          //~vaaCI~
     		AxeG.axeIME.hideKbd(etPreedit);                        //~vaaCI~
@@ -182,13 +185,13 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
         public boolean onEditorAction(TextView Pview,int Paction,KeyEvent Pevent)//~1826I~
         {                                                          //~1826I~
                                                                    //~1826I~
-            if (Dump.Y) Dump.println("AxeDlgImePreedit:OnEditorAction action="+Paction);//~1826I~//~vaaCR~
+            if (Dump.Y) Dump.println("AxeDlgImePreedit.onEditorAction action="+Paction);//~1826I~//~vaaCR~//~vaxdR~
         	try                                                    //~1826I~
             {                                                      //~1826I~
                 int keycode=0,scancode=0;                          //~1919R~
                 if (Pevent==null)                                   //~1826I~
                 {                                                  //~vaaCI~
-                    if (Dump.Y) Dump.println("AxeDlgImePreedit OnEditorAction event=null");//~1826I~//~vaaCR~
+                    if (Dump.Y) Dump.println("AxeDlgImePreedit.onEditorAction event=null");//~1826I~//~vaaCR~//~vaxdR~
                 }                                                  //~vaaCI~
                 else                                               //~1826I~
                 {                                                  //~1919I~
@@ -196,7 +199,7 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
                     scancode=Pevent.getScanCode();//of Enter Key   //~1919I~
                 }                                                  //~1919I~
                 String eti=Pview.getText().toString();         //~1826I~//~1827R~
-                if (Dump.Y) Dump.println("AxeDlgImePreedit:onEditAction str="+eti+",keycode="+keycode);//~1826I~//~1827R~
+                if (Dump.Y) Dump.println("AxeDlgImePreedit.onEditAction str="+eti+",keycode="+keycode);//~1826I~//~1827R~//~vaxdR~
                 if (!eti.equals(""))                           //~1826I~//~1827R~
                 {                                              //~1826I~//~1827R~
                     Pview.setText("");                         //~1826I~//~1827R~
@@ -231,7 +234,7 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
         @Override                                                  //~vaaCI~
         public boolean onKeyPreIme(int Pkeycode,KeyEvent Pevent)   //~vaaCI~
         {                                                          //~vaaCI~
-            if (Dump.Y) Dump.println("onKeyPreIme keycoe="+Integer.toHexString(Pkeycode));//~vaaCI~
+            if (Dump.Y) Dump.println("AxeDlgImePreedit.onKeyPreIme keycoe="+Integer.toHexString(Pkeycode));//~vaaCI~//~vaxdR~
         	if (Pkeycode==KeyEvent.KEYCODE_BACK)                    //~vaaCI~
             {                                                      //~vaaCI~
 				if (AxeDlgImePreedit.preeditDialog!=null)          //~vaaCI~
@@ -244,4 +247,18 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
             return rc;                                             //~vaaCR~
         }                                                          //~vaaCI~
     }                                                              //~vaaCI~
+//**********************************************************************//~vaxdI~
+    class FocusChangeListener implements View.OnFocusChangeListener//~vaxdM~
+    {                                                              //~vaxdM~
+    	private View view;                                         //~vaxdM~
+    	public FocusChangeListener(View Pview)                     //~vaxdM~
+        {                                                          //~vaxdM~
+        	view=Pview;                                            //~vaxdM~
+        }                                                          //~vaxdM~
+        @Override                                                  //~vaxdM~
+        public void onFocusChange(View Pview, boolean Phasfocus)   //~vaxdM~
+        {                                                          //~vaxdM~
+            if (Dump.Y) Dump.println("AxeDlgImePreedit.onFocusChanged to "+Phasfocus+",view="+Pview.toString());//~vaxdM~
+        }                                                          //~vaxdM~
+    }//class FocusChangeListener                                   //~vaxdM~
 }                                                                  //~1528R~

@@ -1,0 +1,15 @@
+----------------------------------------------------------------------------
+Ruler Type:
+	Select vertical/Horizontal/Cross Hair line at the cursor position.
+FreeCursor:
+	if ON, cursor wraps from edge of screen to another edge.
+	if OFF, screen shift occurs on file/directory panel
+			except when cursor is out of text area such as line-no field.
+Beep:
+	Beep when error detected.
+QuietExit:
+	No confirmation at exit XE by Keyboard Function key.
+	"Exit" on menu requires always confirmation.
+
+----------------------------------------------------------------------------
+2020/09/13 SetupOther

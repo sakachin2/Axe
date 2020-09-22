@@ -1,5 +1,9 @@
-//CID://+vaieR~:         update#=      2   1                       //~vaieR~
+//CID://+vc2ZR~:         update#=     16                           //~vc2ZR~
 //*************************************************************
+//vc2Z 2020/09/20 set Default button layout to HW                  //~vc2ZI~
+//vc2A 2020/08/12 (BUG)ButtonLayout insert after 1st line end added to last of 2nd line//~vc2AI~
+//vc2x 2020/08/10 change buttons layout for HWKbd                  //~vc2xI~
+//vc2k 2020/07/28 Button layout with hardware keyboard             //~vc2kI~
 //vaie:130529 Axe:Bug:When landscape,screen hight was changed when button array1 changed count=0<-->!0//~vaieI~
 //*************************************************************
 package com.xe.Axe;
@@ -15,7 +19,9 @@ public class AxeButtonLayout
 {
 	private static final int MAX_BUTTONS_PER_LINE=8;
 	public  static final int MAX_BUTTONS=MAX_BUTTONS_PER_LINE*2;
-	private static final int DEFAULT_BUTTONS     =6;
+	public  static final int DEFAULT_BUTTONS     =6;               //~vaieR~
+	public  static final int HWKBD_BUTTONS1      =0;               //~vc2kR~
+	public  static final int HWKBD_BUTTONS2      =6;               //~vc2kR~//~vc2xR~
 
     private static final int[] buttonResourceId={
     		R.id.Button21,R.id.Button22,R.id.Button23,R.id.Button24,R.id.Button25,R.id.Button26,R.id.Button27,R.id.Button28,
@@ -61,7 +67,7 @@ public class AxeButtonLayout
 		{
 			id=buttonResourceId[ii];
     		btn=(Button)layoutView.findViewById(id);               //~1810R~
-            if (Dump.Y) Dump.println("ButtonLayoutinitialFindView hh="+btn.getHeight());//+vaieI~
+            if (Dump.Y) Dump.println("ButtonLayoutinitialFindView hh="+btn.getHeight());//~vaieI~
             buttonActionTbl[ii]=new AxeButtonAction(ii,btn);
         }
 //  	buttonArray1Container=(LinearLayout)layoutView.findViewById(buttonArray1ContainerId);//~3529R~
@@ -110,13 +116,37 @@ public class AxeButtonLayout
         buttonNo1=DEFAULT_BUTTONS;
         buttonNo2=DEFAULT_BUTTONS;
     }
+//**************                                                   //~vc2kI~
+	public void setHWKbdLayout()                                   //~vc2kR~
+    {                                                              //~vc2kI~
+        buttonActionTbl[0].setButton(AxeButton.btnIM);             //~vc2kI~
+        buttonActionTbl[1].setButton(AxeButton.btnIMP);            //~vc2kI~
+        buttonActionTbl[2].setButton(AxeButton.btnCtrl);           //~vc2xI~
+        buttonActionTbl[3].setButton(AxeButton.btnAlt);            //~vc2xI~
+        buttonActionTbl[4].setButton(AxeButton.btnAltGr);          //~vc2xI~
+        buttonActionTbl[5].setButton(AxeButton.btnShortCut);       //~vc2xI~
+        buttonActionTbl[6].setButton(AxeButton.btnGone);           //~vc2kR~//~vc2xR~
+        buttonActionTbl[7].setButton(AxeButton.btnGone);           //~vc2kR~//~vc2xR~
+                                                                   //~vc2kI~
+        buttonActionTbl[8].setButton(AxeButton.btnGone);           //~vc2kI~
+        buttonActionTbl[9].setButton(AxeButton.btnGone);           //~vc2kR~
+        buttonActionTbl[10].setButton(AxeButton.btnGone);          //~vc2kI~
+        buttonActionTbl[11].setButton(AxeButton.btnGone);          //~vc2kI~
+        buttonActionTbl[12].setButton(AxeButton.btnGone);          //~vc2kI~
+        buttonActionTbl[13].setButton(AxeButton.btnGone);          //~vc2kI~
+        buttonActionTbl[14].setButton(AxeButton.btnGone);          //~vc2kI~
+        buttonActionTbl[15].setButton(AxeButton.btnGone);          //~vc2kI~
+                                                                   //~vc2kI~
+        buttonNo1=HWKBD_BUTTONS1;                                  //~vc2kR~
+        buttonNo2=HWKBD_BUTTONS2;                                  //~vc2kI~
+    }                                                              //~vc2kI~
 //**************
 //    public void save(int PbuttonNo)
 //    {
 //        AxeButtonIO.save(PbuttonNo,buttonLayout[PbuttonNo]);
 //    }
 //**************
-    public void initialload()
+    private void initialload()                                     //+vc2ZR~
     {
     	AxeButton btn;
         for (int ii=0;ii<MAX_BUTTONS;ii++)
@@ -126,13 +156,16 @@ public class AxeButtonLayout
         }
         loadoptions();
         oldButtonNo1=buttonNo1;                                    //~1607I~
+        if (Dump.Y) Dump.println("AxeButtonLayout.initialLoad buttonNo1="+buttonNo1);//~vc2kI~
     }
 //**************
-    public void loadoptions()
+    private void loadoptions()                                     //+vc2ZR~
     {
 //  	sticky=restoreOptionBoolean(PREFKEY_STICKY);               //~1609R~
-    	buttonNo1=restoreOptionInt(PREFKEY_BUTTONNO+1,DEFAULT_BUTTONS);
-    	buttonNo2=restoreOptionInt(PREFKEY_BUTTONNO+2,DEFAULT_BUTTONS);
+//  	buttonNo1=restoreOptionInt(PREFKEY_BUTTONNO+1,DEFAULT_BUTTONS);//+vc2ZR~
+//  	buttonNo2=restoreOptionInt(PREFKEY_BUTTONNO+2,DEFAULT_BUTTONS);//+vc2ZR~
+    	buttonNo1=restoreOptionInt(PREFKEY_BUTTONNO+1,HWKBD_BUTTONS1);//+vc2ZI~
+    	buttonNo2=restoreOptionInt(PREFKEY_BUTTONNO+2,HWKBD_BUTTONS2);//+vc2ZI~
     }
 //**************
     public static boolean restoreOptionBoolean(String Pkey)
@@ -209,11 +242,17 @@ public class AxeButtonLayout
         saveOption(PREFKEY_ORIENTATIONFIX,orientationFix);         //~1822R~
     }                                                              //~1822R~
 //******************************
-    public void restoreDefaultLayout()
+    public void restoreHWKbdLayout()                               //~vc2kR~
     {
-    	setDefaultLayout();
+    	setHWKbdLayout();                                          //~vc2kR~
     	setButtonLayout(buttonNo1,buttonNo2);
     }
+//******************************                                   //~vc2kI~
+    public void restoreDefaultLayout()                             //~vc2kI~
+    {                                                              //~vc2kI~
+    	setDefaultLayout();                                        //~vc2kI~
+    	setButtonLayout(buttonNo1,buttonNo2);                      //~vc2kI~
+    }                                                              //~vc2kI~
 //**************
 //*from dialog
 //**************
@@ -237,6 +276,7 @@ public class AxeButtonLayout
         newlayout=arrangeLayout(Pno1,Pno2);
         setButtonStatusALL(newlayout);                             //~1923R~
 	    saveLayout();
+    	if (Dump.Y) Dump.println("AxeButtonLayout no="+Pno1+","+Pno2+",oldNo1="+oldButtonNo1);//~vc2kI~
         if (oldButtonNo1>=0 && oldButtonNo1!=Pno1)	               //~1607I~
         {                                                          //~1607I~
         	if (oldButtonNo1==0||Pno1==0)	//changed 0 and non-0  //~1607I~
@@ -415,8 +455,9 @@ public class AxeButtonLayout
             {
                 if (!deleted)
                 {
-	        		if (Dump.Y) Dump.println("buttonUpdate inserted pos="+pos1);
+	        		if (Dump.Y) Dump.println("AxeButtonLayout.buttonUpdate inserted pos="+pos1);//~vc2AR~
                     deleted=true;
+                    pos1--;                                        //~vc2AI~
                     continue;
                 }
             }
@@ -427,7 +468,7 @@ public class AxeButtonLayout
                 btn=Pbutton;	//to be inserted
                 inserted=true;
             }
-        	if (Dump.Y) Dump.println("buttonUpdate insert pos="+pos2+",button="+btn.name);
+        	if (Dump.Y) Dump.println("AxeButtonLayout.buttonUpdate insert pos="+pos2+",button="+btn.name);//~vc2AR~
             if (pos2<MAX_BUTTONS)
             	newlayout[pos2++]=btn;
             else

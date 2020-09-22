@@ -1,4 +1,4 @@
-//*CID://+vaxfR~: update#= 125;                                    //~vaxfR~
+//*CID://+vaxfR~: update#= 126;                                    //~vaxfR~
 //**********************************************************************//~1107I~
 //*AlerDialog                                                      //~1527R~
 //**********************************************************************//~1107I~
@@ -100,6 +100,7 @@ public class AxeAlert                                            //~1107R~//~152
         if ((Pflag & CB_ONSHOW)!=0)                                //~vaiqI~
         	setOnShow(this);                                       //~vaiqR~
         pdlg.setOnDismissListener(new AxeAlertDismissListener(this));   //~vaiqI~
+        if (Dump.Y) Dump.println("AxeAlert.createAlertDialog text="+Ptext);//+vaxfI~
     	pdlg.show();                                                    //~v@@@I~//~1211I~//~1212R~
     }                                                              //~1211I~
 //**********************************                               //~1212I~
@@ -171,6 +172,7 @@ public class AxeAlert                                            //~1107R~//~152
    }//setButton                                                   //~1212I~
     private static void callback(AlertDialog Pdlg,AxeAlertI Pcallback,int Pbuttonid)//~1622I~
     {                                                          //~1622I~
+        if (Dump.Y) Dump.println("AxeAlert callback");             //+vaxfI~
     	Pdlg.dismiss();                                        //~1622I~
         if (Pcallback!=null)                                   //~1622I~
         	Pcallback.alertButtonAction(Pbuttonid,0);     //~1622I~
@@ -317,19 +319,19 @@ public class AxeAlert                                            //~1107R~//~152
 	{                                                              //~vaxfI~
     	TextView tv;                                               //~vaxfI~
     	ScrollView sv;                                             //~vaxfI~
-        int sz;                                                    //+vaxfI~
+        int sz;                                                    //~vaxfI~
     //*************************                                    //~vaxfI~
     	tv=new TextView(AxeG.context);                             //~vaxfI~
         helpTextView=tv;                                           //~vaxfI~
         tv.setText(Ptext);                                         //~vaxfM~
         helpTextSz=(int)tv.getTextSize();                          //~vaxfR~
-        sz=AxeProp.getPreference(PREF_HELPTEXTSZ,0/*default*/);    //+vaxfI~
-        if (sz!=0)                                                 //+vaxfI~
-        {                                                          //+vaxfI~
-        	tv.setTextSize(TypedValue.COMPLEX_UNIT_PX,sz);         //+vaxfI~
-	        sz=(int)tv.getTextSize();                              //+vaxfI~
-        }                                                          //+vaxfI~
-        helpTextSz=sz;                                             //+vaxfI~
+        sz=AxeProp.getPreference(PREF_HELPTEXTSZ,0/*default*/);    //~vaxfI~
+        if (sz!=0)                                                 //~vaxfI~
+        {                                                          //~vaxfI~
+        	tv.setTextSize(TypedValue.COMPLEX_UNIT_PX,sz);         //~vaxfI~
+	        sz=(int)tv.getTextSize();                              //~vaxfI~
+        }                                                          //~vaxfI~
+        helpTextSz=sz;                                             //~vaxfI~
         AxeProp.putPreference(PREF_HELPTEXTSZ,helpTextSz);         //~vaxfI~
     	sv=new ScrollView(AxeG.context);                           //~vaxfR~
     	sv.addView(tv);                                            //~vaxfR~
@@ -341,7 +343,7 @@ public class AxeAlert                                            //~1107R~//~152
 	{                                                              //~vaxfI~
     //*************************                                    //~vaxfI~
     	helpTextSz+=Pincrement;                                    //~vaxfI~
-        helpTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,helpTextSz);//+vaxfR~
+        helpTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,helpTextSz);//~vaxfR~
         helpTextView.invalidate();                                           //~vaxfI~
         AxeProp.putPreference(PREF_HELPTEXTSZ,helpTextSz);         //~vaxfI~
     }//setscrollview                                               //~vaxfI~

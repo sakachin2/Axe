@@ -1,5 +1,10 @@
-//*CID://+vairR~: update#=  195;                                   //~vairR~
+//*CID://+vc2SR~: update#=  235;                                   //~vc2SR~
 //*****************************************************************//~vaatI~
+//vc2S 2020/09/12 add ruler width option                           //~vc2SI~
+//vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//~vc26I~
+//vc1r 2020/06/26 avoid ime popup implicitly                       //~vc1rI~
+//vc15 2020/06/14 warning: should use appcompat imageview          //~vc15I~
+//vc13 2020/06/14 drawPosText deprecated api16(android4.1 JellyBean)//~vc13I~
 //vair:130606 Axe:reuestforcus reured for IS01 for hard-kbd inputmkey input avail after track ball input.//~vairI~
 //            For Nexus7 it popup ime.                             //~vairI~
 //            So reuest focus if hard-kbd available.               //~vairI~
@@ -20,23 +25,32 @@
 package com.xe.Axe;                                                //~@@@@I~
 
 import java.text.Format;
+import java.util.Arrays;
 
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.InputType;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.widget.ImageView;
+import android.widget.EditText;
+//import android.widget.ImageView;
                                                                    //~1716I~
-import com.xe.Axe.Gxeh;                                        //~1716I~
-                                                                   //~1606I~
-                                                                   //~1606I~
+import com.ForDeprecated.Funcs; //~1606I~
+import com.ahsv.utils.Utils;                                       //~vc1rI~
+import com.xe.Axe.kbd.AxeKbdDialogHW;
+
+import static com.xe.Axe.Utils.showToast;
+
+//~1606I~
 //*****************************************************************//~1606I~
                                                                    //~1606I~
-public class AxeScreen extends ImageView                                //~1606I~
+//public class AxeScreen extends ImageView                         //~vc15R~
+public class AxeScreen extends android.support.v7.widget.AppCompatImageView//~vc15I~
 {                                                                  //~1606I~
 	public Bitmap   bitmap;         //offscreen bitmap              //~1620R~//~1719R~
 	public Canvas   bitmapCanvas;   //offscreen canvas             //~1620R~//~1719R~
@@ -67,7 +81,7 @@ public class AxeScreen extends ImageView                                //~1606I
         	x2=Px2;                                                //~1809I~
         	y2=Py2;                                                //~1809I~
         	fg=Pfg;                                                //~1809I~
-            if (Dump.Y) Dump.println("PendingLine constructor x1="+Px1+",y1="+Py1+",x2="+Px2+",y2="+Py2);//~vaifI~
+            if (Dump.Y) Dump.println("AxeScreen.PendingLine constructor x1="+Px1+",y1="+Py1+",x2="+Px2+",y2="+Py2);//~vaifI~//~vc1rR~
         }                                                          //~1809I~
         public void setPendingLine(int Pwidth,int Px1,int Py1,int Px2,int Py2,int Pfg)//~1826I~
         {                                                          //~1826I~
@@ -77,7 +91,7 @@ public class AxeScreen extends ImageView                                //~1606I
         	x2=Px2;                                                //~1826I~
         	y2=Py2;                                                //~1826I~
         	fg=Pfg;                                                //~1826I~
-            if (Dump.Y) Dump.println("setPendingLine x1="+Px1+",y1="+Py1+",x2="+Px2+",y2="+Py2);//~vaifI~
+            if (Dump.Y) Dump.println("AxeScreen.setPendingLine x1="+Px1+",y1="+Py1+",x2="+Px2+",y2="+Py2);//~vaifI~//~vc1rR~
         }                                                          //~1826I~
     }                                                              //~1809I~
 ///////////////////////////////////////////////////////////////////////////////~1606I~
@@ -93,13 +107,19 @@ public class AxeScreen extends ImageView                                //~1606I
       	bitmapCanvas=new Canvas(bitmap);                           //~1608I~
         setFocusableInTouchMode(true);	//DOC says "FocusableInTouch then Focusable"//~1607I~
         setFocusable(true);                                        //~1607I~
-        if (Dump.Y) Dump.println("AxeScreen constructor bitmap="+Pbitmap.toString());//~1607I~
+        if (Dump.Y) Dump.println("AxeScreen.constructor bitmap="+Pbitmap.toString());//~1607I~//~vc1rR~
         AxeG.axeKeyAction.setKeyListener(this);                    //~1607R~
+        new AxeKbdDialogHW(AxeG.context);   //accept harware kbd               //~vc1rI~
         AxeG.axeIME=new AxeIME(this);                              //~1826R~
         addFocusChangeListener(this);                              //~1607I~
+        AxeG.axeScreen=this;                                       //~vc1rI~
 //    if (false)                                                   //~vaifR~
-      if (!hardKbdOff())	//hardkbd available                    //+vairR~
-        requestFocus();                                            //~1607I~
+      if (!hardKbdOff())	//hardkbd available                    //~vairR~
+      {                                                            //~vc1rI~
+        if (Dump.Y) Dump.println("AxeScreen.constructor requestFocus");//~vc1rI~
+//      requestFocus();                                            //~1607I~//~vc1rR~
+        getFocus(this);                                            //~vc1rR~
+      }                                                            //~vc1rI~
         setupPaint();                                               //~1608I~
     }                                                              //~1606I~
     private void setupPaint()                                           //~1608I~
@@ -122,8 +142,11 @@ public class AxeScreen extends ImageView                                //~1606I
     @Override                                                      //~1826I~
     public boolean onCheckIsTextEditor()                           //~1826I~
     {                                                      //~v@@@I~//~va15I~//~1826I~
-        if (Dump.Y) Dump.println("OnCheckisTextEditor");                        //~1826I~//~1827R~//~vabbR~
-        return true;                                               //~1826I~
+    	boolean rc;                                                //~vc1rI~
+//      rc=true;                                                   //~vc1rI~
+        rc=false;   //TOD test                                     //~vc1rI~
+        if (Dump.Y) Dump.println("AxeScreen.OnCheckisTextEditor rc="+rc);                        //~1826I~//~1827R~//~vabbR~//~vc1rR~
+        return rc;                                                 //~vc1rI~
     }                                                              //~1826I~
 //********************************************************              //~1826I~//~1827R~
 // Japanese IME requires this connection for not EditText          //~1827I~
@@ -133,7 +156,7 @@ public class AxeScreen extends ImageView                                //~1606I
     @Override                                                  //~1826I~//~1827R~
     public InputConnection onCreateInputConnection(EditorInfo outAttrs)//~1826I~//~1827R~
     {                                                          //~1826I~//~1827R~
-        if (Dump.Y) Dump.println("OnCreateInputConnection +imeoption="+outAttrs.imeOptions+",inputtype="+outAttrs.inputType);//~1826I~//~1827R~//~vabbR~
+        if (Dump.Y) Dump.println("AxeScreen.onCreateInputConnection +imeoption="+outAttrs.imeOptions+",inputtype="+outAttrs.inputType);//~1826I~//~1827R~//~vabbR~//~vc1rR~
         return AxeG.axeIME.createInputConnection(outAttrs);        //~1827R~
     }                                                          //~1826I~//~1827R~
 //*********************                                            //~1606R~
@@ -143,14 +166,14 @@ public class AxeScreen extends ImageView                                //~1606I
     	Rect rect;                                                 //~1608I~
         try                                                        //~1606I~
         {                                                          //~1606I~
-            if (Dump.Y) Dump.println("AxeScreen @onDraw PL="+AxeG.displayPL);//~1606R~
-            if (Dump.Y) Dump.println("AxeScreen @onDraw bitmap W="+bitmap.getWidth()+",H="+bitmap.getHeight());//~1608I~
-            if (Dump.Y) Dump.println("AxeScreen @onDraw canvas W="+Pcanvas.getWidth()+",H="+Pcanvas.getHeight());//~1608I~
+            if (Dump.Y) Dump.println("AxeScreen.onDraw PL="+AxeG.displayPL);//~1606R~//~vc1rR~
+            if (Dump.Y) Dump.println("AxeScreen.onDraw bitmap W="+bitmap.getWidth()+",H="+bitmap.getHeight());//~1608I~//~vc1rR~
+            if (Dump.Y) Dump.println("AxeScreen.onDraw canvas W="+Pcanvas.getWidth()+",H="+Pcanvas.getHeight());//~1608I~//~vc1rR~
             rect=Pcanvas.getClipBounds();                          //~1608I~
-            if (Dump.Y) Dump.println("AxeScreen @onDraw canvas cliprect="+rect.toString());//~1608I~
+            if (Dump.Y) Dump.println("AxeScreen.onDraw canvas cliprect="+rect.toString());//~1608I~//~vc1rR~
             Pcanvas.drawBitmap(bitmap,0f,0f,null);//canvas contains titlebar area                 //~1606I~//~1719R~
-            if (Dump.Y) Dump.println("AxeScreen bitmap="+bitmap.toString());//~1606I~
-            if (Dump.Y) Dump.println("AxeScreen canvas="+Pcanvas.toString());//~1606I~
+            if (Dump.Y) Dump.println("AxeScreen.onDraw bitmap="+bitmap.toString());//~1606I~//~vc1rR~
+            if (Dump.Y) Dump.println("AxeScreen.onDraw canvas="+Pcanvas.toString());//~1606I~//~vc1rR~
             drawPendingLine(Pcanvas);                              //~1809I~
         }                                                          //~1606I~
         catch(Exception e)                                         //~1606I~
@@ -171,7 +194,7 @@ public class AxeScreen extends ImageView                                //~1606I
 //        }                                                          //~1809I~//~1826R~
 		PendingLine pl;                                            //~1826I~
         //******************                                       //~1826I~
-		if (Dump.Y) Dump.println("drawPendingLine drawCursor="+drawCursor);//~vaicI~
+		if (Dump.Y) Dump.println("AxeScreen.drawPendingLine drawCursor="+drawCursor);//~vaicI~//~vc1rR~
         if (drawCursor)                                            //~1826I~
         {                                                          //~1826I~
 			pl=PLcursor;                                           //~1826I~
@@ -184,7 +207,7 @@ public class AxeScreen extends ImageView                                //~1606I
         if (drawRuler1)                                            //~1826I~
         {                                                          //~1826I~
 			pl=PLruler1;                                           //~1826I~
-			if (Dump.Y) Dump.println("pending line ruler1");       //~1826I~
+			if (Dump.Y) Dump.println("AxeScreen.pending line ruler1");       //~1826I~//~vc1rR~
 			drawLine(Pcanvas,pl.width,pl.x1,pl.y1,pl.x2,pl.y2,pl.fg);//~1826I~
         	drawRuler1=false;                                      //~1826I~
         }                                                          //~1826I~
@@ -193,7 +216,7 @@ public class AxeScreen extends ImageView                                //~1606I
         if (drawRuler2)                                            //~1826I~
         {                                                          //~1826I~
 			pl=PLruler2;                                           //~1826I~
-			if (Dump.Y) Dump.println("pending line ruler2");       //~1826I~
+			if (Dump.Y) Dump.println("AxeScreen.pending line ruler2");       //~1826I~//~vc1rR~
 			drawLine(Pcanvas,pl.width,pl.x1,pl.y1,pl.x2,pl.y2,pl.fg);//~1826I~
         	drawRuler2=false;                                      //~1826I~
         }                                                          //~1826I~
@@ -206,12 +229,12 @@ public class AxeScreen extends ImageView                                //~1606I
     @Override                                                      //~1606I~
     public void onSizeChanged(int newW,int newH,int oldW,int oldH) //~1606I~
     {                                                              //~1606I~
-        if (Dump.Y) Dump.println("onSizeChanged "+newW+","+newH+","+oldW+","+oldH);//~1606I~
+        if (Dump.Y) Dump.println("AxeScreen.onSizeChanged "+newW+","+newH+","+oldW+","+oldH);//~1606I~//~vc1rR~
     }                                                              //~1606I~
     @Override                                                      //~1606I~
     public void onMeasure(int Pw,int Ph)                           //~1606I~
     {                                                              //~1606I~
-        if (Dump.Y) Dump.println("onMeasure w="+Pw+",H="+Ph);      //~1606I~
+        if (Dump.Y) Dump.println("AxeScreen.onMeasure w="+Pw+",H="+Ph);      //~1606I~//~vc1rR~
         setMeasuredDimension(AxeG.screenW,AxeG.screenH);           //~1606I~
     }                                                              //~1606I~
 //*********************************************************        //~vaatR~
@@ -223,8 +246,9 @@ public class AxeScreen extends ImageView                                //~1606I
         bitmap=Pbitmap;                                            //~1607I~
       	bitmapCanvas=new Canvas(bitmap);                           //~1608I~
 //    if (false)                                                   //~vaiaR~
-        requestFocus();                                            //~1608I~
-      if (Dump.Y) Dump.println("replaceBitmap invalidate issue="+((AxeG.main.axeStat & Axe.AXES_ORIENTATION_CHANGING)==0));//~vaicR~
+//      requestFocus();                                            //~1608I~//~vc1rR~
+        getFocus(this);                                            //~vc1rR~
+      if (Dump.Y) Dump.println("AxeScreen.replaceBitmap requestFocus and invalidate issue="+((AxeG.main.axeStat & Axe.AXES_ORIENTATION_CHANGING)==0));//~vaicR~//~vc1rR~
       if ((AxeG.main.axeStat & Axe.AXES_ORIENTATION_CHANGING)==0)  //~vaicR~
       {                                                            //~vaicI~
         invalidate();                                              //~1606I~
@@ -234,13 +258,15 @@ public class AxeScreen extends ImageView                                //~1606I
 //*************************                                        //~1607I~
     public void updateButtonLayout(Bitmap Pbitmap)                 //~1607I~
     {                                                              //~1607I~
-        if (Dump.Y) Dump.println("updateButtonLayout bitmap="+Pbitmap.toString());//~1607I~
+        if (Dump.Y) Dump.println("AxeScreen.updateButtonLayout bitmap="+Pbitmap.toString());//~1607I~//~vc1rR~
         bitmap=Pbitmap;                                            //~1607I~
       	bitmapCanvas=new Canvas(bitmap);                           //~1608I~
 //    if (false)                                                   //~vaiaR~
-        requestFocus();                                            //~1608I~
+        if (Dump.Y) Dump.println("AxeScreen.updateButtonLayout requestFocus");//~vc1rI~
+//      requestFocus();                                            //~1608I~//~vc1rR~
+        getFocus(this);                                            //~vc1rR~
         invalidate();                                              //~1607I~
-        if (Dump.Y) Dump.println("updateButtonLayout invalidate()");//~vaicI~
+        if (Dump.Y) Dump.println("AxeScreen.updateButtonLayout invalidate()");//~vaicI~//~vc1rR~
     }                                                              //~1607I~
 //**************************************************************                             //~1607I~//~1827R~
 //*from Axe:onWindowFocusChanged                                   //~1827I~
@@ -248,7 +274,7 @@ public class AxeScreen extends ImageView                                //~1606I
 //**************************************************************   //~1827I~
     public void windowFocusChanged(boolean Phasfocus)             //~1827I~
     {                                                              //~1827I~
-        if (Dump.Y) Dump.println("windowFocusChanged focus="+Phasfocus);//~1827I~
+        if (Dump.Y) Dump.println("AxeScreen.windowFocusChanged focus="+Phasfocus);//~1827I~//~vc1rR~
 //        if (!initiallyHidden)                                    //~1827R~
 //        {                                                        //~1827R~
 //            initiallyHidden=true;                                //~1827R~
@@ -259,7 +285,7 @@ public class AxeScreen extends ImageView                                //~1606I
     //****************                                             //~1827I~
     private void focusChanged(boolean Phasfocus)                    //~1827I~
     {                                                              //~1827I~
-        if (Dump.Y) Dump.println("focusChanged to "+Phasfocus);    //~1827I~
+        if (Dump.Y) Dump.println("AxeScreen.focusChanged to "+Phasfocus);    //~1827I~//~vc1rR~
         if (Phasfocus)                                             //~1827I~
         {                                                          //~1827I~
             if (showKbdWhenFocusOn)                                //~1827I~
@@ -270,14 +296,15 @@ public class AxeScreen extends ImageView                                //~1606I
         }                                                          //~1827I~
         else                                                       //~vaifI~
         {                                                          //~vaifI~
-	        if (Dump.Y) Dump.println("focusChanged requestFocus");  //~vaifI~
-            requestFocus();                                        //~vaifI~
+	        if (Dump.Y) Dump.println("AxeScreen.focusChanged requestFocus");  //~vaifI~//~vc1rR~
+//          requestFocus();                                        //~vaifI~//~vc1rR~
+  			getFocus(this);                                        //~vc1rR~
         }                                                          //~vaifI~
     }                                                              //~1827I~
 //************                                                     //~1827I~
     private void addFocusChangeListener(View Pview)             //~1607I~//~1827R~
     {                                                              //~1607I~
-        if (Dump.Y) Dump.println("addFocuschange Listener view="+this.toString());//~1607I~
+        if (Dump.Y) Dump.println("AxeScreen.addFocuschange Listener view="+this.toString());//~1607I~//~vc1rR~
     	Pview.setOnFocusChangeListener(new FocusChangeListener(Pview));//~1827R~
     }                                                              //~1607I~
     class FocusChangeListener implements OnFocusChangeListener     //~1827I~
@@ -290,7 +317,7 @@ public class AxeScreen extends ImageView                                //~1606I
         @Override                                                  //~1827I~
         public void onFocusChange(View Pview,boolean Phasfocus)    //~1827I~
         {                                                          //~1827I~
-            if (Dump.Y) Dump.println("focus changed to "+Phasfocus+",view="+Pview.toString());//~1827R~
+            if (Dump.Y) Dump.println("AxeScreen.onFocusChanged to "+Phasfocus+",view="+Pview.toString());//~1827R~//~vc1rR~
             focusChanged(Phasfocus);                               //~1827I~
         }                                                          //~1827I~
     }//class FocusChangeListener                                   //~1827I~
@@ -404,7 +431,7 @@ public class AxeScreen extends ImageView                                //~1606I
         Paint paint;                                               //~1719I~
         int chctr;                                                 //~vabcI~
     //********************                                         //~1719I~
-        if (Dump.Y) Dump.println("DrawText_monospace x="+Px+",y="+Py+",ctr="+Pucsctr+",fg="+Integer.toHexString(Pfg));//~1719I~//~vaiaR~
+        if (Dump.Y) Dump.println("AxeScreen.DrawText_monospace x="+Px+",y="+Py+",ctr="+Pucsctr+",fg="+Integer.toHexString(Pfg));//~1719I~//~vaiaR~//~vc1rR~
 //      if (Dump.Y) Dump.dumpucs("DrawText_monospace ucstb:",Pucstb);//~1719I~//~1827R~//~1A19R~
 //      if (Dump.Y) Dump.dump("DrawText_monospace ucstb:",Pucstb); //~1827I~//~1A19R~
 //      if (Dump.Y) Dump.dump("DrawText_monospace offset",Pfpostb);//~1719I~//~1A19R~
@@ -415,21 +442,22 @@ public class AxeScreen extends ImageView                                //~1606I
         paint.setColor(Pfg);                                       //~1719I~
         adjustMonospaceOffset(Pfpostb,Px+Gxeh.Mfontoffsx,Py+baseLine);//~1823R~
 //      bitmapCanvas.drawPosText(textstr,Pfpostb,paint);           //~1719I~//~vabcR~
-        bitmapCanvas.drawPosText(chLine,0,chctr,Pfpostb,paint);    //~vabcI~
+//      bitmapCanvas.drawPosText(chLine,0,chctr,Pfpostb,paint);    //~vabcI~//~vc13R~
+        Funcs.drawPosText(bitmapCanvas,chLine,0,chctr,Pfpostb,paint);//~vc13I~
 //      clearPendingLine(); //for DBCS input;settext+drawline+settext+drawline then ondrow,draw last line to android canvas//~1825I~
     }                                                              //~1719I~
     public void adjustMonospaceOffset(float[] Pfpostb,int Poffsx,int Poffsy)//~1823R~
     {                                                              //~1823I~
     	int sz;                                                    //~1823I~
     //********************                                         //~1823I~
-        if (Dump.Y) Dump.println("AdjustMonospaceOffset offsx="+Poffsx+",offsy="+Poffsy);//~1823R~
+        if (Dump.Y) Dump.println("AxeScreen.adjustMonospaceOffset offsx="+Poffsx+",offsy="+Poffsy);//~1823R~//~vc1rR~
         sz=Pfpostb.length;                                         //~1823R~
         for (int ii=0;ii<sz;)                                      //~1823R~
         {                                                          //~1823I~
         	Pfpostb[ii++]+=Poffsx;                                 //~1823R~
         	Pfpostb[ii++]=Poffsy;                                  //~1823R~
         }                                                          //~1823I~
-        if (Dump.Y) Dump.dump("DrawText_monospace offset",Pfpostb);//~1823I~
+        if (Dump.Y) Dump.println("AxeScreen.adjustMonospaceOffset Poffsetb="+ Arrays.toString(Pfpostb));//~1823I~//~vc1rR~
     }                                                              //~1823I~
 //*******************                                              //~1620I~
     public void drawText_Ligature(int Px,int Py,int[] Pucstb,int Pctr,int Pfg,float Pscale)//~1620R~
@@ -437,7 +465,7 @@ public class AxeScreen extends ImageView                                //~1606I
     	float xx,yy;                                               //~1620I~
         Paint paint;                                               //~1620I~
     //********************                                         //~1620I~
-        if (Dump.Y) Dump.println("DrawText_Ligature x="+Px+",y="+Py+",ctr="+Pctr+",fg="+Integer.toHexString(Pfg)+",scale="+Pscale);//~1718I~//~vaiaR~
+        if (Dump.Y) Dump.println("AxeScreen.drawText_Ligature x="+Px+",y="+Py+",ctr="+Pctr+",fg="+Integer.toHexString(Pfg)+",scale="+Pscale);//~1718I~//~vaiaR~//~vc1rR~
 //      if (Dump.Y) Dump.dump("DrawText_Ligature ucstb",Pucstb);         //~1718I~//~1A19R~
         paint=paintText;                                           //~1620I~
         String textstr=new String(Pucstb,0,Pctr);                  //~1620I~
@@ -493,18 +521,20 @@ public class AxeScreen extends ImageView                                //~1606I
             {                                                      //~1826I~
 				PLcursor.setPendingLine(Pwidth,Px1,Py1,Px2,Py2,Pfg);//~1826I~
                 drawCursor=true;                                   //~1826I~
-				if (Dump.Y) Dump.println("drawLine drawCursor="+drawCursor);//~vaicI~
+				if (Dump.Y) Dump.println("AxeScreen.drawLine drawCursor="+drawCursor);//~vaicI~//~vc1rR~
             }                                                      //~1826I~
         	if ((Pswdirect & AxeJNIdef.DRAWLINE_RULER)!=0)                 //~1826I~
             {                                                      //~1826I~
             	if (Py1==Py2)                                      //~1826I~
                 {                                                  //~1826I~
-					PLruler1.setPendingLine(Pwidth,Px1,Py1,Px2,Py2,Pfg);//~1826I~
+//  				PLruler1.setPendingLine(Pwidth,Px1,Py1,Px2,Py2,Pfg);//~1826I~//~vc2SR~
+    				PLruler1.setPendingLine(AxeG.RulerWidth,Px1,Py1,Px2,Py2,Pfg);//+vc2SR~
                     drawRuler1=true;                               //~1826I~
                 }                                                  //~1826I~
                 else                                               //~1826I~
                 {                                                  //~1826I~
-					PLruler2.setPendingLine(Pwidth,Px1,Py1,Px2,Py2,Pfg);//~1826I~
+//  				PLruler2.setPendingLine(Pwidth,Px1,Py1,Px2,Py2,Pfg);//~1826I~//~vc2SR~
+    				PLruler2.setPendingLine(AxeG.RulerWidth,Px1,Py1,Px2,Py2,Pfg);//+vc2SR~
                     drawRuler2=true;                               //~1826I~
                 }                                                  //~1826I~
             }                                                      //~1826I~
@@ -546,7 +576,7 @@ public class AxeScreen extends ImageView                                //~1606I
     public void drawRect(Paint Ppaint,Canvas Pcanvas,int Pwidth,int Px1,int Py1,int Px2,int Py2,int Pfg)//~vabbR~
     {                                                              //~vabbI~
     //********************                                         //~vabbI~
-        if (Dump.Y) Dump.println("DrawRect Cusrsor width="+Pwidth+",y1="+Py1+",y2="+Py2+",x1="+Px1+",x2="+Px2);//~vabbI~
+        if (Dump.Y) Dump.println("AxeScreen.DrawRect Cusrsor width="+Pwidth+",y1="+Py1+",y2="+Py2+",x1="+Px1+",x2="+Px2);//~vabbI~//~vc1rR~
         if (Pwidth<=2)                                             //~vabbI~
         {                                                          //~vabbI~
         	paintCursor.setStyle(Paint.Style.FILL);                //~vabbI~
@@ -616,7 +646,7 @@ public class AxeScreen extends ImageView                                //~1606I
 //      if (oldh!=Gxeh.Mcellh||oldw!=Gxeh.Mcellw) //col/row may chnged//~1716R~
 //          usetresizehint(Gxeh.Mcellw,Gxeh.Mcellh,Gxeh.Mscrcmaxcol,Gxeh.Mscrcmaxrow);//~1716R~
 //      xxe_setsynfontface();                                      //~1716R~
-        if (Dump.Y) Dump.println("create font name="+Gxeh.Gfontdata[0].name+",w="+Gxeh.Mfontwidth+",h="+Gxeh.Mfontheight+",offsx="+Gxeh.Mfontoffsx+",offsy="+Gxeh.Mfontoffsy+",baseLine="+baseLine);//~1718I~//~1808R~
+        if (Dump.Y) Dump.println("AxeScreen.xxemain_createfont name="+Gxeh.Gfontdata[0].name+",w="+Gxeh.Mfontwidth+",h="+Gxeh.Mfontheight+",offsx="+Gxeh.Mfontoffsx+",offsy="+Gxeh.Mfontoffsy+",baseLine="+baseLine);//~1718I~//~1808R~//~vc1rR~
         return 0;                                                  //~1715I~
     }//xxemain_createfont                                          //~1715I~
     //===============================================================================//~1716I~
@@ -626,7 +656,7 @@ public class AxeScreen extends ImageView                                //~1606I
     {                                                              //~1716I~
     //******************************                               //~1716I~
         if (Dump.Y) Dump.println("AxeScreen:uinvalidate");         //~1716I~
-        if (Dump.Y) Dump.println("uinvalidate invalidate issue="+((AxeG.main.axeStat & Axe.AXES_ORIENTATION_CHANGING)==0));//~vaicR~
+        if (Dump.Y) Dump.println("AxeScreen.uinvalidate invalidate issue="+((AxeG.main.axeStat & Axe.AXES_ORIENTATION_CHANGING)==0));//~vaicR~//~vc1rR~
       if ((AxeG.main.axeStat & Axe.AXES_ORIENTATION_CHANGING)==0)  //~vaicR~
         invalidate();                                              //~1716I~
     }                                                              //~1716I~
@@ -636,15 +666,15 @@ public class AxeScreen extends ImageView                                //~1606I
         String str;//~1718I~
         int widthctr,ucsctr;                                       //~vabaI~
     //******************************                               //~1718I~
-        if (Dump.Y) Dump.dumpucs("gettextwidths ucstb=",Ppdata);   //~1718I~
+        if (Dump.Y) Dump.dumpucs("AxeScreen.gettextwidths ucstb=",Ppdata);   //~1718I~//~vc1rR~
         paint=AxeG.axeScreen.paintText;
         ucsctr=Ppdata.length;                                      //~vabaI~
 //      str=new String(Ppdata,0,Ppdata.length);//~1718I~           //~vabaR~
         str=new String(Ppdata,0,ucsctr);                           //~vabaI~
       widthctr=                                                    //~vabaI~
         paint.getTextWidths(str,Ppfwidthtb);                    //~1718R~
-        if (Dump.Y) Dump.println("gettextwidths fwidthtb ucsctr="+ucsctr+",outwidth ctr="+widthctr);//~vabaI~
-        if (Dump.Y) Dump.dump("gettextwidths fwidthtb",Ppfwidthtb);//~1718R~
+        if (Dump.Y) Dump.println("AxeScreen.gettextwidths fwidthtb ucsctr="+ucsctr+",outwidth ctr="+widthctr);//~vabaI~//~vc1rR~
+        if (Dump.Y) Dump.dump("AxeScreen.gettextwidths fwidthtb",Ppfwidthtb);//~1718R~//~vc1rR~
         if (widthctr>ucsctr)    //contains ucs4,android4 output 2 entry for ucs4//~vabaI~
 			Ucs.getCodepointWidthTbl(Ppdata,ucsctr,Ppfwidthtb);    //~vabaI~
         return;                                                    //~1718I~
@@ -652,27 +682,88 @@ public class AxeScreen extends ImageView                                //~1606I
     public void showKbdRequest()                                   //~1827I~
     {                                                              //~1827I~
     //******************************                               //~1827I~
-        if (Dump.Y) Dump.println("AxeScreen showKbdRequest");      //~1827I~
+        if (Dump.Y) Dump.println("AxeScreen.showKbdRequest");      //~1827I~//~vc1rR~
         showKbdWhenFocusOn=true;                                   //~1827I~
     }//gettextwidths                                               //~1827I~
     //**************************************************************//~vairI~
     //*from ImputMethodService                                     //~vairI~
-    //*Whether to show IME,return true if IME popup                //~vairI~
+    //*Whether to show IME,return false if IME popup                //~vairI~//~vc1rR~
     //**************************************************************//~vairI~
-    public static boolean hardKbdOff()                             //+vairR~
+    private static boolean hardKbdOff()                             //~vairR~//~vc15R~
     {                                                              //~vairI~
         boolean rc;                                                //~vairI~
     //******************************                               //~vairI~
         Configuration cfg=AxeG.resource.getConfiguration();        //~vairI~
-        if (Dump.Y) Dump.println("evaluateShowIME keyboard="+Integer.toHexString(cfg.keyboard));//~vairI~
-        if (Dump.Y) Dump.println("evaluateShowIME keyboardHidden="+Integer.toHexString(cfg.keyboardHidden));//~vairI~
-        if (Dump.Y) Dump.println("evaluateShowIME hardKeyboardHidden="+Integer.toHexString(cfg.hardKeyboardHidden));//~vairI~
-        if (Dump.Y) Dump.println("evaluateShowIME screenLayout="+Integer.toHexString(cfg.screenLayout));//~vairI~
-        rc=cfg.keyboard==Configuration.KEYBOARD_NOKEYS/*1*/        //~vairI~
-//       ||cfg.hardKeyboardHidden==Configuration.HARDKEYBOARDHIDDEN_YES/*2*///+vairR~
-        ;   //is01 kb=2,hk-hidden=2(yes)                           //+vairI~
-            //nexus7 bluetooth on:kb=2(qwerty),hardkbh=1(no) off:kb=1(nokey),harkbh=2(yes)//+vairI~
-        if (Dump.Y) Dump.println("evaluateShowIME rc="+rc);        //~vairI~
+        if (Dump.Y) Dump.println("AxeScreen.hardKbdOff keyboard="+Integer.toHexString(cfg.keyboard));//~vairI~//~vc15R~
+        if (Dump.Y) Dump.println("AxeScreen.hardKbdOff keyboardHidden="+Integer.toHexString(cfg.keyboardHidden));//~vairI~//~vc15R~
+        if (Dump.Y) Dump.println("AxeScreen.hardKbdOff hardKeyboardHidden="+Integer.toHexString(cfg.hardKeyboardHidden));//~vairI~//~vc15R~
+        if (Dump.Y) Dump.println("AxeScreen.hardKbdOff screenLayout="+Integer.toHexString(cfg.screenLayout));//~vairI~//~vc15R~
+        AxeG.setHardKeyboard(cfg);                                 //~vc1rI~
+//        rc=cfg.keyboard==Configuration.KEYBOARD_NOKEYS/*1*/        //~vairI~//~vc1rR~
+////       ||cfg.hardKeyboardHidden==Configuration.HARDKEYBOARDHIDDEN_YES/*2*///~vairR~//~vc1rR~
+//        ;   //is01 kb=2,hk-hidden=2(yes)                           //~vairI~//~vc1rR~
+//            //nexus7 bluetooth on:kb=2(qwerty),hardkbh=1(no) off:kb=1(nokey),harkbh=2(yes)//~vairI~//~vc1rR~
+//            //hw-a9  bluetooth on:kb=2(qwerty),hardkbh=1(no) off:kb=1(nokey),harkbh=1(no )//~vc1rI~
+        configChanged();                                           //~vc1rR~
+    	rc=true;	//not now popup,do ime pop by explicitly "IM" button//~vc1rR~
+//  	rc=false;	//request focus after configChanged            //~vc1rR~
+        if (Dump.Y) Dump.println("AxeScreen.hardKbdOff rc="+rc);        //~vairI~//~vc15R~
         return rc;                                                 //~vairI~
     }                                                              //~vairI~
+    //**************************************************************//~vc1rI~
+    public static void getFocus()                                  //~vc1rI~
+    {                                                              //~vc1rI~
+        if (Dump.Y) Dump.println("AxeScreen.getFocus static issue requestFocus");//~vc1rR~
+        AxeG.axeScreen.getFocus(AxeG.axeScreen);                   //~vc1rR~
+    }                                                              //~vc1rI~
+    //**************************************************************//~vc1rI~
+    private void getFocus(AxeScreen Pview)                         //~vc1rI~
+    {                                                              //~vc1rI~
+        if (Dump.Y) Dump.println("AxeScreen.getFocus issue requestFocus");//~vc1rI~
+        Pview.requestFocus();                                      //~vc1rI~
+    }                                                              //~vc1rI~
+    //**************************************************************//~vc1rI~
+    public static void configChanged()                             //~vc1rR~
+    {                                                              //~vc1rI~
+        if (Dump.Y) Dump.println("AxeScreen.configChanged hardKeybord="+AxeG.hardKeyboard);//~vc1rR~
+        if (Dump.Y) Dump.println("AxeScreen.configChanged axeIME="+Utils.toString(AxeG.axeIME)+",axeScreen="+Utils.toString(AxeG.axeScreen));//~vc1rR~
+        if (AxeG.axeIME!=null && AxeG.axeScreen!=null)             //~vc1rM~
+        {                                                          //~vc1rI~
+        	if (AxeG.isHardKeyboardActive())                       //~vc1rI~
+	        	disableIME(AxeG.axeScreen,true/*PswDisable*/);     //~vc1rI~
+            else                                                   //~vc1rI~
+	        	disableIME(AxeG.axeScreen,false/*PswDisable*/);    //~vc1rI~
+        }                                                          //~vc1rI~
+    }                                                              //~vc1rI~
+    //**************************************************************//~vc1rI~
+    private static void disableIME(View Pview,boolean PswDisable)  //~vc1rI~
+    {                                                              //~vc1rI~
+        if (Dump.Y) Dump.println("AxeScreen.disableIME swDisable="+PswDisable+",view="+Pview.toString());//~vc1rI~
+        if (PswDisable)                                            //~vc1rR~
+        {                                                          //~vc1rR~
+//            Pview.setSoftInputMode(WindowManage.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);//~vc1rR~
+//          InputMethodManager imm;                                //~vc1rR~
+//          imm=(InputMethodManager)AxeG.context.getSystemService(Context.INPUT_METHOD_SERVICE);//~vc1rR~
+//          imm.hideSoftInputFromWindow(Pview.getWindowToken(),0); //~vc1rR~
+//          ((EditText)Pview).setInputType(InputType.TYPE_NULL);   //~vc1rR~
+//          AxeG.activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);//~vc1rR~
+//          Pview.setTextIsSelectable();                           //~vc1rI~
+            Pview.setFocusable(false);                             //~vc1rI~
+			Pview.setFocusableInTouchMode(false);                  //~vc1rR~
+//          if (AxeG.axeKbdDialogHW==null || !AxeG.axeKbdDialogHW.isShowing())//~vc1rI~//~vc26R~
+            if (!AxeKbdDialogHW.isShowingDlg())                      //~vc26I~
+	            AxeG.axeKbdDialogHW.show();                        //~vc1rR~
+            showToast(R.string.HardKeyboard_Yes);                   //~vc1rI~
+        }                                                          //~vc1rR~
+        else                                                       //~vc1rI~
+        {                                                          //~vc1rI~
+            Pview.setFocusable(true);                              //~vc1rI~
+			Pview.setFocusableInTouchMode(true);                     //~vc1rI~
+//          if (AxeG.axeKbdDialogHW!=null &&  AxeG.axeKbdDialogHW.isShowing())//~vc1rI~//~vc26R~
+            if (AxeKbdDialogHW.isShowingDlg())                       //~vc26I~
+	            AxeG.axeKbdDialogHW.dismiss();                     //~vc1rI~
+            showToast(R.string.HardKeyboard_No);                    //~vc1rI~
+        }                                                          //~vc1rI~
+//      AxeG.axeIME.hideKbd(Pview);                                //~vc1rR~
+    }                                                              //~vc1rI~
 }                                                                  //~1528R~

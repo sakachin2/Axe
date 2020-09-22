@@ -1,7 +1,10 @@
-//*CID://+vai6R~: update#=  185;                                   //+vai6R~
-//*****************************************************************//+vai6I~
-//vai6:130526 (Axe)ucstbl recreate only when fontname changed(not delete when size/style changed) for performance//+vai6I~
-//*****************************************************************//+vai6I~
+//*CID://+vc2SR~: update#=  202;                                   //~vc2SR~
+//*****************************************************************//~vai6I~
+//vc2S 2020/09/12 add ruler width option                           //~vc2SI~
+//vc2Q 2020/09/08 change font size by pinch action                 //~vc2QI~
+//vc2B 2020/08/12 Help  by file                                    //~vc2BI~
+//vai6:130526 (Axe)ucstbl recreate only when fontname changed(not delete when size/style changed) for performance//~vai6I~
+//*****************************************************************//~vai6I~
 package com.xe.Axe;                                                //~@@@@I~
 
 import android.graphics.Color;
@@ -12,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
+
+import com.ahsv.utils.Utils;
 //*****************************************************************//~1606I~
 //output option                                                    //~1727I~
 //        Gxeh.Mrulermode                                          //~1727I~//~1803R~
@@ -47,14 +52,18 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
 	private static final int HELPTITLE_SETUPFONT=R.string.HelpTitle_SetupFont;//~1A11I~
 	private static final int HELPTITLE_SETUPCOLOR=R.string.HelpTitle_SetupColor;//~1A11I~
 	private static final int HELPTITLE_SETUPOTHER=R.string.HelpTitle_SetupOther;//~1A11I~
-	private static final int HELP_SETUPFONT=R.string.Help_SetupFont;//~1929I~
-	private static final int HELP_SETUPCOLOR=R.string.Help_SetupColor;//~1929I~
-	private static final int HELP_SETUPOTHER=R.string.Help_SetupOther;//~1929I~
+//    private static final int HELP_SETUPFONT=R.string.Help_SetupFont;//~1929I~//~vc2BR~
+//    private static final int HELP_SETUPCOLOR=R.string.Help_SetupColor;//~1929I~//~vc2BR~
+//    private static final int HELP_SETUPOTHER=R.string.Help_SetupOther;//~1929I~//~vc2BR~
+    private static final String HELP_SETUPFONT="SetupFont";        //~vc2BI~
+    private static final String HELP_SETUPCOLOR="SetupColor";      //~vc2BI~
+    private static final String HELP_SETUPOTHER="SetupOther";      //~vc2BI~
 	private static final int DIALOG_FONTNAME=LAYOUT_SETUPFONT;
 	private static final int[] FONT_SAMPLE=//"AaGgPpWw-xc0-XF0-x100"//~1731R~
     			{'A','a','G','g','P','p','W','w',' ',              //~1822R~
-    			'u','-','c','0','(',0xc0,')',                      //~1803R~
-    			'u','-','f','0','(',0xf0,')',                      //~1803R~
+    			'u','-','c','0','(',0xc0,')',' ',                      //~1803R~//+vc2SR~
+    			'u','-','f','0','(',0xf0,')',' ',                      //~1803R~//+vc2SR~
+    			'u','-','3','0','4','2','(',0x3042,')',            //~vc2SI~
                 };                                                  //~1822I~
 	private static final int[] FONT_SAMPLE2=                       //~1822I~
                 {                                                  //~1822I~
@@ -65,6 +74,9 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
                 };                                                 //~1803I~
 	private static final String FONT_SAMPLE_LIGATURE1="ffff-fi-if";//~1803I~
 	private static final String FONT_SAMPLE_LIGATURE2="if-fi-ffff";//~1803I~
+	private static final int INCL_FONTSIZE=4;                      //~vc2QI~
+	private static final int MIN_FONTSIZE=20;                      //~vc2QI~
+	private static final int MAX_RULER_WIDTH=10;                   //~vc2SI~
 //*********************                                            //~1725M~
 	private static int  Slayoutid;                                 //~1725I~
 	public static int  Srulergdkcolor;                             //~1725I~
@@ -84,6 +96,7 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
     private TextView tvFontH,tvFontW;                              //~1730I~
     private RadioButtons rgFontStyle;                              //~1731R~
     private CheckBox cbLigature;                                   //~1803I~
+    private EditText etRulerWidth;                                 //~vc2SR~
     private String tempfontname,tempstylename;                     //~1730R~
     private int tempfontsize,tempfontstyle,tempcellw,tempcellh;                                   //~1730I~
     private int valuefontsize,valuecellw,valuecellh;               //~1927I~
@@ -153,7 +166,9 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
 	@Override                                                      //~1929I~
     protected boolean onClickHelp()                                //~1821R~//~1929I~
     {                                                              //~1528I~//~1929I~
-    	int id=0,title=0;                                          //~1929I~
+//  	int id=0,title=0;                                          //~1929I~//~vc2BR~
+    	int title=0;                                               //~vc2BI~
+    	String id=null;                                            //~vc2BI~
     	switch (layoutid)                                          //~1929I~
         {                                                          //~1929I~
     	case LAYOUT_SETUPOTHER:                                    //~1929I~
@@ -169,7 +184,8 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
         	id=HELP_SETUPFONT;                                     //~1929I~
         	break;                                                 //~1929I~
         }                                                          //~1929I~
-        if (id!=0)                                                 //~1929I~
+//      if (id!=0)                                                 //~1929I~//~vc2BR~
+        if (title!=0)                                              //~vc2BI~
 			showDialogHelp(title,id);//~1821R~                     //~1929I~
         return false;	//not dismiss                              //~1821R~//~1929I~
     }                                                              //~1528I~//~1929I~
@@ -226,6 +242,8 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
         {                                                          //~1927I~
         	Gxeh.Mfontheight=calcFontSize(Gxeh.Mcellh0,Gxeh.Mcellw0);//~1927I~
         }                                                          //~1927I~
+        else                                                       //~vc2QI~
+        	Gxeh.Mfontheight=parmFontSize;                         //~vc2QI~
         if (Dump.Y) Dump.println("Mfontheight="+Gxeh.Mfontheight); //~1822R~
         if (Gxeh.Mfontstyle==null || Gxeh.Mfontstyle.equals("")) //after ini deleted//~1716R~
         {                                                          //~1716R~
@@ -348,6 +366,10 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
         rg=(RadioGroup)layoutView.findViewById(R.id.RULER);        //~1730M~
         rg.check(buttonid);                                        //~1730M~
                                                                    //~1730M~
+        etRulerWidth=(EditText)layoutView.findViewById(R.id.Ruler_Width);//~vc2SI~
+        etRulerWidth.setText(Integer.toString(AxeG.RulerWidth));   //~vc2SR~
+        TextView tvRulerWidth=(TextView)layoutView.findViewById(R.id.Ruler_WidthMax);//~vc2SI~
+        tvRulerWidth.setText(Utils.getStr(R.string.Setup_RulerWidthMax,AxeG.MAX_RULER_WIDTH));//~vc2SI~
 //        cbAccelerator=(CheckBox)layoutView.findViewById(R.id.ACCELERATOR);//~1730R~//~1929R~
 //        cbAccelerator.setChecked(Gxeh.Museact==1);                 //~1730I~//~1929R~
         cbFreeCursor=(CheckBox)layoutView.findViewById(R.id.FREECURSOR);//~1730R~
@@ -379,6 +401,12 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
         default:                                                   //~1730M~
         	ruler=0;                                               //~1730M~
         }                                                          //~1730M~
+        int ww=Utils.strToNum(etRulerWidth.getText().toString(),0);//~vc2SI~
+        if (ww>0 && ww<AxeG.MAX_RULER_WIDTH)                       //~vc2SR~
+        {                                                          //~vc2SI~
+	        AxeG.RulerWidth=ww;                                   //~vc2SR~
+	        AxeG.setParameter(AxeG.PREFKEY_RULER_WIDTH,ww);        //~vc2SR~
+        }                                                          //~vc2SI~
 //        accelerator=cbAccelerator.isChecked();                     //~1730R~//~1929R~
         freecursor=cbFreeCursor.isChecked();                       //~1730R~
         beep=cbBeep.isChecked();                                   //~1730R~
@@ -520,7 +548,8 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
         etFontSize=(EditText)layoutView.findViewById(R.id.FONT_FONTSIZE);//~1730M~
 //      etFontSize.setText(Integer.toString(Gxeh.Mfontsize));      //~1822R~
 //      etFontSize.setText(Integer.toString(Gxeh.Mfontheight));    //~1822I~//~1A02R~
-        etFontSize.setText(Integer.toString(parmFontSize));        //~1A02I~
+//      etFontSize.setText(Integer.toString(parmFontSize));        //~1A02I~//~vc2QR~
+        etFontSize.setText(Integer.toString(Gxeh.Mfontheight));    //~vc2QI~
         Font font=Gxeh.Gfontdata[0];                               //~1730M~
         FontMetrics fm=FontMetrics.getFontMetrics(font);           //~1730M~
         hh=fm.getHeight();                                         //~1730M~
@@ -598,9 +627,9 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
     {                                                              //~1730M~
         int intval;                                                //~1823I~
         int oldh,oldw;                                             //~1927I~
-        boolean deleteucstb=false;                                 //+vai6I~
+        boolean deleteucstb=false;                                 //~vai6I~
     //********************                                         //~1730M~
-        deleteucstb=!Gxeh.Mfontstyle.equals(tempfontname);         //+vai6I~
+        deleteucstb=!Gxeh.Mfontstyle.equals(tempfontname);         //~vai6I~
         Gxeh.Mstyle=tempstylename;                                 //~1730R~
         Gxeh.Mfontstyle=tempfontname;                              //~1730M~
         Gxeh.Mligature=templigature;                               //~1823M~
@@ -625,7 +654,7 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
         AxeJNI.notifyOptionChangedFont();                          //~1803I~
 		AxeG.setParameter(KEY_FONTSIZE,parmFontSize);   //fontsize parameter as isplay value//~1A02I~
         AxeJNI.fullDraw(oldh!=Gxeh.Mcellh||oldw!=Gxeh.Mcellw);     //~1927R~
-      if (deleteucstb)                                             //+vai6I~
+      if (deleteucstb)                                             //~vai6I~
         Ucs.resetwidthtbl();                                       //~1A14I~
     }                                                              //~1730M~
 //***************************************************************************//~1730M~
@@ -656,6 +685,17 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
 	        drawSamplePanel(tempfont,tempcellw,tempcellh,templigature);//~1803I~
         }                                                          //~1803I~
     }                                                              //~1803I~
+//*********************************************************        //~vai6I~
+    @Override                                                      //~vai6I~
+    public void beforeTextChangedETF(EditText PeditText, String Ptext, int start, int count, int after){};//~vai6I~
+    @Override                                                      //~vai6I~
+    public void onTextChangedETF(EditText PeditText,String Ptext,int start,int before,int count){};//~vai6I~
+    @Override                                                      //~vai6I~
+    public void afterTextChangedETF(EditText PeditText,String Ptext){};//~vai6I~
+    @Override                                                      //~vai6I~
+    public void onEditTextChanged(int Pviewid,String Pvalue)       //~vai6I~
+    {                                                              //~vai6I~
+    }                                                              //~vai6I~
     @Override                                                      //~1730M~
     public void onEditTextChanged(int Pviewid,int Pvalue)                      //~1730M~
     {                                                              //~1730M~
@@ -800,4 +840,38 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
     	samplePanel.drawLine(xx,yy,xx,-1,rulercolor);                  //~1730I~
         samplePanel.invalidate();                                  //~1730I~
     }                                                              //~1730I~
+//*********                                                        //~vc2QI~
+    public static void onScale(float PscaleFactor/* >1:ZoomOut:Enlarge*/)//~vc2QI~
+    {                                                              //~vc2QI~
+		if (Dump.Y) Dump.println("Axegxedlg.onScale scaleFactor="+PscaleFactor);//~vc2QI~
+        if (PscaleFactor==(float)1.0)                           //~vc2QI~
+        	return;                                                //~vc2QI~
+        if (Dump.Y) Dump.println("Axegxedlg Font="+Gxeh.Mfontstyle+",size="+Gxeh.Mfontheight+",style="+Gxeh.Mstyle);//~vc2QI~
+        if (Dump.Y) Dump.println("Axegxedlg cellh="+Gxeh.Mcellh+",cellw="+Gxeh.Mcellw);//~vc2QI~
+        Font font=Gxeh.Gfontdata[0];                               //~vc2QI~
+        String fontname=font.name;                                 //~vc2QI~
+        int fontstyle=font.getStyle();                          //~vc2QI~
+        int fontsize=font.getSize();                               //~vc2QI~
+        if (Dump.Y) Dump.println("Axgxedlg fontname="+fontname+",fontstype="+fontstyle+",fontsize="+fontsize);//~vc2QI~
+        int newfontsize;                                           //~vc2QI~
+        if (PscaleFactor>(float)1.0)                               //~vc2QI~
+        	newfontsize=fontsize+INCL_FONTSIZE;                    //~vc2QI~
+        else                                                       //~vc2QI~
+        	newfontsize=Math.max(MIN_FONTSIZE,fontsize-INCL_FONTSIZE);//~vc2QI~
+        if (Dump.Y) Dump.println("Axgxedlg newfontsize="+newfontsize);//~vc2QI~
+	    Gxeh.Mfontheight=newfontsize;                              //~vc2QI~
+        double rate=(double)newfontsize/fontsize;                  //~vc2QI~
+        if (Gxeh.Mcellw0!=0)                                       //~vc2QR~
+	    	Gxeh.Mcellw0=(int)(rate*Gxeh.Mcellw0);                 //~vc2QR~
+        if (Gxeh.Mcellh0!=0)                                       //~vc2QR~
+	    	Gxeh.Mcellh0=(int)(rate*Gxeh.Mcellh0);                 //~vc2QR~
+        if (Dump.Y) Dump.println("Axgxedlg newfontsize="+newfontsize+",new Mcellw0="+Gxeh.Mcellw0+",new Mcellh0="+Gxeh.Mcellh0);//~vc2QI~
+        font=new Font(fontname,fontstyle,Gxeh.Mfontheight);   //~vc2QI~
+        Gxeh.Gfontdata[0]=font;                                    //~vc2QI~
+        AxeG.axeScreen.xxemain_createfont();	//set Mcellh,Mcellw from Mcellh0,Mcellw0//~vc2QI~
+        AxeJNI.notifyOptionChangedFont();                          //~vc2QI~
+		AxeG.setParameter(KEY_FONTSIZE,newfontsize);               //~vc2QI~
+        AxeJNI.fullDraw(true);                                     //~vc2QI~
+    }                                                              //~vc2QI~
+                                                                   //~vc2QI~
 }                                                                  //~1528R~

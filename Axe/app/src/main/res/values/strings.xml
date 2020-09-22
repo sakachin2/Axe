@@ -2,8 +2,8 @@
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <resources>
     <string name="app_name">Axe</string>
-    <string name="Version">Axe V1.19 (xe1.29C)</string>
-    <string name="VerDate">2017/09/04</string>
+    <string name="Version">Axe V1.29.1\n			By Mizumaki-machi</string>
+    <string name="VerDate">2020/09/17</string>
 
     <string name="OptionMenu_Stop">Exit</string>
     <string name="OptionMenu_Menu">Menu</string>
@@ -32,12 +32,12 @@
     <string name="ContextMenu_SetupOther">Other XE Options</string>
     <string name="ContextMenu_Button_Config">Button Configuration</string>
     <string name="ContextMenu_Button_Layout">Buttons layout</string>
-    <string name="ContextMenu_Kbd_Config">Kbd Layout</string>
+    <string name="ContextMenu_Kbd_Config">Soft Kbd Layout</string>
     <string name="ContextMenu_SetupOtherArm">Android Related Options</string>
     <string name="ContextMenu_DownloadAsset">Download additional Asset</string>
     <string name="ContextMenu_Help">Help</string>
-    <string name="ContextMenu_HelpXe">xe Help(Html)</string>
-    <string name="ContextMenu_HelpAxe">Axe Help</string>
+    <string name="ContextMenu_HelpXe">xe Help</string>
+    <string name="ContextMenu_HelpAxe">About Axe</string>
     <string name="ContextMenu_HelpVersion">Version</string>
     <string name="ContextMenu_ShortcutkeyMap">Shortcut Key Assign</string>
     <string name="ContextMenu_ShiftkeyMap">Shift Key Mapping</string>
@@ -116,7 +116,7 @@
 	</string>
 
     <string name="DialogTitle_OptionHelpAxe">Help Axe</string>
-    <string name="Help_OptionHelpAxe">
+    <!--string name="Help_OptionHelpAxe">
         "==Keyboard:\n"
         "  Function key usage is almost same as PC version.\n"
         "  (Enter \"A\" on top panel, Key:Function mapping will be shown.\n"
@@ -240,8 +240,8 @@
         "   by unzipping AxeAsset.zip at files/.\n"
         "   xe\'s utility will be installed into files/bin\n"
         "     by unzipping AxeAsset.zip at files/\n"
-        "   Asset installation:Menu-->Settings\n"
-        "     -->Download addtional asset.\n"
+        "   Asset installation:Menu==&gt;Settings\n"
+        "     ==&gt;Download addtional asset.\n"
         "  )\n"
         "   You would be better to install busybox\n"
         "     which contains env, find, grep etc.\n"
@@ -277,20 +277,20 @@
         "==Crash Report\n"
         "   Configured to send mail of crash report to developer,\n"
         "   send it after checked contents of mail text.\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_SetupOther">Other XE Options</string>
     <string name="HelpTitle_SetupOther">Other XE Options</string>
-    <string name="Setup_Ruler">Select Ruler Type</string>
-    <string name="Setup_RulerVertical">Vertical</string>
-    <string name="Setup_RulerHorizontal">Horizontal</string>
-    <string name="Setup_RulerCrossfier">CrossHair</string>
-    <string name="Setup_RulerNone">No Ruler</string>
+    <string name="Setup_Ruler">Ruler Type</string>
+    <string name="Setup_RulerVertical">Vertical (Shift+Ctrl+F1)</string>
+    <string name="Setup_RulerHorizontal">Horizontal (Shift+Ctrl+F2)</string>
+    <string name="Setup_RulerCrossfier">CrossHair (Shift+Ctrl+F3)</string>
+    <string name="Setup_RulerNone">No Ruler (type twice)</string>
     <!--string name="Setup_Accelerator">Accelerator</string-->
     <string name="Setup_FreeCursor">FreeCursor</string>
     <string name="Setup_Beep">Beep</string>
     <string name="Setup_QuietExit">QuietExit</string>
-    <string name="Help_SetupOther">
+    <!--string name="Help_SetupOther">
    		"\"Ruler\":vertical/Horizontal/Cross Hair line at the cursor position.\n"
         "\"FreeCursor\":if ON, cursor wraps from edge of screen to another edge.\n"
         "               if OFF, screen shift occurs on file/directory panel\n"
@@ -298,7 +298,7 @@
         "\"Beep\":Beep when error detected.\n"
         "\"QuietExit\":no confirmation at exit XE by Keyboard Function key.\n"
         "              \"Exit\" on option menu requires always confirmation.\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_SetupColor">Color</string>
     <string name="HelpTitle_SetupColor">Color</string>
@@ -307,10 +307,10 @@
     <string name="Setup_Red">Red</string>
     <string name="Setup_Green">Green</string>
     <string name="Setup_Blue">Blue</string>
-    <string name="Help_SetupColor">
+    <!--string name="Help_SetupColor">
    		"You can set Background-color and Ruler-color.\n"
         "Ruler is optionally shown by selecting Ruler-type on \"Other XE Options\".\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_SetupFont">Font</string>
     <string name="HelpTitle_SetupFont">Font</string>
@@ -325,14 +325,14 @@
     <string name="Setup_FontItalic">Italic</string>
     <string name="Setup_FontBoldItalic">BoldItalic</string>
     <string name="Prompt_FontList">Select a FontName</string>
-    <string name="Help_SetupFont">
+    <!--string name="Help_SetupFont">
    		"Input is evaluated when focus was lost, and sample text is re-drawn.\n"
    		"Select font family from drop down list.\n"
    		"if \"Font Size\"=0,it is determined by \"Row-H\" and \"Column-W\".\n"
         "if \"Row H\"=0, set to same as \"Font Size\"\n"
         "if \"Column W\"=0, set to half of \"Row H\".\n"
    		"if all values are =0, \"Font Size\" is determined as to fit to screen size by row=24 and col=80.\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_TerminalButton">Terminal Button Usage</string>
     <string name="HelpTitle_TerminalButton">Terminal Button Usage</string>
@@ -359,18 +359,20 @@
     <string name="Title_DL_DelZipfile">Delete after expanded the file</string>
     <string name="Title_DL_Unziponly">Only expand the local file</string>
     <string name="DL_BtnLocalRefCD">Open File Chooser</string>
+<!--
     <string name="Help_Download">
    		"Download and Expand file.(zip,tar,tgz,tar.gz,bz2,tbz2)\n"
    		"When expand only,specify local file in Local File:,\n"
    		"or folder in Local File: and filename in URL:.\n"
    		"And also used to download following addtional asstes files\n"
-   		"(Menu-->Settings-->Download additional Asset)\n"
+   		"(Menu==>Settings==>Download additional Asset)\n"
    		"  help html files.\n"
    		"  commandline utilities executed on terminal soft.\n"
    		"  highlight data used by syntax highlight function.\n"
    		"These files (about 14MB) ware split from apk to reduce apk size.\n"
    		"This asset file is not mandatry, but to use above functions, download once.\n"
 	</string>
+-->
     <string name="progress_dialog_title_downloading">Downloading...</string>
     <string name="progress_dialog_title_connecting">Connecting...</string>
     <string name="progress_dialog_message_prefix_downloading">Downloading file</string>
@@ -393,9 +395,9 @@
 
     <string name="Err_InputTerminalButton">"Enter Non-alphanumeric 1 byte Char or Hex notation Unicode"</string>
 
-    <string name="DialogTitle_KbdLayout">Soft Keyboard Layout</string>
-    <string name="HelpTitle_KbdLayout">Soft Keyboard Layout</string>
-    <string name="Help_KbdLayout">
+    <string name="DialogTitle_KbdLayout">Soft Kbd Layout</string>
+    <string name="HelpTitle_KbdLayout">Soft Kbd Layout</string>
+    <!--string name="Help_KbdLayout">
    		"Qwerty layout will be changed such as exchange \"Y\" and \"Z\",\n"
    		"and assignable max 4 code to a key such as function key, symbol character and unicode.\n"
         "Each are corresponding to modifier keys of Shift, AltGr, Shift+AltGr and 4th is for Flick-Down.\n"
@@ -406,7 +408,7 @@
         "Input Alpha-numeric(ex. \"Q\"), Symbol(ex. \"#\") or Unicode by Hex notation(ex. \"a2\").\n"
         "To set ExtendedKey(ex. \"F12\") select from pull-down after cursor setting to the line.\n"
         "Use 4 byte unicode like as \"00f1\" to distinguish FunctionKey-F1.\n"
-	</string>
+	</string-->
     <string name="Prompt_KbdLayout">"Key : "</string>
     <string name="Prompt_KbdLayout_Not_Selected">Line is not Selected</string>
 
@@ -433,11 +435,11 @@
     <!--string name="Setup_Internal_Option">(Internal Use)</string-->
     <string name="Setup_Trace_Off">NoTrace</string>
     <string name="Setup_Trace_On">On</string>
-    <string name="Setup_Trace_On2">On2</string>
+    <string name="Setup_Trace_On2">Reopen</string>
     <string name="Setup_Log">Console Log</string>
     <string name="Setup_Dump_Off">NoDump</string>
-    <string name="Setup_Dump_On">On</string>
-    <string name="Setup_Dump_On2">On2</string>
+    <string name="Setup_Dump_On">On at start.</string>
+    <string name="Setup_Dump_On2">On from now</string>
     <string name="Setup_Remap">Recreate sbcs map table</string>
     <string name="Setup_Abend">xe sigsegv by double Esc</string>
     <string name="Setup_Uerrexit">xe uerrexit by double Esc</string>
@@ -451,15 +453,15 @@
     <string name="Info_CharsetChanged">"Charset Changed, Restart Axe"</string>       <!-- vad2 -->
     <string name="HelpTitle_ArmOption">Android Related Options</string>
     <!--string name="Help_ArmOption"-->
-    <string name="Help_ArmOption" formatted="false">  <!--vb11-->
+    <!--string name="Help_ArmOption" formatted="false"> 
    		"Orientation:fix to Landscape/Portrait or Rotate by sensor.\n"
    		"Current Input Method:Default Input Method; push \"Change\" button to select the other.\n"
         "Close XeKbd by outside touch:If Off,outside touch is effective as usual.\n"
         "Reset Shift/Ctrl/Alt each time:reset modifier after input.\n"
         "Keycode when Home Icon clicked:kecode generated by Home Icon Click.\n"
         "Long press timeout for Mouse Right Button:Event fires by long pressing in this time(ms).\n"
-   		"Locale Charset:Locale Codepage used to translate to/from UTF-8.\n"                       <!-- vad20 -->
-   		"               Default is ISO-8859-1/EUC-JP/EUC_KR/Big5/GB18030 depending to locale code.\n" <!-- vad20 -->
+   		"Locale Charset:Locale Codepage used to translate to/from UTF-8.\n"                       
+   		"               Default is ISO-8859-1/EUC-JP/EUC_KR/Big5/GB18030 depending to locale code.\n"
    		"Repeat Delay:on xe\'s soft keyboard, repeatable key\'s delay(milisec) to generate key event.\n"
    		"             Adjust enough not to generate key event before flick detection.\n"
    		"Repeat Speed:interval(milisec) to generate repeated event.\n"
@@ -470,7 +472,7 @@
    		"Flick Distance:minimum swipe distance for \"Flick\". % of screen height/width.\n"
    		"               (On soft-keyboard, this is fixed ro 50% of the key height/width.)\n"
    		"env-PATH: ex) /data/busybox:$PATH\n"
-	</string>
+	</string-->
 
     <!--string name="DialogTitle_ImeType">"IME option"</string-->
     <!--string name="Setup_ImeType">IME type</string-->
@@ -494,13 +496,14 @@
     <string name="Clear">Clear</string>
     <string name="OK">OK</string>
     <string name="ResetToDefault">Default</string>
-    <string name="ResetKbdLayout">SetDefault</string>
+    <string name="ResetKbdLayout">Default</string>
     <string name="Help">Help</string>
     <string name="Delete">Delete</string>
     <string name="Replace">Replace</string>
     <string name="InsertAfter">Insert After</string>
     <string name="InsertBefore">Insert Before</string>
     <string name="Move">Move</string>
+    <string name="Function">Button\'s function</string>
 	
     <string name="LabelButtonNo1">1st line Button count</string>
     <string name="LabelButtonNo2">2nd line Button count</string>
@@ -546,7 +549,7 @@
 
     <string name="DialogTitle_ButtonLayout">Buttons Arrangement</string>
     <string name="HelpTitle_ButtonLayout">Button Arrangement</string>
-    <string name="Help_ButtonLayout">
+    <!--string name="Help_ButtonLayout">
    		"Set Button count of 2 lines to be displayed at bottom when portrait style.\n"
    		"Valid count is 0 to 8.\n"
         "\n"
@@ -560,7 +563,7 @@
         "(Move value is shift count and minus means forward shift.)\n"
         "\n"
         "all buttons in a line if Landscape: show buttons in a line if landscape mode\n"
-	</string>
+	</string-->
     <string name="DialogTitle_ShiftkeyMap">Shift Key Map</string>
     <string name="HelpTitle_ShiftKeyMap">Shift Key Map</string>
     <string name="Help_ShiftKeyMap">
@@ -576,9 +579,9 @@
     <string name="RadioButtonMap101">Reset To Kbd-101</string>
     <string name="RadioButtonMap106">Reset To Kbd-106(jp)</string>
 
-    <string name="DialogTitle_ShortcutkeyMap">Shortcut Key Assign</string>
-    <string name="HelpTitle_ShortcutKeyMap">Shortcut Key Map</string>
-    <string name="Help_ShortcutKeyMap">
+    <string name="DialogTitle_ShortcutkeyMap">Shortcut Key</string>
+    <string name="HelpTitle_ShortcutKeyMap">Shortcut Key</string>
+    <!--string name="Help_ShortcutKeyMap">
    		"Specify keycode generated when the key is pressed accompanied with \"S.C\" button.\n"
 		"You can enter Keyname or Hex-Notation Unicode\n"
 		"If combination required, pay attention to touching sequence.\n"
@@ -592,7 +595,7 @@
    		"                  :\"Mouse-Rbtn\":Mouse right button for context menu pop-up\n"
    		"                  :\"Mouse-Drag\":use at the point Drag-start and Drag-end\n"
    		"                                  to specify Cut and Paste range.\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_AltGrMap">AltGr Char Mapping</string>
     <string name="HelpTitle_AltGrMap">AltGr Map</string>
@@ -605,15 +608,15 @@
     <string name="DialogTitle_BtnUpdate">Button:"</string>
     <string name="Hint_MoveValue">shift count</string>
     <string name="Prompt_ButtonName">Select a Button Type</string>
-    <string name="HelpTitle_ButtonUpdate">Button Update</string>
-    <string name="Help_ButtonUpdate">
+    <!--string name="HelpTitle_ButtonUpdate">Button Update</string-->
+    <!--string name="Help_ButtonUpdate">
    		"Select button\'s function type from drop down list except for Delete/Move case\n"
         "Move value is position shift count and minus means forward shift.\n"
         "\n"
 		"To enable this pop-up dialog for direction key button,\n"
 		"those work as repeatable key, disable repeatable\n"
         "on \"Buttons layout\" dialog from button configuration menu.\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_FileChooser">FileChooser:"</string>
     <string name="LabelFilter">Filter</string>
@@ -643,8 +646,9 @@
     <string name="Info_Sorted_AttrA">"Sorted by Ascending Timestamp."</string>
     <string name="Info_Sorted_AttrD">"Sorted by Descending Timestamp."</string>
     <string name="HelpTitle_FileChooser">FileChooser</string>
+<!--
     <string name="Help_FileChooser">
-   		"--- Dialog for file \"Open\",\"New\" and \"SaveAs\" ---\n"
+   		"=== Dialog for file \"Open\",\"New\" and \"SaveAs\" ===\n"
         "\n"
         "Filter: Enter file selection by extension list or wildcard.\n"
         "        enclose by \" for regular expression.\n"
@@ -667,6 +671,7 @@
    		"Browse: open the selected file/folder by Browse mode.\n"
    		"Save : save to \"NewName\" in the selected folder.\n"
 	</string>
+-->
 
     <string name="Btnnm_BACK">Back</string>
     <string name="Btnnm_CENTER">DPAD_Center</string>
@@ -697,4 +702,82 @@
     <string name="Warning_WaitingInitialize">"Be paitient,\ndoing first time setup."</string>
     <!-- NDKCrash-->
     <string name="NDKCrash_alertHeader">Axe JNI Crash.\n(Please agree to mail Crash-Report to developer.)\n================================"</string>
+<!-- for android9 -->
+    <string name="ErrExceptionDetected">Exception Occured</string>
+    <string name="ExternalStorageForSDRequiresGranted">No permission to \"Write to SD\", Internal data folder will be used which is cleared at reinstallation.</string>
+    <string name="ExternalStorageForSDGranted">Pemission of \"wrie to SD\" is allowd.</string>
+    <string name="ErrAssetFileNotFound">Failed to find asset file:</string>
+    <string name="ErrAssetFileRead">Failed to read asset file:</string>
+    <string name="ErrOutOfMemory">OutOfMemotry-</string> <!--1Ad8-->
+    <string name="lockContention">Busy,try once more:</string>
+    <string name="PermissionNotGranted">Permission is not Granted(%1$s).</string>
+    <string name="PermissionGranted">Permission Granted(%1$s).</string>
+    <string name="Setup_SDCard">SDCard:</string>
+    <string name="Setup_Home">Home:</string>
+    <string name="Setup_WorkDir">WorkDir:</string>
+    <string name="Info_HtmlHelpInstalling">Installing xehelp:</string>
+    <string name="Info_UnzipHtmlHelpComp">xehelp installation completed</string>
+    <string name="Setup_EnvPathAdd">$PATH1</string>
+    <string name="Setup_CurEnvPath">$PATH = </string>
+    <string name="Setup_EnvPathTmp">$TMPDIR = </string>
+    <string name="HardKeyboard_Yes">Hardware Keyvoard detected.</string>
+    <string name="HardKeyboard_No">Hardware Keyvoard NOT detected.</string>
+    <string name="DialogTitle_KbdLayoutHW">Hard Kbd Layout</string>
+    <string name="HelpTitle_KbdLayoutHW">Hard Kbd Layout</string>
+    <string name="HWKbdDlgHdr_Normal">Key Label</string>
+    <string name="HWKbdDlgHdr_Shift">+Shift</string>
+    <string name="HWKbdDlgHdr_AltGr">+AltGr</string>
+    <string name="HWKbdDlgHdr_ShiftAltGr">+Shift+AltGr</string>
+
+    <string name="KbdDlgHdr_Pos1">""</string>
+    <string name="KbdDlgHdr_Normal1">Center</string>
+    <string name="KbdDlgHdr_Shift1">LT:Left</string>
+    <string name="KbdDlgHdr_Symbol1">RT:Right</string>
+    <string name="KbdDlgHdr_AltGr1">LB:Up</string>
+    <string name="KbdDlgHdr_ShiftAltGr1">RB:Down</string>
+
+    <string name="KbdDlgHdr_Pos2">Row/Col</string>
+    <string name="KbdDlgHdr_Normal2">Code</string>
+    <string name="KbdDlgHdr_Shift2">+Shift</string>
+    <string name="KbdDlgHdr_Symbol2">+SYM</string>
+    <string name="KbdDlgHdr_AltGr2">+AltGr</string>
+    <string name="KbdDlgHdr_ShiftAltGr2">S+AltGr</string>
+
+    <string name="ContextMenu_Kbd_ConfigHW">Hard Kbd Settings</string>
+    <string name="Err_FieldProtected">Protected field.</string>
+    <string name="Label_KbdSpinner">&lt;-- Extend key list</string>
+    <string name="Err_SpinnerNoItemSelected">Select from dropdown after selected the column.</string>
+    <string name="Err_DeleteNoItemSelected">Select column to delete.</string>
+    <string name="Err_DeleteFlatCode">1st column is not deletable, modifiable only.</string>
+    <string name="Label_SpinnerTop">(Show)</string>
+    <string name="Label_OpenSoftKbd">IM</string>
+    <string name="Err_HardKbdNotActive">Hard Keyboard is not active.</string>
+    <string name="Err_InvalidCursor">Touch target column beforehand.</string>
+
+    <string name="Label_AltGr">AltGr key : </string>
+    <string name="Label_AltGrNo">None</string>
+    <string name="Label_AltGrRightAlt">Alt-R</string>
+    <string name="Label_AltGrLeftAlt">Alt-L</string>
+    <string name="Label_AltGrRightShift">Shift-R</string>
+    <string name="Err_StatusFixed">Not changable in this situation.</string>
+    <string name="Label_OpenIMKey">IM key : </string>
+    <string name="Label_IMKeyNone">None</string>
+    <string name="Label_IMKeyZenHan">Hankaku-Zenkaku</string>
+    <string name="Label_IMKeyOther">Other : </string>
+    <string name="Err_InvalidIMKey">Other is selected,type on the right field.</string>
+    <string name="Err_InvalidIMKeyTyped">It is not accepatable as IM key.</string>
+    <string name="KEYCODE_MUHENKAN">MUHENKAN</string>
+    <string name="KEYCODE_HENKAN">HENKAN</string>
+    <string name="KEYCODE_KATAKANA_HIRAGANA">KATAKANA_HIRAGANA</string>
+    <string name="KEYCODE_EISU">EISU</string>
+    <string name="KEYCODE_KANA">KANA</string>
+    <string name="Label_ForHardKbd">With Hardware Kbd</string>
+    <string name="Label_ResetToDefault">Without Hardware Kbd</string>
+    <string name="Err_DeleteAxeKbdFixed">Center Code could not be deleted, only updatable.</string>
+    <string name="Title_Warning">Warning</string>
+    <string name="Warning_ConfigChangedKbdHW">Hardware Kbd was connected.\nClose and reopen this dialog to input to this dialog using hardware kbd.</string>
+    <string name="Err_getPathFromUri">%1$s\nFailed to get path name.</string>
+    <string name="Label_HelpLang">Debug:Help Opposite Lang</string>
+    <string name="Setup_RulerWidth">Ruler line width (pixel)</string>
+    <string name="Setup_RulerWidthMax">Max:%1$d</string>
 </resources>

@@ -27,10 +27,14 @@
             />
             <LinearLayout
                  android:id="@+id/SETUP_SAMPLE"
-                 android:layout_height="60px"
-                 android:layout_width="260px"
+                 android:layout_height="60dp"
+                 android:layout_width="fill_parent"
                 android:layout_gravity="center_horizontal"
             />             
+            <!--
+                 android:layout_height="60px"
+                 android:layout_width="260px"
+            -->
             <LinearLayout
                  android:layout_width="fill_parent"
                  android:layout_height="1px"

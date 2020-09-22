@@ -32,7 +32,8 @@
     <string name="popup_xekbd_j">"jJ,\u00fc\u00dc"</string>
     <string name="popup_xekbd_k">"kK.\u00ef\u00cf"</string>
     <string name="popup_xekbd_l">"lL\u00ac\u00f6\u00d6"</string>
-    <string name="popup_xekbd_delete">"eDel;   eIns;"</string>
+    <!--string name="popup_xekbd_delete">"eDel;   eIns;"</string-->
+    <string name="popup_xekbd_delete">"eDel;eDel;eIns;  "</string>
 
     <string name="popup_xekbd_shift">"eShift; eSYM;eCaps;eFn;"</string> <!-- vaaw -->
     <string name="popup_xekbd_z">"zZ&lt;\u00e6\u00c6"</string>
@@ -50,8 +51,12 @@
     <string name="popup_xekbd_swkbd">"eIM;ePop;eS.C;  "</string>
     <string name="popup_xekbd_space">"eSp;     "</string>
     <string name="popup_xekbd_left">"eLeft;eHome;   "</string>
+    <!--string name="popup_xekbd_left">"eLeft; eHome;eLeft; "</string-->
     <string name="popup_xekbd_right">"eRight; eEnd;  "</string>
+    <!--string name="popup_xekbd_right">"eRight; eEnd;eRight; "</string-->
     <string name="popup_xekbd_up">"eUp;ePgUp;   "</string>
+    <!--string name="popup_xekbd_up">"eUp; ePgUp;eUp; "</string-->
     <string name="popup_xekbd_down">"eDown; ePgDn;  "</string>
+    <!--string name="popup_xekbd_down">"eDown; ePgDn;eDown; "</string-->
     <string name="popup_xekbd_esc">"eEsc;    "</string>
 </resources>

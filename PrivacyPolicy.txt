@@ -1,4 +1,4 @@
-Privacy Policy of Axe. 2020/09/22
+Privacy Policy of Axe.
 
 Use android permission.
     android.permission.BIND_INPUT_METHOD:	This is one of Text Editor.

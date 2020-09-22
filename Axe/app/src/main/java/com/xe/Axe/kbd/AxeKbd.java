@@ -1,5 +1,6 @@
-//*CID://+vaayR~:                             update#=  144;       //~vaavR~//~vaawR~//~vaayR~
+//*CID://+vc2pR~:                             update#=  181;       //~vc2pR~
 //*********************************************************************//~vaasI~
+//vc2p 2020/08/04 reset other modifier(set effective only one)     //~vc2pI~
 //vaay:120106 (Axe)even when Caps on, "1" key generates "1"        //~vaayI~
 //vaaw:120105 (Axe)add Fn modifier to set key label to Fn          //~vaawI~
 //vaav:120104 (Axe:Bug of vaas)minikbd for gdk key dose not show flickkey//~vaavI~
@@ -8,13 +9,13 @@
 //*********************************************************************//~vaasI~
 package com.xe.Axe.kbd;                                            //~@@@@R~
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
 
 import com.xe.Axe.kbd.ims.Keyboard;                                //~@@@@R~
 import com.xe.Axe.AxeG;
 import com.xe.Axe.AxeKeyValue;
 import com.xe.Axe.Dump;
+
+import static com.xe.Axe.AxeKeyValue.*;
 
 
 public class AxeKbd extends Keyboard                               //~@@@@R~
@@ -174,6 +175,16 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
 		statusShiftR=false;                                        //~vaawI~
 		statusShiftF=false;                                        //~vaawI~
     }                                                              //~vaawI~
+	private void resetShiftRF()                                    //~vc2pI~
+    {                                                              //~vc2pI~
+        if (Dump.Y) Dump.println("AxeKbd:resetShiftRF");           //+vc2pI~
+        if (statusShiftR||statusShiftF)                            //~vc2pI~
+        {                                                          //~vc2pI~
+            statusShiftR=false;                                    //~vc2pI~
+            statusShiftF=false;                                    //~vc2pI~
+            updateLabel(AxeKbdKey.KEYCODE_SHIFT,isCapsed());  //normal key//~vc2pR~
+        }                                                          //~vc2pI~
+    }                                                              //~vc2pI~
 	public void resetShortcut()                                   //~@@@@I~
     {                                                              //~@@@@I~
 		statusShortcut=false;                                      //~@@@@I~
@@ -295,6 +306,8 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
         return rc;                                                 //~@@@@I~
     }                                                              //~@@@@I~
 //*********************                                            //~@@@@I~
+//*SYM                                                             //~vc2pI~
+//*********************                                            //~vc2pI~
     public boolean setShiftRed(boolean shiftState) {               //~@@@@M~
         if (Dump.Y) Dump.println("AxeKbd setShiftRred "+statusShiftR);//~@@@@R~
         boolean changed=shiftState!=isShiftRed();                  //~@@@@M~
@@ -312,6 +325,14 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
                 statusShiftR=shiftState;                           //~@@@@M~
                 statusShiftF=false;                                //~vaawI~
 				setShifted(false);                                 //~@@@@I~
+                statusAltGr=false;                                 //~vc2pI~
+                statusAltGrShift=false;                            //~vc2pI~
+//  			setAlted(false);                                   //~vc2pR~
+    			resetAlted();                                      //~vc2pI~
+//    			setCtrled(false);                                  //~vc2pR~
+      			resetCtrled();                                     //~vc2pI~
+//  			setShortcut(false);                                //~vc2pR~
+				resetShortcut();                                   //~vc2pI~
     	    	updateLabel(AxeKbdKey.KEYCODE_SHIFTR,shiftState);  //~@@@@R~
             }                                                      //~@@@@M~
         return changed;                                            //~@@@@M~
@@ -327,6 +348,14 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
                 statusShiftR=false;                                //~vaawI~
                 statusShiftF=shiftState;                           //~vaawI~
 				setShifted(false);                                 //~vaawI~
+                statusAltGr=false;                                 //~vc2pI~
+                statusAltGrShift=false;                            //~vc2pI~
+//    			setAlted(false);                                   //~vc2pR~
+      			resetAlted();                                      //~vc2pI~
+//  			setCtrled(false);                                  //~vc2pR~
+    			resetCtrled();                                     //~vc2pI~
+//  			setShortcut(false);                                //~vc2pR~
+				resetShortcut();                                   //~vc2pI~
     	    	updateLabel(AxeKbdKey.KEYCODE_SHIFTF,shiftState);  //~vaawI~
             }                                                      //~vaawI~
         return changed;                                            //~vaawI~
@@ -352,22 +381,67 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
         if (Dump.Y) Dump.println("AxeKbd setShortcut "+statusCaps);//~@@@@I~
         boolean changed=shiftState!=isShortcut();                //~@@@@I~
         if (!isMiniKeyboard)                                       //~@@@@I~
+        {                                                          //~vc2pI~
 	        if (changed)                                           //~@@@@I~
             {                                                      //~@@@@I~
                 statusShortcut=shiftState;                         //~@@@@I~
             }                                                      //~@@@@I~
+        }                                                          //~vc2pI~
+	    resetAltedG();                                             //~vc2pI~
+        resetShiftRF();                                            //~vc2pM~
         return changed;                                            //~@@@@I~
     }                                                              //~@@@@I~
+//********************************************************************//~vc2pI~
+//*reset by other button                                           //~vc2pI~
+//********************************************************************//~vc2pI~
+    public boolean resetAlted()                                    //~vc2pR~
+ 	{                                                              //~vc2pI~
+        if (Dump.Y) Dump.println("AxeKbd resetAlted statusAlt="+statusAlt+".isMiniKbd="+isMiniKeyboard+",statusAlt="+statusAlt);//~vc2pR~
+        boolean changed=isAlted();                                 //~vc2pR~
+        if (!isMiniKeyboard)                                       //~vc2pI~
+        {                                                          //~vc2pI~
+            if (statusAltGrShift||statusAltGr)                    //~vc2pI~
+                updateLabel(AxeKbdKey.KEYCODE_ALT,false);  //normal key//~vc2pR~
+            statusAlt=false;                                       //~vc2pM~
+            resetAlt(); //AltGr,AltGrShift                         //~vc2pI~
+        }                                                          //~vc2pI~
+        return changed;                                            //~vc2pI~
+    }                                                              //~vc2pI~
+    public boolean resetAltedG()                                   //~vc2pI~
+ 	{                                                              //~vc2pI~
+        if (Dump.Y) Dump.println("AxeKbd resetAlted statusAlt="+statusAlt+".isMiniKbd="+isMiniKeyboard+",statusAlt="+statusAlt);//~vc2pI~
+        boolean changed=isAlted();                                 //~vc2pI~
+        if (!isMiniKeyboard)                                       //~vc2pI~
+        {                                                          //~vc2pI~
+            if (statusAltGrShift||statusAltGr)                     //~vc2pI~
+              if (isCapsed())                                      //+vc2pI~
+    	        updateLabel(AxeKbdKey.KEYCODE_CAPS,true);          //+vc2pI~
+              else                                                 //+vc2pI~
+                updateLabel(AxeKbdKey.KEYCODE_ALT,false);  //normal key//~vc2pI~
+//          statusAlt=false;                                       //~vc2pI~
+//          resetAlt(); //AltGr,AltGrShift                         //~vc2pR~
+			statusAltGrShift=false;                                //~vc2pI~
+			statusAltGr=false;                                     //~vc2pI~
+        }                                                          //~vc2pI~
+        return changed;                                            //~vc2pI~
+    }                                                              //~vc2pI~
+//********************************************************************//~vc2pI~
     public boolean setAlted(boolean shiftState) {                  //~@@@@I~
         if (Dump.Y) Dump.println("AxeKbd setAlted "+statusAlt);    //~@@@@R~
         boolean changed=shiftState!=isAlted();                     //~@@@@I~
         if (!isMiniKeyboard)                                       //~@@@@I~
         {                                                          //~vaayI~
-            if (statusAltGrShift||statusAltGr)                     //~vaayI~
+//  		setShortcut(false);                                    //~vc2pR~
+//  		resetShortcut();                                       //~vc2pI~
+//          if (statusAltGrShift||statusAltGr)                    //~vaayI~//~vc2pR~
+            if (statusAltGrShift||statusAltGr                      //~vc2pI~
+            ||  statusShiftR||statusShiftF)                        //~vc2pR~
             {                                                      //~vaayI~
+                statusShiftR=false;                                //~vc2pI~
+                statusShiftF=false;                                //~vc2pI~
                 statusAltGrShift=statusAltGr=false;                //~vaayI~
                 updateLabel(AxeKbdKey.KEYCODE_ALT,shiftState);  //normal key//~vaayI~
-                return false;                                      //~vaayI~
+//              return false;                                      //~vaayI~//~vc2pR~
             }                                                      //~vaayI~
 	        if (changed)                                           //~@@@@I~
             {                                                      //~@@@@I~
@@ -394,6 +468,8 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
             {                                                      //~@@@@I~
 //                resetShift();                                    //~@@@@R~
 //                resetCtrl();                                     //~@@@@R~
+                resetCtrl();                                       //~vc2pR~
+				resetShortcut();                                   //~vc2pI~
 //                resetShiftR();                                   //~@@@@R~
 //                statusAltGr=shiftState;                            //~@@@@I~//~vaayR~
 //              if (statusAltGr)                                   //~@@@@I~//~vaayR~
@@ -402,7 +478,8 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
 //                    statusAltGrShift=false;                        //~@@@@I~//~vaayR~
 //                    setAlted(false);                               //~@@@@I~//~vaayR~
 	                resetAlt(); //reset stiky and altgr/altgrs flag//~vaayI~
-	            	resetShift123();                               //~vaawI~
+//              	resetShift123();                               //~vaawI~//~vc2pR~
+                	resetShiftRF();                                //~vc2pI~
                 }                                                  //~@@@@I~
                 statusAltGr=shiftState;                            //~vaayI~
     	    	updateLabel(AxeKbdKey.KEYCODE_ALTGR,shiftState);   //~@@@@R~
@@ -417,6 +494,8 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
             {                                                      //~@@@@M~
 //                resetShift();                                      //~@@@@I~//~vaayR~
 //                resetCtrl();                                       //~@@@@I~//~vaayR~
+                resetCtrl();                                       //~vc2pR~
+				resetShortcut();                                   //~vc2pI~
 //          	resetShiftR();                                     //~@@@@I~//~vaawR~
 //                statusAltGrShift=shiftState;                       //~@@@@M~//~vaayR~
 //              if (statusAltGrShift)                              //~@@@@I~//~vaayR~
@@ -425,27 +504,49 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
 //              	statusAltGr=false;                             //~@@@@I~//~vaayR~
 //                  setAlted(false);                               //~vaayR~
 	                resetAlt(); //reset stiky and altgr/altgrs flag//~vaayI~
-	            	resetShift123();                               //~vaawI~
+//              	resetShift123();                               //~vaawI~//~vc2pR~
+                	resetShiftRF();                                //~vc2pI~
                 }                                                  //~vaawI~
                 statusAltGrShift=shiftState;                       //~vaayI~
     	    	updateLabel(AxeKbdKey.KEYCODE_ALTGRS,shiftState);  //~@@@@R~
             }                                                      //~@@@@M~
         return changed;                                            //~@@@@M~
     }                                                              //~@@@@M~
+    //************************************************************ //~vc2pI~
+    //*by other change                                             //~vc2pI~
+    //************************************************************ //~vc2pI~
+    private boolean resetCtrled()                                  //~vc2pI~
+	{                                                              //~vc2pI~
+        if (Dump.Y) Dump.println("AxeKbd.resetCtrled "+statusCtrl);//~vc2pI~
+        boolean changed=isCtrled();                                //~vc2pI~
+        if (!isMiniKeyboard)                                       //~vc2pI~
+	        if (changed)                                           //~vc2pI~
+            {                                                      //~vc2pI~
+				resetCtrl();                                       //~vc2pI~
+            }                                                      //~vc2pI~
+        return changed;                                            //~vc2pI~
+    }                                                              //~vc2pI~
+    //************************************************************ //~vc2pI~
     public boolean setCtrled(boolean shiftState) {                 //~@@@@I~
         if (Dump.Y) Dump.println("AxeKbd setCtrled "+statusCtrl);  //~@@@@R~
         boolean changed=shiftState!=isCtrled();                    //~@@@@I~
         if (!isMiniKeyboard)                                       //~@@@@I~
+        {                                                          //~vc2pI~
 	        if (changed)                                           //~@@@@I~
             {                                                      //~@@@@I~
                 statusCtrl=shiftState;                             //~@@@@I~
                 setSticky(myKbdView.modKeyIndex_Ctrl,shiftState);  //~@@@@I~
             }                                                      //~@@@@I~
+//			resetShortcut();                                       //~vc2pR~
+            resetShiftRF();                                        //~vc2pI~
+//  		resetAlted();                                          //~vc2pR~
+    		resetAltedG();                                         //~vc2pI~
+        }                                                          //~vc2pI~
         return changed;                                            //~@@@@I~
     }                                                              //~@@@@I~
-    //************************************************************ //+vaayI~
-    //*update key label                                            //+vaayI~
-    //************************************************************ //+vaayI~
+    //************************************************************ //~vaayI~
+    //*update key label                                            //~vaayI~
+    //************************************************************ //~vaayI~
     public void updateLabel(int Pmodifier,boolean Pstate)          //~@@@@I~
     {                                                              //~@@@@I~
         if (Dump.Y) Dump.println("AxeKbd updateLabel modifier="+Pmodifier+",state="+Pstate);//~@@@@R~
@@ -486,20 +587,46 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
         {                                                          //~@@@@I~
             CharSequence label;                                    //~@@@@I~
 	        Key key=keys[ii];                                      //~@@@@R~
+            if (key.codes[0]==AxeKbdKey.KEYCODE_ALT)               //~vc2pI~
+                continue;                                          //~vc2pI~
             if (key.icon!=null)                                    //~vaawI~
                 key.label=null;     //reset by set ShiftF          //~vaawI~
             if (key.codes[0]==AxeKbdKey.KEYCODE_KBD) //by not modifier but popup selection(IM/Pop/NoPop)//~@@@@R~
                 key.label=myKbdView.getPopupLabel();               //~@@@@R~
             else                                                   //~@@@@I~
 		    if (Pmodifier==AxeKbdKey.KEYCODE_SHIFTF && Pstate)  //ShiftF on//~vaawM~
+            {                                                      //~vc2pI~
+    		    if (Dump.Y) Dump.println("AxeKbd.updateLabel label="+key.label+",code0="+Integer.toHexString(key.codes[0]));//~vc2pI~
+	            if (key.label==null)	//icon                     //~vc2pI~
+                	continue;                                      //~vc2pI~
             	key.label=getModifiedLabelShiftF(key,ii,idx);      //~vaawM~
+            }                                                      //~vc2pI~
             else                                                   //~vaawM~
             if (key.label!=null)	//not icon                     //~@@@@I~
             {                                                      //~@@@@I~
+      			if (Dump.Y) Dump.println("AxeKbd.updateLabel code0="+key.codes[0]+",label="+key.label);//~vc2pI~
 		        if (Pmodifier==AxeKbdKey.KEYCODE_SHIFTR && Pstate)  //ShiftR on//~@@@@R~
+                {                                                  //~vc2pI~
+//      			if (Dump.Y) Dump.println("AxeKbd.updateLabel shiftr code0="+key.codes[0]+",label="+key.label);//~vc2pR~
+//                if (key.codes[0]==AxeKbdKey.KEYCODE_ALT)	       //~vc2pR~
+//              	label=key.label;                               //~vc2pR~
+//                else                                             //~vc2pR~
                 	label=getModifiedLabelShiftR(key.codes[0],key.label,ii,idx);//~@@@@R~
+                }                                                  //~vc2pI~
                 else                                               //~@@@@I~
+		        if (Pmodifier==AxeKbdKey.KEYCODE_ALTGRS && Pstate  //ShiftR on//~vc2pI~
+                &&  key.codes[0]==GDK_Delete)                      //~vc2pR~
+                {                                                  //~vc2pI~
+                	continue;                                      //~vc2pI~
+                }                                                  //~vc2pI~
+                else                                               //~vc2pI~
                 {                                                  //~vaayI~
+//                  if (key.codes[0]==AxeKbdKey.KEYCODE_ALT)       //~vc2pR~
+//                  {                                              //~vc2pR~
+//                    label=key.label;                             //~vc2pR~
+//                  }                                              //~vc2pR~
+//                  else                                           //~vc2pR~
+//                  {                                              //~vc2pR~
                 	label=getModifiedLabel(key.codes[0],key.label,key.popupCharacters,ii,idx);//~@@@@R~
 			        if (Pmodifier==AxeKbdKey.KEYCODE_CAPS && Pstate)//~vaayI~
                     {                                              //~vaayI~
@@ -515,6 +642,7 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
                 			label=String.valueOf((char)modifiedCode);//~vaayI~
                         }                                          //~vaayI~
                     }                                              //~vaayI~
+//                  }                                              //~vc2pR~
                 }                                                  //~vaayI~
                 if (modifiedCode==0)                               //~@@@@R~
                     key.label=" ";  //defied code with the modifier//~@@@@R~
@@ -610,14 +738,14 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
     	int code;                                                  //~@@@@I~
         CharSequence label=null;                                   //~@@@@I~
         int swipeindex=Pswipeindex;                                //~@@@@I~
-//        if (Dump.Y) Dump.println("AxeKbd getModifiedLabelShiftR keyindex="+Pkeyindex+",swipeindex="+Pswipeindex);//~@@@@R~
-//      if (Pkeylabel!=null && Pkeylabel.length()>1)	//not charkey                //~@@@@I~//+vaayR~
-        code=myKbdView.flickKeyTbl[Pkeyindex][0].code;             //+vaayI~
-        if (code<' ' || AxeKeyValue.isValidExtGDK(code))           //+vaayI~
+        if (Dump.Y) Dump.println("AxeKbd getModifiedLabelShiftR keyindex="+Pkeyindex+",swipeindex="+Pswipeindex);//~@@@@R~//~vaayR~
+//      if (Pkeylabel!=null && Pkeylabel.length()>1)	//not charkey                //~@@@@I~//~vaayR~
+        code=myKbdView.flickKeyTbl[Pkeyindex][0].code;             //~vaayI~
+        if (code<' ' || AxeKeyValue.isValidExtGDK(code))           //~vaayI~
         {                                                          //~@@@@I~
         	label=Pkeylabel;                                       //~@@@@I~
 //            code=myKbdView.swipeKeycodeTbl[Pkeyindex][0];//set !=0//~@@@@R~
-//          code=myKbdView.flickKeyTbl[Pkeyindex][0].code;//set !=0//~@@@@I~//+vaayR~
+//          code=myKbdView.flickKeyTbl[Pkeyindex][0].code;//set !=0//~@@@@I~//~vaayR~
         }                                                          //~@@@@I~
         else                                                       //~@@@@I~
         {                                                          //~@@@@I~
@@ -637,7 +765,7 @@ public class AxeKbd extends Keyboard                               //~@@@@R~
                 label=String.valueOf((char)code);                  //~@@@@R~
         }                                                          //~@@@@I~
         modifiedCode=code; //for minikbd                           //~@@@@R~
-//        if (Dump.Y) Dump.println("AxeKbd getModifiedLabelShiftR code="+Integer.toHexString(code)+",label="+label);//~@@@@R~
+        if (Dump.Y) Dump.println("AxeKbd getModifiedLabelShiftR code="+Integer.toHexString(code)+",label="+label);//~@@@@R~//~vaayR~
         return label;                                              //~@@@@I~
     }                                                              //~@@@@I~
     //****************************************************************//~vaawI~

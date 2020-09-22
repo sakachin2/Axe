@@ -1,0 +1,15 @@
+Set row-height, column-width and font-size
+Input is evaluated when focus was lost, and sample text is re-drawn
+Pinch(Zoom) action on main panel inclease/decrease font-size by 4.
+----------------------------------------------------------------------------
+Select font family from drop down list.
+If "Font Size"=0,it is determined by "Row-H" and "Column-W".
+If "Row H"=0, set to same as "Font Size"
+If "Column W"=0, set to half of "Row H"
+If all values are =0, "Font Size" is determined as to fit to screen size by row=24 and col=80.
+
+If "Ligature" is checked ON, column-width is ignored,    
+e.g. "fi" is drawn in one char cell.
+
+----------------------------------------------------------------------------
+2020/09/11 SetupFont

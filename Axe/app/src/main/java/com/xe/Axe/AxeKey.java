@@ -1,11 +1,20 @@
-//CID://+DATER~:                                                   //~1608R~
+//CID://+vc2GR~: update#=    8                                     //+vc2GR~
 //*************************************************************    //~va15I~
+//vc2G 2020/08/23 chk validity of unicode value                    //+vc2GI~
+//vc2q 2020/08/07 (BUG)Shortcut was not loaded preference          //~vc2qI~
+//vc1t 2020/07/02 multi column EditText ListView callback OnFocusListener called twice True then False(mey be bug)//~vc1tI~
+//                requestFocus after short time may fix it but SoftKbd popup could not be protected(can be disapper after once popupped)//~vc1tI~
+//                Try to receive input by hard/soft keyboard by dummy(InVisible) EditText then send to ListView.//~vc1tI~
+//                Receive HardKbd input by textview(requestFocus), //~vc1tI~
+//                By IME button set dummy EditText to focusable and receive from SoftKbd//~vc1tI~
 //Shift/Shortcut/AltGr key define for shiftkeymap/shortcutkeymap dialog//~1611R~
 //*************************************************************    //~va15I~
 package com.xe.Axe;                                                //~va15I~
 
 import java.util.Arrays;
 import static com.xe.Axe.AxeKeyValue.Sindex_Extendedkey.*;
+                                                                   //~vc2qI~
+import com.ahsv.utils.Utils;                                       //~vc2qI~
 
 public class AxeKey                                                //~va15R~
 {   
@@ -24,7 +33,7 @@ public class AxeKey                                                //~va15R~
 	public static final int KEYTBL_SIZE=KEYTBL_END-KEYTBL_START;   //~va15R~
 	public static final int KEYVALUE_NOTDEF=-1;                   //~va15I~
 	public static final int KEYVALUE_ERR=-2;                      //~va15I~
-	public static final int KEYVALUE_KEY1=-3;	//usable as view1 key//+1B02I~
+	public static final int KEYVALUE_KEY1=-3;	//usable as view1 key//~1B02I~
                                                                    //~va15I~
     private int[] defaultShiftMapLower_JIS={                       //~va15R~
 '1' , '2'  , '3' , '4' , '5' , '6' , '7'  , '8' , '9' , '0' , '-' , '^' , '\\',//~va15R~
@@ -59,6 +68,7 @@ public class AxeKey                                                //~va15R~
     //*********************************************                    //~va15I~
     public AxeKey()                                                //~va15R~
     {                                                              //~va15I~
+    	if (Dump.Y) Dump.println("AxeKey.constructor");            //~vc2qI~
     	AxeKeyValue.init();                                         //~1609I~
                                                                    //~1609I~
     	shortcuttbl=new int[KEYTBL_SIZE];                          //~va15R~
@@ -71,6 +81,7 @@ public class AxeKey                                                //~va15R~
         isKbd106=AxeG.isLangJP;                                    //~va15M~
     	setDefault_Shiftkey(shiftkeytbl,isKbd106);                 //~1818R~
     	setDefault_Shortcut();                                     //~va15I~
+    	loadPreference_Shortcut();                                 //~vc2qI~
     	loadPreference_AltGr();                                    //~1612I~
     	loadPreference_TermBtn();                                  //~1809I~
         AxeG.axeKeyAction=new AxeKeyAction();                      //~va15M~
@@ -443,8 +454,9 @@ public class AxeKey                                                //~va15R~
     {                                                              //~va15I~
     	if (AxeKeyValue.isUnicodeKeyValue(Pkey))                    //~va15I~
         {                                                          //~va15I~
-        	int unicode=AxeKeyValue.getUnicodeKeyValue(Pkey);      //~va15I~
-            return Integer.toHexString(unicode);                   //~va15I~
+//      	int unicode=AxeKeyValue.getUnicodeKeyValue(Pkey);      //~va15I~//~vc2qR~
+//          return Integer.toHexString(unicode);                   //~va15I~//~vc2qR~
+    		return AxeLstKbdLayoutHW.getKeynameUnicode(Pkey);      //~vc2qR~
         }                                                          //~va15I~
     	return AxeKeyValue.extendedkeyToString(Pkey,Perr);         //~va15R~
     }                                                              //~va15I~
@@ -508,7 +520,10 @@ public class AxeKey                                                //~va15R~
         	intval=str.charAt(0);                                  //~1919I~
         }                                                          //~1919I~
         else                                                       //~1919I~
-        	intval=Utils.hexstrToNum(str,KEYVALUE_ERR);            //~1919I~
+        {                                                          //~vc1tI~
+//      	intval=Utils.hexstrToNum(str,KEYVALUE_ERR);            //~1919I~//~vc1tR~
+    		intval=chkInputUnicode(str);                           //~vc1tI~
+        }                                                          //~vc1tI~
         if (Dump.Y) Dump.println("chkInputCharCode input="+Pstr+",int="+Integer.toHexString(intval));//~1919I~
         return intval;                                             //~1919I~
     }                                                              //~1919I~
@@ -545,17 +560,34 @@ public class AxeKey                                                //~va15R~
         int intvalue=AxeKeyValue.strToExtendedkey(str,KEYVALUE_ERR);//~va15R~
         if (intvalue==KEYVALUE_ERR)                                //~va15I~
         {                                                          //~va15I~
-            intvalue=Utils.hexstrToNum(str,KEYVALUE_ERR);            //~va15I~
-        	if (intvalue!=KEYVALUE_ERR)                            //~va15I~
-            {                                                      //~va15I~
-            	if (AxeKeyValue.isUnicodeKeyValue(intvalue))           //~va15I~
-                	intvalue=KEYVALUE_ERR;                         //~va15I~
-                else                        
-                	intvalue=AxeKeyValue.setUnicodeId(intvalue);            //~va15I~
-            }                                                      //~va15I~
+//            intvalue=Utils.hexstrToNum(str,KEYVALUE_ERR);            //~va15I~//~vc1tR~
+//            if (intvalue!=KEYVALUE_ERR)                            //~va15I~//~vc1tR~
+//            {                                                      //~va15I~//~vc1tR~
+//                if (AxeKeyValue.isUnicodeKeyValue(intvalue))           //~va15I~//~vc1tR~
+//                    intvalue=KEYVALUE_ERR;                         //~va15I~//~vc1tR~
+//                else                                             //~vc1tR~
+//                    intvalue=AxeKeyValue.setUnicodeId(intvalue);            //~va15I~//~vc1tR~
+//            }                                                      //~va15I~//~vc1tR~
+			intvalue=chkInputUnicode(str);                         //~vc1tI~
         }                                                          //~va15I~
         return intvalue;                                           //~va15I~
     }                                                              //~va15I~
+//  public static int chkInputUnicode(String Pstr)                 //~vc1tI~//+vc2GR~
+    private static int chkInputUnicode(String Pstr)                //+vc2GI~
+    {                                                              //~vc1tI~
+    	int intvalue=Utils.hexstrToNum(Pstr,KEYVALUE_ERR);              //~vc1tI~
+        if (intvalue!=KEYVALUE_ERR)                                //~vc1tI~
+        {                                                          //~vc1tI~
+            if (AxeKeyValue.isUnicodeKeyValue(intvalue))           //~vc1tI~
+                intvalue=KEYVALUE_ERR;                             //~vc1tI~
+            else                                                   //~vc1tI~
+            if (!Utils.isValidUnicode(intvalue))                   //+vc2GI~
+                intvalue=KEYVALUE_ERR;                             //+vc2GI~
+            else                                                   //+vc2GI~
+                intvalue=AxeKeyValue.setUnicodeId(intvalue);       //~vc1tI~
+        }                                                          //~vc1tI~
+        return intvalue;                                           //~vc1tI~
+    }                                                              //~vc1tI~
 //*************                                                    //~1611I~
     public static int chkInputAltGr(String Pstr)                   //~1611I~
     {                                                              //~1611I~
@@ -576,7 +608,7 @@ public class AxeKey                                                //~va15R~
         	rc=KEYVALUE_NOTDEF;                                    //~1608I~
         else                                                       //~1608I~
     		rc=shortcuttbl[Pkey-KEYTBL_START];                     //~1608I~
-        if (Dump.Y) Dump.println("getShortcutcode input="+Integer.toHexString(Pkey)+",out="+Integer.toHexString(rc));//~1608I~
+        if (Dump.Y) Dump.println("AxeKey.getShortcutcode input="+Integer.toHexString(Pkey)+",out="+Integer.toHexString(rc)+",shortcuttbl="+Utils.toHexString(shortcuttbl));//~1608I~//~vc2qR~
         return rc;                                                 //~1608I~
     }                                                              //~1608I~
 //*************                                                    //~1611I~

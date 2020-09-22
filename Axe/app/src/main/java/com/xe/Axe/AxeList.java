@@ -1,7 +1,10 @@
-//*CID://+vaxbR~: update#= 360;                                    //~vaxbR~
+//*CID://+vc1xR~: update#= 437;                                    //~vaxbR~//~vc1sR~//~vc1wR~//~vc1xR~
 //**********************************************************************//~1528I~
 //*ListView                                                        //~1530R~
 //**********************************************************************//~vaxbI~
+//vc1x 2020/07/08 member variable is initialized when defualt constructor defined(not non default constructor is define)//~vc1xI~
+//vc1w 2020/07/06 AxeKbd updatelog extends KbdLayoutHW             //~vc1wI~
+//vc1s 2020/06/29 hardKeyboard layout;set default                  //~vc1sI~
 //vaxb:140628 (Axe)implement filedialog                            //~vaxbI~
 //**********************************************************************//~1528I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1109R~//~1528I~
@@ -23,19 +26,30 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 //import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.ahsv.utils.Utils;
                                                                    //~1528I~
                                                                    //~1528I~
 class ListData                                                     //~1529R~
 {                                                                  //~1528I~
 	public int key1,key2,status;                                   //~1529R~
-	public String str1,str2;                                       //~vaxbI~
+	public String str1="",str2="";                                       //~vaxbI~//~vc1sR~
+	public String str3="",str4="";                                 //~vc1sR~
+	public String str5="",str6="";                                 //~vc1wR~
     public boolean isUpdated;                                      //~1530R~
     public boolean isEditable;                                  //~1A29R~//~1A30R~
 //    public View dataView;                                        //~@@@@R~
     public TextView textView1;                                     //~@@@@I~
     public TextView textView2;                                     //~1816I~
+    public TextView textView3;                                     //~vc1sI~
+    public TextView textView4;                                     //~vc1sI~
+    public TextView textView5;                                     //~vc1wI~
+    public TextView textView6;                                     //~vc1wI~
     public int pos;                                                //~@@@@I~
     public boolean dirline;                                        //~vaxbI~
+    int col,colerr;                                                //~vc1sR~
+    int posCursor;                                                 //~vc1sI~
+    int intValue;                                                  //~vc1sI~
     public ListData(int Pkey1,int Pkey2)                           //~1529R~
     {                                                              //~1528I~
     	key1=Pkey1;                                                //~1529R~
@@ -53,6 +67,78 @@ class ListData                                                     //~1529R~
         str2=Pstr2;                                                //~vaxbI~
         dirline=Pdir;                                              //~vaxbI~
     }                                                              //~vaxbI~
+    public ListData(int Pkey,String Pstr1,String Pstr2,String Pstr3,String Pstr4)//~vc1sR~
+    {                                                              //~vc1sI~
+    	key1=Pkey;                                                 //~vc1sI~
+        str1=Pstr1; str2=Pstr2; str3=Pstr3; str4=Pstr4;            //~vc1sR~
+    }                                                              //~vc1sI~
+    public ListData(int Pkey,String Pstr1,String Pstr2,String Pstr3,String Pstr4,String Pstr5)//~vc1wI~
+    {                                                              //~vc1wI~
+    	key1=Pkey;                                                 //~vc1wI~
+        str1=Pstr1; str2=Pstr2; str3=Pstr3; str4=Pstr4;            //~vc1wI~
+        str5=Pstr5;                                                //~vc1wI~
+    }                                                              //~vc1wI~
+    public ListData(int Pkey,String Pstr1,String Pstr2,String Pstr3,String Pstr4,String Pstr5,String Pstr6)//~vc1wI~
+    {                                                              //~vc1wI~
+    	key1=Pkey;                                                 //~vc1wI~
+        str1=Pstr1; str2=Pstr2; str3=Pstr3; str4=Pstr4;            //~vc1wI~
+        str5=Pstr5; str6=Pstr6;                                    //~vc1wI~
+    }                                                              //~vc1wI~
+    public String toString()                                       //~vc1sI~
+    {                                                              //~vc1sI~
+       return "ListData key1="+Integer.toHexString(key1)+",pos="+pos+",col="+col+",colerr="+colerr+",posCursor="+posCursor+",str="+str1+","+str2+","+str3+","+str4+",str5="+str5+","+str6+",view="+Utils.toString(textView1)+","+Utils.toString(textView2)+","+Utils.toString(textView3)+","+Utils.toString(textView4)+","+Utils.toString(textView5)+","+Utils.toString(textView6);//~vc1sR~//~vc1wR~
+    }                                                              //~vc1sI~
+    public void updateText(String Ptxt)                            //~vc1sI~
+    {                                                              //~vc1sI~
+        if (col==1)                                                //~vc1sI~
+            str2=Ptxt;                                             //~vc1sI~
+        else                                                       //~vc1sI~
+        if (col==2)                                                //~vc1sI~
+            str3=Ptxt;                                             //~vc1sI~
+        else                                                       //~vc1sI~
+        if (col==3)                                                //~vc1wI~
+            str4=Ptxt;                                             //~vc1sI~
+        else                                                       //~vc1wI~
+        if (col==4)                                                //~vc1wI~
+            str5=Ptxt;                                             //~vc1wI~
+        else                                                       //~vc1wI~
+            str6=Ptxt;                                             //~vc1wI~
+        if (Dump.Y) Dump.println("AxeList.ListData.updateText col="+col+",text="+Ptxt);//~vc1sI~
+    }                                                              //~vc1sI~
+    public void setColErr(int Pcol)                                //~vc1sI~
+    {                                                              //~vc1sI~
+    	colerr |= (1<<Pcol);                                       //~vc1sR~
+    }                                                              //~vc1sI~
+    public void resetColErr(int Pcol)                              //~vc1sI~
+    {                                                              //~vc1sI~
+        colerr &= ~(1<<Pcol);                                      //~vc1sR~
+    }                                                              //~vc1sI~
+    public boolean isColErr(int Pcol)                                 //~vc1sI~
+    {                                                              //~vc1sI~
+        return (colerr & (1<<Pcol))!=0;                            //~vc1sR~
+    }                                                              //~vc1sI~
+    public String getColStr()                                      //~vc1sI~
+    {                                                              //~vc1sI~
+    	String rc="";                                              //~vc1sI~
+        if (col==1)                                                //~vc1sI~
+//  		rc=str1;                                               //~vc1sI~//~vc1wR~
+    		rc=str2;                                               //~vc1wI~
+        else                                                       //~vc1sI~
+        if (col==2)                                                //~vc1sI~
+			rc=str3;                                               //~vc1sI~
+        else                                                       //~vc1sI~
+        if (col==3)                                                //~vc1sI~
+			rc=str4;                                               //~vc1sI~
+        else                                                       //~vc1sI~
+        if (col==4)                                                //~vc1wI~
+			rc=str5;                                               //~vc1wI~
+        else                                                       //~vc1wI~
+        if (col==5)                                                //~vc1wI~
+			rc=str6;                                               //~vc1wI~
+        else                                                       //~vc1wI~
+			rc=str1;                                               //~vc1sI~
+        return rc;
+    }                                                              //~vc1sI~
 }                                                                  //~1528I~
 class ShortcutData extends ListData                                //~1529I~
 { 
@@ -74,6 +160,8 @@ class ShiftkeyData extends ListData                                //~1529R~
 class ListViewTag                                                  //~@@@@I~
 {                                                                  //~@@@@I~
     public TextView view1,view2;                                   //~@@@@I~
+    public TextView view3,view4;                                   //~vc1sI~
+    public TextView view5,view6;                                   //~vc1wR~
     public int pos,cols;                                           //~vaxbI~
 //  public ListViewTag(TextView Pview1,TextView Pview2)            //~vaxbR~
     public ListViewTag(TextView Pview1,TextView Pview2,int Ppos,int Pcols)//~vaxbI~
@@ -83,6 +171,40 @@ class ListViewTag                                                  //~@@@@I~
         pos=Ppos;                                                  //~vaxbI~
         cols=Pcols;                                                //~vaxbI~
     }                                                              //~@@@@I~
+    public ListViewTag(TextView Pview1,TextView Pview2,TextView Pview3,TextView Pview4,int Ppos,int Pcols)//~vc1sI~
+    {                                                              //~vc1sI~
+        view1=Pview1;                                              //~vc1sI~
+        view2=Pview2;                                              //~vc1sI~
+        view3=Pview3;                                              //~vc1sI~
+        view4=Pview4;                                              //~vc1sI~
+        pos=Ppos;                                                  //~vc1sI~
+        cols=Pcols;                                                //~vc1sI~
+    }                                                              //~vc1sI~
+    public ListViewTag(TextView Pview1,TextView Pview2,TextView Pview3,TextView Pview4,TextView Pview5,int Ppos,int Pcols)//~vc1wI~
+    {                                                              //~vc1wI~
+        view1=Pview1;                                              //~vc1wI~
+        view2=Pview2;                                              //~vc1wI~
+        view3=Pview3;                                              //~vc1wI~
+        view4=Pview4;                                              //~vc1wI~
+        view5=Pview5;                                              //~vc1wI~
+        pos=Ppos;                                                  //~vc1wI~
+        cols=Pcols;                                                //~vc1wI~
+    }                                                              //~vc1wI~
+    public ListViewTag(TextView Pview1,TextView Pview2,TextView Pview3,TextView Pview4,TextView Pview5,TextView Pview6,int Ppos,int Pcols)//~vc1wI~
+    {                                                              //~vc1wI~
+        view1=Pview1;                                              //~vc1wI~
+        view2=Pview2;                                              //~vc1wI~
+        view3=Pview3;                                              //~vc1wI~
+        view4=Pview4;                                              //~vc1wI~
+        view5=Pview5;                                              //~vc1wI~
+        view6=Pview6;                                              //~vc1wI~
+        pos=Ppos;                                                  //~vc1wI~
+        cols=Pcols;                                                //~vc1wI~
+    }                                                              //~vc1wI~
+    public String toString()                                       //~vc1sI~
+    {                                                              //~vc1sI~
+        return "ListViewTag:pos="+pos+",col="+cols+",view1="+Utils.toString(view1)+",view2="+Utils.toString(view2)+",view3="+Utils.toString(view3)+"+view4="+Utils.toString(view4)+Utils.toString(view5);//~vc1sI~//~vc1wR~
+    }                                                              //~vc1sI~
 }                                                                  //~@@@@I~
 //*************************************************                //~@@@@I~
 public class AxeList                                                  //~1114//~1528I~
@@ -91,14 +213,19 @@ public class AxeList                                                  //~1114//~
 	private static final int VIEWID_KEY1    =R.id.Label;           //~1530R~
 	private static final int VIEWID_KEY2    =R.id.Value;           //~1530R~
                                                                    //~1529I~
-	private static final int DATA_ERR       =1;                    //~1529I~
-	private static final int DATA_NORMAL    =0;                    //~1529I~
-	private static final int COLOR_BG       =Color.WHITE;          //~1530R~
-	private static final int COLOR_FG       =Color.BLACK;          //~1530I~
+	protected static final int DATA_ERR       =1;                    //~1529I~//~vc1sR~
+	protected static final int DATA_NORMAL    =0;                    //~1529I~//~vc1sR~
+	protected static final int COLOR_BG       =Color.WHITE;          //~1530R~//~vc1sR~
+	protected static final int COLOR_BG_DISABLE=0xff808080;        //~vc1sR~
+	protected static final int COLOR_BG_ENABLE6=0xffe8e8e8;        //~vc1wI~
+	protected static final int COLOR_BG_ENABLE5=0xffe0e0e0;        //~vc1wI~
+	protected static final int COLOR_BG_ENABLE4=0xffe8e8e8;        //~vc1sR~
+	protected static final int COLOR_BG_ENABLE3=0xfff0f0f0;        //~vc1sR~
+	protected static final int COLOR_FG       =Color.BLACK;          //~1530I~//~vc1sR~
 	public  static final int COLOR_FGERR    =0xfff00000; //red     //~1602R~
 	public  static final int COLOR_BGFOCUS =0xffffc070; //orange   //~vaxbI~
 	private static final String NOT_DEFINED ="";                   //~1529R~
-	private static final int INVALID_POS    =AdapterView.INVALID_POSITION;//~1601I~
+	protected static final int INVALID_POS    =AdapterView.INVALID_POSITION;//~1601I~//~vc1sR~
                                                                    //~1528I~
     private int options;                                           //~vaxbI~
 	private int dialogId,rowId;                                          //~1528I~
@@ -106,18 +233,19 @@ public class AxeList                                                  //~1114//~
 	private boolean clickableRow;                                  //~@@@@I~
 	public  ListView listView;                                     //~1529R~
 //	private Spinner  spinnerView;                                  //~1601I~
-	private ArrayList<ListData> arrayData;                         //~1529R~
+	protected ArrayList<ListData> arrayData;                         //~1529R~//~vc1sR~
 	public ArrayAdapter<ListData> adapter;                         //~1817R~
                                                                    //~1528I~
-	private int cursorpos=INVALID_POS;                             //~1601R~                       //~1601R~
+	protected int cursorpos=INVALID_POS;                             //~1601R~                       //~1601R~//~vc1sR~
                                                                    //~1528I~
 	public int menuId;                                           //~1529I~
 //  private OnLongClickListener longClickListener;                 //~1601R~
     private ClickListener clickListener,clickListenerV1;           //~@@@@I~
     private FocusListener focusListener;                           //~@@@@I~
     private ListTextWatcher listTextWatcher;                       //~@@@@I~
-    private TextView focusView1,focusView2;                        //~@@@@I~
-    private int focusPos;                                          //~@@@@I~
+    protected TextView focusView1,focusView2;                        //~@@@@I~//~vc1sR~
+    protected int focusPos;                                          //~@@@@I~//~vc1sR~
+    protected AxeList axeList;                                     //~vc1wI~
                                                                    //~1528I~
 ////*****************                                              //~1604R~
 ////*for Spinner                                                   //~1604R~
@@ -128,26 +256,55 @@ public class AxeList                                                  //~1114//~
 //        rowId=ROWID_SPINNER;                                     //~1604R~
 //        initSpinner();                                           //~1604R~
 //    }                                                            //~1604R~
-    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~@@@@I~
-    {                                                              //~@@@@I~
-        dialogId=PdialogId;                                        //~@@@@I~
-        menuId=Pmenuid;                                            //~@@@@I~
-		rowId=Prowid;                                              //~@@@@I~
-        listView=(ListView)(PlayoutView.findViewById(VIEWID_LIST));//~@@@@I~
-    }                                                              //~@@@@I~
-    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,boolean PeditableRow)//~@@@@I~
-    {                                                              //~@@@@I~
-	    this(PdialogId,PlayoutView,Pmenuid,Prowid);                //~@@@@I~
-        editableRow=PeditableRow;                                  //~@@@@I~
-        init();                                                    //~@@@@I~
-    }                                                              //~@@@@I~
-    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,boolean PeditableRow,boolean Pclickable)//~@@@@I~
-    {                                                              //~@@@@I~
-	    this(PdialogId,PlayoutView,Pmenuid,Prowid);                //~@@@@I~
-        editableRow=PeditableRow;                                  //~@@@@I~
-        clickableRow=Pclickable;                                   //~@@@@I~
-        init();                                                    //~@@@@I~
-    }                                                              //~@@@@I~
+	public AxeList()                                               //~vc1xR~
+	{                                                              //~vc1xR~
+        if (Dump.Y) Dump.println("AxeList.defuaultConstructor");   //~vc1xR~
+	}	//member init                                              //~vc1xR~
+//    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~@@@@I~//~vc1wR~//+vc1xR~
+//    {                                                              //~@@@@I~//~vc1wR~//+vc1xR~
+//        axeList=this;                                              //~vc1wR~//+vc1xR~
+//        dialogId=PdialogId;                                        //~@@@@I~//~vc1wR~//+vc1xR~
+//        menuId=Pmenuid;                                            //~@@@@I~//~vc1wR~//+vc1xR~
+//        rowId=Prowid;                                              //~@@@@I~//~vc1wR~//+vc1xR~
+//        listView=(ListView)(PlayoutView.findViewById(VIEWID_LIST));//~@@@@I~//~vc1wR~//+vc1xR~
+//    }                                                              //~@@@@I~//~vc1wR~//+vc1xR~
+    public void initInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~vc1wR~
+    {                                                              //~vc1wI~
+        if (Dump.Y) Dump.println("AxeList.initInstance menuid="+Integer.toHexString(Pmenuid)+",rowid="+Integer.toHexString(Prowid));//~vc1wI~
+        axeList=this;                                              //~vc1wI~
+        dialogId=PdialogId;                                        //~vc1wI~
+        menuId=Pmenuid;                                            //~vc1wI~
+        rowId=Prowid;                                              //~vc1wI~
+        listView=(ListView)(PlayoutView.findViewById(VIEWID_LIST));//~vc1wI~
+    }                                                              //~vc1wI~
+//    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,boolean PeditableRow)//~@@@@I~//~vc1wR~
+//    {                                                              //~@@@@I~//~vc1wR~
+//        this(PdialogId,PlayoutView,Pmenuid,Prowid);                //~@@@@I~//~vc1wR~
+//        editableRow=PeditableRow;                                  //~@@@@I~//~vc1wR~
+//        init();                                                    //~@@@@I~//~vc1wR~
+//    }                                                              //~@@@@I~//~vc1wR~
+    public void initInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,boolean PeditableRow)//~vc1wR~
+    {                                                              //~vc1wI~
+        if (Dump.Y) Dump.println("AxeList.initInstance menuid="+Integer.toHexString(Pmenuid)+",rowid="+Integer.toHexString(Prowid)+",editableRow="+PeditableRow);//~vc1wI~
+        initInstance(PdialogId,PlayoutView,Pmenuid,Prowid);        //~vc1wR~
+        editableRow=PeditableRow;                                  //~vc1wI~
+        init();                                                    //~vc1wI~
+    }                                                              //~vc1wI~
+//    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,boolean PeditableRow,boolean Pclickable)//~vc1xR~
+//    {                                                              //~@@@@I~//~vc1xR~
+//        this(PdialogId,PlayoutView,Pmenuid,Prowid);                //~@@@@I~//~vc1xR~
+//        editableRow=PeditableRow;                                  //~@@@@I~//~vc1xR~
+//        clickableRow=Pclickable;                                   //~@@@@I~//~vc1xR~
+//        init();                                                    //~@@@@I~//~vc1xR~
+//    }                                                              //~@@@@I~//~vc1xR~
+    public void initInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,boolean PeditableRow,boolean Pclickable)//~vc1xR~
+    {                                                              //~vc1xR~
+        if (Dump.Y) Dump.println("AxeList.initInstance menuid="+Integer.toHexString(Pmenuid)+",rowid="+Integer.toHexString(Prowid)+",editableRow="+PeditableRow+",clickable="+Pclickable);//~vc1xR~
+        initInstance(PdialogId,PlayoutView,Pmenuid,Prowid);        //~vc1xR~
+        editableRow=PeditableRow;                                  //~vc1xR~
+        clickableRow=Pclickable;                                   //~vc1xR~
+        init();                                                    //~vc1xR~
+    }                                                              //~vc1xR~
 ////*for shortcut/shiftkey list                                    //~@@@@R~
 //    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,boolean PeditableRow)                                               //~1112I~//~@@@@R~
 //    {                                                            //~@@@@R~
@@ -177,12 +334,19 @@ public class AxeList                                                  //~1114//~
 		return null;                                               //~1612I~
     }                                                              //~1612R~
 //*****************                                                //~vaxbI~
-    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,int Popt)//~vaxbI~
-    {                                                              //~vaxbI~
-	    this(PdialogId,PlayoutView,Pmenuid,Prowid);                //~vaxbI~
-        options=Popt;                                              //~vaxbI~
-        init();                                                    //~vaxbI~
-    }                                                              //~vaxbI~
+//    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,int Popt)//~vaxbI~//~vc1wR~
+//    {                                                              //~vaxbI~//~vc1wR~
+//        this(PdialogId,PlayoutView,Pmenuid,Prowid);                //~vaxbI~//~vc1wR~
+//        options=Popt;                                              //~vaxbI~//~vc1wR~
+//        init();                                                    //~vaxbI~//~vc1wR~
+//    }                                                              //~vaxbI~//~vc1wR~
+    public void initInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid,int Popt)//~vc1wR~
+    {                                                              //~vc1wI~
+        if (Dump.Y) Dump.println("AxeList.initInstance menuid="+Integer.toHexString(Pmenuid)+",rowid="+Integer.toHexString(Prowid)+",opt="+Popt);//~vc1wI~
+        initInstance(PdialogId,PlayoutView,Pmenuid,Prowid);        //~vc1wR~
+        options=Popt;                                              //~vc1wI~
+        init();                                                    //~vc1wI~
+    }                                                              //~vc1wI~
 //*****************                                                //~1528I~
     public void init()                                             //~1528I~
     {                                                              //~1528I~
@@ -195,6 +359,7 @@ public class AxeList                                                  //~1114//~
 //      AxeG.axeKey.setListViewData(dialogId,this,menuId);	//fill arraylist//~1612R~
         setListViewData();	//fill arraylist                       //~1612I~
     	setAdapter();                                              //~1528I~
+        if (Dump.Y) Dump.println("AxeList.init cursorpos="+cursorpos);//~vc1sI~
     }                                                              //~1528I~
     public void setListViewData()                                  //~1612I~
     {                                                              //~1612I~
@@ -210,6 +375,7 @@ public class AxeList                                                  //~1114//~
     {                                                              //~vaxbI~
     	arrayData.clear();                                         //~vaxbI~
 		cursorpos=INVALID_POS;                                     //~vaxbI~
+        if (Dump.Y) Dump.println("AxeList.clearList cursorpos="+cursorpos);//~vc1sI~
     }                                                              //~vaxbI~
 //*****************                                                //~1528I~
 //  private void setAdapter()            //~1112I~//~1114R~     //~1219R~//~vaxbR~
@@ -223,6 +389,7 @@ public class AxeList                                                  //~1114//~
 //*****************                                                //~vaxbI~
     protected void resetAdapter()                                  //~vaxbI~
     {                                                              //~vaxbI~
+        if (Dump.Y) Dump.println("AxeList.resetAdapter");          //~vc1sI~
 		adapter.notifyDataSetChanged();                            //~vaxbI~
     }                                                              //~vaxbI~
 //*****************                                                //~1528I~
@@ -233,10 +400,10 @@ public class AxeList                                                  //~1114//~
 			Plv.setItemsCanFocus(true);                            //~1816R~
 			Plv.setFocusableInTouchMode(true); //fail if Array is empty//~1816I~
         }                                                          //~1816I~
-        if (Dump.Y) Dump.println("List setMode isFocusable="+Plv.isFocusable());//~1528I~
-        if (Dump.Y) Dump.println("List setmode isFocusableInTouchMode="+Plv.isFocusableInTouchMode());//~1528I~
-        if (Dump.Y) Dump.println("List setMode isFocusable="+Plv.isFocusable());//~1528I~
-        if (Dump.Y) Dump.println("List setmode isFocusableInTouchMode="+Plv.isFocusableInTouchMode());//~1528I~
+        if (Dump.Y) Dump.println("AxeList.setMode isFocusable="+Plv.isFocusable());//~1528I~//~vc1sR~
+        if (Dump.Y) Dump.println("AxeList.setmode isFocusableInTouchMode="+Plv.isFocusableInTouchMode());//~1528I~//~vc1sR~
+        if (Dump.Y) Dump.println("AxeList.setMode isFocusable="+Plv.isFocusable());//~1528I~//~vc1sR~
+        if (Dump.Y) Dump.println("AxeList.setmode isFocusableInTouchMode="+Plv.isFocusableInTouchMode());//~1528I~//~vc1sR~
     }                                                              //~1528I~
 
 //*****************                                              //~1604R~
@@ -258,6 +425,7 @@ public class AxeList                                                  //~1114//~
 //*****************                                                //~1528I~
     public int getSelectedPos()                                    //~1528I~
     {                                                              //~1528I~
+        if (Dump.Y) Dump.println("AxeList.getSelectedPos cursorpos="+cursorpos);//~vc1sR~
     	return cursorpos;                                          //~1530R~
     }                                                              //~1528I~
     public int getSelectedPosListView()                           //~1817I~
@@ -293,7 +461,7 @@ public class AxeList                                                  //~1114//~
 //        if (Dump.Y) Dump.println("Listview select(setItemChecked) pos="+listView.getCheckedItemPosition());//~1530R~//~1810R~
 //        listView.requestFocus();                               //~1530R~//~1810R~
 //        listView.setItemChecked(Ppos,true);                        //~1118I~//~1530R~//~1810R~
-        if (Dump.Y) Dump.println("AxeList select pos="+Ppos+",isInTouchMode="+listView.isInTouchMode());//~1530R~//~1810R~
+        if (Dump.Y) Dump.println("AxeList.select pos="+Ppos+",isInTouchMode="+listView.isInTouchMode());//~1530R~//~1810R~//~vc1sR~
         listView.setSelection(Ppos);   //#### setSelection() is ignored if isInTouchMode()//~1530R~//~1810R~
     }                                                            //~1530R~//~1810R~
 ////*****************                                              //~1816R~
@@ -321,6 +489,13 @@ public class AxeList                                                  //~1114//~
 		data=arrayData.get(Ppos);                                  //~1810I~
     	return data.textView2;                                     //~1816R~
     }                                                              //~1810I~
+//**********************************************************************//~vc1sI~
+//*AxeLst___ override this                                         //~vc1sI~
+//**********************************************************************//~vc1sI~
+    protected View getViewEach(ListArrayAdapter Padapter,int Ppos, View Pview,ViewGroup Pparent)    //~vc1sI~//~vc1wR~
+    {                                                              //~vc1sI~
+    	return null;                                               //~vc1sI~
+    }                                                              //~vc1sI~
 //**********************************************************************//~1528I~
 //*ArrayAdapter class                                              //~1528I~
 //**********************************************************************//~1528I~
@@ -338,16 +513,21 @@ public class AxeList                                                  //~1114//~
         @Override                                                  //~1528I~
         public View getView(int Ppos, View Pview,ViewGroup Pparent)//~1528I~
         {                                                          //~1528I~
-	        View /*heldview,*/convertview;                                           //~1220I~//~1529R~
+	        View /*heldview,*/convertview;                                           //~1220I~//~1529R~//~vc1sR~
             ListViewTag tag;                                       //~@@@@I~
             TextView v1,v2;                                        //~@@@@I~
         //*******************                                      //~1528I~
 //          if (Dump.Y) Dump.println("ListAdapter getview Ppos="+Ppos+"CheckedItemPos="+((ListView)Pparent).getCheckedItemPosition());//~1814R~//~1824R~//~1A30R~
-            convertview=Pview;                      //~1221I~      //~1529R~
+            convertview=Pview;                      //~1221I~      //~1529R~//~vc1sI~
         	try                                                    //~1529I~
             {                                                      //~1529I~
+//              View each=getViewEach(this,Ppos,Pview,Pparent);    //~vc1sR~//~vc1wR~
+                View each=axeList.getViewEach(this,Ppos,Pview,Pparent);//~vc1wI~
+                if (each!=null)                                    //~vc1sR~
+                    return each;                                   //~vc1sR~
                 if (convertview==null)      //shown 1st time                                    //~1221I~//~@@@@R~
                 {                                                  //~@@@@R~
+					if (Dump.Y) Dump.println("ListAdapter.getview convertview=null");//~vc1sI~
                     convertview=AxeG.inflater.inflate(rowId,Pparent,false/*attachToRoot*/);//~@@@@R~
 	            	v1=(TextView)(convertview.findViewById(AxeList.VIEWID_KEY1));//~@@@@I~
     	        	v2=(TextView)(convertview.findViewById(AxeList.VIEWID_KEY2));//~@@@@I~
@@ -555,12 +735,6 @@ public class AxeList                                                  //~1114//~
 //            FocusListener l=new FocusListener(Ppos,PeditText);   //~@@@@R~
 //            PeditText.setOnFocusChangeListener(l);               //~@@@@R~
 //        }                                                        //~@@@@R~
-    	public void addFocusChangeListener(TextView PeditText)     //~@@@@I~
-        {                                                          //~@@@@I~
-        	if (focusListener==null)                               //~@@@@I~
-            	focusListener=new FocusListener();                 //~@@@@I~
-            PeditText.setOnFocusChangeListener(focusListener);     //~@@@@I~
-        }                                                          //~@@@@I~
     //****************                                             //~1612I~
 //        private void addTextWatcher(int Ppos,TextView Ptextview,ListData Pdata)//~1530R~//~@@@@R~
 //        {                                                        //~@@@@R~
@@ -574,17 +748,25 @@ public class AxeList                                                  //~1114//~
 //                PeditText.setOnEditorActionListener(l);          //~1601R~
 //        }                                                        //~1601R~
     }//inner class ListArrayAdapter                                //~1529R~
+  //*************************************************************  //~vc1sI~
+    public void addFocusChangeListener(TextView PeditText)     //~@@@@I~//~vc1sI~
+    {                                                          //~@@@@I~//~vc1sI~
+        if (focusListener==null)                               //~@@@@I~//~vc1sI~
+            focusListener=new FocusListener();                 //~@@@@I~//~vc1sI~
+        PeditText.setOnFocusChangeListener(focusListener);     //~@@@@I~//~vc1sI~
+        if (Dump.Y) Dump.println("AxeList.addFocusChangeListener view="+PeditText.toString());//~vc1sI~
+    }                                                          //~@@@@I~//~vc1sI~
   //*************************************************************  //~@@@@I~
-    private void addTextWatcher(TextView PtextView)                //~@@@@I~
+    protected void addTextWatcher(TextView PtextView)                //~@@@@I~//~vc1sR~
     {                                                              //~@@@@I~
         if (listTextWatcher==null)                                 //~@@@@I~
         	listTextWatcher=new ListTextWatcher();                 //~@@@@I~
         listTextWatcher.setView(PtextView);                        //~@@@@I~
 	    removeTextWatcher(PtextView);	//avoid multiple enq       //~@@@@I~
         PtextView.addTextChangedListener(listTextWatcher);         //~@@@@I~
-        if (Dump.Y) Dump.println("addtextWatcher pos="+PtextView.getId()+",view="+PtextView.toString());//~@@@@I~
+        if (Dump.Y) Dump.println("AxeList.addtextWatcher pos="+PtextView.getId()+",view="+PtextView.toString());//~@@@@I~//~vc1sR~
     }                                                              //~@@@@I~
-    private void removeTextWatcher(TextView PtextView)             //~@@@@I~
+    protected void removeTextWatcher(TextView PtextView)             //~@@@@I~//~vc1sR~
     {                                                              //~@@@@I~
         if (listTextWatcher!=null)                                 //~@@@@I~
         	PtextView.removeTextChangedListener(listTextWatcher);  //~@@@@I~
@@ -594,7 +776,7 @@ public class AxeList                                                  //~1114//~
     public ClickListener addClickListener()                        //~1A30R~
     {                                                              //~1A30R~
         ClickListener l=new ClickListener(0);                      //~@@@@R~
-//        if (Dump.Y) Dump.println("addCliskListener="+l.toString());//~@@@@R~
+//        if (Dump.Y) Dump.println("addClickListener="+l.toString());//~@@@@R~//~vc1sR~
         return l;                                                  //~1A30R~
     }                                                              //~1A30R~
     public void addClickListener(int Ppos,TextView Pview)    //~1816R~//~1A30R~
@@ -608,15 +790,15 @@ public class AxeList                                                  //~1114//~
     	if (clickListenerV1==null)                                 //~@@@@I~
     		clickListenerV1=new ClickListener(-1);                 //~@@@@I~
         Pview.setOnClickListener(clickListenerV1);                 //~@@@@I~
-        if (Dump.Y) Dump.println("addCliskListenerV1 V1="+Pview.toString());//~@@@@I~
+//      if (Dump.Y) Dump.println("addClickListenerV1 V1="+Pview.toString());//~@@@@I~//~vc1sR~
     }                                                              //~@@@@I~
 //**********************************************************************//~1816R~//~1A30R~
 //*EditText click listener for no editableRow                      //~1A30R~
 //**********************************************************************//~1816R~//~1A30R~
     class ClickListener implements OnClickListener               //~1816R~//~1A30R~
     {                                                            //~1816R~//~1A30R~
-//  	int pos;                                                   //+vaxbR~
-    	int pos,cols;                                              //+vaxbI~
+//  	int pos;                                                   //~vaxbR~
+    	int pos,cols;                                              //~vaxbI~
         boolean v1listener;                                        //~@@@@I~
         //*********************                                  //~1816R~//~1A30R~
         public ClickListener(int Ppos)                           //~1816R~//~@@@@R~
@@ -632,9 +814,11 @@ public class AxeList                                                  //~1114//~
             ListData data=null;                                    //~1A30R~
             TextView v1,v2;                                        //~@@@@I~
         //*********                                                //~1A30R~
-            if (Dump.Y) Dump.println("AxeList OnclickListener view="+Pview.toString());//~1816R~//~1A30R~
+            if (Dump.Y) Dump.println("AxeList.OnclickListener.onClick view="+Pview.toString());//~1816R~//~1A30R~//~vc1sR~
             try                                                  //~1816R~//~1A30R~
             {                                                    //~1816R~//~1A30R~
+	            if (onClickEach(Pview))                            //~vc1sI~
+    	            return;                                        //~vc1sI~
 //                ctr=arrayData.size();                            //~@@@@R~
 //                for (ii=0;ii<ctr;ii++)                           //~@@@@R~
 //                {                                                //~@@@@R~
@@ -672,16 +856,23 @@ public class AxeList                                                  //~1114//~
 //                  	v1=(TextView) Pview.getTag();              //~vaxbR~
 			            if (Dump.Y) Dump.println("AxeList OnclickListenerV2  pos="+cursorpos+",v1="+v1.toString());//~@@@@I~
                     }                                              //~@@@@I~
+			        if (Dump.Y) Dump.println("AxeList.onclick cursorpos="+cursorpos);//~vc1sI~
 //                  onItemClick(cursorpos,data,Pview);             //~vaxbR~
                     onClicked(cursorpos,cols,data,Pview);          //~vaxbI~
                 }                                                  //~@@@@I~
             }                                                    //~1816R~//~1A30R~
             catch(Exception e)                                   //~1816R~//~1A30R~
             {                                                    //~1816R~//~1A30R~
-                Dump.println(e,"AexeList:OnClickListener");      //~1816R~//~1A30R~
+                Dump.println(e,"AxeList:OnClickListener");      //~1816R~//~1A30R~//~vc1sR~
             }                                                    //~1816R~//~1A30R~
         }                                                        //~1816R~//~1A30R~
     }//inner class                                               //~1816R~//~1A30R~
+    //**********************************************************************//~vc1sI~
+    public boolean onClickEach(View Pview)                         //~vc1sI~
+    {                                                              //~vc1sI~
+    //Overrided by AxeLstKbdLayoutHW
+        return false;// +vc1sI~
+    }                                                              //~vc1sI~
     //**********************************************************************//~1816R~//~1A30R~
 //  public void onItemClick(int Ppos,ListData Pitem,View Pview)  //~1816R~//~vaxbR~
     public void onClicked(int Ppos,int cols,ListData Pitem,View Pview)//~vaxbI~
@@ -701,6 +892,7 @@ public class AxeList                                                  //~1114//~
 //            editText=PeditText;                                  //~@@@@R~
 //        }                                                        //~@@@@R~
         //*********                                                //~1530I~
+        @Override                                                  //~vc1sI~
         public void onFocusChange(View Pview,boolean PhasFocus)                     //~1530I~
         {                                                          //~1530I~
         	int bg;                                                //~1530I~
@@ -710,6 +902,9 @@ public class AxeList                                                  //~1114//~
         //**************                                           //~1530I~
         	try                                                    //~1601I~
             {                                                      //~1601I~
+                if (Dump.Y) Dump.println("AxeList FocusListener focus="+PhasFocus+",Pview="+Pview.toString());//~vc1sI~
+	            if (onFocusChangedEach(Pview,PhasFocus))           //~vc1sR~
+    	            return;                                        //~vc1sI~
             	editText=(TextView) Pview;                         //~@@@@I~
 //              pos=Pview.getId();                                 //~vaxbR~
                 ListViewTag tag=(ListViewTag)Pview.getTag();       //~vaxbI~
@@ -751,7 +946,7 @@ public class AxeList                                                  //~1114//~
                     cursorpos=INVALID_POS;                         //~@@@@I~
                     focusPos=INVALID_POS;                          //~@@@@I~
                 }                                                  //~1601R~
-                if (Dump.Y) Dump.println("AxeList FocusListener text="+((TextView)Pview).getText());//~@@@@I~
+                if (Dump.Y) Dump.println("AxeList FocusListener cursorpos="+cursorpos+",text="+((TextView)Pview).getText());//~@@@@I~//~vc1sR~
                 editText.setBackgroundColor(bg);                   //~1601R~
                 invalidate();  //not to editText to redraw bg color changed//~1601R~
             }                                                      //~1601I~
@@ -768,6 +963,12 @@ public class AxeList                                                  //~1114//~
     {                                                              //~1810I~
     //override if required                                         //~1810I~
     }                                                              //~1810I~
+//**********************************************************************//~vc1sI~
+    public boolean onFocusChangedEach(View Pview,boolean PhasFocus)//~vc1sR~
+    {                                                              //~vc1sI~
+    //override if required and return true                         //~vc1sI~
+    	return false;                                              //~vc1sI~
+    }                                                              //~vc1sI~
 //**********************************************************************//~1529I~
 //*EditText Change watcher                                        //~1529I~//~1810R~
 //**********************************************************************//~1529I~
@@ -801,6 +1002,8 @@ public class AxeList                                                  //~1114//~
         {                                                          //~1529I~
         	try                                                    //~1601I~
             {                                                      //~1601I~
+		        if (afterTextChangedEach(textView,s))              //~vc1sR~
+                	return;                                        //~vc1sI~
 //            	pos=textView.getId();                              //~vaxbR~
                 ListViewTag tag=(ListViewTag)textView.getTag();    //~vaxbI~
                 pos=tag.pos;                                       //~vaxbI~
@@ -818,6 +1021,7 @@ public class AxeList                                                  //~1114//~
                 textView.setTextColor(COLOR_FG);                   //~1601R~//~1824R~
                 data.status=DATA_NORMAL;                           //~1601R~
                 AxeList.this.onTextChanged(pos,textView,s.toString());//~@@@@I~
+			    if (Dump.Y) Dump.println("AxeList.afterTextChanged cursorpos="+cursorpos);//~vc1sI~
 //                invalidate(); //required because focus dose not change by typing//~@@@@R~
             }                                                      //~1601I~
             catch(Exception e)                                     //~1601I~
@@ -831,6 +1035,11 @@ public class AxeList                                                  //~1114//~
     {                                                              //~@@@@I~
 //override it                                                      //~@@@@I~
     }                                                              //~@@@@I~
+    public boolean afterTextChangedEach(TextView PtextView,Editable Peditable)//~vc1sR~
+    {                                                              //~vc1sI~
+//override it and return true                                      //~vc1sI~
+		return false;                                              //~vc1sI~
+    }                                                              //~vc1sI~
 ////**********************************************************************//~1601R~
 ////*detect Enter Key                                              //~1601R~
 ////**********************************************************************//~1601R~
@@ -917,6 +1126,7 @@ public class AxeList                                                  //~1114//~
             try                                                    //~@@@@I~
             {                                                      //~@@@@I~
                 cursorpos=Ppos;                                    //~@@@@R~
+			    if (Dump.Y) Dump.println("AxeList.onItemSelected cursorpos="+cursorpos);//~vc1sI~
     //            listView.setItemChecked(Ppos,true); //call getView();setSelection() may move cursor//~@@@@R~
                 ListData item=arrayData.get(Ppos);                 //~@@@@R~
                 TextView v2=(TextView)((ViewGroup)Ptextview).getChildAt(1);//~@@@@I~
@@ -955,6 +1165,7 @@ public class AxeList                                                  //~1114//~
                 ListData item=arrayData.get(Ppos);                 //~1816R~
 //              onItemClicked(Ppos,item);                          //~vaxbR~
                 onItemClickedLine(Ptextview,Ppos,item);            //~vaxbI~
+			    if (Dump.Y) Dump.println("AxeList.onItemSClick cursorpos="+cursorpos);//~vc1sI~
             }                                                      //~1816I~
             catch(Exception e)                                     //~1816I~
             {                                                      //~1816I~
@@ -1191,7 +1402,7 @@ public class AxeList                                                  //~1114//~
 			return false;                                          //~vaxbI~
     }                                                              //~vaxbI~
     //****************                                             //~vaxbI~
-    public int chkInputValue(int Ppos,String Pvalue,boolean Ptoast)         //~1613R~//~1A29R~
+    protected int chkInputValue(int Ppos,String Pvalue,boolean Ptoast)         //~1613R~//~1A29R~//~vc1wR~
     {                                                              //~1612I~
 //overrided by extender                                            //~1612I~//~1810R~
         return AxeKey.KEYVALUE_ERR;                                //~1612I~
@@ -1201,10 +1412,10 @@ public class AxeList                                                  //~1114//~
 ////overrided by extender(AxeKbdLayout)                            //~1920R~
 //        return AxeKey.KEYVALUE_ERR;                              //~1920R~
 //    }                                                            //~1920R~
-    public void onSpinnerItemSelected(int Ppos)                    //~1810I~
-    {                                                              //~1810I~
-//overrided by extender(AxeLstTermBtn)                             //~1810I~
-    }                                                              //~1810I~
+    public void onSpinnerItemSelected(int Ppos)                    //~1810I~//~vc1sR~
+    {                                                              //~1810I~//~vc1sR~
+//overrided by extender(AxeLstTermBtn)                             //~1810I~//~vc1sR~
+    }                                                              //~1810I~//~vc1sR~
 //    public void drawLineChange(int Poldpos,int Pnewpos)          //~@@@@R~
 //    {                                                            //~@@@@R~
 //        int listsz,pos;                                          //~@@@@R~

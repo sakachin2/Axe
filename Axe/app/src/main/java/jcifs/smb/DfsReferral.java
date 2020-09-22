@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    3;       //~0618I~//+vc19R~
+//**************************************************************** //~0618I~
+//vc19 2020/06/18 Warning generic err for Map Arraylist ...        //~0618I~
+//**************************************************************** //~0618I~
 /* jcifs smb client library in Java
  * Copyright (C) 2003  "Michael B. Allen" <jcifs at samba dot org>
  * 
@@ -20,6 +24,7 @@ package jcifs.smb;
 
 import java.util.Map;
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public class DfsReferral extends SmbException {
 
     public int pathConsumed;

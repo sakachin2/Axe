@@ -307,6 +307,114 @@
                     <LinearLayout
                          android:layout_width="fill_parent"
                          android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                    >
+                        <TextView
+                             android:text="@string/Setup_CurEnvPath"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                        <TextView
+                             android:id="@+id/Setup_CurEnvPath"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                    >
+                        <TextView
+                             android:text="@string/Setup_EnvPathAdd"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                        <TextView
+                             android:id="@+id/Setup_EnvPathAddHome"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                    >
+                        <TextView
+                             android:text="@string/Setup_EnvPathTmp"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                        <TextView
+                             android:id="@+id/Setup_EnvPathTmp"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                    >
+                        <TextView
+                             android:text="@string/Setup_SDCard"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                        <TextView
+                             android:id="@+id/Setup_SDCardPath"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                    >
+                        <TextView
+                             android:text="@string/Setup_Home"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                        <TextView
+                             android:id="@+id/Setup_Home"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                    >
+                        <TextView
+                             android:text="@string/Setup_WorkDir"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                        <TextView
+                             android:id="@+id/Setup_WorkDir"
+                             android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                        />             
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
                          android:orientation="vertical"
                              android:id="@+id/ContainerInternalOption"
                     >
@@ -390,12 +498,24 @@
                					 android:layout_weight="1"
                             />         
                         </RadioGroup>     
-                        <CheckBox
-                            android:id="@+id/DEBUG_REMAP"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/Setup_Remap"
-                        />
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal"
+                        >
+                            <CheckBox
+                                android:id="@+id/DEBUG_REMAP"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Setup_Remap"
+                            />
+                            <CheckBox
+                                android:id="@+id/Debug_Help_ReverseLang"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Label_HelpLang"
+                            />
+	                    </LinearLayout>
                         <LinearLayout
                              android:layout_width="fill_parent"
                              android:layout_height="wrap_content"

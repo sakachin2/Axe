@@ -1,27 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ThemeV10" parent="@android:style/Theme">
+<!--  !!! see -v11 (android3.0), now minsdk=15 -->
+    <!--style name="ThemeV10" parent="@android:style/Theme"-->
+    <!--style name="ThemeV10" parent="@android:style/Theme.Holo.Light"-->
+    <!--style name="ThemeV10" parent="android:Theme.Holo"-->
+    <!--style name="ThemeV10" parent="Base.V7.Theme.AppCompat"-->
+    <!--style name="ThemeV10" parent="@android:style/Theme.Holo.Light"-->
+    <style name="ThemeV101" parent="@style/Theme.AppCompat.NoActionBar">
+    </style>
+    <style name="myPopupMenu2"
+		parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:background">@color/menu_bg</item>
+        <item name="android:divider">@color/menu_bg</item>
+        <item name="android:dividerHeight">10dp</item>
+        <item name="android:popupBackground">@color/menu_bg</item>
+        <item name="android:textColor">@color/menu_fg</item>
+    </style>
+    <style name="ThemeV10_save" parent="Base.V7.Theme.AppCompat">
         <!--item name="android:buttonStyle">?android:buttonStyleSmall</item-->
         <item name="android:buttonStyle">@style/SmallButton</item>
         <item name="android:checkboxStyle">@style/SmallCheckBox</item>
         <item name="android:radioButtonStyle">@style/SmallRadioButton</item>
         <!--item name="android:listViewStyle">@style/SmallListView</item-->
-        <item name="android:popupMenuStyle">@android:style/TextAppearance.Widget.PopupMenu.Small</item>
+        <!--item name="android:popupMenuStyle">@android:style/TextAppearance.Widget.PopupMenu.Small</item-->
+        <item name="android:popupMenuStyle">@style/myPopupMenu</item>
+        <item name="android:actionDropDownStyle">@style/myPopupMenu</item>
+        <!--item name="android:actionOverflowButtonStyle">@style/myPopupMenu</item-->
+        <item name="android:dropDownListViewStyle">@style/myPopupMenu</item>
+        <item name="dropDownListViewStyle">@style/myPopupMenu</item>
+        <!--item name="android:dropDownListViewStyle">@android:style/Widget.Holo.Light.ListView.DropDown</item-->
         <item name="android:dialogTheme">@style/DialogSmallParts</item>
-        <item name="android:textAppearance">@android:attr/textAppearanceSmall</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
         <item name="android:editTextStyle">@style/SmallEditText</item>
         <item name="android:textViewStyle">@style/SmallTextView</item>
+        <item name="android:itemBackground">@android:color/white</item>
         <!--item name="android:windowTitleStyle">@style/DialogSmallTitle</item no effect-->
+    </style>
+    <style name="myPopupMenu"
+		parent="Widget.AppCompat.ListView.DropDown">
+		<!--parent="@android:style/Widget.Holo.Light.ListView.DropDown"-->
+		<!-- parent="@android:style/Widget.Holo.Light.ListView.DropDown"-->
+		<!--     parent="@android:style/Widget.Holo.Light.ListView.DropDown"-->
+		<!--     parent="@android:style/Widget.Holo.ActionButton.Overflow"-->
+		<!-- parent="@android:style/Widget.Holo.Light.Actionbar.Solid.Inverse"-->
+		<!-- parent="@android:style/TextAppearance.Widget.PopupMenu.Small"-->
+        <item name="android:background">@color/menu_bg</item>
+        <item name="android:divider">@color/menu_bg</item>
+        <item name="android:dividerHeight">10dp</item>
+        <item name="android:popupBackground">@color/menu_bg</item>
+        <!--item name="android:tint">@color/menu_bg</item-->
+        <item name="android:textColor">@color/menu_fg</item>
+        <!--item name="android:popupMenuStyle">@color/popupmenu</item-->
     </style>
     <style name="SmallButton" parent="@android:style/Widget.Button.Small">
         <item name="android:textSize">12sp</item>
     </style>
     <style name="SmallCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:textAppearance">@android:attr/textAppearanceSmall</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:button">@xml/checkbox_button_small</item>
     </style>
     <style name="SmallRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
-        <item name="android:textAppearance">@android:attr/textAppearanceSmall</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:button">@xml/radio_button_small</item>
         <item name="android:layout_height">10dp</item>
         <item name="android:height">10dp</item>

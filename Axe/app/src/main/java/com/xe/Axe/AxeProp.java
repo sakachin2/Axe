@@ -1,5 +1,16 @@
-//*CID://+vay8R~:                                   update#=  114; //~vay8R~
+//*CID://+vc33R~:                                   update#=  149; //~vc33R~
 //**************************************************************** //~vaa8I~
+//vc33 2020/09/22 getExternalStorageDirectory was deprecated at Android10(Api29)//~vc33I~
+//vc2X 2020/09/19 return sdpath even no write permission for utrace//~vc2XI~
+//vc2U 2020/09/18 initialize progress dialog not dismiss automatically//~vc2UI~
+//vc2N 2020/09/02 highligit-data is now in assets(not download)    //~vc2NI~
+//vc1q 2020/06/25 xfg not found(env set miss, not files/bin but file/myhome/bin)//~vc1qI~
+//vc1p 2020/06/24 display path env                                 //~vc1pI~
+//vc1n 2020/06/23 too many msg "in progress unzipping".            //~vc1nI~
+//vc1k 2020/06/23 help html/toolbin from not web but assets        //~vc1kI~
+//vc1i 2020/06/22 display not /emulated/.. but /sdcard to header CWD=//~vc1iI~
+//vc1f 2020/06/20 ARM;chk sdcard writable                          //~vc1fI~
+//vc1e 2020/06/20 ARM;try /sdcard is usable as sdcard mounted      //~vc1eI~
 //vay8:141124 (Axe)if /sdcrad as alternative of getExternalStorageDirectory is both is same//~vay8I~
 //vaiq:130606 Axe:issue initial setup Alert(Be paitient)           //~vaiqI~
 //vag0:120719 (Axe)function to download asset from web             //~vag0I~
@@ -39,6 +50,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.os.Environment;
+import android.os.StatFs;
+
+
+import com.ForDeprecated.AxeProgress;
+import com.ahsv.utils.UFile;
 
 
 public class AxeProp
@@ -48,7 +64,9 @@ public class AxeProp
 	public static final String DATAFILE_PREFIX="save";
 	public static final String SDFILE_PREFIX="rename";
     public static final String helpZipfile="xehelp.zip";
-    public static final String toolbinZipfile="toolbin.zip";
+//  public static final String toolbinZipfile="toolbin.zip";       //~vc1kR~
+    public static final String toolbinZipfile="toolbin.zipfile";   //~vc1kI~
+    public static final String htmlhelpZipfile="xehelp.zipfile"; //.zip err by openFD failed ,it may be compressed//~vc1kR~
     public static final String icuZipfile="icucnvadd.zip";         //~vaafI~
     public static final String HOSTS="xehosts";
     public static final String EBCMAP="xeebc.map";                 //~vaafI~
@@ -56,10 +74,12 @@ public class AxeProp
 //  public static final String UCONV930="ibm-930_P120-1999.cnv";   //~vaafR~
 //  public static final String UCONV939="ibm-939_P120-1999.cnv";   //~vaafR~
     public static final String helpFolder="xehelp";
+    public static final String htmlHelpFolder="xehelp";            //~vc1nI~
     public static final String binFolder="bin";
     public static final String icuFolder="icu";                    //~vaafI~
     public static final String SYNCFG="xesyna.cfg";                //~vaaDR~
-    public static final String highlightZipfile="highlight.zip";   //~vaaDR~
+//  public static final String highlightZipfile="highlight.zip";   //~vaaDR~//~vc2NR~
+    private static final String highlightZipfile="highlight-data.zipfile";//~vc2NI~
     public static final String highlightFolder="highlight-data";   //~vaaDR~
     public static final String icuInstalledTraceFile="InstalledSW";//~vaafI~
     public static final String shFolder="sh";
@@ -67,7 +87,9 @@ public class AxeProp
     public static final String PROCMOUNT="/proc/mounts";
     public static final String VFAT="vfat";
     public static String helpUnzipFolder;
-    public static String slinknameSDCard="/sdcard/";               //~vay8R~
+//  public static String slinknameSDCard="/sdcard/";               //~vay8R~//~vc1eR~
+    public static String slinknameSDCard="/sdcard";                //~vc1eI~
+//  public static final String Sbusybox_path="/data/busybox";      //~vc1pI~//~vc1qR~
     public static int helpZipfileSize;
 	private static boolean availableAxeSD=true;
 	private static String dirAxeSD;
@@ -127,7 +149,7 @@ public class AxeProp
     	return in;
     }
 //*********************************************
-//*output to SD if avale else private *********
+//*output to SD if avail else private *********                    //~vc1eR~
 //*********************************************
     public static FileOutputStream openOutputData(String Pdir,String Pfname)
     {
@@ -136,6 +158,9 @@ public class AxeProp
 		path=getSDPath(Pdir);
         if (path==null)	//no SDCard available
         	return openOutputData(Pfname);
+        else                                                       //~vc2XI~
+        if ((Gxeh.axeStatus & Gxeh.AXES_NOT_CANWRITE)!=0)          //~vc2XI~
+        	return openOutputData(Pfname);                         //~vc2XI~
         fnm=path+System.getProperty("file.separator")+Pfname;
         if (Dump.Y) Dump.println("openoutputData on SDcard fnm="+fnm);
 	    FileOutputStream out=null;
@@ -244,6 +269,10 @@ public class AxeProp
     {
 		String path;
     //************
+//      StatFs fs=new StatFs("/"); //TODO test                     //~vc1nR~
+//      if (Dump.Y) Dump.println("/ availbolocsLong="+fs.getAvailableBlocksLong()+",av byte="+fs.getAvailableBytes()+",free blk="+fs.getFreeBlocksLong()+",free byte="+fs.getFreeBytes());//~vc1nR~
+//      fs=new StatFs("/sdcard"); //TODO test                      //~vc1nR~
+//      if (Dump.Y) Dump.println("/ availbolocsLong="+fs.getAvailableBlocksLong()+",av byte="+fs.getAvailableBytes()+",free blk="+fs.getFreeBlocksLong()+",free byte="+fs.getFreeBytes());//~vc1nR~
         if (!availableAxeSD)
         	return null;
         path=dirAxeSD;
@@ -262,7 +291,23 @@ public class AxeProp
                 return null;
             }
 //      	path=Environment.getExternalStorageDirectory().getPath()+System.getProperty("file.separator")+approot;//~vay8R~
-            path=getSDCardDirectory()+System.getProperty("file.separator")+approot;//~vay8I~
+//          path=getSDCardDirectory()+System.getProperty("file.separator")+approot;//~vay8I~//~vc1fR~
+            path=getSDCardDirectory();                             //~vc1fI~
+            File f2=new File(path);                                //~vc1fI~
+        	if (f2.exists())                                       //~vc1fI~
+            {                                                      //~vc1fI~
+            	if (!f2.canWrite()                                 //~vc1fI~
+                ||  !AxePermission.getSDCardPermission()           //~vc1fI~
+                )                                                  //~vc1fI~
+                {                                                  //~vc1fI~
+	            	if (!f2.canWrite())                            //~vc1fI~
+                		Gxeh.axeStatus|=Gxeh.AXES_NOT_CANWRITE;//                        =0x02;//~vc1fI~
+			        if (Dump.Y) Dump.println("getSDpath no sdcard write permission path="+f2.getPath()+",canWrite="+f2.canWrite()+",axeStatus="+Gxeh.axeStatus);//~vc1fR~
+//              	return null;                                   //~vc1fI~//~vc2XR~
+                	return path;                                   //~vc2XI~
+                }                                                  //~vc1fI~
+            }                                                      //~vc1fI~
+            path+=System.getProperty("file.separator")+approot;    //~vc1fI~
             File f=new File(path);
         	if (!f.exists())
             {
@@ -338,7 +383,9 @@ public class AxeProp
 //**********************************************************************
     public static String getPreference(String Pkey)
     {
-	    return getPreference(Pkey,"");
+	    String rc=getPreference(Pkey,"");                          //~vc1qR~
+        if (Dump.Y) Dump.println("AxeProp.getPreference rc="+rc);  //~vc1qI~
+	    return rc;                                                 //~vc1qI~
     }
     //******************                                           //~vaiqI~
     public static int getPreference(String Pkey,int Pdefault)      //~vaiqI~
@@ -352,7 +399,7 @@ public class AxeProp
     {
     	SharedPreferences pref=getPreferenceName();
         String value=pref.getString(Pkey,Pdefault/*default value*/);
-//      if (Dump.Y) Dump.println("getPreference:"+Pkey+"="+(value==null?"null":value)+".");
+        if (Dump.Y) Dump.println("AxeProp.getPreference:"+Pkey+"="+(value==null?"null":value)+".");//~vc1qR~
         return value;
     }//readwriteQNo
     //******************                                           //~vaiqI~
@@ -366,7 +413,7 @@ public class AxeProp
     //******************
     public static void putPreference(String Pkey,String Pvalue)
     {
-        if (Dump.Y) Dump.println("putPreference:"+Pkey+"="+Pvalue);
+        if (Dump.Y) Dump.println("AxeProp.putPreference:"+Pkey+"="+Pvalue);//~vc1qR~
     	SharedPreferences pref=getPreferenceName();
         SharedPreferences.Editor editor=pref.edit();
         if (Pvalue==null)
@@ -387,20 +434,34 @@ public class AxeProp
     {
         assetMode=1;    //use will manually expand help,bin,highlight//~vbcEI~
 		Gxeh.privateTop=getDataFileFullpath(null);                 //~vavcI~
-		Gxeh.homeDir=getDataFileFullpath(null);	//set befor JNI.init;retrieve from jnij2c
+//  	Gxeh.homeDir=getDataFileFullpath(null);	//set befor JNI.init;retrieve from jnij2c//~vc1qR~
+    	Gxeh.homeDir=getDataDir("myhome");	//avoid in home with xewd//~vc1qI~
 		Gxeh.addPath=Gxeh.homeDir+"/"+shFolder+":"+Gxeh.homeDir+"/"+binFolder;
-		Gxeh.homeDir=getDataDir("myhome");	//avoid in home with xewd//~vavdR~
+//  	Gxeh.addPath+=":"+Sbusybox_path;    ///system/bin or /system/xbin is set as native PATH//~vc1qR~
+//  	Gxeh.homeDir=getDataDir("myhome");	//avoid in home with xewd//~vavdR~//~vc1qR~
 	    initEbcMap();   //synchrounous,executed before mapinit     //~vaafI~
+        if (Dump.Y) Dump.println("AxeProp.initFiles home="+Gxeh.homeDir+",addPath="+Gxeh.addPath);             //~vc1kI~//~vc1qR~
       new Thread(new Runnable()                                    //~vaa8I~
       {                                                            //~vaa8I~
        @Override                                                   //~vaa8I~
        public void run()                                           //~vaa8I~
        {                                                           //~vaa8I~
+       try                                                         //~vc2UI~
+       {                                                           //~vc2UI~
+        if (Dump.Y) Dump.println("AxeProp.initFiles.run start");   //~vc1kI~
 	    initHelpfile();
 	    initHosts();
 	    unziptool();
+	    unziphtmlhelp();                                           //~vc1kI~
 	    initHighlight();                                           //~vaaDR~
         initCompleted=true;                                        //~vaa8I~
+        Axe.initComp();                                            //~vc2UR~
+        if (Dump.Y) Dump.println("AxeProp.initFiles.run end");     //~vc1kI~
+       }                                                           //~vc2UI~
+       catch (Exception e)                                         //~vc2UI~
+       {                                                           //~vc2UI~
+		Dump.println(e,"AxeProp.initFiles");                       //~vc2UI~
+	   }                                                           //~vc2UI~
        }                                                           //~vaa8I~
       }).start();                                                  //~vaa8I~
     }
@@ -412,6 +473,7 @@ public class AxeProp
         if (assetMode!=0)	//old version                          //~vbcEI~
         	return;                                                //~vbcEI~
     	String folder=getSDPath("");	//mnt/sdcard/Axe
+        if (Dump.Y) Dump.println("AxeProp.initHelp folder="+folder);//+vc33I~
     	int oldsz=AxeG.getParameter(AxeG.PREFKEY_HELPSZ,0/*default*/);
     	int newsz=(int)getAssetFileSize(helpZipfile);
         if (oldsz!=newsz && newsz>0)
@@ -427,8 +489,8 @@ public class AxeProp
     //******************
     private static void unziptool()
     {
-        if (assetMode!=0)	//old version                          //~vbcEI~
-        	return;                                                //~vbcEI~
+//      if (assetMode!=0)	//old version                          //~vbcEI~//~vc1kR~
+//      	return;                                                //~vbcEI~//~vc1kR~
     	String folder=Gxeh.homeDir+"/"+binFolder; //data/../files
     	int oldsz=AxeG.getParameter(AxeG.PREFKEY_TOOLBINSZ,0/*default*/);
        File file=new File(folder);
@@ -439,6 +501,7 @@ public class AxeProp
 
     	int newsz=(int)getAssetFileSize(toolbinZipfile);
     	int chmod=0755;
+        if (Dump.Y) Dump.println("AxeProp.unziptool oldsz="+oldsz+",newsz="+newsz+",fnm="+toolbinZipfile);//~vc1kI~
         unzipfilepopup=Utils.getResourceString(R.string.Info_ToolInstalling);
         if (oldsz!=newsz && newsz>0)
         {
@@ -447,23 +510,55 @@ public class AxeProp
             Utils.showToast(R.string.Info_UnzipToolComp);          //~vaa8I~
         }
 	    unzipfilepopup=null;
+        if (Dump.Y) Dump.println("AxeProp.unziptool end fnm="+toolbinZipfile);//~vc1kI~
     }
+    //******************                                           //~vc1kI~
+    //*htmlhelp                                                    //~vc1kI~
+    //******************                                           //~vc1kI~
+    private static void unziphtmlhelp()                            //~vc1kI~
+    {                                                              //~vc1kI~
+//      if (assetMode!=0)	//old version                          //~vc1kR~
+//      	return;                                                //~vc1kR~
+    	String folder=Gxeh.homeDir; //data/../files (unzip top is dir:xehelp)//~vc1kR~
+    	int oldsz=AxeG.getParameter(AxeG.PREFKEY_HTMLHELPSZ,0/*default*/);//~vc1kI~
+//     	File file=new File(folder);                                //~vc1kI~//~vc1nR~
+       	File file=new File(folder+"/"+htmlHelpFolder);             //~vc1nI~
+       	if (!file.exists())                                        //~vc1kI~
+       	{                                                          //~vc1kI~
+           	oldsz=0;	//reload if bin dir was deleted            //~vc1kI~
+       	}                                                          //~vc1kI~
+    	int newsz=(int)getAssetFileSize(htmlhelpZipfile);          //~vc1kI~
+    	int chmod=0755;                                            //~vc1kI~
+        if (Dump.Y) Dump.println("AxeProp.unziphtmlhelp oldsz="+oldsz+",newsz="+newsz+",fnm="+htmlhelpZipfile);//~vc1kI~
+        unzipfilepopup=Utils.getResourceString(R.string.Info_HtmlHelpInstalling);//~vc1kI~
+        if (oldsz!=newsz && newsz>0)                               //~vc1kI~
+        {                                                          //~vc1kI~
+//      	if (unzipAsset(folder,htmlhelpZipfile,chmod))          //~vc1kI~//~vc1nR~
+        	if (unzipAsset(folder,htmlHelpFolder,htmlhelpZipfile))	//del if exist then unzip//~vc1nI~
+		    	AxeG.setParameter(AxeG.PREFKEY_HTMLHELPSZ,newsz);  //~vc1kI~
+            Utils.showToast(R.string.Info_UnzipHtmlHelpComp);      //~vc1kI~
+        }                                                          //~vc1kI~
+	    unzipfilepopup=null;                                       //~vc1kI~
+    }                                                              //~vc1kI~
+    //******************                                           //~vc1kI~
     private static void initHighlight()                            //~vaaDI~
     {                                                              //~vaaDI~
     	boolean rc;                                                //~vaaDI~
-      if (assetMode==0)	//old version                          //~vbcEI~//~vavdR~
-      {                                                            //~vavdI~
-	    rc=unzipHighlight();                                       //~vaaDI~
-    	String bin=Gxeh.homeDir+"/"+highlightFolder+"/highlight";  //~vaaDI~
-    	String binfolder=Gxeh.homeDir+"/"+binFolder;               //~vaaDM~
-        if (rc)                                                    //~vaaDI~
-        {                                                          //~vaaDI~
-        	rc=moveFile(bin,binfolder);                            //~vaaDI~
-        	if (!rc)                                               //~vaaDI~
-            	Utils.showToast(R.string.Info_HighlightInstallFailed);//~vaaDI~
-        }                                                          //~vaaDI~
-      }                                                            //~vavdI~
-	    copyToWkdir(0/*override*/,SYNCFG);                         //~vaaDR~
+//      if (assetMode==0) //old version                          //~vbcEI~//~vavdR~//~vc2NR~
+//      {                                                            //~vavdI~//~vc2NR~
+//        rc=unzipHighlight();                                       //~vaaDI~//~vc2NR~
+//        String bin=Gxeh.homeDir+"/"+highlightFolder+"/highlight";  //~vaaDI~//~vc2NR~
+//        String binfolder=Gxeh.homeDir+"/"+binFolder;               //~vaaDM~//~vc2NR~
+//        if (rc)                                                    //~vaaDI~//~vc2NR~
+//        {                                                          //~vaaDI~//~vc2NR~
+//            rc=moveFile(bin,binfolder);                            //~vaaDI~//~vc2NR~
+//            if (!rc)                                               //~vaaDI~//~vc2NR~
+//                Utils.showToast(R.string.Info_HighlightInstallFailed);//~vaaDI~//~vc2NR~
+//        }                                                          //~vaaDI~//~vc2NR~
+//      }                                                            //~vavdI~//~vc2NR~
+//        copyToWkdir(0/*override*/,SYNCFG);                         //~vaaDR~//~vc2NR~
+        unzipHighlight();                                          //~vc2NI~
+        copyToWkdir(0/*override*/,SYNCFG);                         //~vc2NI~
     }                                                              //~vaaDI~
     //******************                                           //~vaaDI~
     //*highlite-2.16                                               //~vaaDI~
@@ -481,10 +576,12 @@ public class AxeProp
         }                                                          //~vaaDI~
     	int newsz=(int)getAssetFileSize(highlightZipfile);         //~vaaDI~
     	int chmod=0755;                                            //~vaaDI~
+        if (Dump.Y) Dump.println("AxeProp.unzipHighlight oldsz="+oldsz+",newsz="+newsz+",fnm="+highlightZipfile);//~vc2NI~
         if (oldsz!=newsz && newsz>0)                               //~vaaDI~
         {                                                          //~vaaDI~
 	        Utils.showToast(R.string.Info_HighlightInstalling);    //~vaaDI~
-        	if (unzipAsset(unziptop,highlightZipfile,chmod))       //~vaaDR~
+//      	if (unzipAsset(unziptop,highlightZipfile,chmod))       //~vaaDR~//~vc2NR~
+        	if (unzipAsset(folder,highlightZipfile,chmod))         //~vc2NI~
 		    	AxeG.setParameter(AxeG.PREFKEY_HIGHLIGHTSZ,newsz); //~vaaDI~
             Utils.showToast(R.string.Info_UnzipHilightComp);       //~vaaDI~
             rc=true;                                               //~vaaDI~
@@ -551,7 +648,7 @@ public class AxeProp
 		}
         catch (IOException e)
         {
-			Dump.println(e,"xception Asset openFD"+Pfilename);
+			Dump.println(e,"exception Asset openFD"+Pfilename);    //~vc2UR~
 			e.printStackTrace();
 		}
         if (Dump.Y) Dump.println("getAssetFileSize file="+Pfilename+",sz="+sz);
@@ -583,7 +680,8 @@ public class AxeProp
         int entryctr=0,et;                                            //~vaa8I~
         int interval=3000;//msg every 5 sec                        //~vaa8I~
         boolean ret=false;
-        if (Dump.Y) Dump.println("Unzip src="+Pzipfile+",folder="+Pfolder);
+        if (Dump.Y) Dump.println("AxeProp.UnzipAsset src="+Pzipfile+",folder="+Pfolder);//~vc1nR~
+		Utils.showToast(R.string.Info_UnzipExecuting);             //~vc1nI~
         File file=new File(Ppath+File.separator+Pfolder);
         Utils.setTimeStamp(0);                                     //~vaa8I~
         try
@@ -601,6 +699,7 @@ public class AxeProp
             for (ZipEntry entry=inputStream.getNextEntry(); entry!=null; entry=inputStream.getNextEntry())
             {
 				et=Utils.getElapsedTimeMillis(0);                   //~vaa8I~
+                if (Dump.Y) Dump.println("Unzip et="+et+",interval="+interval);//~vc1nI~
                 if (et>=interval)                                  //~vaa8I~
                 {                                                  //~vaa8I~
 		            Utils.showToast(R.string.Info_UnzipExecuting,":"+entryctr);//~vaa8I~
@@ -608,7 +707,7 @@ public class AxeProp
                 }                                                  //~vaa8I~
                 entryctr++;                                        //~vaa8I~
                 String innerFileName = Ppath+File.separator+entry.getName();
-                if (Dump.Y) Dump.println("Unzip entry="+innerFileName);
+//              if (Dump.Y) Dump.println("Unzip entry="+innerFileName);//~vc2UR~
                 File innerFile = new File(innerFileName);
                 if (innerFile.exists())
                 {
@@ -666,7 +765,7 @@ public class AxeProp
             for (ZipEntry entry=inputStream.getNextEntry(); entry!=null; entry=inputStream.getNextEntry())
             {
                 String innerFileName = Ppath+File.separator+entry.getName();
-                if (Dump.Y) Dump.println("Unzip entry="+innerFileName);
+//              if (Dump.Y) Dump.println("Unzip entry="+innerFileName);//~vc2UR~
                 File innerFile = new File(innerFileName);
                 if (innerFile.exists())
                 {
@@ -719,7 +818,7 @@ public class AxeProp
 //****************************************                         //~vag0I~
 //*unzip on subthread displaying progress bar                      //~vag0R~
 //****************************************                         //~vag0I~
-    public static boolean unzipProgress(AxeProgress.FuncThread Pthread,String Ppath,String Pzipfile,int Pchmod,boolean Pdelzip)//~vag0R~
+    public static boolean unzipProgress(AxeProgress.FuncThread Pthread, String Ppath, String Pzipfile, int Pchmod, boolean Pdelzip)//~vag0R~
     {                                                              //~vag0I~
         final int BUFFER = 8192;                       //~vag0I~
 		long zipfsz;                                               //~vag0I~
@@ -750,7 +849,7 @@ public class AxeProp
             for (ZipEntry entry=inputStream.getNextEntry(); entry!=null; entry=inputStream.getNextEntry())//~vag0I~
             {                                                      //~vag0I~
                 String innerFileName = Ppath+File.separator+entry.getName();//~vag0I~
-                if (Dump.Y) Dump.println("Unzip entry="+innerFileName);//~vag0I~
+//              if (Dump.Y) Dump.println("Unzip entry="+innerFileName);//~vag0I~//~vc2UR~
                 File innerFile = new File(innerFileName);          //~vag0I~
                 if (innerFile.exists())                            //~vag0I~
                 {                                                  //~vag0I~
@@ -943,7 +1042,7 @@ public class AxeProp
                   opdir=entryname;                                 //~vag0I~
                 String innerFileName = Ppath+File.separator+opdir; //~vag0R~
                 lastmdpath=makeTargetPath(innerFileName,lastmdpath);//~vag0I~
-                if (Dump.Y) Dump.println("Unzip entry="+innerFileName);//~vag0I~
+//              if (Dump.Y) Dump.println("Unzip entry="+innerFileName);//~vag0I~//~vc2UR~
                 File innerFile = new File(innerFileName);          //~vag0I~
                 if (entry.isDirectory())                           //~vag0I~
                 {                                                  //~vag0I~
@@ -1632,39 +1731,68 @@ public class AxeProp
     private static String getSDCardDirectory()                     //~vay8I~
     {                                                              //~vay8I~
         String fpath1,fpath2;                                      //~vay8I~
-        String fpath3;                                             //~vay8I~
-        File f1=Environment.getExternalStorageDirectory();         //~vay8I~
-        String rs=f1.getPath();//no exception                      //~vay8R~
-//        try                                                      //+vay8R~
-//        {                                                        //+vay8R~
-//            fpath1=f1.getAbsolutePath();                         //+vay8R~
-//            if (Dump.Y) Dump.println("trySDCard env abs="+fpath1);//+vay8R~
-//            fpath1=f1.getCanonicalPath();                        //+vay8R~
-//            if (Dump.Y) Dump.println("trySDCard env cannonical="+fpath1);//+vay8R~
-//            File f2=new File(slinknameSDCard);                   //+vay8R~
-//            if (f2.exists())                                     //+vay8R~
-//            {                                                    //+vay8R~
-//                fpath2=f2.getAbsolutePath();                     //+vay8R~
-//                if (Dump.Y) Dump.println("trySDCard /sdcard abs="+fpath2);//+vay8R~
-//                fpath2=f2.getCanonicalPath();                    //+vay8R~
-//                if (Dump.Y) Dump.println("trySDCard /sdcard cannonical="+fpath2);//+vay8R~
-//                if (fpath2.equals(fpath1))                       //+vay8R~
-//                    rs=slinknameSDCard;                          //+vay8R~
-//                                                                 //+vay8R~
-//                File f3=new File(fpath2);                        //+vay8R~
-//                fpath3=f3.getAbsolutePath();                     //+vay8R~
-//                if (Dump.Y) Dump.println("trySDCard /sdcard abs="+fpath3);//+vay8R~
-//                fpath3=f3.getCanonicalPath();                    //+vay8R~
-//                if (Dump.Y) Dump.println("trySDCard /sdcard cannonical="+fpath3);//+vay8R~
-//            }                                                    //+vay8R~
-//        }                                                        //+vay8R~
-//        catch(Exception e)                                       //+vay8R~
-//        {                                                        //+vay8R~
-//            Dump.println(e,"trySDCard");                         //+vay8R~
-//        }                                                        //+vay8R~
-        // 2 mount pint /storage/emulated/0 and /storage/emulated/legacy is same//+vay8I~
-        // but seculity may not be same                            //+vay8I~
-        // so use getExternalStorage Directory                     //+vay8I~
+//      String fpath3;                                             //~vay8I~
+                                                            //~vc1eI~
+//      File f1=Environment.getExternalStorageDirectory();         //~vay8I~//~vc33R~
+        File f1= UFile.getSDCardDirectory();                        //~vc33I~
+        String rs=f1.getPath();
+      try                                                          //~vc1fR~
+      {                                                            //~vc1fR~
+        if (Dump.Y) Dump.println("getSDCardDirectory by env path="+rs+",canonical="+f1.getCanonicalPath()+",abs="+f1.getAbsolutePath());//~vc1fR~
+        if (Dump.Y) Dump.println("getSDCardDirectory Read="+f1.canRead()+",Write="+f1.canWrite()+",Exec="+f1.canExecute());//~vc1fR~
+        if (f1.exists())                                           //~vc1fR~
+        {                                                          //~vc1fR~
+        	Gxeh.sdRootPath=rs;                                    //~vc1iI~
+        	File f2=new File(slinknameSDCard);                     //~vc1fR~
+            if (f2.exists())                                       //~vc1fR~
+            {                                                      //~vc1fR~
+		        if (Dump.Y) Dump.println("getSDCardDirectory /sdcard/ path="+f2.getPath()+",canonical="+f2.getCanonicalPath()+",abs="+f2.getAbsolutePath());//~vc1fR~
+        		if (Dump.Y) Dump.println("getSDCardDirectory Read="+f1.canRead()+",Write="+f1.canWrite()+",Exec="+f1.canExecute());//~vc1fR~
+                fpath1=f1.getCanonicalPath();                      //~vc1fR~
+                fpath2=f2.getCanonicalPath();                      //~vc1fR~
+                if (fpath2.equals(fpath1))                         //~vc1fR~
+                	if (f1.canRead()==f2.canRead()                 //~vc1fR~
+                	&&  f1.canWrite()==f2.canWrite()               //~vc1fR~
+                	&&  f1.canExecute()==f2.canExecute()           //~vc1fR~
+                    )                                              //~vc1fR~
+                    {                                              //~vc1iI~
+                    	rs=slinknameSDCard;                        //~vc1fR~
+                        Gxeh.axeStatus|=Gxeh.AXES_SDCARD_ALTNAME;  //~vc1iI~
+                    }                                              //~vc1iI~
+        	}
+        }                                                          //~vc1fR~
+//        try                                                      //~vay8R~
+//        {                                                        //~vay8R~
+//            fpath1=f1.getAbsolutePath();                         //~vay8R~
+//            if (Dump.Y) Dump.println("trySDCard env abs="+fpath1);//~vay8R~
+//            fpath1=f1.getCanonicalPath();                        //~vay8R~
+//            if (Dump.Y) Dump.println("trySDCard env cannonical="+fpath1);//~vay8R~
+//            File f2=new File(slinknameSDCard);                   //~vay8R~
+//            if (f2.exists())                                     //~vay8R~
+//            {                                                    //~vay8R~
+//                fpath2=f2.getAbsolutePath();                     //~vay8R~
+//                if (Dump.Y) Dump.println("trySDCard /sdcard abs="+fpath2);//~vay8R~
+//                fpath2=f2.getCanonicalPath();                    //~vay8R~
+//                if (Dump.Y) Dump.println("trySDCard /sdcard cannonical="+fpath2);//~vay8R~
+//                if (fpath2.equals(fpath1))                       //~vay8R~
+//                    rs=slinknameSDCard;                          //~vay8R~
+//                                                                 //~vay8R~
+//                File f3=new File(fpath2);                        //~vay8R~
+//                fpath3=f3.getAbsolutePath();                     //~vay8R~
+//                if (Dump.Y) Dump.println("trySDCard /sdcard abs="+fpath3);//~vay8R~
+//                fpath3=f3.getCanonicalPath();                    //~vay8R~
+//                if (Dump.Y) Dump.println("trySDCard /sdcard cannonical="+fpath3);//~vay8R~
+//            }                                                    //~vay8R~
+      }                                                            //~vc1fR~
+      catch(Exception e)                                           //~vc1fR~
+      {                                                            //~vc1fR~
+            Dump.println(e,"getSDCadDirectory");                   //~vc1fR~
+      }                                                            //~vc1fR~
+        // 2 mount point /storage/emulated/0 and /storage/emulated/legacy is same//~vay8I~//~vc1eR~
+        // but seculity may not be same                            //~vay8I~
+        // so use getExternalStorage Directory                     //~vay8I~
+        if (Dump.Y) Dump.println("getSDCardDirectory rc="+rs);     //~vc1fR~
+        Gxeh.sdRoot=rs;                                            //~vc1fI~
         return rs;                                                 //~vay8I~
     }                                                              //~vay8I~
 }//class

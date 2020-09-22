@@ -1,5 +1,8 @@
-//*CID://+vak1R~:                             update#=  265;       //~vak1R~
+//*CID://+vc2nR~:                             update#=  287;       //~vc2nR~
 //******************************************************************
+//vc2n 2020/08/03 Dump.e when selected null on popup               //~vc2nI~
+//vc2m 2020/08/03 show modifier effective for caps,Sym,Fn,AltG,AltGS on AxeKbd//~vc2mI~
+//vc12 2020/06/14 clipRect(rectF,OP_REPLACE) deprecated at android.P//~vc12I~
 //vak1:130822 Axe:display flicked key label                        //~vak1I~
 //vak0:130822 Axe:Axe Keyboard;touch on shift key was ignoreed after when swipe done//~vak0I~
 //vaay:120106 (Axe)even when Caps on, "1" key generates "1"        //~vaayI~
@@ -15,6 +18,7 @@ package com.xe.Axe.kbd;                                            //~@@@@R~
 //import java.util.List;                                           //~vaagR~
 import android.content.Context;
 //import android.inputmethodservice.Keyboard;                      //~@@@@R~
+import com.ForDeprecated.Funcs;
 import com.xe.Axe.kbd.ims.Keyboard;                                //~@@@@R~
 //import android.inputmethodservice.KeyboardView;                  //~@@@@R~
 import com.xe.Axe.kbd.ims.KeyboardView;                            //~@@@@R~
@@ -45,6 +49,8 @@ import android.graphics.Typeface;                                  //~vaagI~
 import android.graphics.Region.Op;                                 //~vaagI~
 import android.graphics.PorterDuff;                                //~vaagI~
 
+import static com.xe.Axe.kbd.AxeKbdKey.*;
+
 public class AxeKbdView extends KeyboardView                       //~@@@@R~
 //      implements KeyboardView.OnKeyboardActionListener {         //~vaaiR~
         implements KeyboardView.OnKeyboardActionListener,AxeTimerI //~vaaiI~
@@ -68,6 +74,7 @@ public class AxeKbdView extends KeyboardView                       //~@@@@R~
 	private static final int SWIPE_DOWN=3;
 	public  static final int SWIPE_SHIFTF=1;                       //~vaawI~
 	private static final int COLOR_FLICKKEY=0xffffffb0;            //~vaagR~
+	private static final int COLOR_STICKY_LABEL=0xff20f020; //green//~vc2mI~
 	private static final int codeSHY=0x00ad;                       //~vaauI~
 	private static final int codeNBSP=0x00a0;                      //~vaauI~
 	private static final String labelSHY="SHY";                    //~vaauI~
@@ -108,7 +115,7 @@ public class AxeKbdView extends KeyboardView                       //~@@@@R~
     int swipeStartPosX,swipeStartPosY,swipeEndPosX,swipeEndPosY;   //~@@@@R~
 //  private int extKeynameLen;                                     //~vaagR~
 //    private AxeKbdView myKbdView;                                //~@@@@R~
-    private OnKbdViewListener kbdViewListener;                     //~@@@@R~
+    private OnKbdViewListener kbdViewListener;  //AxeSoftKbd       //~@@@@R~//~vc12R~
     public AxeKbdView(Context context, AttributeSet attrs) {       //~@@@@R~
         super(context, attrs);
 //        super.setOnKeyboardActionListener(this);                 //~@@@@R~
@@ -216,7 +223,7 @@ public class AxeKbdView extends KeyboardView                       //~@@@@R~
     @Override                                                      //~@@@@I~
 	public CharSequence adjustCase(CharSequence label)             //~@@@@I~
     {                                                              //~@@@@I~
-        if (Dump.Y) Dump.println("AxeKbdView adjustCode label="+label);//~@@@@R~//~vak1R~
+//      if (Dump.Y) Dump.println("AxeKbdView adjustCode label="+label);//~@@@@R~//~vak1R~//~vc12R~
     	return label;                                              //~@@@@I~
     }                                                              //~@@@@I~
     @Override                                                      //~@@@@I~
@@ -243,16 +250,16 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
                     float velocityX, float velocityY) {            //~@@@@I~
               try                                                  //~@@@@I~
               {                                                    //~@@@@I~
-                if (Dump.Y) Dump.println("SimpleOnGestureListener:onFling verocity X="+velocityX+",Y="+velocityY);//~@@@@I~
-                if (Dump.Y) Dump.println("Event1 action="+me1.getAction()+",event2="+me2.getAction());//~vaaiI~
+                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener.onFling verocity X="+velocityX+",Y="+velocityY);//~@@@@I~//~vc2nR~
+                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener.onFling Event1 action="+me1.getAction()+",event2="+me2.getAction());//~vaaiI~//~vc2nR~
                 if (mPossiblePoly) return false;                   //~@@@@I~
                 final float absX = Math.abs(velocityX);            //~@@@@I~
                 final float absY = Math.abs(velocityY);            //~@@@@I~
                 float deltaX = me2.getX() - me1.getX();            //~@@@@I~
                 float deltaY = me2.getY() - me1.getY();            //~@@@@I~
-                if (Dump.Y) Dump.println("SimpleOnGestureListener:onFling posX="+me1.getX()+"-"+me2.getX());//~@@@@I~
-                if (Dump.Y) Dump.println("SimpleOnGestureListener:onFling posY="+me1.getY()+"-"+me2.getY());//~@@@@I~
-                if (Dump.Y) Dump.println("SimpleOnGestureListener:abs X="+absX+",Y="+absY);//~vak1I~
+                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener:onFling posX="+me1.getX()+"-"+me2.getX());//~@@@@I~//~vc2nR~
+                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener:onFling posY="+me1.getY()+"-"+me2.getY());//~@@@@I~//~vc2nR~
+                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener:onFling abs X="+absX+",Y="+absY);//~vak1I~//~vc2nR~
 //              int travelX = getWidth() / 2; // Half the keyboard width//~@@@@I~
 //              int travelY = getHeight() / 2; // Half the keyboard height//~@@@@I~
                 int travelX = minSwipeDeltaX;                      //~@@@@I~
@@ -262,8 +269,8 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
                 mSwipeTracker.computeCurrentVelocity(1000);        //~@@@@I~
                 final float endingVelocityX = mSwipeTracker.getXVelocity();//~@@@@I~
                 final float endingVelocityY = mSwipeTracker.getYVelocity();//~@@@@I~
-                if (Dump.Y) Dump.println("SimpleOnGestureListener:ending velocity X="+endingVelocityX+",Y="+endingVelocityY);//~@@@@I~
-                if (Dump.Y) Dump.println("SimpleOnGestureListener:swipe th="+mSwipeThreshold+",ambiguous="+mDisambiguateSwipe);//~@@@@I~
+                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener:onFling ending velocity X="+endingVelocityX+",Y="+endingVelocityY);//~@@@@I~//~vc2nR~
+                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener:onFling swipe mSwipeThreshold="+mSwipeThreshold+",mDisambiguateSwipe="+mDisambiguateSwipe);//~@@@@I~//+vc2nR~
                 boolean sendDownKey = false;                       //~@@@@I~
                 if (velocityX > mSwipeThreshold && absY < absX && deltaX > travelX) {//~@@@@I~
                     if (mDisambiguateSwipe && endingVelocityX < velocityX / 4) {//~@@@@I~
@@ -678,6 +685,8 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
     	int code,mod=0;                                            //~vaayR~
         CharSequence label=Pkey.label;                             //~vaayI~
 		if (Dump.Y) Dump.println("AxeKbdView:getPreviewTextAdjustcase key.label="+label);//~vaayI~
+        if (label==null)                                           //~vc2nI~
+            return "";                                             //~vc2nI~
         if (isShifted())                                           //~vaayI~
         {                                                          //~vaayI~
         	if (label.length()==1)                                 //~vaayI~
@@ -830,6 +839,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         }                                                          //~@@@@I~
         return false;                                              //~@@@@I~
     }                                                              //~@@@@I~
+    //***********************************************              //~vc2nI~
     public boolean setShortcut(boolean shifted) {                  //~@@@@I~
         if (mKeyboard != null)                                     //~@@@@R~
         {                                                          //~@@@@I~
@@ -956,8 +966,6 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         return false;                                              //~@@@@I~
     }                                                              //~@@@@I~
     //***********************************************              //~@@@@I~
-    //*from SoftKbd                                                //~@@@@I~
-    //***********************************************              //~@@@@I~
     public void setPopupModeShortcut(boolean Pshortcut)         //~@@@@I~
     {                                                              //~@@@@I~
         if (Pshortcut)                                             //~@@@@I~
@@ -1071,7 +1079,8 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
             mKeyboardChanged = false;
         }
         final Canvas canvas = mCanvas;
-        canvas.clipRect(mDirtyRect, Op.REPLACE);
+//      canvas.clipRect(mDirtyRect, Op.REPLACE);                   //~vc12R~
+        Funcs.clipRect(canvas,mDirtyRect);                         //~vc12I~
 
         if (mKeyboard == null) return;
 
@@ -1084,11 +1093,11 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         final Key[] keys = mKeys;
         final Key invalidKey = mInvalidatedKey;
 
-        if (Dump.Y) Dump.println("KeyboardView kbdPadding L="+kbdPaddingLeft+",T="+kbdPaddingTop);//+vak1I~
-//        if (Dump.Y) Dump.println("KeyboardView onBuffDraw this="+this.toString());
-//        if (Dump.Y) Dump.println("KeyboardView keys="+keys.length+","+keys.toString());
+        if (Dump.Y) Dump.println("AxeKbdView.onBufferDraw kbdPadding L="+kbdPaddingLeft+",T="+kbdPaddingTop);//~vak1I~//~vc12R~//~vc2nR~
+//        if (Dump.Y) Dump.println("AxeKbdView onBuffDraw this="+this.toString());//~vc2nR~
+//        if (Dump.Y) Dump.println("AxeKbdView keys="+keys.length+","+keys.toString());//~vc2nR~
         paint.setColor(mKeyTextColor);
-        if (Dump.Y) Dump.println("KeyboardView keysTextColor="+Integer.toString(mKeyTextColor));
+        if (Dump.Y) Dump.println("AxeKbdView keysTextColor="+Integer.toString(mKeyTextColor));//~vc2nR~
         boolean drawSingleKey = false;
         if (invalidKey != null && canvas.getClipBounds(clipRegion)) {
           // Is clipRegion completely contained within the invalidated key?
@@ -1101,8 +1110,8 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         }
         canvas.drawColor(0x00000000, PorterDuff.Mode.CLEAR);
         final int keyCount = keys.length;
-//        if (Dump.Y) Dump.println("KeyboardView buffDraw "+this.toString());
-//        if (Dump.Y) Dump.println("KeyboardView labeltextsize="+mLabelTextSize+",keytextsize="+mKeyTextSize);
+//        if (Dump.Y) Dump.println("AxeKbdView buffDraw "+this.toString());//~vc2nR~
+//        if (Dump.Y) Dump.println("AxeKbdView labeltextsize="+mLabelTextSize+",keytextsize="+mKeyTextSize);//~vc2nR~
         initPaintF(mPaint,keys[0],padding); 	//for flick key    //~vaagR~
         for (int i = 0; i < keyCount; i++) {
             final Key key = keys[i];
@@ -1117,7 +1126,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
             String specialKey=specialCodeLabel(key.codes[0]);      //~vaauI~
             if (specialKey!=null)                                  //~vaauI~
             	label=specialKey;                        //~vaauI~
-//            if (Dump.Y) Dump.println("KeyboardView key.label="+label);
+//            if (Dump.Y) Dump.println("AxeKbdView key.label="+label);//~vc2nR~
 
             final Rect bounds = keyBackground.getBounds();
             if (key.width != bounds.right ||
@@ -1125,10 +1134,12 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
                 keyBackground.setBounds(0, 0, key.width, key.height);
             }
             canvas.translate(key.x + kbdPaddingLeft, key.y + kbdPaddingTop);
-//            if (Dump.Y) Dump.println("KeyboardView buffDraw translate X="+(key.x + kbdPaddingLeft)+",Y="+( key.y + kbdPaddingTop));
+//            if (Dump.Y) Dump.println("AxeKbdView buffDraw translate X="+(key.x + kbdPaddingLeft)+",Y="+( key.y + kbdPaddingTop));//~vc2nR~
             keyBackground.draw(canvas);
 
-            if (label != null) {
+//          if (label != null) {                                   //~vc2nR~
+            if (label != null && key.icon == null)                 //~vc2nI~
+			{                                                      //~vc2nI~
                 // For characters, use large font. For labels like "Done", use small font.
                 if (label.length() > 1 && key.codes.length < 2) {
                     paint.setTextSize(mLabelTextSize);
@@ -1139,31 +1150,32 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
                     		paint.setTextSize(mLabelTextSize*rate);//~vaaxI~
                   	}                                              //~vaaxI~
                     paint.setTypeface(Typeface.DEFAULT_BOLD);
-//                    if (Dump.Y) Dump.println("KeyboardView textsize="+mLabelTextSize);
+                    if (Dump.Y) Dump.println("AxeKbdView.onBufferDraw large keyCode.lenghth="+key.codes.length+",label="+label+",textsize="+mLabelTextSize);//~vc2nR~
                 } else {
                     paint.setTextSize(mKeyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
-//                    if (Dump.Y) Dump.println("KeyboardView textsize="+mKeyTextSize);
+                    if (Dump.Y) Dump.println("AxeKbdView.onBufferDraw small keyCode.lenghth="+key.codes.length+",label="+label+",textsize="+mLabelTextSize);//~vc2nI~
                 }
                 // Draw a drop shadow for the text
                 paint.setShadowLayer(mShadowRadius, 0, 0, mShadowColor);
                 // Draw the text
                 drawFlickChar(canvas,paint,i,key,padding);         //~vaagR~
-                if (Dump.Y) Dump.println("drawText center keyX="+key.x+",keyY="+key.y);//~vaagI~
+//              if (Dump.Y) Dump.println("drawText center keyX="+key.x+",keyY="+key.y);//~vaagI~//~vc12R~
                 canvas.drawText(label,
                     (key.width - padding.left - padding.right) / 2
                             + padding.left,
                     (key.height - padding.top - padding.bottom) / 2
                             + (paint.getTextSize() - paint.descent()) / 2 + padding.top,
                     paint);
-                if (Dump.Y) Dump.println("KeyboardView drawText canvas="+canvas.toString()+",label="+label+",pos X="+//~vaagR~
-                    ((key.width - padding.left - padding.right) / 2//~vaagR~
-                            + padding.left)+",Y="+                 //~vaagR~
-                    ((key.height - padding.top - padding.bottom) / 2//~vaagR~
-                            + (paint.getTextSize() - paint.descent()) / 2 + padding.top));//~vaagR~
+//              if (Dump.Y) Dump.println("AxeKbdView drawText canvas="+canvas.toString()+",label="+label+",pos X="+//~vaagR~//~vc12R~//~vc2nR~
+//                  ((key.width - padding.left - padding.right) / 2//~vaagR~//~vc12R~
+//                          + padding.left)+",Y="+                 //~vaagR~//~vc12R~
+//                  ((key.height - padding.top - padding.bottom) / 2//~vaagR~//~vc12R~
+//                          + (paint.getTextSize() - paint.descent()) / 2 + padding.top));//~vaagR~//~vc12R~
                 // Turn off drop shadow
                 paint.setShadowLayer(0, 0, 0, 0);
             } else if (key.icon != null) {
+            	if (Dump.Y) Dump.println("AxeKbdView.buffdraw icon="+key.icon);//~vc2nI~
                 final int drawableX = (key.width - padding.left - padding.right
                                 - key.icon.getIntrinsicWidth()) / 2 + padding.left;
                 final int drawableY = (key.height - padding.top - padding.bottom
@@ -1182,7 +1194,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         if (mMiniKeyboardOnScreen) {
             paint.setColor((int) (mBackgroundDimAmount * 0xFF) << 24);
             canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
-            if (Dump.Y) Dump.println("KeyboardView buffdraw minikbdkey w="+getWidth()+",H="+getHeight());
+            if (Dump.Y) Dump.println("AxeKbdView buffdraw minikbdkey w="+getWidth()+",H="+getHeight());//~vc2nR~
         }
 
         if (DEBUG && mShowTouchPoints) {
@@ -1198,6 +1210,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
 
         mDrawPending = false;
         mDirtyRect.setEmpty();
+        if (Dump.Y) Dump.println("AxeKbdView.onBufferDraw end"); //~vc12I~//~vc2nR~
     }
     //*************************************************            //~vaaxI~
     private float chkLabelWidth(Key Pkey,String Plabel,Paint Ppaint,Rect Ppadding)//~vaaxR~
@@ -1264,8 +1277,11 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         String label;                                              //~vaagI~
         int code=0;                                                //~vaagI~
     //***************************                                  //~vaagI~
+        Key[] keys = mKeys;                                        //~vc2nI~
+        Key key = keys[Pkeyindex];                                 //~vc2nI~
         label=flickKeyTbl[Pkeyindex][Pswipedest].name;             //~vaagI~
         code=flickKeyTbl[Pkeyindex][Pswipedest].code;              //~vaawI~
+        if (Dump.Y) Dump.println("AxeKbdView.getFlickLabel label0="+flickKeyTbl[Pkeyindex][0].name+",icon="+key.icon+",label="+label+",index="+Pkeyindex+",dest="+Pswipedest+",code0="+Integer.toHexString(flickKeyTbl[Pkeyindex][0].code)+",code="+Integer.toHexString(code));//~vc2nR~
         if (label==null)                                           //~vaagI~
         {                                                          //~vaagI~
 //          code=flickKeyTbl[Pkeyindex][Pswipedest].code;          //~vaagI~//~vaawR~
@@ -1304,9 +1320,10 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         else                                                       //~vaawI~
         	if (isShiftFed())                                      //~vaawI~
         		if (AxeKeyValue.isValidExtGDK(code))               //~vaawI~
+			      if (key.icon==null)	//not icon                 //~vc2nR~
         			if (code==((AxeKbd)mKeyboard).getCodeShiftF(Pkeyindex))//~vaawI~
             			return null;                               //~vaawI~
-        if (Dump.Y) Dump.println("getFlickLabel label="+label+",index="+Pkeyindex+",dest="+Pswipedest+",code0="+flickKeyTbl[Pkeyindex][0].code+",code="+code);//~vaagR~
+        if (Dump.Y) Dump.println("AxeKbdView.getFlickLabel label="+label+",index="+Pkeyindex+",dest="+Pswipedest+",code0="+flickKeyTbl[Pkeyindex][0].code+",code="+code);//~vaagR~//~vc12R~
         return label;                                              //~vaagI~
     }//getFlickLabel                                               //~vaagR~
 //***************************************************              //~vaauI~
@@ -1335,6 +1352,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         String label;                                              //~vaagI~
         float fontH,fontCenter,baselineCenter;                     //~vaagI~
     //***************************                                  //~vaagI~
+        if (Dump.Y) Dump.println("AxeKbdView.drawTextF keyindex="+Pkeyindex+",pos="+Ppos);//~vc2nI~
         label=getFlickLabel(true/*noupper*/,Pkeyindex,Ppos);       //~vaagR~
         if (label==null)                                           //~vaagI~
         	return;                                                //~vaagI~
@@ -1347,7 +1365,8 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
             else                                                   //~vaagI~
             	paint=paintFL;      //0.75                         //~vaagR~
         else                                                       //~vaagI~
-            paint=paintFP;           //0.5                          //~vaagR~
+//          paint=paintFP;           //0.5                          //~vaagR~//~vc2nR~
+            paint=paintF2;          //0.33                         //~vc2nI~
         fontH=-paint.ascent()+paint.descent();	//leading and descent//~vaagI~
         fontCenter=Math.max(PkeyFH,fontH)/2;                        //~vaagI~
         baselineCenter=(paint.getTextSize()-paint.descent())/2;     //~vaagI~
@@ -1365,13 +1384,21 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         case 3:    //bottom left                                   //~vaagI~
             posX=(PkeyFW) / 2                                      //~vaagI~
                         + Ppadding.left;                           //~vaagI~
-            if (Dump.Y) Dump.println("label="+label+",FH="+PkeyFH+",fontsz="+paint.getTextSize()+",ascent="+paint.ascent()+",descent="+paint.descent());//~vaagI~
+//          if (Dump.Y) Dump.println("label="+label+",FH="+PkeyFH+",fontsz="+paint.getTextSize()+",ascent="+paint.ascent()+",descent="+paint.descent());//~vaagI~//~vc12R~
             posY=Pkey.height-Ppadding.bottom-fontCenter+baselineCenter;//~vaagR~
             break;                                                 //~vaagI~
         default:    //bottom right                                 //~vaagI~
             posX=Pkey.width-Ppadding.right-PkeyFW/2;               //~vaagI~
             posY=Pkey.height-Ppadding.bottom-fontCenter+baselineCenter;//~vaagI~
         }                                                          //~vaagI~
+        if (Dump.Y) Dump.println("AxeKbdView.drawTextF label="+label);//~vc12I~
+      if (chkStickyLabel(Pkey,Pkeyindex,Ppos))                    //~vc2mI~//~vc2nR~
+      {                                                            //~vc2mI~
+        Paint paintSticky=new Paint(paint);                        //~vc2mI~
+        paintSticky.setColor(COLOR_STICKY_LABEL);                 //~vc2mI~
+        Pcanvas.drawText(label,posX,posY,paintSticky);             //~vc2mI~
+      }                                                            //~vc2mI~
+      else                                                         //~vc2mI~
         Pcanvas.drawText(label,posX,posY,paint);                   //~vaagR~
     }//drawTextF                                                   //~vaagI~
     private void drawFlickChar(Canvas Pcanvas,Paint Ppaint,int Pkeyindex,Key Pkey,Rect Ppadding)//~vaagR~
@@ -1381,6 +1408,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
 //        float rateW;//=flickKeySizeRate;                         //~vaagR~
     //***************************                                  //~vaagI~
 //        if (Dump.Y) Dump.println("drawFlickChar  keyW="+Pkey.width+",keyH="+Pkey.height+",padding L="+Ppadding.left+",R="+Ppadding.right+",T="+Ppadding.top+",B="+Ppadding.bottom);//~vaagR~
+        if (Dump.Y) Dump.println("AxeKbdView.drawFlickChar name="+Pkey.label);//~vc12I~
         if (!AxeG.displayFlickKey)                                 //~vaagI~
         	return;                                                //~vaagI~
 //        if (AxeG.displayPL==AxeG.PORTRAIT)                       //~vaagR~
@@ -1413,7 +1441,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
 //********************************************************         //~vaaiI~
     public void sendPendingKeyDownEvent()                                      //~vaaiI~
     {                                                              //~vaaiI~
-    	if (Dump.Y) Dump.println("AxeKbdView sendpendingDownEvent swpending="+swPendingKeyDownEvent);//~vaaiR~
+    	if (Dump.Y) Dump.println("AxeKbdView sendPendingKeyDownEvent swpending="+swPendingKeyDownEvent);//~vaaiR~//~vc12R~
         if (!swPendingKeyDownEvent)                                //~vaaiR~
         	return;                                                //~vaaiI~
 		swFlickTimerOn=false;                                      //~vaaiI~
@@ -1431,4 +1459,40 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         delayedKeyCode=0;                                          //~vaaiI~
         delayedText=null;                                          //~vaaiI~
     }                                                              //~vaaiI~
+//********************************************************         //~vc2mI~
+//*chk modifier by flikkey effective                               //~vc2mI~
+//********************************************************         //~vc2mI~
+    private boolean chkStickyLabel(Key Pkey,int Pkeyindex,int Ppos)             //~vc2mI~//~vc2nR~
+    {                                                              //~vc2mI~
+        boolean rc=false;                                          //~vc2mI~
+        int code=flickKeyTbl[Pkeyindex][Ppos].code;                //~vc2mI~
+        switch (code)                                              //~vc2mI~
+        {                                                          //~vc2mI~
+    	case KEYCODE_ALTGR:	//=-10;                                //~vc2mI~
+			rc=isAltGred();                                        //~vc2mI~
+        	break;                                                 //~vc2mI~
+		case KEYCODE_ALTGRS:	//=-11;                            //~vc2mI~
+            rc=isAltGrSed();                                       //~vc2mI~
+        	break;                                                 //~vc2mI~
+        case KEYCODE_SHIFTR:	//SYM =-12;                        //~vc2mI~
+            rc=isShiftRed();                                       //~vc2mI~
+        	break;                                                 //~vc2mI~
+        case KEYCODE_CAPS:	//=-16;                                //~vc2mI~
+            rc=isCapsed();                                         //~vc2mI~
+        	break;                                                 //~vc2mI~
+        case KEYCODE_SHIFTF:	//=-18;     //display key:Fn(GdkKey)//~vc2mI~
+        	rc=isShiftFed();                                       //~vc2mI~
+        	break;                                                 //~vc2mI~
+        case KEYCODE_SHORTCUT:	//=-17;                            //~vc2mI~
+	    	rc=isShortcut();                                       //~vc2mI~
+        	break;                                                 //~vc2mI~
+        case KEYCODE_KBDPOPUP:	//=-14;	//not repeatable but popup swipe code//~vc2mI~
+	    	rc=popupMode;                                          //~vc2mI~
+        	break;                                                 //~vc2mI~
+//      case KEYCODE_KBDNOPOP:	//=-15;   //back to repeatable     //~vc2mI~
+//      	break;                                                 //~vc2mI~
+        }                                                          //~vc2mI~
+    	if (Dump.Y) Dump.println("AxeKbdView.chkStickyLabel rc="+rc+",code="+code+",label="+flickKeyTbl[Pkeyindex][Ppos].name);//~vc2mI~//~vc2nR~
+        return rc;                                                 //~vc2mI~
+    }                                                              //~vc2mI~
 }

@@ -1,7 +1,10 @@
-//*CID://+vaybR~:                             update#=  139;       //+vaybR~
+//*CID://+vc2pR~:                             update#=  152;       //~vc2pR~
 //*********************************************************************//~vaatI~
+//vc2p 2020/08/04 reset other modifier(set effective only one)     //~vc2pI~
+//vc1y 2020/07/09 AxeKbd reset to Default did not cleared when not app restart case//~vc1yI~
+//vc1w 2020/07/06 AxeKbd updatelog extends KbdLayoutHW             //~vc1wI~
 //vayd:141125 (Axe)modifier reset option                           //~vaydI~
-//vayb:141125 (Axe)Disply:getWidth/getHeight was deprecated at aoi13(HONNEYCOMB_MR2) change to getSize//+vaybI~
+//vayb:141125 (Axe)Disply:getWidth/getHeight was deprecated at aoi13(HONNEYCOMB_MR2) change to getSize//~vaybI~
 //vaaw:120105 (Axe)add Fn modifier to set key label to Fn          //~vaawI~
 //vaat:120103 (Axe:Bug)xekbd should support orientaion change      //~vaatI~
 //*********************************************************************//~vaatI~
@@ -12,11 +15,9 @@ package com.xe.Axe.kbd;                                            //~@@@@R~
                                                                    //~@@@@I~
 import android.content.Context;
 import android.graphics.Point;
-import android.os.SystemClock;
-import android.view.KeyEvent;                                      //~@@@@I~
 import android.view.View;                                          //~@@@@I~
-import android.view.WindowManager;
                                                                    //~@@@@I~
+import com.ahsv.utils.Utils;
 import com.xe.Axe.kbd.ims.Keyboard;                                //~@@@@M~
 import com.xe.Axe.kbd.ims.Keyboard.Key;
 import com.xe.Axe.AxeView;
@@ -38,7 +39,8 @@ public class AxeSoftKbd                                            //~@@@@R~
                                                                    //~@@@@I~
 //    public static final String KEYID_UNICODE="u-";               //~@@@@R~
 //    public static final String KEYID_FIXED="";                   //~@@@@R~
-    public static final int KEYID_EXTKEY=0x010000;              //~@@@@I~
+//  public static final int KEYID_EXTKEY=0x010000;              //~@@@@I~//~vc1wR~
+    public static final int KEYID_EXTKEY=AxeKeyValue.KBF_GDK; //0x20000000;//~vc1wI~
     public static final int KEYID_FIXED=-1;                     //~@@@@I~
                                                                    //~@@@@I~
     static final int KBDLAYOUT=R.xml.kbd_xe;                       //~@@@@R~
@@ -64,6 +66,7 @@ public class AxeSoftKbd                                            //~@@@@R~
     private OnSoftKbdListener listener;//~@@@@R~
     private int [][] kbdLayoutCodeTbl;                               //~@@@@I~
 //    private int [][] kbdLayoutCodeTblDefault;                    //~@@@@R~
+    private int [][] kbdLayoutCodeTblDefault;                      //~vc1yI~
     
 //    @Override public void onCreate() {                           //~@@@@R~
 //        super.onCreate();                                        //~@@@@R~
@@ -271,7 +274,7 @@ public class AxeSoftKbd                                            //~@@@@R~
 //    }                                                            //~@@@@R~
     
     private void sendKey(int keyCode) {
-        if (Dump.Y) Dump.println("sendKey keycode="+Integer.toHexString(keyCode));//~@@@@I~
+        if (Dump.Y) Dump.println("AxeSoftKbd.sendKey keycode="+Integer.toHexString(keyCode));//~@@@@I~//+vc2pR~
 //        switch (keyCode) {                                       //~@@@@R~
 //            case '\n':                                           //~@@@@R~
 //                keyDownUp(KeyEvent.KEYCODE_ENTER);               //~@@@@R~
@@ -346,7 +349,7 @@ public class AxeSoftKbd                                            //~@@@@R~
     //**********************************************************   //~@@@@I~
     private void onKey(int primaryCode,int Pinputtype)             //~@@@@R~
     {                                                              //~@@@@I~
-        if (Dump.Y) Dump.println("MsoftKbd:onKey keycode="+Integer.toHexString(primaryCode));//~@@@@R~
+        if (Dump.Y) Dump.println("AxeSoftKbd.onKey keycode="+Integer.toHexString(primaryCode));//~@@@@R~//~vc2pR~
 //        if (isWordSeparator(primaryCode)) {                      //~@@@@R~
 //            // Handle separator                                  //~@@@@R~
 //            if (mComposing.length() > 0) {                       //~@@@@R~
@@ -493,7 +496,9 @@ public class AxeSoftKbd                                            //~@@@@R~
 	        mInputView.setShifted(!mInputView.isShifted());	//caps not changed//~@@@@I~
         }                                                          //~@@@@I~
         else                                                       //~@@@@M~
-        if (!mInputView.setShiftRed(false))     //reset SHIFTR, shift sticky on if Caps//~@@@@M~
+//      if (!mInputView.setShiftRed(false))     //reset SHIFTR, shift sticky on if Caps//~@@@@M~//~vc2pR~
+        if (!mInputView.setShiftRed(false)     //reset SHIFTR, shift sticky on if Caps//~vc2pI~
+        &&  !mInputView.setShiftFed(false))    //reset SHIFTF, shift sticky on if Caps//~vc2pR~
         {                                                          //~@@@@I~
 	        mInputView.setShifted(!mInputView.isShifted());	//caps not changed//~@@@@M~
         }                                                          //~@@@@I~
@@ -537,8 +542,6 @@ public class AxeSoftKbd                                            //~@@@@R~
         {                                                          //~@@@@I~
 	        mInputView.setAltGred(false);     //did not reset Altgr//~@@@@I~
         	mInputView.setAltGrSed(false);     //did not re
-
-        	//~@@@@I~
         }                                                          //~@@@@I~
         else                                                       //~@@@@I~
         if (!mInputView.setAltGred(false)     //did not reset Altgr//~@@@@I~
@@ -635,12 +638,12 @@ public class AxeSoftKbd                                            //~@@@@R~
 //*****************************************************************//~@@@@I~
     public int getMaxWidth() {                                     //~@@@@I~
 //        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);//~@@@@R~
-//          WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);//+vaybR~
-//        if (Dump.Y) Dump.println("getMAxWidth:"+wm.getDefaultDisplay().getWidth());//+vaybR~
-//        return wm.getDefaultDisplay().getWidth();                //+vaybR~
-		Point p=AxeView.getDisplayRegion();                        //+vaybI~
-        if (Dump.Y) Dump.println("getMaxWidth:"+p.x);              //+vaybI~
-        return p.x;                                                //+vaybI~
+//          WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);//~vaybR~
+//        if (Dump.Y) Dump.println("getMAxWidth:"+wm.getDefaultDisplay().getWidth());//~vaybR~
+//        return wm.getDefaultDisplay().getWidth();                //~vaybR~
+		Point p=AxeView.getDisplayRegion();                        //~vaybI~
+        if (Dump.Y) Dump.println("getMaxWidth:"+p.x);              //~vaybI~
+        return p.x;                                                //~vaybI~
     }                                                              //~@@@@I~
 //*****************************************************************//~@@@@I~
 //*meta flag(High)                                                 //~@@@@R~
@@ -648,12 +651,21 @@ public class AxeSoftKbd                                            //~@@@@R~
     public int getMetaStatus()                                     //~@@@@R~
     {                                                              //~@@@@I~
     	int meta=0;                                                //~@@@@I~
+	  if (mInputView.isCapsed())	//label is upper case          //+vc2pI~
+      {                                                            //+vc2pI~
+        if (!mInputView.isShifted())                               //+vc2pI~
+        	meta|=META_SHIFT;                                      //+vc2pI~
+      }                                                            //+vc2pI~
+      else                                                         //+vc2pI~
+      {                                                            //+vc2pI~
         if (mInputView.isShifted())                                //~@@@@I~
         	meta|=META_SHIFT;                                      //~@@@@I~
+      }                                                            //+vc2pI~
         if (mInputView.isCtrled())                                 //~@@@@I~
         	meta|=META_CTL;                                        //~@@@@I~
         if (mInputView.isAlted())                                  //~@@@@I~
         	meta|=META_ALT;                                        //~@@@@I~
+        if (Dump.Y) Dump.println("AxeSoftKbd.getMetaState meta="+Integer.toHexString(meta)+",isCapsed="+mInputView.isCapsed()+",isShifted="+mInputView.isShifted());//+vc2pI~
     	return meta;                                               //~@@@@I~
     }                                                              //~@@@@I~
 //*********************                                            //~@@@@I~
@@ -690,6 +702,7 @@ public class AxeSoftKbd                                            //~@@@@R~
         {                                                          //~@@@@I~
         	kbdLayoutCodeTbl=initKbdLayoutCodeTbl();                //~@@@@I~
 //            saveDefault();                                       //~@@@@R~
+            saveDefault(kbdLayoutCodeTbl);                         //~vc1yI~
         }                                                          //~@@@@I~
         return kbdLayoutCodeTbl;                                   //~@@@@R~
     }                                                              //~@@@@I~
@@ -754,6 +767,7 @@ public class AxeSoftKbd                                            //~@@@@R~
                 String label=kv.flickKeyTbl[ii][jj].name;          //~@@@@I~
 //                int outcode=kv.swipeKeycodeTbl[ii][jj];          //~@@@@R~
                 int outcode=kv.flickKeyTbl[ii][jj].code;           //~@@@@I~
+                if (Dump.Y) Dump.println("AxeSoftKbd.initKbdLayoutCodeTbl list for ("+ii+","+jj+"),label="+label+",code="+code+",outcode="+Integer.toHexString(outcode));//~vc1yR~
                 if (label!=null)                                //~@@@@I~
                 {                                                  //~@@@@I~
                 	int idx=AxeKbdKey.getSpinnerIndex(outcode);       //~@@@@I~
@@ -763,7 +777,7 @@ public class AxeSoftKbd                                            //~@@@@R~
                     	outcode=0;                                 //~@@@@I~
                 }                                                  //~@@@@I~
                 outtb[ii][jj]=outcode;                             //~@@@@I~
-                if (Dump.Y) Dump.println("AxeSoftKbd kbdlayout list for ("+ii+","+jj+"),code="+Integer.toHexString(code)+",out="+Integer.toHexString(outcode));//~@@@@R~
+                if (Dump.Y) Dump.println("AxeSoftKbd.initKbdLayoutCodeTbl list for ("+ii+","+jj+"),code="+Integer.toHexString(code)+",out="+Integer.toHexString(outcode));//~@@@@R~//~vc1yR~
             }                                                      //~@@@@I~
         }
         return outtb;//~@@@@I~
@@ -776,6 +790,23 @@ public class AxeSoftKbd                                            //~@@@@R~
 //        Util.copyArray(KbdLayoutCodeTbl,outtb);                  //~@@@@R~
 //        kbdLayoutCodeTblDefault=outtb;                           //~@@@@R~
 //    }                                                            //~@@@@R~
+//*******************************************************          //~vc1yI~
+    private void saveDefault(int[][] Pdefault)                     //~vc1yI~
+    {                                                              //~vc1yI~
+        if (Dump.Y) Dump.println("AxeSoftKbd.saveDefault default="+kbdLayoutCodeTblDefault+",parm="+Pdefault);//~vc1yI~
+    	if (kbdLayoutCodeTblDefault==null)                         //~vc1yI~
+	        kbdLayoutCodeTblDefault=Utils.cloneArray2(Pdefault);    //~vc1yI~
+    }                                                              //~vc1yI~
+//*******************************************************          //~vc1yI~
+    public int[][] getDefault()                                   //~vc1yI~
+    {                                                              //~vc1yI~
+    	int[][] defaultCT=kbdLayoutCodeTblDefault;                   //~vc1yI~
+        if (Dump.Y) Dump.println("AxeSoftKbd.getDefault default="+defaultCT);//~vc1yI~
+        if (defaultCT==null)                                         //~vc1yI~
+        	defaultCT=initKbdLayoutCodeTbl();                        //~vc1yI~
+        if (Dump.Y) Dump.println("AxeSoftKbd.getDefault default="+ Utils.toHexString(defaultCT));//~vc1yI~
+    	return defaultCT;                                            //~vc1yI~
+    }                                                              //~vc1yI~
 ////*******************************************************        //~@@@@R~
 //    public void resetToDefault()                                 //~@@@@R~
 //    {                                                            //~@@@@R~
@@ -798,11 +829,14 @@ public class AxeSoftKbd                                            //~@@@@R~
         	for (int jj=0;jj<=AxeKbdView.MAXSWIPE;jj++)            //~@@@@I~
             {                                                      //~@@@@I~
                 int newcode=Pnewcodes[ii][jj];                     //~@@@@I~
+				if (jj==0 && newcode==0)                           //~vc1yI~
+                	newcode=key.codes[0];	//for the case line deleted by setting col0=0//~vc1yI~
                 int oldcode=kbdLayoutCodeTbl[ii][jj];              //~@@@@I~
                 boolean extkeysw=false;                            //~@@@@I~
 //                boolean repeatable=false;                        //~@@@@R~
                 if (Dump.Y) Dump.println("AxeSoftKbd updateKeys ii="+ii+",jj="+jj+",primarycode="+Integer.toHexString(key.codes[0])+",old="+Integer.toHexString(oldcode)+",new="+Integer.toHexString(newcode));//~@@@@I~
-                if (newcode>0 && newcode!=oldcode)                 //~@@@@I~
+//              if (newcode>0 && newcode!=oldcode)                 //~@@@@I~//~vc1yR~
+                if (newcode!=oldcode)                              //~vc1yI~
                 {                                                  //~@@@@I~
 	                kbdLayoutCodeTbl[ii][jj]=newcode;              //~@@@@I~
                     int keycode=newcode;                           //~@@@@I~

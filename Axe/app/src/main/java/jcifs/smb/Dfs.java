@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    2;       //~vc19I~
+//***************************************************************  //~vc19I~
+//vc19 2020/06/18 Warning generic err for Map Arraylist ...        //~vc19I~
+//***************************************************************  //~vc19I~
 /* jcifs smb client library in Java
  * Copyright (C) 2008  "Michael B. Allen" <jcifs at samba dot org>
  * 
@@ -25,6 +29,7 @@ import jcifs.UniAddress;
 import jcifs.util.*;
 import jcifs.Config;
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public class Dfs {
 
     static class CacheEntry {

@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    4;       //+vc19I~
+//******************************************************************//+vc19I~
+//vc19 2020/06/18 Warning Map type                                 //+vc19I~
+//******************************************************************//+vc19I~
 /* jcifs smb client library in Java
  * Copyright (C) 2000  "Michael B. Allen" <jcifs at samba dot org>
  * 
@@ -31,6 +35,7 @@ import jcifs.Config;
 import jcifs.smb.SmbFileInputStream;
 import jcifs.util.LogStream;
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public class Lmhosts {
 
     private static final String FILENAME = Config.getProperty( "jcifs.netbios.lmhosts" );

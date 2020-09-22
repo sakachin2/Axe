@@ -1,5 +1,7 @@
-//*CID://+dateR~: update#= 285;                                    //~1528I~
+//*CID://+vc1xR~: update#= 286;                                    //+vc1xR~
 //**********************************************************************//~1528I~
+//vc1x 2020/07/08 member variable is initialized when defualt constructor defined(not non default constructor is define)//+vc1xI~
+//**********************************************************************//+vc1xI~
 //*ListView                                                        //~1530R~
 //**********************************************************************//~1528I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1109R~//~1528I~
@@ -11,14 +13,27 @@ public class AxeLstAltGr extends AxeList                           //~1612I~
 {                                                                  //~1528I~
 	private static final int ROWID_ALTGR    =R.layout.listrowshiftkey;//~1612R~
 //*****************                                                //~1612I~
-    public AxeLstAltGr(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~1612I~
-    {                                                              //~1528I~
-		super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/);               //~1612I~//+1B02R~
-    }                                                              //~1528I~
+//    public AxeLstAltGr(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~1612I~//+vc1xR~
+//    {                                                              //~1528I~//+vc1xR~
+//        super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/);               //~1612I~//~1B02R~//+vc1xR~
+//    }                                                              //~1528I~//+vc1xR~
+    public AxeLstAltGr()                                           //+vc1xI~
+    {                                                              //+vc1xI~
+        if (Dump.Y) Dump.println("AxeLstAltGr.defaultConstructor");//+vc1xI~
+    }                                                              //+vc1xI~
+    public static AxeLstAltGr newInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//+vc1xI~
+    {                                                              //+vc1xI~
+        if (Dump.Y) Dump.println("AxeLstAltGr.newInstance");       //+vc1xI~
+    	AxeLstAltGr al=new AxeLstAltGr();                          //+vc1xI~
+        al.initInstance(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/);//+vc1xI~
+        return al;                                                 //+vc1xI~
+    }                                                              //+vc1xI~
 //*****************                                                //~1612R~
     public static AxeLstAltGr setupListView(int PdialogId,ViewGroup PlayoutView)//~1612R~
     {                                                              //~1612R~
-        AxeLstAltGr al=new AxeLstAltGr(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID_ALTGR);//~1612I~
+        if (Dump.Y) Dump.println("AxeLstAltGr.setupListView");     //+vc1xI~
+//      AxeLstAltGr al=new AxeLstAltGr(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID_ALTGR);//~1612I~//+vc1xR~
+        AxeLstAltGr al=newInstance(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID_ALTGR);//+vc1xI~
 		return al;                                                 //~1612R~
     }                                                              //~1612R~
 //*****************                                                //~1612I~
