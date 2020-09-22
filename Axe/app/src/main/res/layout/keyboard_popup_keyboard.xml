@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             xe:keyPreviewLayout="@layout/keyboard_key_preview"
-            xe:popupLayout="@layout/keyboard_popup_keyboard"
+            xe:popupLayout="@layout/keyboard_popup_keyboard2"
             xe:keyTextSize="22sp"
             xe:labelTextSize="14sp"
             xe:keyTextColor="#FFFFFFFF"

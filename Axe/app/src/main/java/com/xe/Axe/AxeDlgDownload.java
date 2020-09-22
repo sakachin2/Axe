@@ -1,6 +1,7 @@
-//*CID://+vaxcR~:                             update#=   26;       //+vaxcR~
+//*CID://+vc2MR~:                             update#=   27;       //+vc2MR~
 //**********************************************************************
-//vaxc:140705 (Axe)FileDialog from menutop(from"File" menu,"Open" and Download" to top)//+vaxcI~
+//vc2M 2020/08/24 xehelp folder download                           //+vc2MI~
+//vaxc:140705 (Axe)FileDialog from menutop(from"File" menu,"Open" and Download" to top)//~vaxcI~
 //vag0:120719 (Axe)function to download asset from web
 //**********************************************************************
 //*AlerDlgDownload
@@ -10,17 +11,18 @@ package com.xe.Axe;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;                                 //+vaxcR~
-import android.widget.TextView;                                    //+vaxcR~
+import android.widget.ImageButton;                                 //~vaxcR~
+import android.widget.TextView;                                    //~vaxcR~
 public class AxeDlgDownload extends AxeDialog
 {
 /////////////////////////////////////////////////////////////////////////////
 //**********************************************************************
+	private static final String HELP_FILE  ="AxeDlgDownload";       //+vc2MI~
 	private static final int LAYOUT=R.layout.dialogdownload;
 	private static final int TITLE =R.string.DialogTitle_Download;
     private static final String defaultAssetURL="http://www.geocities.jp/sakachin2/Axe/AxeAsset.zip";//~vag0I~
     private EditText   etURL,etLocalFile;                          //~vag0R~
-    private ImageButton  btLocalRef;                               //+vaxcR~
+    private ImageButton  btLocalRef;                               //~vaxcR~
     private CheckBox   cbUnzip,cbDel,cbUnziponly;                  //~vag0R~
     private static String SURL="",Slocalfile="";                   //~vag0R~
     private static String SdefaultLocalPath;                       //~vag0I~
@@ -31,7 +33,7 @@ public class AxeDlgDownload extends AxeDialog
     private static final String PREFKEY_DELZIP="DownloadDelsrc";   //~vag0I~
     private static final String PREFKEY_UNZIPONLY="DownloadUnzipOnly";//~vag0I~
     private static final String PREFKEY_UNZIP="DownloadUnzip";     //~vag0I~
-	private static AxeDlgFileChooser fileChooser;                  //+vaxcR~
+	private static AxeDlgFileChooser fileChooser;                  //~vaxcR~
 //**********************************
 	public AxeDlgDownload()
     {
@@ -79,11 +81,11 @@ public class AxeDlgDownload extends AxeDialog
     {
 	    etURL=(EditText)layoutView.findViewById(R.id.DL_URL);      //~vag0R~
 	    etLocalFile=(EditText)layoutView.findViewById(R.id.DL_Local);//~vag0I~
-	    btLocalRef=(ImageButton)layoutView.findViewById(R.id.DL_BtnLocalRef);//+vaxcR~
+	    btLocalRef=(ImageButton)layoutView.findViewById(R.id.DL_BtnLocalRef);//~vaxcR~
 	    cbUnzip=(CheckBox)layoutView.findViewById(R.id.DL_Unzip);  //~vag0I~
 	    cbDel=(CheckBox)layoutView.findViewById(R.id.DL_DelZipfile);//~vag0I~
 	    cbUnziponly=(CheckBox)layoutView.findViewById(R.id.DL_Unziponly);//~vag0I~
-        setButtonListener(btLocalRef);                             //+vaxcR~
+        setButtonListener(btLocalRef);                             //~vaxcR~
         if (swAsset)                                               //~vag0I~
 	        etURL.setText(defaultAssetURL);                        //~vag0I~
         else                                                       //~vag0I~
@@ -147,32 +149,33 @@ public class AxeDlgDownload extends AxeDialog
 	@Override
     protected boolean onClickHelp()
     {
-    	showDialogHelp(R.string.HelpTitle_Download,R.string.Help_Download);
+//  	showDialogHelp(R.string.HelpTitle_Download,R.string.Help_Download);//+vc2MR~
+    	showDialogHelp(TITLE,HELP_FILE);                           //+vc2MI~
         return false;	//no dismiss
     }
-//**********************************                               //+vaxcR~
-	@Override                                                      //+vaxcR~
-    protected boolean onClickOther(int Pbuttonid)                  //+vaxcR~
-    {                                                              //+vaxcR~
-    	boolean rc=true;	//dismiss                              //+vaxcR~
-    	String fnm;                                                //+vaxcR~
-    //********mp.Y) Dump.println("AxeDlgFileChooser onClickOther buttonid="+Integer.toHexString(Pbuttonid));//+vaxcR~
-        switch(Pbuttonid)                                          //+vaxcR~
-        {                                                          //+vaxcR~
-        case R.id.DL_BtnLocalRef:                                  //+vaxcR~
-        	fnm=etURL.getText().toString();                        //+vaxcR~
-            if (fnm==null)                                         //+vaxcR~
-            	fnm="";                                            //+vaxcR~
-            else                                                   //+vaxcR~
-            {                                                      //+vaxcR~
-            	fnm=fnm.trim();                                    //+vaxcR~
-                if (fnm.lastIndexOf("/")>0)                        //+vaxcR~
-                	fnm=fnm.substring(fnm.lastIndexOf("/")+1);     //+vaxcR~
-            }                                                      //+vaxcR~
-		    fileChooser=AxeDlgFileChooser.showDialog(AxeLstFileChooser.OPEN_REF,(TextView)etLocalFile,fnm);//+vaxcR~
-            rc=false;                                              //+vaxcR~
-        	break;                                                 //+vaxcR~
-        }                                                          //+vaxcR~
-        return rc;                                                 //+vaxcR~
-    }                                                              //+vaxcR~
+//**********************************                               //~vaxcR~
+	@Override                                                      //~vaxcR~
+    protected boolean onClickOther(int Pbuttonid)                  //~vaxcR~
+    {                                                              //~vaxcR~
+    	boolean rc=true;	//dismiss                              //~vaxcR~
+    	String fnm;                                                //~vaxcR~
+    //********mp.Y) Dump.println("AxeDlgFileChooser onClickOther buttonid="+Integer.toHexString(Pbuttonid));//~vaxcR~
+        switch(Pbuttonid)                                          //~vaxcR~
+        {                                                          //~vaxcR~
+        case R.id.DL_BtnLocalRef:                                  //~vaxcR~
+        	fnm=etURL.getText().toString();                        //~vaxcR~
+            if (fnm==null)                                         //~vaxcR~
+            	fnm="";                                            //~vaxcR~
+            else                                                   //~vaxcR~
+            {                                                      //~vaxcR~
+            	fnm=fnm.trim();                                    //~vaxcR~
+                if (fnm.lastIndexOf("/")>0)                        //~vaxcR~
+                	fnm=fnm.substring(fnm.lastIndexOf("/")+1);     //~vaxcR~
+            }                                                      //~vaxcR~
+		    fileChooser=AxeDlgFileChooser.showDialog(AxeLstFileChooser.OPEN_REF,(TextView)etLocalFile,fnm);//~vaxcR~
+            rc=false;                                              //~vaxcR~
+        	break;                                                 //~vaxcR~
+        }                                                          //~vaxcR~
+        return rc;                                                 //~vaxcR~
+    }                                                              //~vaxcR~
 }

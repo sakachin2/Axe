@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    4;       //~vc19I~
+//******************************************************************//~vc19I~
+//vc19 2020/06/18 Warning Map type                                 //~vc19I~
+//******************************************************************//~vc19I~
 /* jcifs smb client library in Java
  * Copyright (C) 2000  "Michael B. Allen" <jcifs at samba dot org>
  * 
@@ -266,6 +270,7 @@ import java.util.Date;
  * @see       java.io.File
  */
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public class SmbFile extends URLConnection implements SmbConstants {
 
     static final int O_RDONLY = 0x01;
@@ -1711,7 +1716,7 @@ if (this instanceof SmbNamedPipe) {
     }
     SmbFile[] listFiles( String wildcard, int searchAttributes,
                 SmbFilenameFilter fnf, SmbFileFilter ff ) throws SmbException {
-        ArrayList list = new ArrayList();
+        ArrayList list = new ArrayList();                          //~vc19R~
         doEnum(list, true, wildcard, searchAttributes, fnf, ff);
         return (SmbFile[])list.toArray(new SmbFile[list.size()]);
     }

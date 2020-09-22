@@ -1,0 +1,36 @@
+Defines Character/ExtendedKey by Hard Keyboard key pressing
+for +Shift, +AltGr(Right Alt) and +Shift+AltGr.
+----------------------------------------------------------------------------
+AltGr key:
+    e.g. if "Alt-R" is selected, Alt-R+key generate keycode on the column of "+AltGr". 
+         And "Alt-L" remains as modifier=Alt.
+
+IM key:
+    Set key to open IM (Android native Input Method).
+    If "Other" is selected, focusing on edit text on the right then press any key.
+    If the key is character key it have to be with modifier Alt and or Ctrl.
+
+Extend key list:
+   Select a extend-key from DropDown list.
+
+Delete:
+   Clears the column or back to default.
+
+IM:
+   Opens Android's IM when hard keyboard connected.
+   Back to hard keyboard input mode when the IM closed.
+   When hard keyboard is not connected, touching column opens IM.
+
+TextView:
+   At the right of IM button it shows keyboard input text.
+   Background is yellow when hard keyboard connected, white when not.
+
+ListView:
+   Touch the column to set at first, then use DropDown, Delete button or keyboard.
+   Input hex-code to set unicode.
+
+Default:
+   Reset all to default.
+
+----------------------------------------------------------------------------
+2020/09/11 AxeKbdLayoutHW

@@ -1,13 +1,14 @@
-//*CID://+vay7R~: update#= 180;                                    //~vay7R~
+//*CID://+vc2DR~: update#= 187;                                    //+vc2DR~
 //**********************************************************************//~1107I~
+//vc2D 2020/08/19 (Bug)kbd send not to Dialog but to AxeScreen when KbdDialogHW opened after AxeDialog Open//+vc2DI~
+//vc1u 2020/07/06 helpdialog for asset/helptexts                   //~vc1uI~
 //vay7:141122 (Axe)actionBar:save/saveas item                      //~vay7I~
 //vagF:120920 (Axe)local html viewer fail by permission err(uid of process of HtmlViewer was checked)//~vagFI~
 //vaaC:120110 close preedit when IM was closed by back key         //~2111I~
 //**********************************************************************//~2111I~
 //*AlerDialog                                                      //~1527R~
 //**********************************************************************//~1107I~
-package com.xe.Axe;                                         //~1107R~  //~1108R~//~1527R~
-
+package com.xe.Axe;//~1107R~  //~1108R~//~1527R~
 import android.app.Dialog;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.content.DialogInterface;                            //~2111I~
+
+import com.ahsv.dialog.HelpDialog;
 
 //**********************************************************************//~1107I~
 public class AxeDialog extends Dialog                              //~1830R~
@@ -39,6 +42,7 @@ public class AxeDialog extends Dialog                              //~1830R~
     {                                                              //~1211I~
         super(AxeG.context);
 		layoutId=Playoutid;                                        //~1601I~
+        AxeG.axeDialog=this;                                       //+vc2DR~
     }                                                              //~1211I~
 //**********************************
 //    public static AxeDialog buttonLayout()                       //~1602R~
@@ -97,7 +101,7 @@ public class AxeDialog extends Dialog                              //~1830R~
         default:                                                   //~1602I~
             setupDialogExtend(layoutView);                          //~1602I~
         }                                                          //~1601I~
-        if (dialogSetupError)                                      //+vay7R~
+        if (dialogSetupError)                                      //~vay7R~
         	return;                                                //~vay7I~
         setButtonListenerAll(layoutView);                          //~1602R~
         setOnDismissListener(new dismissListener(this));   //~1215I~//~1410R~//~2111I~
@@ -108,7 +112,7 @@ public class AxeDialog extends Dialog                              //~1830R~
 	@Override                                                      //~1831I~
 	public void onWindowFocusChanged(boolean PhasFocus)         //~1831I~
     {                                                              //~1831I~
-		if (Dump.Y) Dump.println("onwindowFocusChanged:"+PhasFocus+","+this.toString());//~1831R~
+		if (Dump.Y) Dump.println("AxeDialog.onwindowFocusChanged:"+PhasFocus+","+this.toString());//~1831R~//~vc1uR~
     }                                                              //~1831I~
 //*********                                                        //~1602I~
 	protected void setupDialogExtend(ViewGroup PlayoutView)          //~1602R~
@@ -134,7 +138,7 @@ public class AxeDialog extends Dialog                              //~1830R~
         {                                                          //~1528I~
         	Button btn=(Button)(vg.getChildAt(ii));                //~1529R~
         	int btnid=btn.getId();                                 //~1528I~
-            if (Dump.Y) Dump.println("AxeDialog layout="+Integer.toHexString(Pview.getId())+",btnid="+Integer.toString(btnid));//~1528I~
+            if (Dump.Y) Dump.println("AxeDialog layout="+Integer.toHexString(Pview.getId())+",btnid="+Integer.toHexString(btnid));//~1528I~//~vay7R~
             setButtonListener(btn);                                //~1602R~
         }                                                          //~1528I~
     }                                                              //~1528I~
@@ -144,6 +148,15 @@ public class AxeDialog extends Dialog                              //~1830R~
         ButtonListener cl=this.new ButtonListener(this);           //~1528I~
         Pbutton.setOnClickListener(cl);                            //~1528I~
     }                                                              //~1528I~
+//*********************                                            //~vay7I~
+	protected Button setButtonListener(ViewGroup Pview,int Pid)    //~vay7R~
+    {                                                              //~vay7I~
+        Button btn=(Button)(Pview.findViewById(Pid));              //~vay7I~
+    	if (Dump.Y) Dump.println("AxeDialog.setButtonListener id="+Integer.toHexString(Pid)+",btn="+com.ahsv.utils.Utils.toString(btn));//~vay7I~
+        if (btn!=null)                                             //~vay7I~
+        	setButtonListener(btn);                                //~vay7I~
+        return btn;                                                //~vay7I~
+    }                                                              //~vay7I~
 //************************                                         //~1602R~
 //*dialog button Listener*                                         //~1602R~
 //************************                                         //~1602R~
@@ -227,6 +240,11 @@ public class AxeDialog extends Dialog                              //~1830R~
     	int flag=AxeAlert.BUTTON_CLOSE|AxeAlert.SHOW_DIALOG;       //~1604I~
         AxeAlert.simpleAlertDialog(null/*callback*/,title,helpmsg,flag);//~1A11R~
     }                                                              //~1604I~
+//************************************************                 //~vc1uI~
+	public void showDialogHelp(int PtitleResId,String PhelpFile)   //~vc1uI~
+    {                                                              //~vc1uI~
+        HelpDialog.newInstance(PtitleResId,PhelpFile).showDlg();        //~vc1uI~
+    }                                                              //~vc1uI~
 //************************************************                 //~1604I~
 	public void setEditTextEnable(EditText Pview,boolean Peditable)//~1604I~
     {                                                              //~1604I~

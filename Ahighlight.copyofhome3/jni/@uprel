@@ -1,0 +1,11 @@
+#asset=/x/eclipse-workspace/release/AxeAssets
+asset=/home3/AxeAssets
+relbin=$asset/bin
+relhl=$asset/highlight-data
+src=highlight-2.16
+armlib=../libs/armeabi
+cdir=`pwd`
+cp -p $armlib/highlight $relbin
+cp -p @README $relhl
+cd $src
+cp -p -r AUTHORS COPYING README* filetypes.conf langDefs themes $relhl

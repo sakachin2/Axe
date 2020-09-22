@@ -1,6 +1,8 @@
-//*CID://+dateR~: update#= 272;                                    //~1528I~
+//*CID://+dateR~: update#= 276;                                    //~1528I~
 //**********************************************************************//~1528I~
-//*ListView                                                        //~1530R~
+//vc1s 2020/06/29 hardKeyboard layout;set default                  //~0630I~
+//**********************************************************************//~0630I~
+//*Spinner                                                         //~0630R~
 //**********************************************************************//~1528I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1109R~//~1528I~
 
@@ -14,7 +16,9 @@ import android.view.View;
 public class AxeSpinner                                               //~1114//~1604R~
 {                                                                  //~1528I~
 	private static final int VIEWID_SPINNER =R.id.Spinner;         //~1601I~
-	private static final int ROWID_SPINNER  =android.R.layout.simple_spinner_item;//~1604R~
+//  private static final int ROWID_SPINNER  =android.R.layout.simple_spinner_item;//~1604R~//~0630R~
+    private static final int ROWID_SPINNER  =R.layout.spinner_kbd; //~0630I~
+    private static final int ROWID_SPINNER_ITEM  =R.layout.spinner_kbd_item;//~0630I~
                                                                    //~1529I~~
                                                                    //~1528I~
 	private int rowId;                                          //~1528I~
@@ -48,6 +52,7 @@ public class AxeSpinner                                               //~1114//~
     private void setAdapterSpinner()                               //~1601I~
     {                                                              //~1601I~
         adapterSpinner=new ArrayAdapter<String>(AxeG.context,rowId,spinnerData);//~1604I~
+        adapterSpinner.setDropDownViewResource(ROWID_SPINNER_ITEM);//~0630I~
         spinnerView.setAdapter(adapterSpinner);                    //~1601I~ 
     }                                                              //~1601I~
                                    //~1528I~
@@ -55,21 +60,21 @@ public class AxeSpinner                                               //~1114//~
     public String getSelectedItem()                                //~1604R~
     {                                                              //~1601I~                                                 //~1601I~
     	String item=(String)spinnerView.getSelectedItem();         //~1601I~
-        if (Dump.Y) Dump.println("Spinnerview getCheckedItem="+item);//~1601I~
+        if (Dump.Y) Dump.println("AxeSpinner.getCheckedItem="+item);//~1601I~
         return item;                                               //~1601I~
     }                                                              //~1601I~
 //*********                                                        //~1601I~
     public int getSelectedPos()                                    //~1604R~
     {                                                              //~1601I~
     	int pos=spinnerView.getSelectedItemPosition();             //~1601I~
-        if (Dump.Y) Dump.println("Spinnerview getCheckedItemPos="+pos);//~1601I~
+        if (Dump.Y) Dump.println("AxeSpinner.getCheckedItemPos="+pos);//~1601I~
         return pos;                                                //~1601I~
     }                                                              //~1601I~
 //*********                                                        //~1601I~
     public void setSelection(int Ppos)                             //~1604R~
     {                                                              //~1601I~
         spinnerView.setSelection(Ppos);                            //~1601I~
-        if (Dump.Y) Dump.println("Spinner Setselection pos="+Ppos);//~1601I~
+        if (Dump.Y) Dump.println("AxeSpinner.Setselection pos="+Ppos);//~1601I~
     }//inner class                                                 //~1601I~
 //*****************                                                //~1528I~
     public int getItemCount()                                      //~1528I~
@@ -87,7 +92,14 @@ public class AxeSpinner                                               //~1114//~
                     public void onItemSelected(AdapterView<?> Pparent,View Pview,int Ppos,long Pid)//~1730I~
                     {                                              //~1730I~
                         if (Dump.Y) Dump.println("Spinner selected pos="+Ppos);//~1730I~
+                        try                                        //~0630I~
+                        {                                          //~0630I~
                         listener.onSpinnerItemSelected(Ppos);      //~1730R~
+                        }                                          //~0630I~
+                        catch(Exception e)                         //~0630I~
+                        {                                          //~0630I~
+                        	Dump.println(e,"AxeSpinner.onItemSelected");//~0630I~
+                        }                                          //~0630I~
                     }                                              //~1730I~
                     @Override                                      //~1730I~
                     public void onNothingSelected(AdapterView<?> Pparent)//~1730I~
@@ -97,9 +109,9 @@ public class AxeSpinner                                               //~1114//~
                 }                                                  //~1730I~
                                         );                         //~1730I~
     }                                                              //~1730I~
-//*****************                                                //+1813I~
-    public void setPrompt(String Pprompt)                           //+1813I~
-    {                                                              //+1813I~
-        spinnerView.setPrompt(Pprompt);                            //+1813I~
-    }                                                              //+1813I~
+//*****************                                                //~1813I~
+    public void setPrompt(String Pprompt)                           //~1813I~
+    {                                                              //~1813I~
+        spinnerView.setPrompt(Pprompt);                            //~1813I~
+    }                                                              //~1813I~
 }//class                                                           //~1528I~

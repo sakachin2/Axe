@@ -1,0 +1,30 @@
+For the hardware kbd missing function keys such as F1, Home, 
+support to generate one character code or keycode of function keys with "S.C" button at the bottom. 
+This settings are applied to xe's soft kbd keys after pressing "S.C" key.
+(Note) Shortcut of command string is defined on xe =0.1 panel.
+       e.g.) With the line defined as 'sc,1 e "c:\Program Filed"'. 
+             "1" key under shortcut mode(enter to shortcut mode by Alt+"a")
+             generates 'e "c:\Program Filed"'. 
+----------------------------------------------------------------------------
+Setting dialog will popup by touching right column of the list.
+Select function key from dropdown list and check on modifier of
+Shift, Alt, Ctrl if necessary.
+You can also send a Character to xe.
+Check on "unicode" and input a character to the field on the right.
+IM(input method) will popup when touched to the field.
+Hex notation xxxx of U-xxxx is also acceptable.
+
+Modifiers combination is applied as following.
+If modifiers are specified on setting dialog, no need to press modifier key of kbd.
+If modifiers are not specified, e.g. if you assigned F12 to "p"(lower case),
+"S.C" button, Shift key+"p" key generates Shortcut of "P"(upper case)
+if a shortcut is assigned "P", else generate Shift+F12.
+
+(Note)
+Extended key:
+  PEnt:Enter on NumPad
+  Mouse-Rbtn:Mouse right button for context menu pop-up
+  Mouse-Drag:use at the point Drag-start and Drag-end to specify Cut and Paste range.
+
+----------------------------------------------------------------------------
+2020/09/13 AxeDlgShortcutList

@@ -1,5 +1,7 @@
-//CID://+DATER~:                                                   //~1527R~
+//CID://+vc2zR~:         update#=   4                              //~1527R~//~vc2zR~
 //*************************************************************    //~va15I~
+//vc2z 2020/08/12 Button label for user,recover over restart       //~vc2zI~
+//*************************************************************    //~vc2zI~
 package com.xe.Axe;                                                //~va15I~
 //*************************************************************    //~1602M~
 //* save/load Button layout to/from preference                     //~1602I~
@@ -45,8 +47,8 @@ public class AxeButtonIO                                           //~va15R~
         int buttonid=(Pdata.charAt(DATA_BUTTONID)-'0')*10+(Pdata.charAt(DATA_BUTTONID+1)-'0');//~1602R~
         if (buttonid<0 || buttonid> AxeButton.BUTTON_IDMAX) //in the developping status//~1613I~
             return null;                                           //~1613I~
-//      String label=Pdata.substring(DATA_LABEL,DATA_LABEL+DATA_LABELSZ);//+1830I~
-        String label=AxeButton.buttonTypeTbl[buttonid].label;      //+1830I~
+//      String label=Pdata.substring(DATA_LABEL,DATA_LABEL+DATA_LABELSZ);//~1830I~
+        String label=AxeButton.buttonTypeTbl[buttonid].label;      //~1830I~
         boolean isfree=Pdata.charAt(DATA_ISFREE)=='1';             //~1602R~
         boolean istoggle=Pdata.charAt(DATA_ISTOGGLE)=='1';         //~1602R~
         boolean isactive=Pdata.charAt(DATA_ISACTIVE)=='1';         //~1602R~
@@ -55,16 +57,23 @@ public class AxeButtonIO                                           //~va15R~
         int gdkkey=Utils.hexstrToNum(Pdata.substring(DATA_GDKKEY,DATA_GDKKEY+DATA_GDKKEYSZ),KeyData.NOT_DEFINED);//~1613I~
         if (buttonid==AxeButton.BUTTON_USER                          //~1613I~
         &&  AxeKeyValue.isValidExtGDK(gdkkey))                     //~1613I~
+        {                                                          //~vc2zI~
         	btn.setUserGDK(gdkkey);                                //~1613I~
+            btn.label=btn.name=AxeKeyValue.extendedkeyToString(gdkkey,"User");//+vc2zR~
+        }                                                          //~vc2zI~
         if (Dump.Y) Dump.println("ButtonIO strToButton read="+Pdata);//~1602I~
         return btn;                                                //~1527I~
 	}                                                              //~1527I~
 //*****************                                                //~1527I~
 	public static String buttonToString(AxeButton Pbutton)         //~1527I~
 	{                                                              //~1527I~
+        if (Dump.Y) Dump.println("ButtonIO.buttonToString Pbutton.label="+Pbutton.label+",id="+Pbutton.buttonId);//~vc2zR~
         StringBuffer sb=new StringBuffer(DATA_SIZE);               //~1602R~
         sbclear(sb,0,DATA_SIZE);                                     //~1527I~
         sb.replace(DATA_VERSION,DATA_VERSION+1,VERSION);           //~1527I~
+      if (Pbutton.label==null)                                      //~vc2zI~
+        sb.replace(DATA_LABEL,DATA_LABEL+DATA_LABELSZ,"?");        //~vc2zI~
+      else                                                         //~vc2zI~
         sb.replace(DATA_LABEL,DATA_LABEL+DATA_LABELSZ,Pbutton.label);//~1527I~
         if (Pbutton.buttonId<10)                                   //~1527I~
         	sb.replace(DATA_BUTTONID,DATA_BUTTONID+DATA_BUTTONIDSZ,"0"+Pbutton.buttonId);//~1604R~

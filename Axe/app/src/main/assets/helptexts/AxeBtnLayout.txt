@@ -1,0 +1,26 @@
+Buttons layout settings.
+Set buttons counts of 2 lines to be displayed at bottom when portrait.
+When landscape, all buttons are displayed by one line.
+Buttons are used to complement Hardware Kbd.
+----------------------------------------------------------------------------
+Widtout Hardware Kbd : reset to default when not using hardware kbd.
+With Hardware Kbd : show required for standard USB keyboard,
+  delete buttons if duplicated with Hardware Kbd.
+
+You can set is 0 to 8 on each lines.
+
+"AltG" is for input native characters for your language.
+Set combination with keyboard keys on the dialog "Hard Kbd Layout".
+
+Long press the button to change function, insert a button and delete the button.
+
+Disable direction button's Repeatable :
+   You can change buttons function by long-press
+   except direction buttons(Left,Right,Up,Down).
+   Long-press opens dialog to update button's function.
+   To enable long-click for direction buttons
+   temporally check-on Disable repeatable.
+   Or long-click after set Shortcut to On.
+
+----------------------------------------------------------------------------
+2020/07/29 AxeBtnLayout

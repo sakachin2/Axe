@@ -1,5 +1,6 @@
-//CID://+vaxeR~:       update#=  141109                            //~vaxeR~
+//CID://+v2cQR~:       update#=  141109                            //~v2cQR~
 //*************************************************************    //~va15I~
+//vc2Q 2020/09/08 change font size by pinch action                 //~v2cQI~
 //vaxe:140707 (Axe)shortcut to filedialog from titlebar touch      //~vaxeI~
 //vaim:130601 send mouse rbutton event by long press on AxeScreen  //~vaimI~
 //vaai:111227 (Axe:BUG)flick operation generate primekey+flickkey  //~1C28I~
@@ -7,8 +8,10 @@
 package com.xe.Axe;                                                //~va15I~
 
 import android.view.GestureDetector;
+import android.view.ScaleGestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 import android.view.ViewParent;
 import android.view.View;
 
@@ -35,6 +38,8 @@ public class AxeMouse                                              //~1621R~
     private boolean swSendDown,swMove,swSwipe;                             //~1924R~
     private boolean swLongPress,swMovedOnce,swLongPressSent;       //~vaimR~
 	private GestureDetector mGestureDetector;                      //~1924I~
+	private SimpleOnScaleGestureListener mSGL;
+	private ScaleGestureDetector mSGD;//~v2cQI~
 	private SwipeTracker mSwipeTracker = new SwipeTracker();       //~1924I~
 	private boolean mDisambiguateSwipe=true;                       //~1924I~
     private AxeScreen screenView;                                  //~1924I~
@@ -45,6 +50,7 @@ public class AxeMouse                                              //~1621R~
     private int lastPosX,lastPosY,lastMetaState;                                 //~1A02I~//~1A03R~
     private int status;                                            //~1926I~
     private boolean dragging;                                      //~1A05I~
+	private float scaleFactor;	// >1:Zoom out                     //~v2cQI~
 //**************************************************               //~1924I~
 	public AxeMouse()                                              //~1621R~
     {                                                              //~va15I~
@@ -55,6 +61,7 @@ public class AxeMouse                                              //~1621R~
     	screenParent=screenView.getParent();                       //~1924I~
 	    screenView.setOnTouchListener(this);//not ontouchevent but ontouch//~1924I~
     	initGestureDetector();	//SWIPE                            //~1924I~
+    	initSGL();	//pinch                                        //~v2cQI~
         axeTimer=new AxeTimer(this/*callback*/,AxeG.swipeTimeout/*milisec delay*/,false/*repeat*/,null/*parameter*/);//~1924I~//~1A03R~
         longPressTimer=new AxeTimer(this/*callback*/,AxeG.longPressTimeout/*milisec delay*/,false/*repeat*/,new Integer(1)/*parameter*/);//~vaimR~
         travelX=travelY=Math.min(AxeG.screenW,AxeG.screenH)*AxeG.swipeTravel/100;   //minimum swipe travel distance %//~1A03R~
@@ -130,7 +137,7 @@ public class AxeMouse                                              //~1621R~
         }                                                          //~1924I~
         catch(Exception e)                                         //~1924I~
         {                                                          //~1924I~
-            Dump.println(e,"AxeScreen OnTouchEvent");              //~1924I~
+            Dump.println(e,"AxeMouse.OnTouchEvent");              //~1924I~//~v2cQR~
         }                                                          //~1924I~
         if (Dump.Y) Dump.println("AxeMouse screen-ontouch rc="+rc+",action="+Pevent.getAction());//~1924R~
         return rc;                                                 //~1924I~
@@ -154,6 +161,7 @@ public class AxeMouse                                              //~1621R~
         metastate=getMetaState(Pevent);             //~1926R~
         int ptrs=Pevent.getPointerCount();                             //~1924I~
         if (Dump.Y) Dump.println("Canvas:onTouchScreen action="+action+",ptrs="+ptrs+",x="+xx+",y="+yy+",meta="+Integer.toHexString(metastate));//~1924R~
+    	mSGD.onTouchEvent(Pevent);                                 //~v2cQR~
         long eventTime=Pevent.getEventTime();                      //~1924I~
         lastTime=eventTime;                                        //~1924I~
         lastPosX=xx;                                               //~1A02I~
@@ -427,28 +435,28 @@ public class AxeMouse                                              //~1621R~
         @Override                                                  //~1924I~
         public boolean onFling(MotionEvent me1, MotionEvent me2,float velocityX, float velocityY)//~1924I~
         {                                                          //~1924I~
-                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:onFling verocity X="+velocityX+",Y="+velocityY);//+vaxeR~
+                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:onFling verocity X="+velocityX+",Y="+velocityY);//~vaxeR~
 //                if (mPossiblePoly) return false;                 //~1924I~
                 final float absX = Math.abs(velocityX);            //~1924I~
                 final float absY = Math.abs(velocityY);            //~1924I~
                 float deltaX = me2.getX() - me1.getX();            //~1924I~
                 float deltaY = me2.getY() - me1.getY();            //~1924I~
-                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:onFling posX="+me1.getX()+"-"+me2.getX());//+vaxeR~
-                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:onFling posY="+me1.getY()+"-"+me2.getY());//+vaxeR~
-                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:abs X="+absX+",Y="+absY);//+vaxeI~
+                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:onFling posX="+me1.getX()+"-"+me2.getX());//~vaxeR~
+                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:onFling posY="+me1.getY()+"-"+me2.getY());//~vaxeR~
+                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:abs X="+absX+",Y="+absY);//~vaxeI~
 //              int travelX = getWidth() / 2; // Half the keyboard width//~1924I~
 //              int travelY = getHeight() / 2; // Half the keyboard height//~1924I~
 //                int travelX = minSwipeDeltaX;                    //~1924I~
 //                int travelY = minSwipeDeltaY;                    //~1924I~
 //                int travelX = getHeight()/4;                     //~1924I~
 //                int travelY = getHeight()/4;                     //~1924I~
-                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:onFling delta X="+deltaX+",Y="+deltaY);//+vaxeR~
-                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:travel delta X="+travelX+",Y="+travelY);//+vaxeR~
+                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:onFling delta X="+deltaX+",Y="+deltaY);//~vaxeR~
+                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:travel delta X="+travelX+",Y="+travelY);//~vaxeR~
                 mSwipeTracker.computeCurrentVelocity(1000);        //~1924I~
                 final float endingVelocityX = mSwipeTracker.getXVelocity();//~1924I~
                 final float endingVelocityY = mSwipeTracker.getYVelocity();//~1924I~
-                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:ending velocity X="+endingVelocityX+",Y="+endingVelocityY);//+vaxeR~
-                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:swipe th="+mSwipeThreshold+",ambiguous="+mDisambiguateSwipe);//+vaxeR~
+                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:ending velocity X="+endingVelocityX+",Y="+endingVelocityY);//~vaxeR~
+                if (Dump.Y) Dump.println("AxeMouse:SimpleOnGestureListener:swipe th="+mSwipeThreshold+",ambiguous="+mDisambiguateSwipe);//~vaxeR~
                 boolean sendDownKey = false;                       //~1924I~
                 if (velocityX > mSwipeThreshold && absY < absX && deltaX > travelX) {//~1924I~
                     if (mDisambiguateSwipe && endingVelocityX < velocityX / 4) {//~1924I~
@@ -633,4 +641,56 @@ public class AxeMouse                                              //~1621R~
             return mYVelocity;                                     //~1924I~
         }                                                          //~1924I~
     }//swipetracker                                                //~1924I~
+//********************************************************         //~v2cQI~
+	private void initSGL()                                         //~v2cQI~
+    {                                                              //~v2cQI~
+        mSGL=new SimpleOnScaleGestureListener()//~v2cQI~
+        			{                                              //~v2cQI~
+                    	@Override                                  //~v2cQI~
+                        public boolean onScaleBegin(ScaleGestureDetector Pdetector)//~v2cQI~
+                        {                                          //~v2cQI~
+    						if (Dump.Y) Dump.println("AxeMouse.onScaleBegin");//~v2cQI~
+                        	return super.onScaleBegin(Pdetector);  //~v2cQI~
+                        }                                          //~v2cQI~
+                    	@Override                                  //~v2cQI~
+                        public void onScaleEnd(ScaleGestureDetector Pdetector)//~v2cQI~
+                        {                                          //~v2cQI~
+    						if (Dump.Y) Dump.println("AxeMouse.onScaleEnd");//~v2cQR~
+        					try                                    //~v2cQI~
+        					{                                      //~v2cQI~
+            					Axegxedlg.onScale(scaleFactor);    //~v2cQI~
+                                scaleFactor=0;                     //+v2cQI~
+        					}                                      //~v2cQI~
+        					catch(Exception e)                     //~v2cQI~
+        					{                                      //~v2cQI~
+            					Dump.println(e,"AxeMouse.OnScaleEnd");//~v2cQI~
+        					}                                      //~v2cQI~
+                        	super.onScaleEnd(Pdetector);           //+v2cQM~
+    						if (Dump.Y) Dump.println("AxeMouse.onScaleEnd return");//+v2cQI~
+                        }                                          //~v2cQI~
+                    	@Override                                  //~v2cQI~
+                        public boolean onScale(ScaleGestureDetector Pdetector)//~v2cQI~
+                        {                                          //~v2cQI~
+					    	scaleFactor=Pdetector.getScaleFactor();//~v2cQI~
+    						if (Dump.Y) Dump.println("AxeMouse.onScale scaleFactor="+scaleFactor);//~v2cQI~
+                            return true;                           //~v2cQR~
+                        }                                          //~v2cQI~
+                    };                                             //~v2cQI~
+        mSGD=new ScaleGestureDetector(AxeG.context,mSGL);          //~v2cQI~
+	}                                                              //~v2cQI~
+//********************************************************         //~v2cQI~
+	private boolean onScaleAction(ScaleGestureDetector Pdetector)  //~v2cQI~
+    {                                                              //~v2cQI~
+    	float scaleFactor=Pdetector.getScaleFactor();              //~v2cQI~
+    	if (Dump.Y) Dump.println("AxeMouse.onScaleAction scaleFactor="+scaleFactor);//~v2cQI~
+        if (scaleFactor>1)                                         //~v2cQI~
+        {                                                          //~v2cQI~
+	    	if (Dump.Y) Dump.println("AxeMouse.onScaleAction ZoomOut");//~v2cQI~
+        }                                                          //~v2cQI~
+        else                                                       //~v2cQI~
+        {                                                          //~v2cQI~
+	    	if (Dump.Y) Dump.println("AxeMouse.onScaleAction ZoomIn");//~v2cQI~
+        }                                                          //~v2cQI~
+	    return true;
+    }                                                              //~v2cQI~
 }//class                                                           //~va15R~

@@ -1,5 +1,11 @@
-//*CID://+vay7R~: update#=  120;                                   //~vay7R~
+//*CID://+vc2LR~: update#=  137;                                   //+vc2LR~
 //*****************************************************************//~vaafI~
+//vc2L 2020/09/02 display TMPDIR                                   //~vc2LI~
+//vc2g 2020/07/26 AltGr key option                                 //~vc2gI~
+//vc1p 2020/06/24 display path env                                 //~vc1pI~
+//vc1f 2020/06/20 ARM;chk sdcard writable                          //~vc1fI~
+//vc1d 2020/06/20 ARM;use private dir when SDcard not available    //~vc1dI~
+//vc1c 2020/06/19 /proc/version access denied, use Build.VERSION.SDK_INT R RELEASE//~vc1cI~
 //vay7:141122 (Axe)actionBar:save/saveas item                      //~vay7I~
 //vad3:120424 (Axe)crash when SDCard is not mounted,use datadir to avoid it//~vad3I~
 //vac6:120217 (Axe)samba share support using jcifs 3.17            //~vac6I~
@@ -500,10 +506,24 @@ public static String homeDir;	//for "~/" getEnv(HOME) at ufullpath//~1A12I~
 public static String addPath;	//putenv sh and bin on home to PATH//~1A25I~
 public static String initCmd;	//when VIEW/EDIT intent received   //~1A17I~
 public static String initFile;	//when VIEW/EDIT intent received   //~1A17I~
-public static String envPath="";                                   //~1A26R~
+public static String envPath=""; //path containing $PATH1          //~1A26R~//~vc1pR~
+public static String envVarPATH=""; //env variable by getenv,later updated by myhome//~vc1pR~
+public static String envVarNativePATH; //env variable by getenv    //~vc1pI~
+public static String envVarTMPDIR=""; //env variable by getenv     //~vc2LI~
 public static String localeCharset="";                             //~vad3I~
 public static String icuSwFile="";                                 //~vaafI~
 public static int    osVersion;                                    //~vab7I~
+public static int    osVersionRelease;                             //~vc1cI~
+public static int    axeStatus;                                    //~vc1dI~
+public static final  int AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE=0x01;//~vc1dI~
+public static final  int AXES_NOT_CANWRITE                        =0x02;//~vc1fI~
+public static final  int AXES_SDCARD_ALTNAME                      =0x04; // altname /sdcard is available//~vc1fI~
+public static final  int AXES_ALTG_RIGHTALT                       =0x08; // ALT_KEFY as AltGr key//~vc2gR~
+public static final  int AXES_ALTG_LEFTALT                        =0x10; // ALT_KEFY as AltGr key//~vc2gI~
+public static final  int AXES_ALTG_RIGHTSHIFT                     =0x20; // ALT_KEFY as AltGr key//~vc2gR~
+public static final  int AXES_ALTG_MASK=(AXES_ALTG_RIGHTALT | AXES_ALTG_LEFTALT | AXES_ALTG_RIGHTSHIFT);//~vc2gI~
+public static String sdRoot="/sdcard";    //update at getSDCardDirectory//~vc1fI~
+public static String sdRootPath=""; //update at getSDCardDirectory, such as /strorage.emulated.0//~vc1fR~
 //*smb                                                             //~vac6I~
 public static int      SMB_fileno;                                 //~vac6I~
 public static String[] SMB_namelist;                               //~vac6I~
@@ -517,5 +537,5 @@ public static int      SMB_time;                                   //~vac6R~
 public static String   SMB_errmsg;                                 //~vac6I~
 //*filedialog                                                      //~vay7I~
 public static String   mCurrentFilename;                           //~vay7I~
-public static int      mCurrentFilenameType;                       //+vay7I~
+public static int      mCurrentFilenameType;                       //~vay7I~
 }                                                                  //~1528R~

@@ -1,7 +1,8 @@
-//*CID://+vb04R~: update#= 231;                                    //~vayhR~//~vb04R~
+//*CID://+vc2MR~: update#= 233;                                    //~vc2MR~
 //**********************************************************************
 //*AlerDlgFileChooser                                              //~vayhR~
 //**********************************************************************
+//vc2M 2020/08/24 xehelp folder download                           //~vc2MI~
 //vb04 2014/11/30 FileDialog:change sort button color,assending descending//~vb04I~
 //vayh:141125 (Axe)save to preference the name for filedialog      //~vayhI~
 //vay7:141122 (Axe)actionBar:save/saveas item                      //~vay7I~
@@ -27,10 +28,11 @@ public class AxeDlgFileChooser extends AxeDialog                   //~vaxbR~
 	private static final String PREF_NEWNAME="DlgFileChooserNewName";//~vayhI~
 	public  static final int DIALOG_FILECHOOSER   =R.layout.dialogfilechooser;//~vaxbR~
 	private static final int TITLE_FILECHOOSER    =R.string.DialogTitle_FileChooser;//~vaxbR~
+	private static final String HELP_FILE="AxeDlgFileChooser";     //~vc2MI~
 //	private static final int COLOR_SORT_ONA        =0xffffff00;    //~vaxbR~//~vb04R~
 //	private static final int COLOR_SORT_OND        =0xff00ffff;    //~vaxbR~//~vb04R~
-  	private static final int COLOR_SORT_ONA        =0xffffa080; //orange//~vb04R~
-	private static final int COLOR_SORT_OND        =0xffffa080;    //~vb04R~
+  	private static final int COLOR_SORT_ONA        =0xffff8020; //orange//~vb04R~//+vc2MR~
+	private static final int COLOR_SORT_OND        =0xffff8020;    //~vb04R~//+vc2MR~
 	private static final int COLOR_SORT_OFF       =Color.BLACK;    //~vaxbI~
     private EditText   etNewName;                                  //~vaxbR~
     private EditText   etFilter;                                   //~vaxbI~
@@ -145,7 +147,8 @@ public class AxeDlgFileChooser extends AxeDialog                   //~vaxbR~
     protected boolean onClickHelp()
     {
 	    if (Dump.Y) Dump.println("AxeDlgFileChooser onClickHelp"); //~vaxbI~
-		showDialogHelp(R.string.HelpTitle_FileChooser,R.string.Help_FileChooser);//~vaxbR~
+//		showDialogHelp(R.string.HelpTitle_FileChooser,R.string.Help_FileChooser);//~vaxbR~//~vc2MR~
+  		showDialogHelp(R.string.HelpTitle_FileChooser,HELP_FILE);  //~vc2MI~
         return false;	//not dismiss
     }
 //**********************************                               //~vaxcI~
@@ -326,33 +329,33 @@ public class AxeDlgFileChooser extends AxeDialog                   //~vaxbR~
     //*******************                                          //~vb04I~
     private void setHorizontalGravity(Button Pview,int Phorizontal)//~vb04I~
     {                                                              //~vb04I~
-//        int gravity;                                             //+vb04R~
-//        if (Phorizontal>0)                                       //+vb04R~
-//            gravity=Gravity.TOP;                                 //+vb04R~
-//        else                                                     //+vb04R~
-//        if (Phorizontal<0)                                       //+vb04R~
-//            gravity=Gravity.BOTTOM;                              //+vb04R~
-//        else                                                     //+vb04R~
-//            gravity=Gravity.CENTER_HORIZONTAL;                   //+vb04R~
-//        try                                                      //+vb04R~
-//        {                                                        //+vb04R~
-////            LayoutParams lp=new LayoutParams();                //+vb04R~
-////            lp.gravity=gravity;                                //+vb04R~
-////            Pview.setLayoutParams(lp);                         //+vb04R~
-//            ((Button)Pview).setGravity(gravity);                 //+vb04R~
-//        }                                                        //+vb04R~
-//        catch(Exception e)                                       //+vb04R~
-//        {                                                        //+vb04R~
-//            Dump.println(e,"AxeDlgFileChooser:setHorizontalGravity");//+vb04R~
-//        }                                                        //+vb04R~
-		String lbl=Pview.getText().toString();                     //+vb04I~
-        if (lbl.startsWith("v")||lbl.startsWith("^"))              //+vb04I~
-        	lbl=lbl.substring(2);                                   //+vb04I~
-        if (Phorizontal>0)                                         //+vb04I~
-            lbl="^ "+lbl;                                          //+vb04I~
-        else                                                       //+vb04I~
-        if (Phorizontal<0)                                         //+vb04I~
-            lbl="v "+lbl;                                          //+vb04I~
-        Pview.setText(lbl);                                        //+vb04I~
+//        int gravity;                                             //~vb04R~
+//        if (Phorizontal>0)                                       //~vb04R~
+//            gravity=Gravity.TOP;                                 //~vb04R~
+//        else                                                     //~vb04R~
+//        if (Phorizontal<0)                                       //~vb04R~
+//            gravity=Gravity.BOTTOM;                              //~vb04R~
+//        else                                                     //~vb04R~
+//            gravity=Gravity.CENTER_HORIZONTAL;                   //~vb04R~
+//        try                                                      //~vb04R~
+//        {                                                        //~vb04R~
+////            LayoutParams lp=new LayoutParams();                //~vb04R~
+////            lp.gravity=gravity;                                //~vb04R~
+////            Pview.setLayoutParams(lp);                         //~vb04R~
+//            ((Button)Pview).setGravity(gravity);                 //~vb04R~
+//        }                                                        //~vb04R~
+//        catch(Exception e)                                       //~vb04R~
+//        {                                                        //~vb04R~
+//            Dump.println(e,"AxeDlgFileChooser:setHorizontalGravity");//~vb04R~
+//        }                                                        //~vb04R~
+		String lbl=Pview.getText().toString();                     //~vb04I~
+        if (lbl.startsWith("v")||lbl.startsWith("^"))              //~vb04I~
+        	lbl=lbl.substring(2);                                   //~vb04I~
+        if (Phorizontal>0)                                         //~vb04I~
+            lbl="^ "+lbl;                                          //~vb04I~
+        else                                                       //~vb04I~
+        if (Phorizontal<0)                                         //~vb04I~
+            lbl="v "+lbl;                                          //~vb04I~
+        Pview.setText(lbl);                                        //~vb04I~
     }                                                              //~vb04I~
 }//class

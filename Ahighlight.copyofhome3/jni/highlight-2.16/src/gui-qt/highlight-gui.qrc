@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>highlight.xpm</file>
+        <file>hl_icon2.png</file>
+    </qresource>
+</RCC>

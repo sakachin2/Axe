@@ -1,12 +1,9 @@
-//*CID://+vabdR~: update#= 229;                                    //+vabdR~
-//**********************************************************************//+vabdI~
-//vabd:120126 (Axe)surrogate char considerationfor font sample text//+vabdI~
-//**********************************************************************//~1726I~
-//*for BigLabel drawing                                            //~1726I~
-//*  IgsGoFrame:settime()-->settitle1():repaint()-->BigLabel:paint()-->BigTimer:drawString()//~1726I~
+//*CID://+vc2TR~: update#= 234;                                    //~vc2TR~
+//**********************************************************************//~vabdI~
+//vc2T 2020/09/13 Color dialog sample is too small                 //~vc2TI~
+//vabd:120126 (Axe)surrogate char considerationfor font sample text//~vabdI~
 //**********************************************************************//~1726I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1109R~//~1117R~//~1726I~
-                                                                   //+1726I~                                   //~1726I~
                                                                    //~1726I~
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;                                   //~1726I~
 import android.widget.LinearLayout;
-                                                                   //~1726I~
+
+import com.ahsv.AG;
                                                                    //~1726I~
 public class DialogCanvas                                          //~1726I~
 {                                                                  //~1726I~
+    private static final double SAMPLE_WIDTH_RATE=0.8;             //~vc2TI~
 	private ImageView view;                                        //~1726I~
     private Canvas canvas;                                         //~1726I~
     public  Bitmap  bitmap;                                        //~1726I~
@@ -53,6 +52,10 @@ public class DialogCanvas                                          //~1726I~
         if (y==0)                                                  //~1726I~
         	y=Pview.getLayoutParams().height;                      //~1821R~
         int x=Pview.getMeasuredWidth();                            //~1821R~
+        if (x==0)                                                  //~vc2TI~
+        	x=Pview.getLayoutParams().width;                       //~vc2TI~
+        if (x==-1)  //fill_parent                                  //~vc2TI~
+            x=(int)(AG.scrWidth*SAMPLE_WIDTH_RATE);                //~vc2TI~
         if (Dump.Y) Dump.println("DialogCanvas measured W="+x);    //~1821I~
         if (x==0)                                                  //~1726I~
         {                                                          //~1821I~
@@ -76,6 +79,7 @@ public class DialogCanvas                                          //~1726I~
 //********************                                             //~1726I~
     public void initImage(int Pw,int Ph)                           //~1726I~
     {                                                              //~1726I~
+	    if (Dump.Y) Dump.println("DialogCanvas initImage ww="+Pw+",hh="+Ph);//~vc2TI~
     	bitmap=Bitmap.createBitmap(Pw,Ph,Bitmap.Config.ARGB_8888); //~1726I~
         canvas=new Canvas(bitmap);	//apply grapic function        //~1726I~
         view.setImageBitmap(bitmap); //view's content bitmap       //~1726I~
@@ -110,6 +114,8 @@ public class DialogCanvas                                          //~1726I~
         if (Pyy2<0)                                                //~1726I~
             fyy2=(float)bitmapH;                                   //~1726I~
 		paintline.setColor(Pfg);                                   //~1726I~
+        int w=Math.max(AxeG.RulerWidth,1);                         //~vc2TI~
+        paintline.setStrokeWidth(w);                               //~vc2TI~
     	canvas.drawLine(fxx1,fyy1,fxx2,fyy2,paintline);                    //~1117R~//~1726I~
 	}                                                              //~1726I~
 //********************                                             //~1726I~
@@ -178,16 +184,21 @@ public class DialogCanvas                                          //~1726I~
 			canvas.drawText(s,(float)Px,(float)Py,painttext);      //~1803I~//~1804M~
         else                                                       //~1803I~//~1804M~
 	        for (int ii=0,xx=Px;ii<len;ii++,xx+=Pcellw)            //~1730I~//~1803R~//~1804M~
-            {                                                      //+vabdI~
-//		    	canvas.drawText(s.substring(ii,ii+1),(float)xx,(float)Py,painttext);//~1730I~//~1803R~//~1804M~//+vabdR~
-				int cp=s.codePointAt(ii);                          //+vabdI~
-                if (cp>0xffff)	//ucs4                             //+vabdI~
-                {                                                  //+vabdI~
-					canvas.drawText(s.substring(ii,ii+2),(float)xx,(float)Py,painttext);//+vabdI~
-                    ii++;                                          //+vabdI~
-                }                                                  //+vabdI~
-                else                                               //+vabdI~
-					canvas.drawText(s.substring(ii,ii+1),(float)xx,(float)Py,painttext);//+vabdI~
-            }                                                      //+vabdI~
+            {                                                      //~vabdI~
+//		    	canvas.drawText(s.substring(ii,ii+1),(float)xx,(float)Py,painttext);//~1730I~//~1803R~//~1804M~//~vabdR~
+				int cp=s.codePointAt(ii);                          //~vabdI~
+                if (cp>0xffff)	//ucs4                             //~vabdI~
+                {                                                  //~vabdI~
+					canvas.drawText(s.substring(ii,ii+2),(float)xx,(float)Py,painttext);//~vabdI~
+                    ii++;                                          //~vabdI~
+                }                                                  //~vabdI~
+                else                                               //~vabdI~
+                {                                                  //+vc2TI~
+					canvas.drawText(s.substring(ii,ii+1),(float)xx,(float)Py,painttext);//~vabdI~
+					char ucs=s.charAt(ii);                         //+vc2TI~
+			   	   	if (ucs >= 0x2e80 && ucs <= 0xa4cf && ucs != 0x303f)//+vc2TI~
+	        			xx+=Pcellw;                                //+vc2TI~
+                }                                                  //+vc2TI~
+            }                                                      //~vabdI~
 	}                                                              //~1730I~//~1804M~
 }//class DialogCanvas                                              //~1726I~

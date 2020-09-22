@@ -1,5 +1,7 @@
-//*CID://+vayaR~: update#=    274;                                 //~vayaR~
+//*CID://+vc2BR~: update#=    277;                                 //+vc2BR~
 //**********************************************************************//~1107I~
+//vc2B 2020/08/12 Help  by file                                    //+vc2BI~
+//vc1k 2020/06/23 help html from not web but assets                //~vc1kI~
 //vaya:141125 (Axe)utilize actionbar:home button click event(customizable by settion,default is home)//~vayaI~
 //vay7:141122 (Axe)actionBar:save/saveas item                      //~vay7R~
 //vay5:141122 (Axe)actionBar as alternative of menu button for api>=11(android3)//~vay5I~
@@ -24,6 +26,8 @@ import android.view.View;
 //import android.widget.PopupMenu;
 import android.annotation.TargetApi;                               //~vayaR~
 import android.app.ActionBar;
+                                                                   //+vc2BI~
+import com.ahsv.dialog.HelpDialog;                                 //+vc2BI~
 
 //**********************************************************************//~1107I~
 public class AxeMenu implements AxeAlertI                           //~1527R~
@@ -79,7 +83,7 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     	inflater=AxeG.activity.getMenuInflater();                   //~1527I~
         registerContextMenu(AxeG.mainView); //request callback onCreateContextMenu()//~1527I~
 //        setupPopupMenuTitle();                                   //~1927R~
-		enableHomeButton();                                        //+vayaI~
+		enableHomeButton();                                        //~vayaI~
     }                                                              //~1107I~
 //    private void setupPopupMenuTitle()                           //~1927R~
 //    {                                                            //~1927R~
@@ -201,6 +205,11 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     {                                                              //~1920I~
     	AxeDlgKbdLayout.showDialog();                              //~1920I~
     }                                                              //~1920I~
+  //**************                                                 //~vc1kI~
+    public void onKbdConfigHW()                                    //~vc1kI~
+    {                                                              //~vc1kI~
+    	AxeDlgKbdLayoutHW.showDialog();                            //~vc1kI~
+    }                                                              //~vc1kI~
 //**************                                                   //~1527M~
     public void showContextMenu(int PmenuType)                     //~1528R~
     {                                                              //~1527M~
@@ -240,7 +249,7 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     	boolean rc=true;                                           //~1121I~
 		//************************                                     //~1124I~
     	int itemid=Pitem.getItemId();
-    	if (Dump.Y) Dump.println("AxeMenu:ContextItemSelected itemid="+itemid);//~1121R~     //~1123R~//~1124I~//~1527R~
+    	if (Dump.Y) Dump.println("AxeMenu:ContextItemSelected itemid="+Integer.toHexString(itemid));//~1121R~     //~1123R~//~1124I~//~1527R~//~vc1kR~
         switch(itemid)                                             //~1527I~
         {                                                          //~1527I~
 //        case    R.id.CM_NEW:                                     //~vaxcR~
@@ -291,15 +300,18 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
         case    R.id.CM_KBD_CONFIG:                                //~1920I~
     		onKbdConfig();                                         //~1920I~
             break;                                                 //~1920I~
+        case    R.id.CM_KBD_CONFIG_HW:                             //~vc1kI~
+    		onKbdConfigHW();                                       //~vc1kI~
+            break;                                                 //~vc1kI~
         case    R.id.CM_OTHER:                                     //~1725I~
             onSetupOther();                                        //~1725I~
             break;                                                 //~1725I~
         case    R.id.CM_OTHER_ARM:                                  //~1821I~
             onSetupOtherArm();                                     //~1821I~
             break;                                                 //~1821I~
-        case    R.id.CM_DL_ASSET:                                  //~vag0I~
-            onSetupDLAsset();                                      //~vag0I~
-            break;                                                 //~vag0I~
+//        case    R.id.CM_DL_ASSET:                                  //~vag0I~//~vc1kR~
+//            onSetupDLAsset();                                      //~vag0I~//~vc1kR~
+//            break;                                                 //~vag0I~//~vc1kR~
         case    R.id.CM_DOWNLOAD:                                  //~vag0I~
             onSetupDownload();                                     //~vag0I~
             break;                                                 //~vag0I~
@@ -415,11 +427,11 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     {                                                              //~1821I~
     	AxeDlgArmOption.showDialog();                                    //~1821I~
     }                                                              //~1821I~
-//*********************************                                //~vag0I~
-    private void  onSetupDLAsset()                                 //~vag0I~
-    {                                                              //~vag0I~
-    	AxeDlgDownload.showDialog(true/*asset*/);                  //~vag0R~
-    }                                                              //~vag0I~
+////*********************************                                //~vag0I~//~vc1kR~
+//    private void  onSetupDLAsset()                                 //~vag0I~//~vc1kR~
+//    {                                                              //~vag0I~//~vc1kR~
+//        AxeDlgDownload.showDialog(true/*asset*/);                  //~vag0R~//~vc1kR~
+//    }                                                              //~vag0I~//~vc1kR~
 //*********************************                                //~vag0I~
     private void  onSetupDownload()                                //~vag0I~
     {                                                              //~vag0I~
@@ -432,11 +444,12 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     }                                                              //~1A07I~
     private void  onHelpAxe()                                      //~1A07R~
     {                                                              //~1A07I~
-        String title=Utils.getResourceString(R.string.DialogTitle_OptionHelpAxe);//~1A08I~
-        String helpmsg=Utils.getResourceString(R.string.Help_OptionHelpAxe);//~1A08I~
-//        int flag=AxeAlert.BUTTON_CLOSE|AxeAlert.SHOW_DIALOG;       //~1A08I~
-//    	AxeAlert.simpleAlertDialog(null,title,helpmsg,flag);       //~vaxfR~
-    	AxeAlert.helpDialog(title,helpmsg);                        //~vaxfI~
+//        String title=Utils.getResourceString(R.string.DialogTitle_OptionHelpAxe);//~1A08I~//+vc2BR~
+//        String helpmsg=Utils.getResourceString(R.string.Help_OptionHelpAxe);//~1A08I~//+vc2BR~
+////        int flag=AxeAlert.BUTTON_CLOSE|AxeAlert.SHOW_DIALOG;       //~1A08I~//+vc2BR~
+////      AxeAlert.simpleAlertDialog(null,title,helpmsg,flag);       //~vaxfR~//+vc2BR~
+//        AxeAlert.helpDialog(title,helpmsg);                        //~vaxfI~//+vc2BR~
+    	HelpDialog.newInstance(R.string.DialogTitle_OptionHelpAxe,"OptionHelpAxe").showDlg();//+vc2BI~
     }                                                              //~1A07I~
 //*********************************                                //~vainI~
     private void onFileEnd()                                       //~vainI~

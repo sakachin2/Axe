@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--Keyboard xmlns:android="http://schemas.android.com/apk/res/android"-->
-<Keyboard xmlns:xe="http://schemas.android.com/apk/res/com.xe.Axe"
+<Keyboard xmlns:xe="http://schemas.android.com/apk/res-auto"
     xe:keyWidth="10%p"
     xe:horizontalGap="0px"
     xe:verticalGap="0px"
@@ -228,13 +228,17 @@
                 xe:isRepeatable="true"
                 />
       <!-- backspace -->
-        <Key xe:codes="-5" xe:keyIcon="@drawable/sym_keyboard_delete" 
-                xe:iconPreview="@drawable/sym_keyboard_delete_preview"
+        <Key xe:codes="-5" xe:keyIcon="@drawable/sym_keyboard_bksp16" 
+                xe:iconPreview="@drawable/sym_keyboard_bksp16p"
 	         	xe:popupKeyboard="@xml/kbd_popup_template"
 				xe:popupCharacters="@string/popup_xekbd_backspace"
                 xe:keyEdgeFlags="right"
                 xe:isRepeatable="true"/>
     </Row>
+        <!--Key xe:codes="-5" xe:keyIcon="@drawable/sym_keyboard_bksp_preview"--> 
+        <!--Key xe:codes="-5" xe:keyIcon="@drawable/sym_keyboard_delete"--> 
+          <!--   xe:iconPreview="@drawable/sym_keyboard_delete_preview"-->
+          <!--   xe:iconPreview="@drawable/sym_keyboard_bksp_preview"-->
   <!--5th line--> 
     <Row xe:rowEdgeFlags="bottom">
       <!-- Alt-Left/Right(AltGr) -->

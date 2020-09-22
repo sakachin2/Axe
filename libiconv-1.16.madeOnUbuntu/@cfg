@@ -1,0 +1,5 @@
+#./configure --build=x86_64 --host=arm-none-eabi --prefix=/home/sak/libiconv-1.16.build --enable-static CFLAGS="-nostdlib"
+#./configure --build=x86_64 --host=aarch64-linux-gnu --prefix=/home/sak/libiconv-1.16.build --enable-static CFLAGS="-nostdlib"
+#./configure --prefix=/home/sak/libiconv-1.16.build --enable-static CFLAGS="-nostdlib"
+ ./configure --prefix=/home/sak/libiconv-1.16.build --enable-static
+#./configure --prefix=/home/sak/libiconv-1.16.build --enable-static

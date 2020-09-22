@@ -1,23 +1,17 @@
-#Axe.README.md 
 *************************************************************************
-#"Axe" Android Studio Project Source 2017/09/07 V119
+#Axe.README.md
+2020/09/22 V1.29.1:For Android9
 *************************************************************************
 
-This editor is Android porting of SPF like PC editor "xe".
-It is recommended to use on tablet device with Bluetooth or USB Keyboard.
-Html help files and utility binary files are included in AxeAsset(additional asset file),
-install it from my HP by ...(3 Dot:Menu)-->"Settings"-->"Download".
-
-See also Axe.HOWTO_Build.txt 
+This is Android porting of Hybrid Editor "xe"(WindowsVersion:wxe, LinuxVersion:gxe)
+Its operation is command base like as mainframe SPF editor, and like as other editor on PC convenient short-cut key operation is hybrid.
+xe provides functions of Binary editor(Vertical or Horizontal HEX line),  Filer(Folder Listing,Delete,Rename,Copy,Launch,...).
+Axe provides also Download and unzip.
 
 *************************************************************************
 (Japanese)
-# "Axe" Android Studio プロジェクト ソース  2017/09/07 V119
 *************************************************************************
-PC版SPFライクEditor "xe"のアンドロイド移植版です。
-大画面のタブレットで Bluetooth または USB キーボードがある方がよい。
-Html ヘルプファイルとユーティリティーバイナリーファイルは
-追加のAssetファイルに含まれています。
-...(メニュー)-->"設定"-->"ダウンロード"でインストールしてください
-
-ビルド方法は Axe.HOWTO_Build.txt を見てください
+このアプリは Hybrid Editor "xe"（Windows版 wxe、Linux版 gxe）のアンドロイド移植版です
+xe はメインフレームホストのSPFをベースにPCのEDITORの便利なキー操作をハイブリッド。
+バイナリーエディター(縦2段HEXか横HEX表示）、ファイラー(フォルダー表示、削除、改名、複写、実行...)
+の機能も併せ持ち、AxeではDownload、解凍もできます

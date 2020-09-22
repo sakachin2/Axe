@@ -1,6 +1,7 @@
-//*CID://+vai3R~: update#= 123;                                    //+vai3R~
+//*CID://+vc27R~: update#= 127;                                    //~vai3R~//+vc27R~
 //**********************************************************************
-//vai3:130525 (Axe)hide internal option when release version       //+vai3I~
+//vc27 2020/07/11 repeatdelay for hardkbd                          //+vc27I~
+//vai3:130525 (Axe)hide internal option when release version       //~vai3I~
 //vagH:130214 (Axe)System.exit()-->Process.KillProcess             //~vagHI~
 //vaa8:111111 (Axe)unzip by subthread                              //~1B11I~
 //**********************************************************************
@@ -81,7 +82,7 @@ public class Utils
             return 0;
         long t=System.currentTimeMillis();
         Stimestamp[Pid]=t;
-    	if (Dump.Y) Dump.println("AjagoUtils setTimeStamp id="+Pid+",ts="+Long.toHexString(t));
+    	if (Dump.Y) Dump.println("Utils setTimeStamp id="+Pid+",ts="+Long.toHexString(t));//~vai3R~
         return t;
     }
 	public static int getElapsedTimeMillis(int Pid)
@@ -93,7 +94,7 @@ public class Utils
         long t=System.currentTimeMillis();
     	if (Dump.Y) Dump.println("AjagoUtils getElapsed now id="+Pid+",ts="+Long.toHexString(t));
         int  elapsed=(int)(t-Stimestamp[Pid]);
-    	if (Dump.Y) Dump.println("AjagoUtils getElapsetTimeMillis id="+Pid+",ts="+Integer.toHexString(elapsed));
+    	if (Dump.Y) Dump.println("Utils getElapsetTimeMillis id="+Pid+",ts="+Integer.toHexString(elapsed));//~vai3R~
 //      Stimestamp[Pid]=0;	//if cleared next time fail to calc    //~vaa8R~
         return elapsed;
     }
@@ -250,21 +251,32 @@ public class Utils
         	System.arraycopy(Pfrom[ii],0,Pto[ii],0,sz2);
         return;
     }
-//***********************************************************************//+vai3I~
-    public static boolean isDebuggable(Context ctx)                //+vai3I~
-    {                                                              //+vai3I~
-        PackageManager manager = ctx.getPackageManager();          //+vai3I~
-        ApplicationInfo appInfo = null;                            //+vai3I~
-        try                                                        //+vai3I~
-        {                                                          //+vai3I~
-            appInfo = manager.getApplicationInfo(ctx.getPackageName(), 0);//+vai3I~
-        }                                                          //+vai3I~
-        catch (NameNotFoundException e)                            //+vai3I~
-        {                                                          //+vai3I~
-            return false;                                          //+vai3I~
-        }                                                          //+vai3I~
-        if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) == ApplicationInfo.FLAG_DEBUGGABLE)//+vai3I~
-            return true;                                           //+vai3I~
-        return false;                                              //+vai3I~
-    }                                                              //+vai3I~
+//***********                                                      //~vai3I~
+    public static int[][] cloneArray2(int[][] Pfrom)               //~vai3R~
+    {                                                              //~vai3I~
+    	int[][] to=Pfrom.clone();                                  //~vai3I~
+    	if (Dump.Y) Dump.println("cloneArray2 clone 2demension 1dimen clone array="+com.ahsv.utils.Utils.toString(to));//~vai3I~
+    	int sz1=Pfrom.length;                                      //~vai3I~
+        for (int ii=0;ii<sz1;ii++)                                 //~vai3I~
+        	to[ii]=Pfrom[ii].clone();                              //~vai3I~
+    	if (Dump.Y) Dump.println("cloneArray2 clone 2demension return array="+com.ahsv.utils.Utils.toString(to));//~vai3I~
+        return to;                                                 //~vai3I~
+    }                                                              //~vai3I~
+//***********************************************************************//~vai3I~
+    public static boolean isDebuggable(Context ctx)                //~vai3I~
+    {                                                              //~vai3I~
+        PackageManager manager = ctx.getPackageManager();          //~vai3I~
+        ApplicationInfo appInfo = null;                            //~vai3I~
+        try                                                        //~vai3I~
+        {                                                          //~vai3I~
+            appInfo = manager.getApplicationInfo(ctx.getPackageName(), 0);//~vai3I~
+        }                                                          //~vai3I~
+        catch (NameNotFoundException e)                            //~vai3I~
+        {                                                          //~vai3I~
+            return false;                                          //~vai3I~
+        }                                                          //~vai3I~
+        if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) == ApplicationInfo.FLAG_DEBUGGABLE)//~vai3I~
+            return true;                                           //~vai3I~
+        return false;                                              //~vai3I~
+    }                                                              //~vai3I~
 }//class AjagoUtils

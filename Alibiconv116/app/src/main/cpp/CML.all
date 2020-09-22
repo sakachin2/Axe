@@ -1,0 +1,78 @@
+
+#cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.10.2)
+
+
+##############################
+set(TOPDIR x:/AndroidStudioProjects/libiconv-1.16.madeOnUbuntu)
+#set(SUPPORT ${ANDROID_NDK}/sources/android/support)
+#set(LINKDIR_LANGINFO ${ANDROID_NDK}/sources/cxx-stl/llvm-libc++/libs/${ANDROID_ABI})
+#set(LIB_LANGINFO android_support)
+#set(LIB_LANGINFO_A libandroid_support.a)
+set(CFLGS  "-Wno-multichar -D_ANDROID -DLIBDIR='\"./\"' -DBUILDING_LIBICONV -DIN_LIBRARY -DLOCALEDIR='\"./\"' " )
+set(CFLGS2  "-Wno-error=format-security")
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/bin)
+set(LIBRARY_OUTPUT_PATH    ${CMAKE_HOME_DIRECTORY}/libs)
+set(SRCLIB ${TOPDIR}/srclib)
+##############################
+include_directories(
+#   			${TOPDIR}/
+				${TOPDIR}/include
+				${TOPDIR}/lib
+				${TOPDIR}/libcharset/include
+				${SRCLIB}
+#   			${SUPPORT}/include
+#   			${SUPPORT}/src/musl-locale
+             )
+
+add_definitions(
+                 ${CFLGS}
+                 ${CFLGS2}
+             )
+
+#/lib
+add_library(
+             iconv
+             STATIC
+  			${TOPDIR}/lib/iconv.c
+  			${TOPDIR}/libcharset/lib/localcharset.c
+  			${TOPDIR}/lib/relocatable.c
+             )
+set(am__append_1 uniwidth/width.c)
+#/srclib
+add_library(
+             icrt
+             STATIC
+  ${SRCLIB}/allocator.c
+  ${SRCLIB}/areadlink.c
+  ${SRCLIB}/binary-io.h
+  ${SRCLIB}/binary-io.c
+  ${SRCLIB}/careadlinkat.c
+  ${SRCLIB}/dirname-lgpl.c
+  ${SRCLIB}/basename-lgpl.c
+  ${SRCLIB}/stripslash.c
+  ${SRCLIB}/getprogname.h
+  ${SRCLIB}/getprogname.c
+  ${SRCLIB}/gettext.h
+  ${SRCLIB}/malloca.c
+  ${SRCLIB}/progname.h
+  ${SRCLIB}/progname.c
+  ${SRCLIB}/safe-read.c
+  ${SRCLIB}/stat-time.c
+  ${SRCLIB}/unistd.c
+  ${SRCLIB}/${am__append_1}
+  ${SRCLIB}/xalloc.h
+  ${SRCLIB}/xmalloc.c
+  ${SRCLIB}/xstrdup.c
+  ${SRCLIB}/xreadlink.c
+             )
+
+#/src
+add_executable(iconv.pie
+	  			${TOPDIR}/src/iconv.c
+              )
+target_link_libraries( # Specifies the target library.
+                       iconv.pie
+                       iconv
+                       icrt
+                       )

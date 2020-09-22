@@ -1,0 +1,127 @@
+This is Android porting of Hybrid Editor "xe"(WindowsVersion:wxe, LinuxVersion:gxe)
+<BR>	Currently following functions are not supported.
+<BR>		Printing, Remote file access
+<BR>--------------------------------------------------------------------
+<BR><B><BIG>Menu</BIG></B>
+<BR>	<B>File</B>:
+<BR>		Although You can open/save file by command line input,
+<BR>		This menuitem opens File Dialog to track file path to save/open file.
+<BR>	<B>Edit</B>:
+<BR>		Supports Cut and Paste.
+<BR>	<B>Settings</B>:
+<BR>		Customize layout of bottom buttons, layout of hard/soft keyboard etc.
+<BR>		See helps on each dialogs.
+<BR>	<B>Help</B>:
+<BR>		About Axe : Related to Android version.
+<BR>		XE Help : Helps common to PC version xe.
+<BR>
+<BR><B><BIG>Buttons on bottom</BIG></B>
+<BR>	xe frequently use extended key such as F1, Home etc.
+<BR>	(Enter "A" on top panel, Key:Function mapping will be shown.)
+<BR>	Use of Usb/Bluetooth keyboard is recommendable.
+<BR>	For old style device attached hardware keyboard with limited keys
+<BR>	you cau utilize function key by these buttons setting such as Alt/Ctrl.
+<BR>	When you have no hardware keyboard, open SoftKbd of xe by "Kbd" button.
+<BR>	<B>IM</B> button:pop-up android native Input Method.
+<BR>	<B>S.C</B>(Shortcut) button:generate key according "Shortcut" dialog setting.
+<BR>	Long press on the button pop-ups dialog to change its function.
+<BR>	Default layout is for the case with-hardKbd, if not, change by Settings==&gt;Buttons Layout.
+<BR>
+<BR><BIG><B>Keyboard:</B></BIG>
+<BR>	Cutomize hard keyboard key layout when the kbd generate unexpected character 
+<BR>	or missing some nessesary keys.
+<BR>	You can specify also to generate unicode character.
+<BR>		(Menu==&gt;Settings==&gt;Hard Kbd Settings).
+<BR>
+<BR><BIG><B>Soft keyboard:</B></BIG>
+<BR>	xe has original soft keyboard.
+<BR>	You can customize this keyboard layout.
+<BR>		(Menu==&gt;Settings==&gt;Soft Kbd Layout)
+<BR>	Max 4 additional key(unicode or extended key) is assignable to each key
+<BR>	and those are corresponding to flick left/right/up/down action.
+<BR>
+<BR><BIG><B>Mouse:</B></BIG>
+<BR>	Use not kbd but menu to paste for clipboard contents
+<BR>	created out of xe.
+<BR>	Click/DoubleClick/Drag/RightButtonClick are available
+<BR>	by finger touch.
+<BR>	(	RightButtonClick is by long click.
+<BR>		After dragging for Cut and Paste region,
+<BR>		use menu popup-ed by Menu:Edit.	)
+<BR>	It may be hard to point the character cell on small device,
+<BR>	you can alternatively assign these mouse action
+<BR>	to keyboard's action.
+<BR>	Assign those to S.C. ex) S.C+w:DoubleClick.
+<BR>	Pinch(Zoom) action changes font size.
+<BR>
+<BR><BIG><B>Ruler:</B></BIG>
+<BR>	You can optionally show ruler(Vertical/Horizontal/Cross-hair)
+<BR>	at cursor position.
+<BR>		(Settings==&gt;Other XE Options==&gt;Ruler Type).
+<BR>	Shift+Ctrl+F1/F2/F3 also set ruler. 
+<BR>
+<BR><BIG><B>Default folders:</B></BIG>
+<BR>	Followings are shown on <B>Android Related Options</B> dialog 
+<BR>	Private data folder(/data/data/) may vary depending on Android version.
+<BR>	<B>HomeDir:</B>
+<BR>		denoted by "~/" and environment variable HOME is set.
+<BR>			/data/data/com.xe.AxeA9/files/myhome
+<BR>		"cd" (with no operand) cmd set current directory to HomeDir.
+<BR>		xe_undel(for un-delete) folder is in here.
+<BR>	<B>WorkDir:</B>
+<BR>		xe's work directory referenced by :: like as e ::filename
+<BR>			/data/data/com.xe.AxeA9/files/xewd
+<BR>	<B>SDCard</B>
+<BR>		"/sdcard" is available as forlder name if the path is show on the dialog.
+<BR>	<B>$TMPDIR</B>
+<BR>		"/$tmp" is available as folder name if the path is show on the dialog.
+<BR>
+<BR><BIG><B>Environment Variable:</B></BIG>
+<BR>	Add additional shell-script or utility PGM to <B>PATH1</B> folder if required.
+<BR>	iconv1.16 is included in PATH1.
+<BR>	If you use utility of other APP, add the folder path to <B>PATH</B>.
+<BR>	Note) From Android 6.0 "toybox" is included and allows which, touch, tar etc.
+<BR>		"busybox" is recommended for under Android 6.0.
+<BR>
+<BR><BIG><B>EBCDIC support:</B></BIG>
+<BR>	You can display EBCDIC file if proper .cnv file is installed.
+<BR>	Followings are contained in this package.
+<BR>		ibm37, ibm930(jp), ibm939(jp),
+<BR>		ibm1047(Latin1/OpenSystem)
+<BR>		1141(Germany-Euro), 1144(Italy-Euro), 1145(Spain-Euro)
+<BR>		1146(UK-Euro), 1147(France-Euro),
+<BR>		1148(International-Euro)
+<BR>	Add your own .cnv file into icu folder(.../files/icu/icudt___) if you want.
+<BR>	Use like as "e ebcfile cpeb:ibm930" to edit EBCDIC file.
+<BR>	For details,refer <B>xe help</B>.
+<BR>
+<!--
+<BR><BIG><B>Syntax Highlight:</B></BIG>
+<BR>	highlight-2.16 by Mr Andre Simon is contained.
+<BR>	If you have trouble, modify ::xesyna.cfg.
+<BR>
+-->
+<BR><BIG><B>Download:</B></BIG>
+<BR>	You can download from specified URL,
+<BR>	and unzip into the specified local folder.
+<BR>	Unzip is functional without downloading.
+<BR>
+<BR><BIG><B>Intent:</B></BIG>
+<BR>	-xe accepts following intent from other application.
+<BR>			Action:ACTION_VIEW and ACTION_EDIT
+<BR>			scheme:"file:" and "content:"
+<BR>		e.g.) When selected text file on Application "File", 
+<BR>				Axe is shown on "Application selection" dialog.
+<BR>				To reset "Always" after specified it once before,
+<BR>				use Android's Settings(operation  depends on Android's version).
+<BR>	-line command "!" on dirlist panel issue ACTION_SEND intent
+<BR>		with MIME determined by file extension name.
+<BR>		The application declared to receive the MIME type will be kicked.
+<BR>
+<BR><BIG><B>Crash Report</B></BIG>
+<BR>   It is configured to send mail of crash report to developer,
+<BR>   send it after checked contents of mail text.
+<BR>----------------------------------------------------------------------------
+<BR>	Source code:github:sakachin2/Axe
+<BR>									By Mizumaki-machi
+<BR>2020/09/09 OptionHelpAxe

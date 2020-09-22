@@ -1,6 +1,11 @@
-//*CID://+vaygR~: update#= 37;                                     //~vaygR~
+//*CID://+vc30R~: update#= 62;                                     //~vc26R~//~vc30R~
 //**********************************************************************//~vaagI~
-//vayg:141125 (Axe)vayc occurs after orientation changed           //+vaygR~
+//vc30 2020/09/20 return key could not close xeKbd                 //~vc30I~
+//vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//~vc25I~//~vc26R~
+//vc22 2020/07/10 send kbd msg from hardkbd                        //~vc20I~
+//vc20 2020/07/09 update by AxeLstKbdLayout need invalidate AxeKbdDialog//~vc20I~
+//vc1y 2020/07/09 AxeKbd reset to Default did not cleared when not app restart case//~vc1yI~
+//vayg:141125 (Axe)vayc occurs after orientation changed           //~vaygR~
 //vayc:141125 (Axe)XeKbdDialog is not aligned at bottom when orientation:horizontal//~vaycR~
 //vayb:141125 (Axe)Disply:getWidth/getHeight was deprecated at aoi13(HONNEYCOMB_MR2) change to getSize//~vaybI~
 //vaii:130601 Axe:if FLAG_NOT_MODAL on,setCanceledOnTouchOutside is ignore.//~vaiiI~
@@ -25,8 +30,10 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.view.WindowManager;                                 //~1902I~
 //~1918I~
+import com.xe.Axe.AxeDlgKbdLayoutHW;
 import com.xe.Axe.AxeKeyValue;
 import com.xe.Axe.AxeLstKbdLayout;
+import com.xe.Axe.AxeScreen;
 import com.xe.Axe.AxeTimerI;                                       //~1918I~
 import com.xe.Axe.AxeTimer;                                        //~1918I~
 import com.xe.Axe.AxeView;
@@ -53,6 +60,7 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
     private boolean modeChange;
     private boolean isShown;//~1918I~
     private boolean isConstructor;                                 //~vaygI~
+    private boolean swRestart;                                     //~vc20I~
 //************************************************                 //~1918I~
     public AxeKbdDialog(Context Pcontext)                          //~1918R~
     {                                                              //~1902R~
@@ -65,12 +73,12 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         Point dsz=AxeView.getDisplayRegion();                      //~vaybR~
         int displayW=dsz.x;                                        //~vaybI~
         int displayH=dsz.y;                                        //~vaybI~
-        if (Dump.Y) Dump.println("display W="+displayW+",H="+displayH);//~1902I~
+        if (Dump.Y) Dump.println("AxeKbdDialog.constructor display W="+displayW+",H="+displayH);//~1902I~//~vaygR~
 		layoutView=(ViewGroup)(AxeG.inflater.inflate(DIALOG_LAYOUT,null));//~1918R~
 //      FrameLayout frameLayout=(FrameLayout)(layoutView.findViewById(DIALOG_FRAMELAYOUT));//~1918R~//~vaagR~
         frameLayout=(FrameLayout)(layoutView.findViewById(DIALOG_FRAMELAYOUT));//~vaagI~
         kbdView=initKbd();                                         //~1902I~
-        if (Dump.Y) Dump.println("kbdview W="+kbdView.getWidth()+",H="+kbdView.getHeight());//~vaybI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.constructot kbdview W="+kbdView.getWidth()+",H="+kbdView.getHeight());//~vaybI~//~vaygR~
                                                                    //~vaybI~
         frameLayout.addView(kbdView);                                //~1902I~
 //      dialogKbd.requestWindowFeature(Window.FEATURE_NO_TITLE);   //~1902R~
@@ -84,6 +92,7 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
                                 @Override	                       //~1A08I~
                                 public boolean onKey(DialogInterface dialog,int Pkeycode,KeyEvent Pevent)//~1A08I~
                                 	{
+                                    if (Dump.Y) Dump.println("AxeKbdDialog.onKeyListener.onKey");//~vaygI~
                                 	return AxeKbdDialog.this.onKey(Pkeycode,Pevent); //~1A08I~
                                 	}
         						}    //~1A08I~
@@ -142,7 +151,7 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
     }                                                              //~1920I~
     public void showKbd()                                               //~1902I~
     {                                                              //~1902I~
-    	if (Dump.Y) Dump.println("showKbd isShown="+isShown);      //~1919R~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.showKbd isShown="+isShown);      //~1919R~//~vaygR~
         if (isShown)                                               //~1919I~
         	return;                                                 //~1919I~
 //        WindowManager.LayoutParams lp=new LayoutParams();        //~1902R~
@@ -151,7 +160,9 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         setOnDismissListener((OnDismissListener) new dismissListener());//~1917I~
         show();                                                    //~1902R~
         isShown=true;                                              //~1919I~
-        AxeG.axeScreen.requestFocus();  //lose kbd focus once      //~vaifI~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.showKbd requestForce to AxeScreen");//~vaygI~
+//      AxeG.axeScreen.requestFocus();  //lose kbd focus once      //~vaifI~//~vaygR~
+        AxeScreen.getFocus();  //lose kbd focus once               //~vaygI~
 //      dialogKbd.getWindow().setLayout(MATCH_PARENT, WRAP_CONTENT);//~1902R~
 //      dialogKbd.getWindow().setAttributes(lp);                   //~1902R~
     }                                                              //~1902I~
@@ -166,48 +177,56 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 //*********************************                                //~1A08R~
 //*to process hard keyboard input                                  //~1A08I~
 //*********************************                                //~1A08I~
-    @Override                                                      //~1A08R~
+    @Override	//Dialog.KeyEventCallback                                                      //~1A08R~//~vaygR~
     public boolean onKeyDown(int Pkeycode,KeyEvent Pevent)         //~1A08R~
     {                                                              //~1A08R~
     	boolean rc;                                                //~1A08R~
     //**********************                                       //~1A08R~
-        if (Dump.Y) Dump.println("AxeKbdDialog dialog onkeyDown keycode="+Integer.toHexString(Pkeycode));//~1A08R~
+        if (Dump.Y) Dump.println("AxeKbdDialog.onkeyDown keycode="+Integer.toHexString(Pkeycode));//~1A08R~//~vc20R~
         if (Pkeycode==AxeKeyValue.AKC_BACK)                        //~1A08R~
         	return false;                                          //~1A08I~
 		rc=AxeG.axeKeyAction.onKeyDown(Pkeycode,Pevent);           //~1A08R~
         if (Dump.Y) Dump.println("AxeKbdDialog dialog onkeyDown rc="+rc);//~1A08I~
         return rc;                                                 //~1A08R~
     }                                                              //~1A08R~
-    @Override                                                      //~1A08R~
+    @Override	//Dialog.KeyEventCallback                          //~vaygI~
     public boolean onKeyUp(int Pkeycode,KeyEvent Pevent)           //~1A08R~
     {                                                              //~1A08R~
     	boolean rc;                                                //~1A08I~
     //**********************                                       //~1A08R~
-        if (Dump.Y) Dump.println("AxeKbdDialog dialog onkeyUp keycode="+Integer.toHexString(Pkeycode));//~1A08R~
+        if (Dump.Y) Dump.println("AxeKbdDialog.onKeyUp keycode="+Integer.toHexString(Pkeycode));//~1A08R~//~vaygR~
         if (Pkeycode==KeyEvent.KEYCODE_BACK)                       //~1A08R~
         {                                                          //~1A08I~
               if (!axeSoftKbd.dismissMiniKeyboardOnScreen())//no popup minikbd//~1A08R~
                   dismiss();                                       //~1A08R~
         	return false;                                          //~1A08I~
         }                                                          //~1A08I~
-		rc=AxeG.axeKeyAction.onKeyDown(Pkeycode,Pevent);           //~1A08I~
-        if (Dump.Y) Dump.println("AxeKbdDialog dialog onkeyUp rc="+rc);//~1A08I~
+//  	rc=AxeG.axeKeyAction.onKeyDown(Pkeycode,Pevent);//Bug      //~1A08I~//~vc20R~
+    	rc=AxeG.axeKeyAction.onKeyUp(Pkeycode,Pevent);             //~vc20I~
+        if (Dump.Y) Dump.println("AxeKbdDialog.onKeyUp rc="+rc);//~1A08I~//~vaygR~
         return rc;                                                 //~1A08R~
     }                                                              //~1A08R~
-                                                         //~1A08I~
+//*********************************                                //~vaygI~
+// from onKeyListener  by setOnKeyListener                         //~vaygR~
+//*********************************                                //~vaygI~
     public boolean onKey(/*DialogInterface Pdialog,*/int Pkeycode,KeyEvent Pevent)//~1A08R~
     {                                                              //~1A08R~
     	boolean rc;                                                //~1A08I~
     //**********************                                       //~1A08R~
-        if (Dump.Y) Dump.println("AxeKbdDialog dialog onkey keycode="+Integer.toHexString(Pkeycode));//~1A08R~
+        if (Dump.Y) Dump.println("AxeKbdDialog.onKey keycode="+Integer.toHexString(Pkeycode));//~1A08R~//~vaygR~
         if (Pkeycode==KeyEvent.KEYCODE_BACK)                       //~1A08I~
         	return false;                                          //~1A08I~
+        if (AxeDlgKbdLayoutHW.isOpenIMKey(Pkeycode,Pevent))        //~vc26I~
+            return true;                                           //~vc26I~
 //        int modflag=axeSoftKbd.getMetaStatus(); //softkbd metastatus shifted flag//~1A08R~
+        int rc2=AxeKbdDialogHW.onKeyOnMapHW(Pkeycode,Pevent);	//modified by cuurentMap AxeLstKbdLayoutHW//~vc26I~
+        if (rc2>=0)			//1:sent to xe, 0: ignore event        //~vc26I~
+        	return rc2!=0;                                         //~vc26I~
 		boolean shortcut=axeSoftKbd.isShortcut();                  //~1A10I~
 		rc=AxeG.axeKeyAction.onKeyFromDialog(Pkeycode,Pevent,shortcut);//~1A10R~
         if (shortcut)                                              //~1A10I~
 			axeSoftKbd.setShortcut(false);                         //~1A10I~
-        if (Dump.Y) Dump.println("AxeKbdDialog dialog onkey rc="+rc);//~1A08I~
+        if (Dump.Y) Dump.println("AxeKbdDialog.onKey rc="+rc);//~1A08I~//~vaygR~
         return rc;                                                 //~1A08R~
     }                                                              //~1A08R~
 //*****************************************************            //~1902I~
@@ -371,8 +390,8 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 		Window w=getWindow();                                      //~1902R~
    	  if (isConstructor)                                           //~vaygI~
         w.requestFeature(Window.FEATURE_NO_TITLE);                 //~1902M~
-        if (Dump.Y) Dump.println("kbd H="+((AxeKbdView)kbdView).mKeyboard.mTotalHeight);//~vaycM~
-        if (Dump.Y) Dump.println("kbd W="+((AxeKbdView)kbdView).mKeyboard.mTotalWidth);//~vaycM~
+        if (Dump.Y) Dump.println("AxeKbdDialog.setFullWidth kbd H="+((AxeKbdView)kbdView).mKeyboard.mTotalHeight);//~vaycM~//~vaygR~
+        if (Dump.Y) Dump.println("AxeKbdDialog.setFullWidth kbd W="+((AxeKbdView)kbdView).mKeyboard.mTotalWidth);//~vaycM~//~vaygR~
         int hh=((AxeKbdView)kbdView).mKeyboard.mTotalHeight;       //~vaycI~
         int ww=((AxeKbdView)kbdView).mKeyboard.mTotalWidth;        //~vaycI~
       if (AxeG.displayPL==AxeG.LANDSCAPE && hh>0 && ww>0) //landscape//~vaycR~
@@ -382,7 +401,7 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         lp.width = -1;                                             //~vaycI~
         lp.height=hh+2;//2:paddingTop                              //~vaycR~
         w.setAttributes(lp);                                       //~vaycR~
-        if (Dump.Y) Dump.println("AxeKbdDilaog setfullwidth hh="+lp.height);//~vaycI~
+        if (Dump.Y) Dump.println("AxeKbdDilaog.setFullEidth hh="+lp.height);//~vaycI~//~vaygR~
       }                                                            //~vaycI~
       else                                                         //~vaycI~
       {                                                            //~vaycI~
@@ -404,40 +423,46 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         @Override                                                  //~1917I~
         public void onDismiss(DialogInterface Pdialog)             //~1917I~
         {                                                          //~1917I~
-			if (Dump.Y) Dump.println("dialog dismiss listener"); //~1326I~//~1917I~
-        if (Dump.Y) Dump.println("kbdview W="+kbdView.getWidth()+",H="+kbdView.getHeight());//~vaycR~
-        if (Dump.Y) Dump.println("frame W="+frameLayout.getWidth()+",H="+frameLayout.getHeight());//~vaybM~
+			if (Dump.Y) Dump.println("AxeKbdDialog.onDismiss swRestart="+swRestart); //~1326I~//~1917I~//~vaygR~//~vc20R~
+        if (Dump.Y) Dump.println("AxeKbdDialog.onDismiss kbdview W="+kbdView.getWidth()+",H="+kbdView.getHeight());//~vaycR~//~vaygR~
+        if (Dump.Y) Dump.println("AxeKbdDialog.onDismiss frame W="+frameLayout.getWidth()+",H="+frameLayout.getHeight());//~vaybM~//~vaygR~
         WindowManager.LayoutParams lp = getWindow().getAttributes();//~vaycI~
-        if (Dump.Y) Dump.println("dialog dismiss hh="+lp.height);  //~vaycR~
+        if (Dump.Y) Dump.println("AxeKbdDialog.onDismiss hh="+lp.height);  //~vaycR~//~vaygR~
 //            if (modeChange)                                      //~1A08R~
 //            {                                                    //~1A08R~
 //                modeChange=false;                                //~1A08R~
 //                showKbdDelayed();                                //~1A08R~
 //            }                                                    //~1A08R~
 	        isShown=false;                                         //~1919I~
+            if (swRestart)                                         //~vc20I~
+            {                                                      //~vc20I~
+            	swRestart=false;                                   //~vc20I~
+    			showKbd();                                         //~vc20I~
+            }                                                      //~vc20I~
         }                                                          //~1917I~
     }                                                              //~1917I~
     public void startIME()                                         //~1918I~
     {                                                              //~1918R~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.startIME modeChange old="+modeChange);//~vaygR~
     	modeChange=true;                                           //~1918I~
 //        dismiss();                                               //~1A08R~
     	showKbdDelayed();                                          //~1A08I~
     }                                                              //~1918I~
     public void showKbdDelayed()                                   //~1917I~
     {                                                              //~1917I~
-    	if (Dump.Y) Dump.println("AxeIME showKbdDelayed");          //~1917I~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.showKbdDelayed");          //~1917I~//~vaygR~
         new AxeTimer(this/*callback*/,100/*milisec delay*/,false/*repeat*/,null/*parameter*/).start();//~1917I~
 	}                                                              //~1917I~
     @Override                                                      //~1917I~
     public void onTimerExpired(AxeTimer Ptimer,int Pcallctr,Object Pparm)//~1917I~
     {                                                              //~1917I~
-    	if (Dump.Y) Dump.println("AxeIME onTimerEvent expired");   //~1917I~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.onTimerExpired");   //~1917I~//~vaygR~
         AxeG.axeIME.showKbdP();	                                   //~1918I~
     }                                                              //~1917I~
     @Override	//callback from AxeSoftKbd                         //~1A10R~
 	public void sendSoftKbdKey(int Pkeycode,int Pmetaflag,boolean Pshortcut)//~1A10R~
     {                                                              //~1918I~
-    	if (Dump.Y) Dump.println("AxeKbdDialog:sendKey callback metastate="+Integer.toHexString(Pmetaflag)+",code="+Integer.toHexString(Pkeycode)+",shortcut="+Pshortcut);//~1A10R~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.sendSoftKbddKey callback metastate="+Integer.toHexString(Pmetaflag)+",code="+Integer.toHexString(Pkeycode)+",shortcut="+Pshortcut);//~1A10R~//~vaygR~//~vc20R~
         AxeG.axeKeyAction.sendSoftKbdInput(Pkeycode,Pmetaflag,Pshortcut);//~1A10R~
     }                                                              //~1918I~
 //******************************                                   //~1919I~
@@ -449,8 +474,14 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 //    }                                                            //~1919R~
 	public int[][] getKbdLayoutCodeTbl()                        //~1919I~
     {                                                              //~1919I~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.getKbdLayoutCodeTbl");//~vc1yI~
     	return axeSoftKbd.getKbdLayoutCodeTbl();                   //~1919I~
     }                                                              //~1919I~
+	public int[][] getKbdLayoutCodeTblDefault()                    //~vc1yI~
+    {                                                              //~vc1yI~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.getKbdLayoutCodeTblDefault");//~vc1yI~
+    	return axeSoftKbd.getDefault();                            //~vc1yI~
+    }                                                              //~vc1yI~
 	public int getKbdSize()                                        //~1919I~
     {                                                              //~1919I~
     	return axeSoftKbd.getKbdSize();                            //~1919I~
@@ -458,6 +489,13 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 	public void updateKbd(int[][] Pnewtbl)                          //~1920I~
     {                                                              //~1920I~
     	axeSoftKbd.updateKeys(Pnewtbl);                            //~1920I~
+        if (isShown)                                               //~vc1yI~
+        {                                                          //~vc1yI~
+	    	if (Dump.Y) Dump.println("AxeKbdDialog.updateKbd invalidate kbdView");//~vc1yI~
+//      	kbdView.invalidate();	//draw updatekey               //~vc1yR~//~vc20R~
+			swRestart=true;                                        //~vc20I~
+        	dismiss();                                             //~vc20I~
+        }                                                          //~vc1yI~
     }                                                              //~1920I~
 //***********************************************                  //~vaagI~
 //*AxeDlgArmOption: display flickkey toggled                       //~vaagI~
@@ -466,4 +504,25 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
     {                                                              //~vaagI~
     	axeSoftKbd.invalidateAllKeys();                            //~vaagI~
     }                                                              //~vaagI~
+//***********************************************                  //~vc26R~
+	public boolean isShowingDlg()                                  //~vc26R~
+    {                                                              //~vc26R~
+    	AxeKbdDialog dlg=AxeG.axeIME.getXeKbd();                   //~vc26R~
+    	boolean rc=dlg!=null && dlg.isShowing();                   //~vc26R~
+        return rc;                                                 //~vc26R~
+    }                                                              //~vc26R~
+//***********************************************                  //~vc26I~
+	public static void dismissDlg()                                     //~vc26I~
+    {                                                              //~vc26I~
+//      AxeKbdDialog dlg = AxeG.axeIME.getXeKbd();                   //~vc26I~//~vc30R~
+        AxeKbdDialog dlg = AxeG.axeIME.getXeKbd(false/*no create even if null*/);//~vc30I~
+        if (Dump.Y) Dump.println("AxeKbdDialog.dismiss dlg="+dlg);          //~vc26I~//~vc30I~
+        if (dlg==null)                                             //~vc30I~
+        	return;                                                //~vc30I~
+        if (Dump.Y) Dump.println("AxeKbdDialog.dismiss dlg.isshowing="+dlg.isShowing());//+vc30I~
+        if (dlg.isShowing())                                       //~vc26I~
+        {                                                          //~vc26I~
+            dlg.dismiss();
+        }
+    }//~vc26I~
 }

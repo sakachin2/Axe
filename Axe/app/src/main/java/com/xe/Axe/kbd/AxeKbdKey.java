@@ -1,15 +1,21 @@
-//*CID://+vaawR~:                             update#=    2;       //~vaawI~
+//*CID://+vc26R~:                             update#=    7;       //~vc22R~//+vc26R~
 //******************************************************************//~vaawI~
+//vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//+vc26I~
+//vc22 2020/07/10 send kbd msg from hardkbd                        //~vc22I~
 //vaaw:120105 (Axe)add Fn modifier to set key label to Fn          //~vaawI~
 //******************************************************************//~vaawI~
 package com.xe.Axe.kbd;                                            //~1918R~
 
 
+import com.ahsv.utils.Utils;
 import com.xe.Axe.AxeKeyValue;
 import com.xe.Axe.Dump;
+import com.xe.Axe.R;
 import com.xe.Axe.kbd.ims.Keyboard;
 import com.xe.Axe.kbd.ims.Keyboard.Key;
 import com.xe.Axe.KeyData;
+                                                                   //~vc22I~
+import static android.view.KeyEvent.*;                                    //~vc22I~
 
 public class AxeKbdKey                                             //~1918R~
 {                                                                  //~1911I~
@@ -40,7 +46,7 @@ public class AxeKbdKey                                             //~1918R~
     public static final int KEYCODE_CAPS=-16;                      //~1A07I~
 //    public static final int KEYCODE_BACKTAB=-17;                 //~1A09R~
     public static final int KEYCODE_SHORTCUT=-17;                  //~1A09I~
-    public static final int KEYCODE_SHIFTF=-18;     //display key:Fn(GdkKey)//+vaawR~
+    public static final int KEYCODE_SHIFTF=-18;     //display key:Fn(GdkKey)//~vaawR~
                                                                    //~1919I~
     public static final String KEYLBL_SWKBD ="IM";                 //~1922R~
     public static final String KEYLBL_SWKBDPOPUP="Pop";            //~1922I~
@@ -95,7 +101,7 @@ public class AxeKbdKey                                             //~1918R~
             AxeKeyValue.KEYLBL_SHORTCUT            ,               //~1A09I~
                         KEYLBL_FN                  ,               //~vaawI~
         };                                                         //~1919M~
-	private static final int[]    SextendedkeyIdTbl=               //~1A12R~
+	public static final int[]    SextendedkeyIdTbl=               //~1A12R~//~vaawR~
     	{                                                          //~1919M~
             ' '                     ,	//Space                    //~1A12I~
             AxeKeyValue.GDK_Escape  ,                              //~1919I~
@@ -138,12 +144,13 @@ public class AxeKbdKey                                             //~1918R~
                         KEYCODE_KBDPOPUP,      //-14               //~1922I~
                         KEYCODE_KBDNOPOP,      //-15               //~1923I~
                         KEYCODE_SHORTCUT,      //-17               //~1A09I~
-                        KEYCODE_SHIFTF  ,      //-18               //+vaawR~
+                        KEYCODE_SHIFTF  ,      //-18               //~vaawR~
        };                                                          //~1919M~
 //*assign to key(kbd layout)                                       //~1A09I~
     public static final String[] SspinnerData=                     //~1919I~
         {                                                          //~1919I~
-    		"(Not Use)",                                           //~1919I~
+//  		"(Not Use)",                                           //~1919I~//~vaawR~
+    		Utils.getStr(R.string.Label_SpinnerTop),               //~vaawI~
             AxeKeyValue.KEYLBL_ESCAPE              ,               //~1919I~
             AxeKeyValue.KEYLBL_TAB                 ,               //~1919I~
 //            AxeKeyValue.KEYLBL_BACKTAB             ,             //~1A09R~
@@ -202,6 +209,51 @@ public class AxeKbdKey                                             //~1918R~
             AxeKeyValue.GDK_F11     ,                              //~1919I~
             AxeKeyValue.GDK_F12     ,                              //~1919I~
        };                                                          //~1919I~
+      public static final int[]    SspinnerKeyCode=                //~vc22I~
+    	{                                                          //~vc22I~
+    			KeyData.NOT_DEFINED,         //-1                  //~vc22I~
+            KEYCODE_ESCAPE  ,                                      //~vc22I~
+            KEYCODE_TAB     ,                  //0x6f              //~vc22I~
+            KEYCODE_DEL     ,     //backspace  //0x43              //~vc22I~
+            KEYCODE_ENTER   ,     //Return     //0x42              //~vc22I~
+            KEYCODE_INSERT  ,                  //0x7c              //~vc22I~
+            KEYCODE_FORWARD_DEL,  //Delete     //0x70              //~vc22I~
+            KEYCODE_HOME    ,                  //0x03              //~vc22I~
+            KEYCODE_ENDCALL ,     //End        //0x06              //~vc22I~
+            KEYCODE_PAGE_UP ,                  //0x5c              //~vc22I~
+            KEYCODE_PAGE_DOWN,                 //0x5d              //~vc22I~
+            KEYCODE_DPAD_UP ,                  //0x13              //~vc22I~
+            KEYCODE_DPAD_DOWN,                 //0x14              //~vc22I~
+            KEYCODE_DPAD_LEFT,                 //0x15              //~vc22I~
+            KEYCODE_DPAD_RIGHT,                //0x16              //~vc22I~
+            KEYCODE_F1      ,                  //0x83              //~vc22I~
+            KEYCODE_F2      ,                  //0x84              //~vc22I~
+            KEYCODE_F3      ,                  //0x85              //~vc22I~
+            KEYCODE_F4      ,                  //0x86              //~vc22I~
+            KEYCODE_F5      ,                  //0x87              //~vc22I~
+            KEYCODE_F6      ,                  //0x88              //~vc22I~
+            KEYCODE_F7      ,                  //0x09              //~vc22I~
+            KEYCODE_F8      ,                  //0x0a              //~vc22I~
+            KEYCODE_F9      ,                  //0x8b              //~vc22I~
+            KEYCODE_F10     ,                  //0x8c              //~vc22I~
+            KEYCODE_F11     ,                  //0x8d              //~vc22I~
+            KEYCODE_F12     ,                  //0x8e              //~vc22I~
+       };                                                          //~vc22I~
+    //**********************                                       //~vc22I~
+    public static int findSpinnerKeyCode(int Pkeycode)             //~vc22I~
+    {                                                              //~vc22I~
+    	int rc=-1;                                                 //~vc22I~
+    	for (int ii=1;ii<SspinnerKeyCode.length;ii++)              //~vc22I~
+        {                                                          //~vc22I~
+        	if (Pkeycode==SspinnerKeyCode[ii])                     //~vc22I~
+            {                                                      //~vc22I~
+            	rc=ii;                                             //~vc22I~
+                break;                                             //~vc22I~
+            }                                                      //~vc22I~
+        }                                                          //~vc22I~
+        if (Dump.Y) Dump.println("AxeKbdKey.findSpinnerKeyCode keycode="+Pkeycode+",rc="+rc);//~vc22I~
+        return rc;                                                 //~vc22I~
+    }                                                              //~vc22I~
     //**********************                                       //~1920I~
     private static  StringBuffer sb=new StringBuffer();            //~1920M~
     public static int extkeynamelen;                               //~1920M~
@@ -338,6 +390,22 @@ public class AxeKbdKey                                             //~1918R~
         }                                                          //~1919I~
         return 0;	//not defined                                  //~1919I~
     }                                                              //~1919I~
+    public static int getSpinnerKey(String Pname)                  //~vaawI~
+    {                                                              //~vaawI~
+		int rc=getSpinnerIndex(Pname);                             //~vaawI~
+        if (rc>0)                                                  //~vaawI~
+        	rc=SspinnerCode[rc];                                   //~vaawI~
+		if (Dump.Y) Dump.println("AxeKbdKey:getSpinerKey name="+Pname+",rc="+Integer.toHexString(rc));//~vaawI~
+        return rc;	//not defined                                  //~vaawI~
+    }                                                              //~vaawI~
+    public static int getSpinnerKey(int Pidx)                      //+vc26I~
+    {                                                              //+vc26I~
+    	int rc=0;                                                  //+vc26I~
+        if (Pidx>0 && Pidx<SspinnerCode.length)                     //+vc26I~
+        	rc=SspinnerCode[Pidx];                                 //+vc26I~
+		if (Dump.Y) Dump.println("AxeKbdKey:getSpinerKey idx="+Pidx+",rc="+Integer.toHexString(rc));//+vc26I~
+        return rc;                                                 //+vc26I~
+    }                                                              //+vc26I~
 //    public static boolean isRepeatableKey(int Pcode)             //~1A09R~
 //    {                                                            //~1A09R~
 //        return !(   Pcode==Keyboard.KEYCODE_SHIFT            //-1//~1A09R~

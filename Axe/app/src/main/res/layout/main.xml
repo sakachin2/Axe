@@ -31,7 +31,7 @@
              android:orientation="vertical"            
            android:background="#ff303030"
         >
-    	</LinearLayout>
+        </LinearLayout>
 <!-- Buttons on Bottom -->
         <LinearLayout
              android:id="@+id/Buttons"

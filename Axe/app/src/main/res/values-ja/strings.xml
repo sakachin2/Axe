@@ -2,8 +2,8 @@
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <resources>
     <string name="app_name">Axe</string>
-    <string name="Version">Axe V1.19 (xe1.29C)</string>
-    <string name="VerDate">2017/09/04</string>
+    <string name="Version">Axe V1.29.1\n			By 水巻マチ</string>
+    <string name="VerDate">2020/09/17</string>
 
     <string name="OptionMenu_Stop">終了</string>
     <string name="OptionMenu_Menu">メニュー</string>
@@ -32,12 +32,12 @@
     <string name="ContextMenu_SetupOther">その他 XE 設定</string>
     <string name="ContextMenu_Button_Config">ボタン設定</string>
     <string name="ContextMenu_Button_Layout">ボタン配置</string>
-    <string name="ContextMenu_Kbd_Config">キーボード配置</string>
+    <string name="ContextMenu_Kbd_Config">ソフト Kbd 設定</string>
     <string name="ContextMenu_SetupOtherArm">アンドロイド関連</string>
     <string name="ContextMenu_DownloadAsset">追加のAssetダウンロード</string>
     <string name="ContextMenu_Help">ヘルプ</string>
-    <string name="ContextMenu_HelpXe">XE ヘルプ(Html)</string>
-    <string name="ContextMenu_HelpAxe">Axe ヘルプ</string>
+    <string name="ContextMenu_HelpXe">xe ヘルプ</string>
+    <string name="ContextMenu_HelpAxe">Axe について</string>
     <string name="ContextMenu_HelpVersion">バージョン</string>
     <string name="ContextMenu_ShortcutkeyMap">ショートカットキー</string>
     <string name="ContextMenu_ShiftkeyMap">Shift マッピング</string>
@@ -113,7 +113,7 @@
 	</string>
 
     <string name="DialogTitle_OptionHelpAxe">Help Axe</string>
-    <string name="Help_OptionHelpAxe">
+    <!--string name="Help_OptionHelpAxe">
         "==キーボード:\n"
         "  拡張キーへの機能の割り当てはPC版と同じです\n"
         "  (トップメニューパネルで \"A\", Enter と入力すると キー:機能 の対応が表示されます\n"
@@ -208,7 +208,7 @@
         "     files/sh:files/bin:/data/busybox\n"
         "  (\n"
         "   xeのユーテリティーはAxeAsset.zipを/data/data/com.xe.Axe/filesでunzipすることでfiles/bin導入されます\n"
-        "   インストール:Menu-->設定-->追加のAssetダウンロード.\n"
+        "   インストール:Menu==&gt;設定==&gt;追加のAssetダウンロード.\n"
         "  )\n"
         "   何かユーティリティーコマンドを導入しそれを =6 画面で使用する場合は\n"
         "   アンドロイド関連オプションダイアログのPATH環境変数で設定してください\n"
@@ -228,10 +228,10 @@
         "==シンタックスハイライト\n"
         "   Andre Simon氏のhighlight-2.16をAxeAsset.zipに同梱しています\n"
         "   利用する場合はこれを展開し ::xesyna.cfg を変更してください\n"
-        "    	OPEN = n   ==>   OPEN = y\n"
+        "    	OPEN = n   ==&gt;   OPEN = y\n"
         "\n"
         "==ダウンロード\n"
-        "   Menu-->ファイル-->ダウンロードで指定のＵＲＬから\n"
+        "   Menu==&gt;ファイル==&gt;ダウンロードで指定のＵＲＬから\n"
         "   ファイルをダウンロードできます。\n"
         "   zipファイルなら指定のダウンロード場所で解凍します。\n"
         "\n"
@@ -239,20 +239,20 @@
         "   クラッシュが発生すると 開発者あてにメールする\n"
         "   仕組みを取り入れています\n"
         "   メール内容をみて出来れば送信ボタンを押してください\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_SetupOther">その他 XE 設定</string>
     <string name="HelpTitle_SetupOther">Other XE Options</string>
     <string name="Setup_Ruler">ルーラータイプ</string>
-    <string name="Setup_RulerVertical">縦線</string>
-    <string name="Setup_RulerHorizontal">横線</string>
-    <string name="Setup_RulerCrossfier">十字線</string>
-    <string name="Setup_RulerNone">なし</string>
+    <string name="Setup_RulerVertical">縦線　（Shift+Ctrl+F1）</string>
+    <string name="Setup_RulerHorizontal">横線　（Shift+Ctrl+F2）</string>
+    <string name="Setup_RulerCrossfier">十字線　（Shift+Ctrl+F3）</string>
+    <string name="Setup_RulerNone">なし　（二度打ち）</string>
     <!--string name="Setup_Accelerator">Accelerator</string-->
     <string name="Setup_FreeCursor">フリーカーソル</string>
     <string name="Setup_Beep">ビープ音</string>
     <string name="Setup_QuietExit">確認なし終了</string>
-    <string name="Help_SetupOther">
+    <!--string name="Help_SetupOther">
    		"\"ルーラー\":カーソル位置を示す縦横線を表示\n"
         "\"フリーカーソル\":オン：カーソルは画面の端から出たら反対側から入る\n"
         "               オフ：ファイル/ディレクトリー画面では端から出ずにスクロールする\n"
@@ -260,7 +260,7 @@
         "\"ビープ音\":エラーがあると音を出す\n"
         "\"確認なし終了\":\"F3\" などxe の機能キーで終了するとき終了確認なしで終了する\n"
         "                 \"メニュー\"==>\"終了\"では個の設定いかんに関わらず確認がとられます\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_SetupColor">カラー</string>
     <string name="HelpTitle_SetupColor">Color</string>
@@ -269,10 +269,10 @@
     <string name="Setup_Red">赤</string>
     <string name="Setup_Green">緑</string>
     <string name="Setup_Blue">青</string>
-    <string name="Help_SetupColor">
+    <!--string name="Help_SetupColor">
    		"背景色とルーラー色を設定する\n"
         "ルーラー表示は \"その他 XE 設定\"で選択します\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_SetupFont">フォント</string>
     <string name="HelpTitle_SetupFont">Font</string>
@@ -287,14 +287,14 @@
     <string name="Setup_FontItalic">イタリック</string>
     <string name="Setup_FontBoldItalic">ボールドイタリック</string>
     <string name="Prompt_FontList">フォント名を選択</string>
-    <string name="Help_SetupFont">
+    <!--string name="Help_SetupFont">
    		"入力欄からフォーカスが外れたときに入力が評価されサンプル窓描画されます\n"
    		"フォント名はドロップダウンリストから選択します\n"
    		"\"フォントサイズ\"=0 のときそれは\"行高\" and \"桁幅\"から設定されます\n"
         "\"行高\"=0 のときそれは\"フォントサイズ\"におなじです\n"
         "\"桁幅\"=0 のときそれは\"行高\"の 1/2 です\n"
    		"すべてが 0 のとき\"フォントサイズ\"は画面が 24行-80桁 になるように決定されます\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_Download">ダウンロード</string>
     <string name="HelpTitle_Download">ダウンロード</string>
@@ -304,18 +304,20 @@
     <string name="Title_DL_DelZipfile">展開済みローカルファイルは削除</string>
     <string name="Title_DL_Unziponly">ローカルファイルの展開のみ実行</string>
     <string name="DL_BtnLocalRefCD">ファイル選択ダイアログを開く</string>
-    <string name="Help_Download">
+<!--
+    <!string name="Help_Download">
    		"ファイルをダウンロード、展開(zip,tar,tgz,tar.gz,bz2,tbz2)\n"
    		"展開のみの場合はファイル名を ローカルフォルダー名: に指定する\n"
    		"あるいはファイル名を URL： に、パスを ローカルフォルダー名: に指定する\n"
    		"またの以下の内容の追加のAssetファイルをダウンロードにも使用\n"
-   		"(メニュー-->設定-->追加のAssetダウンロード)\n"
+   		"(メニューー>設定ーー>追加のAssetダウンロード)\n"
    		"  ヘルプ Html ファイル\n"
    		"  コマンドラインユーティリティ(Terminalsソフト上で実行).\n"
    		"  シンタックスハイライト用のDataファイル.\n"
    		"合計14MB程度でapkのサイズを小さくするために分離したものです.\n"
    		"このAssetファイルは必須ではありませんが、一度ダウンロードすれば上記の機能が使用できます.\n"
 	</string>
+-->
     <string name="progress_dialog_title_downloading">ダウンロード中...</string>
     <string name="progress_dialog_title_connecting">接続中...</string>
     <string name="progress_dialog_message_prefix_downloading">ダウンロード ファイル</string>
@@ -354,9 +356,9 @@
 	</string>
     <string name="Err_InputTerminalButton">"1桁英数字以外ユニコードをHex表記で指定する"</string>
 
-    <string name="DialogTitle_KbdLayout">ソフトキーボード レイアウト</string>
-    <string name="HelpTitle_KbdLayout">Soft Keyboard Layout</string>
-    <string name="Help_KbdLayout">
+    <string name="DialogTitle_KbdLayout">ソフト Kbd レイアウト</string>
+    <string name="HelpTitle_KbdLayout">ソフト Kbd レイアウト</string>
+    <!--string name="Help_KbdLayout">
    		"\"Y\"と\"Z\"の入れ替えなど Qwerty レイアウトは変更できます\n"
    		"各キーには4個まで機能キー、シンボル文字、ユニコードを割り当てることができます\n"
    		"各々Shift, AltGr, Shift+AltGr と対応し最後はフリックダウン操作で入力します\n"
@@ -366,7 +368,7 @@
         "英数字(\"Q\"など) ASCIIシンボルl\"#\"など) Hex表記のユニコード(\"a2\"など)を入力します\n"
         "拡張キー(\"F12\"など)を入力する場合はフォーカスをあわせてドロップダウンリストから選択する\n"
         "\"F1\"などと紛らわしいユニコードは\"00f1\"のように入力する\n"
-	</string>
+	</string-->
     <string name="Prompt_KbdLayout">"キー: "</string>
     <string name="Prompt_KbdLayout_Not_Selected">行を選択する</string>
 
@@ -392,11 +394,11 @@
     <!--string name="Setup_Internal_Option">(内部使用)</string-->
     <string name="Setup_Trace_Off">NoTrace</string>
     <string name="Setup_Trace_On">On</string>
-    <string name="Setup_Trace_On2">On2</string>
+    <string name="Setup_Trace_On2">ReOpen</string>
     <string name="Setup_Log">Console Log</string>
     <string name="Setup_Dump_Off">NoDump</string>
-    <string name="Setup_Dump_On">On</string>
-    <string name="Setup_Dump_On2">On2</string>
+    <string name="Setup_Dump_On">最初から</string>
+    <string name="Setup_Dump_On2">今から</string>
     <string name="Setup_Remap">Recreate sbcs map table</string>
     <string name="Setup_Abend">xe sigsegv by double Esc</string>
     <string name="Setup_Uerrexit">xe uerrexit by double Esc</string>
@@ -410,7 +412,7 @@
     <string name="Info_CharsetChanged">"文字セットが変更されました。Axeのリスタートが必要です</string>
     <string name="Err_InternalOption">"内部オプションエラー:"</string>
     <string name="HelpTitle_ArmOption">Android Related Options</string>
-    <string name="Help_ArmOption">
+    <!--string name="Help_ArmOption">
    		"画面方向:横広固定、縦長固定、センサーで回転する\n"
         "Shift/Ctrl/Alt を毎回リセット:1文字入力の度に修飾キーをリセットする\n"
         "外部タッチで XeKbd を閉じる:オフの場合ソフトキーボードの外部タッチは通常の効果です\n"
@@ -419,8 +421,8 @@
    		"現在のInput Method:デフォルトのInput Method名; 変更する時は\"変更\" ボタンを押す\n"
    		"(ソフトキーボードのレイアウトを変更したい場合はアンドロイドの設定で\n"
    		" 言語と入力のIMEを選択し、例えばiWinnの場合キーボードタイプを設定します)\n"
-   		"ロケール文字コード:UTF8でないローカルの文字コード.\n"                       <!-- vad20 -->
-   		"                   省略値はISO-8859-1/EUC-JP/EUC_KR/Big5/GB18030 などロケールに依存\n" <!-- vad20 -->
+   		"ロケール文字コード:UTF8でないローカルの文字コード.\n"                      
+   		"                   省略値はISO-8859-1/EUC-JP/EUC_KR/Big5/GB18030 などロケールに依存\n" 
    		"反復待ち時間:xe のソフトキーボードで長押ししたときキー反復を発生させるまでの待ち時間、ミリ秒\n"
    		"             フリック判定される前にキーイベントが発生しないように長めに調整してください\n"
    		"反復間隔:長押しのときキー反復を発生させる間隔、ミリ秒\n"
@@ -431,7 +433,7 @@
    		"フリック距離:フリックとみなされる最小移動距離を画面サイズのパーセンテージで指定する\n"
    		"             (ソフトキーボードではキーの高さ/幅の50%%に固定)\n"
    		"PATH環境変数:例 /data/busybox:$PATH。\n"
-	</string>
+	</string-->
 
     <!--string name="DialogTitle_ImeType">"IME option"</string-->
     <!--string name="Setup_ImeType">IME type</string-->
@@ -455,13 +457,14 @@
     <string name="Clear">クリアー</string>
     <string name="OK">ＯＫ</string>
     <string name="ResetToDefault">既定値</string>
-    <string name="ResetKbdLayout">既定値を設定</string>
+    <string name="ResetKbdLayout">既定値</string>
     <string name="Help">ヘルプ</string>
     <string name="Delete">削除</string>
     <string name="Replace">置換</string>
     <string name="InsertAfter">後に挿入</string>
     <string name="InsertBefore">前に挿入</string>
     <string name="Move">移動</string>
+    <string name="Function">ボタンの機能</string>
 	
     <string name="LabelButtonNo1">1行めのボタン数</string>
     <string name="LabelButtonNo2">2行めのボタン数</string>
@@ -507,7 +510,7 @@
 
     <string name="DialogTitle_ButtonLayout">ボタン配置</string>
     <string name="HelpTitle_ButtonLayout">Button Arrangement</string>
-    <string name="Help_ButtonLayout">
+    <!--string name="Help_ButtonLayout">
    		"縦長画面の時下端2行に表示するボタンの数を指定する\n"
    		"有効な数は０から８\n"
         "\n"
@@ -518,7 +521,7 @@
         "(移動数はシフトカウントで負値は前方移動です)\n"
         "\n"
         "横広画面の時はすべてのボタンが1行表示になります\n"
-	</string>
+	</string-->
     <string name="DialogTitle_ShiftkeyMap">シフトキーマッピング</string>
     <string name="HelpTitle_ShiftKeyMap">Shift Key Map</string>
     <string name="Help_ShiftKeyMap">
@@ -535,8 +538,8 @@
     <string name="RadioButtonMap106">106日本語キーボード</string>
 
     <string name="DialogTitle_ShortcutkeyMap">ショートカットキー</string>
-    <string name="HelpTitle_ShortcutKeyMap">Shortcut Key Map</string>
-    <string name="Help_ShortcutKeyMap">
+    <string name="HelpTitle_ShortcutKeyMap">ショートカットキー</string>
+    <!--string name="Help_ShortcutKeyMap">
    		"\"S.C\"ボタンとの組み合わせで生成するキーコードを設定する\n"
 		"拡張キー名ないしはHex表記のユニコードを指定できます\n"
 		"Shift/Altなど他のモディファイヤーと組み合わせる時はタッチする順番に注意してください\n"
@@ -549,7 +552,7 @@
    		"(注)拡張キーで　\"PEnt\" はNumPadの\"Enter\"、\n"
    		"    \"Mouse-Rbtn\" はコンテキストメニュー表示のマウス右ボタンクリック、\n"
    		"    \"Mouse-Drag\" はマウスドラッグでカットアンドペーストの開始/終了位置を指定するために使用されます\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_AltGrMap">AltGrマッピング</string>
     <string name="HelpTitle_AltGrMap">AltGr Map</string>
@@ -563,14 +566,14 @@
     <string name="DialogTitle_BtnUpdate">ボタン:"</string>
     <string name="Hint_MoveValue">移動数</string>
     <string name="Prompt_ButtonName">ボタンタイプを選択</string>
-    <string name="HelpTitle_ButtonUpdate">Button Update</string>
-    <string name="Help_ButtonUpdate">
+    <!--string name="HelpTitle_ButtonUpdate">Button Update</string-->
+    <!--string name="Help_ButtonUpdate">
    		"\"置換\"/\"挿入\"の場合ドロップダウンリストから割り当る機能を選択\n"
         "\"移動数\"は現在位置からのシフトカウントで負値は前方です\n"
         "\n"
 		"方向キーボタンはリピータブルキーなので方向キーボタンに個のダイアログを表示するには\n"
 		"\"ボタン配置\"でリピータブルを一時的に無効にしてください\n"
-	</string>
+	</string-->
 
     <string name="DialogTitle_FileChooser">ファイル選択:"</string>
     <string name="LabelFilter">フィルタ</string>
@@ -600,6 +603,7 @@
     <string name="Info_Sorted_AttrA">"時間順で整列しました"</string>
     <string name="Info_Sorted_AttrD">"時間の逆順で整列しました"</string>
     <string name="HelpTitle_FileChooser">ヘルプ:ファイル選択</string>
+<!--
     <string name="Help_FileChooser">
         "フィルタ: 拡張子、ワイルドカード、正規表現でファイル名をフィルタにかけます\n"
         "  正規表現は二重引用符で囲む\n"
@@ -621,6 +625,7 @@
    		"保存: 選択行のフォルダに\"ファイル名\"の名前で保存\n"
    		"ＯＫ: ダウンロードの参照のダイアログにファイル名を戻す\n"
 	</string>
+-->
 
     <string name="Btnnm_BACK">Back</string>
     <string name="Btnnm_CENTER">DPAD_Center</string>
@@ -651,4 +656,82 @@
     <string name="Warning_WaitingInitialize">"お待ちください\n初回処理を実行中です"</string>
     <!-- NDKCrash-->
     <string name="NDKCrash_alertHeader">Axe JNI クラッシュ。\nクラッシュレポートを開発者にメールしてください。\n================================"</string>
+<!-- for android9 -->
+    <string name="ErrExceptionDetected">問題が発生しました</string>
+    <string name="ExternalStorageForSDRequiresGranted">\"SDカードへ書き込み\"が不許可なので内部ファイル（再導入で削除）に出力されます</string>
+    <string name="ExternalStorageForSDGranted">SDカードへの書き込み権限が許可されました</string>
+    <string name="ErrAssetFileNotFound">アッセットファイルが見つかりません:</string>
+    <string name="ErrAssetFileRead">アッセットファイルが読めません:</string>
+    <string name="ErrOutOfMemory">メモリー不足-</string> <!--1Ad8-->
+    <string name="lockContention">処理中、もう一度試してください:</string>
+    <string name="PermissionNotGranted">権限が取得できませんでした(%1$s).</string>
+    <string name="PermissionGranted">権限を取得しました(%1$s).</string>
+    <string name="Setup_SDCard">SDカード:</string>
+    <string name="Setup_Home">Home:</string>
+    <string name="Setup_WorkDir">ワークDir:</string>
+    <string name="Info_HtmlHelpInstalling">取説（xehelp）導入中：</string>
+    <string name="Info_UnzipHtmlHelpComp">取説（xehelp）導入完了</string>
+    <string name="Setup_EnvPathAdd">$PATH1</string>
+    <string name="Setup_CurEnvPath">$PATH = </string>
+    <string name="Setup_EnvPathTmp">$TMPDIR = </string>
+    <string name="HardKeyboard_Yes">ハードウェアー キーボード が接続されています</string>
+    <string name="HardKeyboard_No">ハードウェアー キーボード は未接続です</string>
+    <string name="DialogTitle_KbdLayoutHW">ハード Kbd レイアウト</string>
+    <string name="HelpTitle_KbdLayoutHW">ハード Kbd レイアウト</string>
+    <string name="HWKbdDlgHdr_Normal">キーボード</string>
+    <string name="HWKbdDlgHdr_Shift">+Shift</string>
+    <string name="HWKbdDlgHdr_AltGr">+AltGr</string>
+    <string name="HWKbdDlgHdr_ShiftAltGr">+Shift+AltGr</string>
+
+    <string name="KbdDlgHdr_Pos1">""</string>
+    <string name="KbdDlgHdr_Normal1">中央</string>
+    <string name="KbdDlgHdr_Shift1">LT:左</string>
+    <string name="KbdDlgHdr_Symbol1">RT:右</string>
+    <string name="KbdDlgHdr_AltGr1">LB:上</string>
+    <string name="KbdDlgHdr_ShiftAltGr1">RB:下</string>
+
+    <string name="KbdDlgHdr_Pos2">行・列</string>
+    <string name="KbdDlgHdr_Normal2">コード</string>
+    <string name="KbdDlgHdr_Shift2">+Shift</string>
+    <string name="KbdDlgHdr_Symbol2">+SYM</string>
+    <string name="KbdDlgHdr_AltGr2">+AltGr</string>
+    <string name="KbdDlgHdr_ShiftAltGr2">S+AltGr</string>
+
+    <string name="ContextMenu_Kbd_ConfigHW">ハード Kbd 設定</string>
+    <string name="Err_FieldProtected">ここは変更できません</string>
+    <string name="Label_KbdSpinner">&lt;-- 拡張キーのリスト</string>
+    <string name="Err_SpinnerNoItemSelected">先に設定箇所を指定して、ドロップダウンリストから選択してください</string>
+    <string name="Label_SpinnerTop">(表示)</string>
+    <string name="Err_DeleteNoItemSelected">削除するカラムをフォーカスしてください</string>
+    <string name="Err_DeleteFlatCode">1カラム目は修正はできますが削除はできません</string>
+    <string name="Label_OpenSoftKbd">IM</string>
+    <string name="Err_HardKbdNotActive">ハード Kbd は非-接続状態です</string>
+    <string name="Err_InvalidCursor">先にカラムをタッチしてください</string>
+
+    <string name="Label_AltGr">AltGrキー：</string>
+    <string name="Label_AltGrNo">なし</string>
+    <string name="Label_AltGrRightAlt">右Alt</string>
+    <string name="Label_AltGrLeftAlt">左Alt</string>
+    <string name="Label_AltGrRightShift">右Shift</string>
+    <string name="Err_StatusFixed">この場面、状況での変更は、できません</string>
+    <string name="Label_OpenIMKey">IMキー：</string>
+    <string name="Label_IMKeyNone">なし</string>
+    <string name="Label_IMKeyZenHan">半角/全角</string>
+    <string name="Label_IMKeyOther">以外：</string>
+    <string name="Err_InvalidIMKey">以外を選択したらその右のテキストフィールド上でにキー入力してください</string>
+    <string name="Err_InvalidIMKeyTyped">IMキーとして無効なキーです</string>
+    <string name="KEYCODE_MUHENKAN">無変換</string>
+    <string name="KEYCODE_HENKAN">変換</string>
+    <string name="KEYCODE_KATAKANA_HIRAGANA">カタカナ/ひらがな</string>
+    <string name="KEYCODE_EISU">英数</string>
+    <string name="KEYCODE_KANA">カナ</string>
+    <string name="Label_ForHardKbd">ハードKbd使用</string>
+    <string name="Label_ResetToDefault">ソフトKbd使用</string>
+    <string name="Err_DeleteAxeKbdFixed">中央コードは変更できますが削除できません</string>
+    <string name="Title_Warning">Warning</string>
+    <string name="Warning_ConfigChangedKbdHW">ハードウェアーKbdが接続されました。\n現在表示中のダイアログでハードウェアーKbdを有効にするには、一旦このダイアログを閉じて再度開いてください</string>
+    <string name="Err_getPathFromUri">%1$s\nファイル名の取得に失敗しました</string>
+    <string name="Label_HelpLang">Debug:ヘルプ言語 日英逆</string>
+    <string name="Setup_RulerWidth">ルーラー 線幅（pixel)</string>
+    <string name="Setup_RulerWidthMax">Max:%1$d</string>
 </resources>

@@ -1,0 +1,47 @@
+Defines Character/Extended key on xe's soft keyboard opened by "Kbd" button.
+Qwerty layout will be changed such as exchange "Y" and "Z" for Germany keyboard.
+Up to 4 code is assignable to a key such as function key, symbol character and unicode.
+Each are corresponding to modifier keys and flick actions
+like as Flick-Left:Shift, Right:Symbol, Up:AltGr, Down:Shift+AltGr
+e.g.) "!", "F1", "¹", "¡" is assigned to key "1" as a default.
+      Shift+"1" or "1" with Caps ON or flick Left generate "!",
+      "1" with SYM ON or flick Right generate "F1",
+      "1" with AltG ON or flick Up generate "¹",
+      "1" with AltGS ON or flick Down generate "¡".
+      (SYM is set ON by flick Right "Shift" key.)
+
+Long pressing on Non-repeatable key("Shift", "Alt", "Ctrl", "IM" and "Esc")
+shows mini-keyboard to select one from 4 candidate as alternative of flick action.
+Long pressing on the other keys repeats the code if "Pop" mode OFF 
+and shows mini-keyboard if "Pop" mode ON.
+"IM" key opens Android native "Input Method"
+"S.C"(Shortcut) generate Character/ExtendedKey code defined on "Shortcut Key Assign" dialog.
+
+Adjust flick action(speed and distance) on "Android Related Option" dialog.
+Long pressing timeout is also adjustable on it.
+----------------------------------------------------------------------------
+Extend key list:
+   Select a extend-key from DropDown list.
+
+Delete:
+   Clears the column.
+
+IM：(Input Method)
+   Open Android's SoftKeyboard when HardKeyboard connected.
+   return to HardKeyboard mode when SoftKeyboard closed.
+   When HardKeyboard is not connected, touching column opens SoftKeyboard.
+
+TextView:
+   At the right of IM button it shows keyboard input text.
+   Background is yellow when HardKeyboard connected, white when not.
+
+ListView:
+   Touch the column at first to update, then use DropDown for ExtendedKey, Delete button
+   or keyboard for character code.
+   Input hex-code to set unicode. "f1" is ambiguous input like as "00f1" for unicode.
+
+Default:
+   Reset all to default.
+
+----------------------------------------------------------------------------
+2020/09/13 AxeKbdLayout

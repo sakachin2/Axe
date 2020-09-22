@@ -1,44 +1,77 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('X:\\AndroidStudio\\keystore\\Axe')
+            storePassword 'androsakAxe'
+            keyAlias = 'axe'
+            keyPassword 'androsakAxe'
+        }
+    }
 //  compileSdkVersion 15
-    compileSdkVersion 16
-    buildToolsVersion "25.0.2"
+//  compileSdkVersion 28
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.xe.Axe"
+        applicationId "com.xe.AxeA9"
         minSdkVersion 16
-        targetSdkVersion 16
-//      targetSdkVersion 15
-//      minSdkVersion 15
+//      minSdkVersion 24  for armeabi-v7a(32bit) issue warning fseeko not defined because not API-LEVLE>=24 but accept 16
+		// 16: android4.1 , 24:android 7.0 28:android 9 , 26:8.0      29:10
+//      targetSdkVersion 28
+        targetSdkVersion 29
 
         ndk {
             moduleName "axejni"
-    		abiFilters  'armeabi-v7a'
+    		abiFilters  'armeabi-v7a','arm64-v8a'
+//  		abiFilters  'arm64-v8a'
         }
+//        externalNativeBuild {
+//            cmake    {
+//                arguments '-D_FORTIFY_SOURCE=1'
+//            }
+//        }
     }
 
     sourceSets {
         main {
-            jni.srcDirs = ['src/main/jni']
+//          jni.srcDirs = ['src/main/cpp']
+            jni.srcDirs = ['src/main/cpp/jni']
         }
     }
     externalNativeBuild {
-        ndkBuild {
-            path "src/main/jni/Android.mk"
+//      ndkBuild {
+//          path "src/main/jni/Android.mk"
+//      }
+        cmake    {
+//          version "3.17.3"
+//          version "3.10.2"
+//          apply plugin: 'groovy'
+//          targets "xbc","xci","xcv","xdc","xdd","xdig","xds","xfc","xff","xfg","xfmt","xfs","xlow","xmj","xpe","xts","userxxe","xxe"
+//  		arguments '-D_FORTY_SOURCE=1'
+            path "src/main/cpp/CMakeLists.txt"
         }
     }
 
     buildTypes {
         release {
             minifyEnabled false
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+    }
+    aaptOptions {
+        noCompress "zipfile"
     }
 
 }
 
 dependencies {
-    compile files('libs/acra-4.5.0.jar')
-    compile files('libs/ant.jar')
+    implementation 'org.apache:apache:23'
+
+	implementation files('libs/acra-4.5.0.jar')
+    implementation files('libs/ant.1.9.15.jar')  //apache.too.tar.tarEntry
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'de.greenrobot:eventbus:2.2.1'
 }

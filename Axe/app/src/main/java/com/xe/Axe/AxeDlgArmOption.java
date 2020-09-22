@@ -1,6 +1,11 @@
-//*CID://+vayaR~: update#=  216;                                   //~vayaR~
+//*CID://+vc2RR~: update#=  239;                                   //~vc2RR~
 //**********************************************************************//~vaagI~
-//vayd:141125 (Axe)modifier reset option                           //+vayaI~
+//vc2R 2020/09/11 Debug option:reverse HelpLang                    //~vc2RI~
+//vc2L 2020/09/02 display TMPDIR                                   //~vc2LI~
+//vc2B 2020/08/12 Help  by file                                    //~vc2BI~
+//vc1p 2020/06/24 display path env                                 //~vc1pI~
+//vc1j 2020/06/23 display sdcard path on setup dialog:android      //~vc1jI~
+//vayd:141125 (Axe)modifier reset option                           //~vayaI~
 //vaya:141125 (Axe)utilize actionbar:home button click event(customizable by settion,default is home)//~vayaI~
 //vay9:141124 (Axe)checkbox internal option(trace,dump) by checkbox//~vay9I~
 //vay0:140710 (Axe)jni exception handling                          //~vay0I~
@@ -13,9 +18,9 @@
 //**********************************************************************//~vaagI~
 package com.xe.Axe;                                                //~@@@@I~
 
+import com.ahsv.AG;
 import com.xe.Axe.kbd.AxeKbdDialog;
 import com.xe.Axe.kbd.ims.KeyboardView;
-
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +36,8 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
 //**********************************************************************//~1725I~
 	private static final int LAYOUT=R.layout.dialogarmoption;      //~1821R~
 	private static final int TITLE =R.string.DialogTitle_ArmOption;//~1821R~
+	private static final int HELP_TITLE =TITLE;                    //~vc2BI~
+	private static final String HELP_FILE  ="ArmOption";           //~vc2BI~
                                                                    //~1822I~
 	private int orientationFix;                                    //~1822I~
     private RadioGroup rgOrientation;                              //~1830R~
@@ -42,13 +49,20 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
     private EditText   etLongPress;                                //~vaimI~
     private CheckBox   cbDisplayFlickKeyCode;                      //~vaagI~
     private CheckBox   cbCancelXekbdByOutsideTouch;                //~vaihI~
-    private CheckBox   cbResetModifier;                            //+vayaI~
+    private CheckBox   cbResetModifier;                            //~vayaI~
     private Button     btIMPicker;                                 //~1826I~
     private TextView   tvCurrentIME;                               //~1830I~
+    private TextView   tvSDCardPath;                               //~vc1jI~
+    private TextView   tvHome;                                     //~vc1jI~
+    private TextView   tvWorkDir;                                  //~vc1jI~
+    private TextView   tvAddPath;                                  //~vc1jI~
+    private TextView   tvCurPath;                                  //~vc1jI~
+    private TextView   tvTmp;                                      //~vc2LI~
     private String currentImeName="";                              //~1830I~
 //    private CheckBox   cbImeTypeConfirm;                         //~1830R~
     private RadioGroup rgTrace,rgDump;                             //~vay9I~
     private CheckBox   cbLog,cbRemap,cbAbend,cbUerrexit;           //~vay9I~
+    private CheckBox   cbDebug_Help_ReverseLang;                   //~vc2RI~
     private RadioGroup rgHomeButtonKey;                            //~vayaI~
     private static int homebuttonId;                               //~vayaR~
     public static int homebuttonKeyValue;                          //~vayaI~
@@ -79,6 +93,7 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
 		cbRemap=(CheckBox)layoutView.findViewById(R.id.DEBUG_REMAP);//~vay9I~
 		cbAbend=(CheckBox)layoutView.findViewById(R.id.DEBUG_ABEND);//~vay9I~
 		cbUerrexit=(CheckBox)layoutView.findViewById(R.id.DEBUG_UERREXIT);//~vay9I~
+		cbDebug_Help_ReverseLang=(CheckBox)layoutView.findViewById(R.id.Debug_Help_ReverseLang);//~vc2RI~
                                                                    //~vay9I~
 	    etCharset=(EditText)layoutView.findViewById(R.id.LOCALE_CHARSET);//~vad2I~
 	    etEnvPath=(EditText)layoutView.findViewById(R.id.ENV_PATH);//~1A26I~
@@ -88,12 +103,18 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
 	    etLongPress=(EditText)layoutView.findViewById(R.id.LONGPRESS_TIMEOUT);//~vaimI~
         cbDisplayFlickKeyCode=(CheckBox)layoutView.findViewById(R.id.DISPLAY_FLICK_KEY);//~vaagI~
         cbCancelXekbdByOutsideTouch=(CheckBox)layoutView.findViewById(R.id.CANCEL_XEKBD_BY_OUTSIDE_TOUCH);//~vaihI~
-		cbResetModifier=(CheckBox)layoutView.findViewById(R.id.RESET_MODIFIER);//+vayaI~
+		cbResetModifier=(CheckBox)layoutView.findViewById(R.id.RESET_MODIFIER);//~vayaI~
 	    etSwipeTravel=(EditText)layoutView.findViewById(R.id.SWIPE_TRAVEL);//~1A03I~
     	orientationFix=AxeButtonLayout.getOrientationFix();//oldvalue//~1830M~
 	    btIMPicker=(Button)layoutView.findViewById(R.id.IM_PICKER);//~1826I~
 	    tvCurrentIME=(TextView)layoutView.findViewById(R.id.CURRENT_IME);//~1830I~
 		rgHomeButtonKey=(RadioGroup)layoutView.findViewById(R.id.HOMEBUTTONKEY);//~vayaI~
+		tvSDCardPath=(TextView)layoutView.findViewById(R.id.Setup_SDCardPath);//~vc1jI~
+		tvHome=(TextView)layoutView.findViewById(R.id.Setup_Home); //~vc1jI~
+		tvWorkDir=(TextView)layoutView.findViewById(R.id.Setup_WorkDir);//~vc1jI~
+		tvAddPath=(TextView)layoutView.findViewById(R.id.Setup_EnvPathAddHome);//~vc1jR~
+		tvCurPath=(TextView)layoutView.findViewById(R.id.Setup_CurEnvPath);//~vc1jI~
+		tvTmp=(TextView)layoutView.findViewById(R.id.Setup_EnvPathTmp);//~vc2LI~
                                                                    //~vay9I~
         setButtonListener(btIMPicker);                             //~1826I~
 //        rgImeType=(RadioGroup)layoutView.findViewById(R.id.IME_TYPE);//~1830I~
@@ -138,18 +159,35 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
         etSwipeTravel.setText(Integer.toString(AxeG.swipeTravel)); //~1A03I~
 //*cancel xekbd by outside touch                                   //~vaihI~
         cbCancelXekbdByOutsideTouch.setChecked(AxeG.cancelXekbdByOutsideTouch);//~vaihI~
-//*resetModifier                                                   //+vayaI~
-        cbResetModifier.setChecked(AxeG.resetModifier);            //+vayaI~
+//*resetModifier                                                   //~vayaI~
+        cbResetModifier.setChecked(AxeG.resetModifier);            //~vayaI~
 //*Env-Path                                                        //~vad2I~
         etCharset.setText(Gxeh.localeCharset);                     //~vad2I~
         inputtype=InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS//xml:inputType="textNoSuggestion" is not work//~vad2I~
                         |InputType.TYPE_CLASS_TEXT;                //~vad2I~
         etCharset.setInputType(inputtype);                         //~vad2I~
 //*Env-Path                                                        //~1A26I~
+        String cpath=Utils.getResourceString(R.string.Setup_EnvPathAdd);      //~vc1jI~
+        if (Gxeh.envPath==null || Gxeh.envPath.equals(""))         //~vc1jR~
+        	Gxeh.envPath=cpath;                                    //~vc1jI~
+        else                                                       //~vc1jI~
+        if (!Gxeh.envPath.endsWith(cpath))                         //~vc1jI~
+        	Gxeh.envPath+=":"+cpath;                               //~vc1jI~
         etEnvPath.setText(Gxeh.envPath);                           //~1A26R~
         inputtype=InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS//xml:inputType="textNoSuggestion" is not work//~1A26I~
                         |InputType.TYPE_CLASS_TEXT;                //~1A26I~
         etEnvPath.setInputType(inputtype);                         //~1A26I~
+        String cpathenv=Gxeh.envVarPATH;                        //~vc1pR~
+        cpathenv=cpathenv.replace(Gxeh.addPath,cpath);             //~vc1jI~
+        tvCurPath.setText(cpathenv);                               //~vc1jI~
+        tvAddPath.setText(" = "+Gxeh.addPath);                     //~vc1jI~
+        String sdpath=Gxeh.sdRootPath;                             //~vc1jI~
+        if ((Gxeh.axeStatus & Gxeh.AXES_SDCARD_ALTNAME)!=0)        //~vc1jI~
+        	sdpath+=" ( = "+Gxeh.sdRoot+ " )";                     //~vc1jR~
+        tvSDCardPath.setText(sdpath);                              //~vc1jR~
+        tvHome.setText(" "+Gxeh.homeDir+ " ( = ~/ )");             //~vc1jR~
+        tvWorkDir.setText(" "+AxeProp.getWkdir()+" ( = :: )");     //~vc1jR~
+        tvTmp.setText(" "+Gxeh.envVarTMPDIR+" ( = $tmp )");        //~vc2LR~
 //*internal option                                                 //~1828I~
 //        etInternalOption.setText(AxeG.internalOptions);            //~1824I~//~vay9R~
 //        inputtype=InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS//xml:inputType="textNoSuggestion" is not work//~vay9R~
@@ -268,6 +306,8 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
                                                                    //~vad2I~
         Gxeh.envPath=chkEnvPath(false/*not AxeG(init load pref)*/,etEnvPath.getText().toString());//~1A26R~
         AxeG.setParameter(AxeG.PREFKEY_ENV_PATH,Gxeh.envPath);     //~1A26R~
+	    updateEnvPath(true/*PswJNICall*/);                         //~vc1pI~
+        if (Dump.Y) Dump.println("AxeDlgArmOption.onClickClose envPath="+Gxeh.envPath+",envVarPATH="+Gxeh.envVarPATH);//~vc1pI~
                                                                    //~1A09I~
 //        AxeG.internalOptions=etInternalOption.getText().toString();//~vay9R~
 //        AxeG.internalOptions=chkInternalOptions(false/*not AxeG*/,AxeG.internalOptions);//~vay9R~
@@ -299,12 +339,12 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
             if (kbddlg!=null)                                            //~vaihI~
 	            kbddlg.setCancelByOutsideTouch(AxeG.cancelXekbdByOutsideTouch);//~vaihI~
         }                                                          //~vaihI~
-		boolean oldresetmodifier=AxeG.resetModifier;               //+vayaI~
-        AxeG.resetModifier=cbResetModifier.isChecked();            //+vayaI~
-        if (oldresetmodifier!=AxeG.resetModifier)	//value changed//+vayaI~
-        {                                                          //+vayaI~
-        	AxeG.setParameter(AxeG.PREFKEY_RESET_MODIFIER,AxeG.resetModifier);//+vayaI~
-        }                                                          //+vayaI~
+		boolean oldresetmodifier=AxeG.resetModifier;               //~vayaI~
+        AxeG.resetModifier=cbResetModifier.isChecked();            //~vayaI~
+        if (oldresetmodifier!=AxeG.resetModifier)	//value changed//~vayaI~
+        {                                                          //~vayaI~
+        	AxeG.setParameter(AxeG.PREFKEY_RESET_MODIFIER,AxeG.resetModifier);//~vayaI~
+        }                                                          //~vayaI~
         return rc;                                                 //~1821I~
     }                                                              //~1821M~
     //****************************************                     //~1826I~
@@ -315,7 +355,7 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
     {                                                              //~1826I~
     	boolean rc=false;   //not dismiss at return                //~1826I~
     //****************                                             //~1826I~
-        if (Dump.Y) Dump.println("AxeDlhgArmOption onClickOther buttonid="+Integer.toHexString(PbuttonId));//~1826I~
+        if (Dump.Y) Dump.println("AxeDlgArmOption onClickOther buttonid="+Integer.toHexString(PbuttonId));//~1826I~//~vc1pR~
         switch(PbuttonId)                                          //~1826I~
         {                                                          //~1826I~
         case R.id.IM_PICKER:                                       //~1826I~
@@ -328,7 +368,8 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
 	@Override                                                      //~1602I~//~1A03I~
     protected boolean onClickHelp()                                //~1821R~//~1A03I~
     {                                                              //~1528I~//~1A03I~
-    	showDialogHelp(R.string.HelpTitle_ArmOption,R.string.Help_ArmOption);//~1821R~//~1A03I~
+//    	showDialogHelp(R.string.HelpTitle_ArmOption,R.string.Help_ArmOption);//~1821R~//~1A03I~//~vc2BR~
+    	showDialogHelp(HELP_TITLE,HELP_FILE);                      //~vc2BI~
         return false;	//no dismiss                               //~1821R~//~1A03I~
     }                                                              //~1528I~//~1A03I~
 //******************                                               //~1A26I~
@@ -439,7 +480,8 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
 //        }                                                        //~vay9R~
     trace=Ptraceopt & (AxeG.TRACEO_REOPEN | AxeG.TRACEO_ON | AxeG.TRACEO_REMAP | AxeG.TRACEO_LOGCAT);//~vay9I~
   	dump=Pdumpopt & 3;                                             //~vay9I~
-    debug=Pdebugopt & (AxeG.DEBUGO_ABEND | AxeG.DEBUGO_UERREXIT);  //~vay9I~
+//  debug=Pdebugopt & (AxeG.DEBUGO_ABEND | AxeG.DEBUGO_UERREXIT);  //~vay9I~//~vc2RR~
+    debug=Pdebugopt;                                               //~vc2RI~
 	//*******                                                      //~1824I~
     	if (trace!=AxeG.optTrace)                                  //~1824I~
         {                                                          //~1824I~
@@ -504,9 +546,9 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
         rgDump.check(buttonid);                                    //~vay9I~
                                                                    //~vay9I~
         cbRemap.setChecked((trace & AxeG.TRACEO_REMAP)!=0);        //~vay9I~
-                                                                   //~vay9I~
         cbAbend.setChecked((debug & AxeG.DEBUGO_ABEND)!=0);        //~vay9I~
         cbUerrexit.setChecked((debug & AxeG.DEBUGO_UERREXIT)!=0);  //~vay9I~
+        cbDebug_Help_ReverseLang.setChecked((debug & AxeG.DEBUGO_HELP_REVERSELANG)!=0);//~vc2RI~
     }                                                              //~vay9I~
 //**************************************                           //~vay9I~
     private void setInternalOption()                               //~vay9I~
@@ -548,11 +590,14 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
         	debug|=AxeG.DEBUGO_ABEND;                              //~vay9I~
         if (cbUerrexit.isChecked())                                //~vay9I~
         	debug|=AxeG.DEBUGO_UERREXIT;                           //~vay9I~
+        if (cbDebug_Help_ReverseLang.isChecked())                  //~vc2RI~
+        	debug|=AxeG.DEBUGO_HELP_REVERSELANG;                   //~vc2RI~
 		chkInternalOptions(false/*not AxeG*/,trace,dump,debug);    //~vay9I~
                                                                    //~vay9I~
         AxeG.setParameter(AxeG.PREFKEY_DEBUG_TRACE,trace);//putPreference//~vay9I~
         AxeG.setParameter(AxeG.PREFKEY_DEBUG_DUMP,dump);//putPreference//~vay9I~
         AxeG.setParameter(AxeG.PREFKEY_DEBUG_DEBUG,debug);//putPreference//~vay9I~
+        AG.setDebugHelpLang();                                     //+vc2RI~
     }
     public static void chkHomeButtonKey(boolean PaxeGinit/*from AxeG*/,int Prgbuttonid)//~vayaI~
     {                                                              //~vayaI~
@@ -578,4 +623,18 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
     	homebuttonKeyValue=keyvalue;                               //~vayaI~
         if (Dump.Y) Dump.println("chkHomeButtonKey:buttonid="+Integer.toHexString(Prgbuttonid)+",key="+Integer.toHexString(keyvalue));//~vayaI~
     }                                                              //~vayaI~
+    //***************************************************          //~vc1pI~
+    public static void updateEnvPath(boolean PswJNICall)           //~vc1pI~
+    {                                                              //~vc1pI~
+	    String ev;                                                 //~vc1pI~
+        String old=new String(Gxeh.envVarPATH);                    //~vc1pR~
+        String cpath=Utils.getResourceString(R.string.Setup_EnvPathAdd);//$PATH1//~vc1pR~
+        String mypath=Gxeh.addPath;                                //~vc1pR~
+        int pos=old.indexOf(mypath);                               //~vc1pR~
+        String nativePath=Gxeh.envVarNativePATH;                   //~vc1pI~
+        ev=Gxeh.envPath.replace(cpath,Gxeh.addPath)+(nativePath==null ? "": ":"+nativePath);//~vc1pR~
+        Gxeh.envVarPATH=ev;                                        //~vc1pI~
+        if (PswJNICall)                                            //~vc1pI~
+	        AxeJNI.updateEnvPath();                                   //~vc1pI~
+    }                                                              //~vc1pI~
 }                                                                  //~1528R~

@@ -1,0 +1,6 @@
+. /g/src/arm/ndkenv.sh       #set PATH
+NDK=/home3/androidndk/android-ndk-r7
+ERR=err
+export TRACE=-DNOTRACE
+$NDK/ndk-build APP_PLATFORM=$PLATFORM  $@ 2>&1 |tee $ERR
+cat $ERR

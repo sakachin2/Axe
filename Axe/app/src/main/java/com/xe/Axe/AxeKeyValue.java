@@ -1,5 +1,7 @@
-//CID://+DATER~:                                 updateno=8                  //~1609R~
+//CID://+vc2jR~:                                 updateno=8                  //~1609R~//~vc23R~//~vc2jR~
 //*************************************************************    //~va15I~
+//vc2j 2020/07/27 IMopen key on hardKbd                            //~vc2jI~
+//vc23 2020/07/10 HardKey list row sequence change, char ken then extended ked//~vc23I~
 //*************************************************************    //~va15I~
 package com.xe.Axe;                                                //~va15I~
 
@@ -153,7 +155,9 @@ public class AxeKeyValue                                           //~va15R~
     public static final int KBF_ALT           =(GDK_MOD1_MASK<<16);     //0x00080000;//~1611R~
     public static final int KBF_ALTGR         =(GDK_MOD5_MASK<<16);     //0x00800000;//~1815R~
     public static final int KBF_RIGHTCONTROL  =0x04000000;         //~1611R~
-    public static final int KBF_UNICODE       =0x40000000;    //2byte unicode support//~1611R~
+    public static final int KBF_IM            =0x10000000;    //for IM//~vc2jI~
+    public static final int KBF_GDK           =0x20000000;    //GDK value by spinner//~0703R~//~0707R~
+    public static final int KBF_UNICODE       =0x40000000;    //2byte unicode support//~0703I~
 //    public static final int META_ALT_ON = 0x02;                  //~va15I~
 //    public static final int META_ALT_RIGHT_ON = 0x20;            //~va15I~
 //    public static final int META_ALT_LEFT_ON = 0x10;             //~va15I~
@@ -166,10 +170,12 @@ public class AxeKeyValue                                           //~va15R~
 //    public static final int META_CTRL_LEFT_ON   =0x2000;  //api11//~va15I~
 //    public static final int META_CTRL_RIGHT_ON  =0x4000;  //api11//~va15I~
 //    public static int metaToMod(int metastate)                   //~va15I~
-	private static final int META_SHIFT=KeyEvent.META_SHIFT_ON;                          //~va15I~
-	private static final int META_ALT  =KeyEvent.META_ALT_ON;                       //~va15I~
-	private static final int META_CTL  =0x01000;                                    //~va15I~
-	private static final int META_CTL_R=0x04000;                                    //~va15I~
+	public  static final int META_SHIFT=KeyEvent.META_SHIFT_ON;                          //~va15I~//~vc23R~
+	public  static final int META_ALT  =KeyEvent.META_ALT_ON;                       //~va15I~//~vc23R~
+	public  static final int META_ALT_L=KeyEvent.META_ALT_LEFT_ON; //~vc23I~
+	public  static final int META_ALT_R=KeyEvent.META_ALT_RIGHT_ON;//~vc23R~
+	public  static final int META_CTL  =0x01000;                                    //~va15I~//~vc23R~
+	public  static final int META_CTL_R=0x04000;                                    //~va15I~//~vc23R~
 //indea table  modifier                                            //~va15I~
     enum Sindex_Modifier{                                          //~va15R~
     		IMOD_SHIFT,IMOD_CONTROL,IMOD_ALT,IMOD_RIGHTCONTROL   //~va15I~
@@ -187,6 +193,20 @@ public class AxeKeyValue                                           //~va15R~
         {                                                          //~va15I~
             "S+","C+","A+","R-C"                                   //~va15I~
         };                                                         //~va15I~
+    private static final int[] SkeycodeIM={                          //~vc2jI~
+				KeyEvent.KEYCODE_MUHENKAN,                         //~vc2jI~
+				KeyEvent.KEYCODE_HENKAN,                           //~vc2jI~
+				KeyEvent.KEYCODE_KATAKANA_HIRAGANA,                //~vc2jI~
+				KeyEvent.KEYCODE_EISU,                             //~vc2jI~
+				KeyEvent.KEYCODE_KANA,                             //~vc2jI~
+        };                                                         //~vc2jI~
+    private static final int[] SkeycodeIMStrID={                     //~vc2jI~
+				R.string.KEYCODE_MUHENKAN,                         //~vc2jI~
+				R.string.KEYCODE_HENKAN,                           //~vc2jI~
+				R.string.KEYCODE_KATAKANA_HIRAGANA,                //~vc2jI~
+				R.string.KEYCODE_EISU,                             //~vc2jI~
+				R.string.KEYCODE_KANA,                             //~vc2jI~
+        };                                                         //~vc2jI~
 //*Android KEYCODE ***********************                         //~va15M~
 	public static final int AKC_BACK    =KeyEvent.KEYCODE_BACK;    //~va15M~
 	public static final int AKC_MENU    =KeyEvent.KEYCODE_MENU;    //~va15M~
@@ -278,6 +298,7 @@ public class AxeKeyValue                                           //~va15R~
 //            KeyEvent.KEYCODE_DPAD_CENTER                           //~va15I~//~1809R~
 //        };                                                         //~va15I~//~1809R~
     private static int[] SkeycodeToExtkeyTbl;                              //~va15I~
+    private static String[] SkeycodeToExtkeyNameTbl;               //~vc2jI~
     public  static String[] SkeyNameList;                          //~1609I~
 //*****************************************************************//~va15I~
 //*extkey and printable                                            //~va15I~
@@ -292,6 +313,7 @@ public class AxeKeyValue                                           //~va15R~
         initKD();                                                  //~1609I~
 //*keycode->extended key mapping                                   //~va15I~
         SkeycodeToExtkeyTbl=new int[KeyData.MAXKEYCODE];           //~1815R~
+        SkeycodeToExtkeyNameTbl=new String[KeyData.MAXKEYCODE];    //~vc2jI~
         Arrays.fill(SkeycodeToExtkeyTbl,KeyData.NOT_DEFINED);      //~1609R~
         int sz=KDTBLSZ;                                            //~1609R~
         for (int ii=0;ii<sz;ii++)                                  //~va15I~
@@ -299,14 +321,17 @@ public class AxeKeyValue                                           //~va15R~
         	kd=SkdTbl[ii];                                         //~va15R~
         	keycode=kd.keyCode;                                    //~va15R~
             if (keycode!=KeyData.NOT_DEFINED)                      //~1609R~
+            {                                                      //~vc2jI~
         		SkeycodeToExtkeyTbl[keycode]=kd.keyGDK;            //~va15I~
+        		SkeycodeToExtkeyNameTbl[keycode]=kd.keyName;       //~vc2jI~
+            }                                                      //~vc2jI~
         }                                                          //~va15I~
 //*keynameList                                                     //~1609I~
         SkeyNameList=new String[KDTBLSZ];                        //~1609I~
         for (int ii=0;ii<KDTBLSZ;ii++)                                  //~1609I~
         {                                                          //~1609I~
-        	kd=SkdTbl[ii];                                         //~1609I~
-        	SkeyNameList[ii]=kd.keyName;                           //~1609I~
+            kd=SkdTbl[ii];                                         //~1609I~
+            SkeyNameList[ii]=kd.keyName;                           //~1609I~
         }                                                          //~1609I~
     }                                                              //~va15I~
     private static void initKD()                                   //~1609R~
@@ -399,7 +424,7 @@ public class AxeKeyValue                                           //~va15R~
             	wksb.append(SmodifierNameShort[ii]);               //~va15I~
         }                                                          //~va15I~
         wksb.append(keynm);                                        //~va15M~
-        if (Dump.Y) Dump.println("extendedkeyToString key="+Integer.toHexString(Pkey)+"="+wksb);//~va15I~
+        if (Dump.Y) Dump.println("AxeKeyValue.extendedkeyToString key="+Integer.toHexString(Pkey)+"="+wksb);//~va15I~//~vc2jR~
         return wksb.toString();                                    //~va15I~
     }                                                              //~va15I~
     static String modifierToString(int Pmod,String Pkeyname)    //~va15I~
@@ -415,9 +440,19 @@ public class AxeKeyValue                                           //~va15R~
         }                                                          //~va15I~
         if (Pkeyname!=null)
         	wksb.append(Pkeyname);                                     //~va15I~
-        if (Dump.Y) Dump.println("extendedkeyToString mod="+Integer.toHexString(Pmod)+"="+wksb);//~va15I~
+        if (Dump.Y) Dump.println("AxeKeyvalue.modifierToString mod="+Integer.toHexString(Pmod)+"="+wksb);//~va15I~//~vc2jR~
         return wksb.toString();                                    //~va15I~
     }                                                              //~va15I~
+//**************************************************************** //~vc23I~
+//*Event.getMetaState()-->A+..                                     //~vc23I~
+//**************************************************************** //~vc23I~
+    public static String metaToString(int Pmeta,String Pkeyname)          //~vc23I~
+    {                                                              //~vc23I~
+        int mod=metaToMod(Pmeta);                                  //~vc23I~
+    	String rc=modifierToString(mod,Pkeyname);                   //~vc23I~
+        if (Dump.Y) Dump.println("metaToString meta="+Integer.toHexString(Pmeta)+",rc="+rc);//~vc23I~
+        return rc;                                                 //~vc23I~
+    }                                                              //~vc23I~
 //********	                                                       //~va15I~
     static int strToExtendedkey(String Pstr,int Perr)           //~va15I~
     {                                                              //~va15I~
@@ -624,13 +659,15 @@ public class AxeKeyValue                                           //~va15R~
     	int mod=0;                                                 //~va15I~
 		if ((Pmetastate & META_SHIFT)!=0)                               //~va15I~
         	mod|=KBF_SHIFT;                                     //~va15I~
+		if ((Pmetastate & META_ALT_R)!=0)                          //~vc23I~
+        	mod|=KBF_ALTGR;                                        //~vc23I~
 		if ((Pmetastate & META_ALT)!=0)                                 //~va15I~
         	mod|=KBF_ALT;                                       //~va15I~
 		if ((Pmetastate & META_CTL)!=0)                                 //~va15I~
         	mod|=KBF_CONTROL;                                   //~va15I~
 		if ((Pmetastate & META_CTL_R)!=0)                               //~va15I~
         	mod|=KBF_RIGHTCONTROL;                              //~va15I~
-        if (Dump.Y) Dump.println("metaToMod meta="+Integer.toHexString(Pmetastate)+",mod="+Integer.toHexString(mod));//~va15I~
+        if (Dump.Y) Dump.println("AxeKeyValue.metaToMod meta="+Integer.toHexString(Pmetastate)+",mod="+Integer.toHexString(mod));//~va15I~//+vc2jR~
         return mod;                                                //~va15I~
     }                                                              //~va15I~
 //*************                                                    //~va15I~
@@ -652,48 +689,70 @@ public class AxeKeyValue                                           //~va15R~
         	rc=false;                                              //~1609I~
         else                                                       //~1609I~
         	rc=SkeycodeToExtkeyTbl[Pkeycode]!=KeyData.NOT_DEFINED; //~1609I~
-        if (Dump.Y) Dump.println("isExtendedKey keycode="+Integer.toHexString(Pkeycode)+"="+rc);//~1609I~
+        if (Dump.Y) Dump.println("AxeKeyValue.isExtendedKey keycode="+Integer.toHexString(Pkeycode)+"="+rc);//~1609I~//~vc2jR~
         return rc;                                                 //~1609I~
     }                                                              //~1609I~
-//*************                                                    //+1B06I~
-    public static boolean isRepeatableExtKey(int Pkeycode)         //+1B06I~
-    {                                                              //+1B06I~
-        boolean rc;                                                //+1B06I~
-	    rc=(                                                       //+1B06I~
-                Pkeycode==GDK_Tab                                  //+1B06I~
-             || Pkeycode==GDK_BackSpace                            //+1B06I~
-             || Pkeycode==GDK_Return                               //+1B06I~
-             || Pkeycode==GDK_Page_Up                              //+1B06I~
-             || Pkeycode==GDK_Page_Down                            //+1B06I~
-             || Pkeycode==GDK_Delete                               //+1B06I~
-             || Pkeycode==GDK_Left                                 //+1B06I~
-             || Pkeycode==GDK_Right                                //+1B06I~
-             || Pkeycode==GDK_Up                                   //+1B06I~
-             || Pkeycode==GDK_Down                                 //+1B06I~
-             || Pkeycode==GDK_KP_Enter                             //+1B06I~
-           );                                                       //+1B06I~
-        if (Dump.Y) Dump.println("AxeKeyvalue:isRepeatableExtKey keycode="+Integer.toHexString(Pkeycode)+"="+rc);//+1B06I~
-        return rc;                                                 //+1B06I~
-    }                                                              //+1B06I~
-//*************                                                    //+1B06I~
-    public static boolean isRepeatableExtKeyForSoftKbd(int Pkeycode)//+1B06I~
-    {                                                              //+1B06I~
-        boolean rc;                                                //+1B06I~
-	    rc=(                                                       //+1B06I~
-                Pkeycode==GDK_Tab                                  //+1B06I~
-             || Pkeycode==GDK_BackSpace                            //+1B06I~
-             || Pkeycode==GDK_Delete                               //+1B06I~
-             || Pkeycode==GDK_Left                                 //+1B06I~
-             || Pkeycode==GDK_Right                                //+1B06I~
-             || Pkeycode==GDK_Up                                   //+1B06I~
-             || Pkeycode==GDK_Down                                 //+1B06I~
-           );                                                       //+1B06I~
-        if (Dump.Y) Dump.println("AxeKeyvalue:isRepeatableExtKeyForSoftKbd keycode="+Integer.toHexString(Pkeycode)+"="+rc);//+1B06I~
-        return rc;                                                 //+1B06I~
-    }                                                              //+1B06I~
+//*************                                                    //~1B06I~
+    public static String getExtendedKeyname(int Pkeycode)         //~vc2jI~
+    {                                                              //~vc2jI~
+    	String rc=null;                                            //~vc2jI~
+	    if (isExtendedKey(Pkeycode))                                //~vc2jI~
+        	rc=SkeycodeToExtkeyNameTbl[Pkeycode];                  //~vc2jI~
+        if (Dump.Y) Dump.println("AxeKeyvalue.getExtendedKeyname keycode="+Integer.toHexString(Pkeycode)+"="+rc);//~vc2jR~
+        return rc;                                                 //~vc2jI~
+    }                                                              //~vc2jI~
+//*************                                                    //~vc2jI~
+    public static boolean isRepeatableExtKey(int Pkeycode)         //~1B06I~
+    {                                                              //~1B06I~
+        boolean rc;                                                //~1B06I~
+	    rc=(                                                       //~1B06I~
+                Pkeycode==GDK_Tab                                  //~1B06I~
+             || Pkeycode==GDK_BackSpace                            //~1B06I~
+             || Pkeycode==GDK_Return                               //~1B06I~
+             || Pkeycode==GDK_Page_Up                              //~1B06I~
+             || Pkeycode==GDK_Page_Down                            //~1B06I~
+             || Pkeycode==GDK_Delete                               //~1B06I~
+             || Pkeycode==GDK_Left                                 //~1B06I~
+             || Pkeycode==GDK_Right                                //~1B06I~
+             || Pkeycode==GDK_Up                                   //~1B06I~
+             || Pkeycode==GDK_Down                                 //~1B06I~
+             || Pkeycode==GDK_KP_Enter                             //~1B06I~
+           );                                                       //~1B06I~
+        if (Dump.Y) Dump.println("AxeKeyvalue:isRepeatableExtKey keycode="+Integer.toHexString(Pkeycode)+"="+rc);//~1B06I~
+        return rc;                                                 //~1B06I~
+    }                                                              //~1B06I~
+//*************                                                    //~1B06I~
+    public static boolean isRepeatableExtKeyForSoftKbd(int Pkeycode)//~1B06I~
+    {                                                              //~1B06I~
+        boolean rc;                                                //~1B06I~
+	    rc=(                                                       //~1B06I~
+                Pkeycode==GDK_Tab                                  //~1B06I~
+             || Pkeycode==GDK_BackSpace                            //~1B06I~
+             || Pkeycode==GDK_Delete                               //~1B06I~
+             || Pkeycode==GDK_Left                                 //~1B06I~
+             || Pkeycode==GDK_Right                                //~1B06I~
+             || Pkeycode==GDK_Up                                   //~1B06I~
+             || Pkeycode==GDK_Down                                 //~1B06I~
+           );                                                       //~1B06I~
+        if (Dump.Y) Dump.println("AxeKeyvalue:isRepeatableExtKeyForSoftKbd keycode="+Integer.toHexString(Pkeycode)+"="+rc);//~1B06I~
+        return rc;                                                 //~1B06I~
+    }                                                              //~1B06I~
 //*************                                                    //~1613I~
     public static boolean isValidExtGDK(int Pkeycode)              //~1616R~
     {                                                              //~1613I~
     	return Pkeycode>0 && (Pkeycode & EXTKEY_MASK)==EXTKEY_MASK;//~1815R~
     }                                                              //~1613I~
+//*************                                                    //~vc2jI~
+    public static int getIMKeyID(int Pkeycode)                     //~vc2jI~
+    {                                                              //~vc2jI~
+    	int rc=0;                                                  //~vc2jI~
+        for (int ii=0;ii<SkeycodeIM.length;ii++)                   //~vc2jI~
+        	if (Pkeycode==SkeycodeIM[ii])                          //~vc2jI~
+            {                                                      //~vc2jI~
+            	rc=SkeycodeIMStrID[ii];                            //~vc2jI~
+                break;                                             //~vc2jI~
+            }                                                      //~vc2jI~
+        if (Dump.Y) Dump.println("AxeKeyvalue.getIMKeyID keycode="+Integer.toHexString(Pkeycode)+",rc="+Integer.toHexString(rc));//~vc2jI~
+    	return rc;                                                 //~vc2jI~
+    }                                                              //~vc2jI~
 }//class                                                           //~va15R~

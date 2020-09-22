@@ -6,6 +6,8 @@
 //**********************************************************************//~vag0I~
 package com.xe.Axe;                                                //~@@@@I~
 
+import com.ForDeprecated.AxeProgress;
+
 import java.io.File;
 
 public class AxeDownload                                           //~vag0R~

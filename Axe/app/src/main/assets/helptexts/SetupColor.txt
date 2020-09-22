@@ -1,0 +1,6 @@
+Set background and ruler(horizontal and/or vertical line at caret position) color.
+----------------------------------------------------------------------------
+Set RGB value on edit box or move the thumb.
+Ruler is optionally shown by selecting Ruler-type on "Other XE Options"
+----------------------------------------------------------------------------
+2020/09/11 SetupColor

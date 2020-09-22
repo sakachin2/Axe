@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    4;       //+vc19I~
+//******************************************************************//+vc19I~
+//vc19 2020/06/18 Warning Map type                                 //+vc19I~
+//******************************************************************//+vc19I~
 /* jcifs smb client library in Java
  * Copyright (C) 2000  "Michael B. Allen" <jcifs at samba dot org>
  * 
@@ -28,6 +32,7 @@ import jcifs.UniAddress;
 import jcifs.netbios.NbtAddress;
 import jcifs.util.MD4;
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public final class SmbSession {
 
     private static final String LOGON_SHARE =

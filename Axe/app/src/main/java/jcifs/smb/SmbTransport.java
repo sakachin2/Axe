@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    4;       //+vc19I~
+//******************************************************************//+vc19I~
+//vc19 2020/06/18 Warning Map type                                 //+vc19I~
+//******************************************************************//+vc19I~
 /* jcifs smb client library in Java
  * Copyright (C) 2005  "Michael B. Allen" <jcifs at samba dot org>
  *                  "Eric Glass" <jcifs at samba dot org>
@@ -30,6 +34,7 @@ import jcifs.util.transport.*;
 import jcifs.dcerpc.*;
 import jcifs.dcerpc.msrpc.*;
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public class SmbTransport extends Transport implements SmbConstants {
 
     static final byte[] BUF = new byte[0xFFFF];

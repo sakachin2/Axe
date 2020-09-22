@@ -1,13 +1,15 @@
-//*CID://+dateR~: update#= 370;                                    //~1528I~
+//*CID://+vc1cR~: update#= 372;                                    //~vc1cR~
 //**********************************************************************//~1528I~
+//vc1x 2020/07/08 member variable is initialized when defualt constructor defined(not non default constructor is define)//~vc1cI~
+//**********************************************************************//~vc1cI~
 //*ListView                                                        //~1530R~
 //**********************************************************************//~1528I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1109R~//~1528I~
 
 import java.util.Arrays;
 
-import android.text.InputFilter;                                   //+1B02I~
-import android.text.InputType;                                     //+1B02I~
+import android.text.InputFilter;                                   //~1B02I~
+import android.text.InputType;                                     //~1B02I~
 import android.view.ViewGroup;
 import android.widget.TextView;
                                                                    //~1528I~
@@ -59,7 +61,7 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
 //                AxeKeyValue.AKC_ENDCALL,  //ENDCALL and HOME could not be intecepted//~1A08R~
                 0,0,0,0,0,0,0,0,0,             //9 user button     //~1A29I~
     								};
-	public static int[] oldbtnkeytbl;                              //+1B02I~
+	public static int[] oldbtnkeytbl;                              //~1B02I~
 	public static final int MAXUSERKEY =9;                         //~1A29R~
 	public static final int USERBTN1=btnkeytbl.length-MAXUSERKEY;  //~1A29R~
  
@@ -178,7 +180,7 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
 	private TextView selectedView2;                                //~1816R~
 	private AxeSpinner spinner;                                    //~1816R~
 	private int spinnerPos,csrPos;                                 //~1814R~
-    private InputFilter[] inputFilter,inputFilter0;                //+1B02I~
+    private InputFilter[] inputFilter,inputFilter0;                //~1B02I~
                                                                    //~1813I~
 //*****************                                                //~1612I~
 	static                                                         //~1813I~
@@ -200,19 +202,32 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
             else                                                   //~1A29I~
         		btnnametbl[ii]=Utils.getResourceString(btnnameidtbl[ii]);//~1813R~//~1A29R~
         }                                                          //~1813M~
-    	oldbtnkeytbl=new int[BTNTBLSZ];                            //+1B02I~
+    	oldbtnkeytbl=new int[BTNTBLSZ];                            //~1B02I~
     }                                                              //~1813M~
 //*****************                                                //~1813I~
-    public AxeLstTermBtn(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)                                               //~1112I~//~1612I~//~1809R~
-    {                                                              //~1612I~
-//        super(PdialogId,PlayoutView,Pmenuid,Prowid,false/*editableRow*/);                       //~1612I~//~1A29R~//+1B02R~
-//    	super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/);//~1A29R~//~1A30R~
-        super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/); //use focus listener//+1B02I~
-    }                                                              //~1612I~
+//    public AxeLstTermBtn(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)                                               //~1112I~//~1612I~//~1809R~//~vc1cR~
+//    {                                                              //~1612I~//~vc1cR~
+////        super(PdialogId,PlayoutView,Pmenuid,Prowid,false/*editableRow*/);                       //~1612I~//~1A29R~//~1B02R~//~vc1cR~
+////      super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/);//~1A29R~//~1A30R~//~vc1cR~
+//        super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/); //use focus listener//~1B02I~//~vc1cR~
+//    }                                                              //~1612I~//~vc1cR~
+    public AxeLstTermBtn()                                         //+vc1cI~
+    {                                                              //+vc1cI~
+        if (Dump.Y) Dump.println("AxeLstTermBtn.defaultConstructor");//+vc1cI~
+    }                                                              //+vc1cI~
+    public static AxeLstTermBtn newInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~vc1cI~
+    {                                                              //~vc1cI~
+        if (Dump.Y) Dump.println("AxeLstTermBtn.newInstance");     //+vc1cI~
+	    AxeLstTermBtn al=new AxeLstTermBtn();                      //~vc1cI~
+        al.initInstance(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/); //use focus listener//~vc1cI~
+        return al;                                                 //~vc1cI~
+    }                                                              //~vc1cI~
 //*****************                                                //~1528I~
     public static AxeLstTermBtn setupListView(AxeSpinner Pspinner,int PdialogId,ViewGroup PlayoutView)//~1612R~//~1813R~
     {                                                              //~1528I~
-    	AxeLstTermBtn al=new AxeLstTermBtn(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID);//~1612R~//~1814R~
+        if (Dump.Y) Dump.println("AxeLstTermBtn.setupListView");   //+vc1cI~
+//  	AxeLstTermBtn al=new AxeLstTermBtn(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID);//~1612R~//~1814R~//~vc1cR~
+    	AxeLstTermBtn al=AxeLstTermBtn.newInstance(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID);//~vc1cI~
         al.spinner=Pspinner;                                       //~1814R~
         return al;                                                 //~1528I~
     }                                                              //~1528I~
@@ -246,25 +261,25 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
     public void onItemSelected(int Ppos,ListData Pitem)             //~1816R~//~1824R~
     {                                                              //~1809I~
         if (Dump.Y)Dump.println("AxeLstTermBtn onItemSelected pos="+Ppos);//~1816R~//~1824R~
-//        selectedView2=(Pitem.textView2);                         //+1B02R~
-//        int oldpos=csrPos;                                       //+1B02R~
-//        csrPos=Ppos;                                             //+1B02R~
-//        setSpinnerPrompt(csrPos);                                //+1B02R~
-////        drawLineChange(oldpos,csrPos);                         //+1B02R~
-//        notifyDataChanged();    //super                          //+1B02R~
+//        selectedView2=(Pitem.textView2);                         //~1B02R~
+//        int oldpos=csrPos;                                       //~1B02R~
+//        csrPos=Ppos;                                             //~1B02R~
+//        setSpinnerPrompt(csrPos);                                //~1B02R~
+////        drawLineChange(oldpos,csrPos);                         //~1B02R~
+//        notifyDataChanged();    //super                          //~1B02R~
     }                                                              //~1809I~
 	//******************                                           //~1824I~
     @Override                                                      //~1824I~
     public void onItemClicked(int Ppos,ListData Pitem)             //~1824I~
     {                                                              //~1824I~
         if (Dump.Y)Dump.println("AxeLstTermBtn onItemClicked pos="+Ppos);//~1824I~
-//        selectedView2=(Pitem.textView2);                         //+1B02R~
-//        int oldpos=csrPos;                                       //+1B02R~
-//        csrPos=Ppos;                                             //+1B02R~
-//        setSpinnerPrompt(csrPos);                                //+1B02R~
-////      invalidate();   //super                                  //+1B02R~
-////        drawLineChange(oldpos,csrPos);                         //+1B02R~
-//        notifyDataChanged();    //super                            //~1824R~//+1B02R~
+//        selectedView2=(Pitem.textView2);                         //~1B02R~
+//        int oldpos=csrPos;                                       //~1B02R~
+//        csrPos=Ppos;                                             //~1B02R~
+//        setSpinnerPrompt(csrPos);                                //~1B02R~
+////      invalidate();   //super                                  //~1B02R~
+////        drawLineChange(oldpos,csrPos);                         //~1B02R~
+//        notifyDataChanged();    //super                            //~1824R~//~1B02R~
     }                                                              //~1824I~
 	//******************                                               //~1612I~//~1809R~
     @Override                                                      //~1612I~
@@ -277,74 +292,74 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
     public int chkInputValue(int Ppos,String Pvalue,boolean Ptoast)         //~1613I~//~1A29R~
     {                                                              //~1612I~
     	String value=Pvalue;                                       //~1A29I~
-        if (Dump.Y) Dump.println("TermBtn chkinput pos="+Ppos+",str="+Pvalue);//+1B02I~
+        if (Dump.Y) Dump.println("TermBtn chkinput pos="+Ppos+",str="+Pvalue);//~1B02I~
 	    if (Pvalue.equals(""))                                     //~1810I~
         {                                                          //~1A29I~
-//            if (Ppos>=USERBTN1) //user key                       //+1B02R~
-//                btnkeytbl[Ppos]=KeyData.NOT_DEFINED;             //+1B02R~
+//            if (Ppos>=USERBTN1) //user key                       //~1B02R~
+//                btnkeytbl[Ppos]=KeyData.NOT_DEFINED;             //~1B02R~
 	 		return	KeyData.NOT_DEFINED;                            //~1810I~
         }                                                          //~1A29I~
         if (Ppos>=USERBTN1)	//user key                             //~1A29I~
         {                                                          //~1A29I~
-//            btnkeytbl[Ppos]=KeyData.NOT_DEFINED;                 //+1B02R~
-//            int offs=Pvalue.indexOf(',');                        //+1B02R~
-//            if (offs<=0||offs==Pvalue.length()-1)                //+1B02R~
-//                return  AxeKey.KEYVALUE_ERR;                     //+1B02R~
-//            value=Pvalue.substring(0,offs);                      //+1B02R~
-//            int keycode=Utils.hexstrToNum(Pvalue.substring(offs+1),-1);//+1B02R~
-//            if (keycode<0||keycode>=KeyData.MAXKEYCODE)          //+1B02R~
-//                return  AxeKey.KEYVALUE_ERR;                     //+1B02R~
-//            btnkeytbl[Ppos]=keycode;                             //+1B02R~
-            if (chkUserKey(Ppos,Pvalue))                           //+1B02I~
-		 		return	AxeKey.KEYVALUE_KEY1;	//until set using spinner//+1B02I~
+//            btnkeytbl[Ppos]=KeyData.NOT_DEFINED;                 //~1B02R~
+//            int offs=Pvalue.indexOf(',');                        //~1B02R~
+//            if (offs<=0||offs==Pvalue.length()-1)                //~1B02R~
+//                return  AxeKey.KEYVALUE_ERR;                     //~1B02R~
+//            value=Pvalue.substring(0,offs);                      //~1B02R~
+//            int keycode=Utils.hexstrToNum(Pvalue.substring(offs+1),-1);//~1B02R~
+//            if (keycode<0||keycode>=KeyData.MAXKEYCODE)          //~1B02R~
+//                return  AxeKey.KEYVALUE_ERR;                     //~1B02R~
+//            btnkeytbl[Ppos]=keycode;                             //~1B02R~
+            if (chkUserKey(Ppos,Pvalue))                           //~1B02I~
+		 		return	AxeKey.KEYVALUE_KEY1;	//until set using spinner//~1B02I~
         }                                                          //~1A29I~
     	for (int ii=0;ii<TGTKEYTBLSZ;ii++)                               //~1810I~//~1813R~
 	    	if (value.equalsIgnoreCase(tgtkeynametbl[ii]))                          //~1809R~//~1813R~//~1A29R~
             	return tgtkeyidtbl[ii];                            //~1813R~
-        if (Dump.Y) Dump.println("TermBtn chkinput err");          //+1B02I~
+        if (Dump.Y) Dump.println("TermBtn chkinput err");          //~1B02I~
  		return	AxeKey.KEYVALUE_ERR;                               //~1810I~
     }                                                              //~1612I~
-//******************                                               //+1B02I~
-    private boolean chkUserKey(int Ppos,String Pvalue)             //+1B02I~
-    {                                                              //+1B02I~
-    	boolean rc=false;                                          //+1B02I~
-//      int keycode=Utils.hexstrToNum(Pvalue,0/*err*/); //F1 is also valid hex char//+1B02I~
-        int keycode=Utils.strToNum(Pvalue,0/*err*/);               //+1B02I~
-        if (keycode>0 && keycode<KeyData.MAXKEYCODE)               //+1B02I~
-        {                                                          //+1B02I~
-	    	oldbtnkeytbl[Ppos]=btnkeytbl[Ppos];	//for chk update   //+1B02I~
-	    	btnkeytbl[Ppos]=keycode;                               //+1B02I~
-            rc=true;                                               //+1B02I~
-        }                                                          //+1B02I~
-        if (Dump.Y) Dump.println("chkUserkey pos="+Ppos+",value="+Pvalue+",keycode="+keycode+",rc="+rc);//+1B02I~
-        return rc;                                                 //+1B02I~
-    }                                                              //+1B02I~
+//******************                                               //~1B02I~
+    private boolean chkUserKey(int Ppos,String Pvalue)             //~1B02I~
+    {                                                              //~1B02I~
+    	boolean rc=false;                                          //~1B02I~
+//      int keycode=Utils.hexstrToNum(Pvalue,0/*err*/); //F1 is also valid hex char//~1B02I~
+        int keycode=Utils.strToNum(Pvalue,0/*err*/);               //~1B02I~
+        if (keycode>0 && keycode<KeyData.MAXKEYCODE)               //~1B02I~
+        {                                                          //~1B02I~
+	    	oldbtnkeytbl[Ppos]=btnkeytbl[Ppos];	//for chk update   //~1B02I~
+	    	btnkeytbl[Ppos]=keycode;                               //~1B02I~
+            rc=true;                                               //~1B02I~
+        }                                                          //~1B02I~
+        if (Dump.Y) Dump.println("chkUserkey pos="+Ppos+",value="+Pvalue+",keycode="+keycode+",rc="+rc);//~1B02I~
+        return rc;                                                 //~1B02I~
+    }                                                              //~1B02I~
 //******************                                               //~1531I~
 	@Override                                                      //~1612I~
     public String getKeyname(int Ppos,int Pfldid,int Pkey,String Perr) //~1602R~//~1A29R~
     {                                                              //~1531I~
         if (Pfldid==1)    	//left field                                         //~1612R~//~1809R~
-        {                                                          //+1B02I~
-//            return btnnametbl[Pkey];                             //+1B02I~
-        	String keyname;                                        //+1B02I~
-        	int keycode=btnkeytbl[Ppos];                           //+1B02I~
-			if (Ppos<USERBTN1)                                     //+1B02I~
-	        	keyname=btnnametbl[Ppos];                          //+1B02I~
-            else                                                   //+1B02I~
-            if (keycode<=0)                                        //+1B02I~
-            	keyname=btnnametbl[Ppos]+"[]";                     //+1B02I~
-            else                                                   //+1B02I~
-            	keyname=btnnametbl[Ppos]+"["+Integer.toString(keycode)+"]";//+1B02I~
-//            if (Dump.Y) Dump.println("TermBtn getname1 pos="+Ppos+",name="+keyname);//+1B02I~
-            return keyname;                                        //+1B02I~
-        }                                                          //+1B02I~
+        {                                                          //~1B02I~
+//            return btnnametbl[Pkey];                             //~1B02I~
+        	String keyname;                                        //~1B02I~
+        	int keycode=btnkeytbl[Ppos];                           //~1B02I~
+			if (Ppos<USERBTN1)                                     //~1B02I~
+	        	keyname=btnnametbl[Ppos];                          //~1B02I~
+            else                                                   //~1B02I~
+            if (keycode<=0)                                        //~1B02I~
+            	keyname=btnnametbl[Ppos]+"[]";                     //~1B02I~
+            else                                                   //~1B02I~
+            	keyname=btnnametbl[Ppos]+"["+Integer.toString(keycode)+"]";//~1B02I~
+//            if (Dump.Y) Dump.println("TermBtn getname1 pos="+Ppos+",name="+keyname);//~1B02I~
+            return keyname;                                        //~1B02I~
+        }                                                          //~1B02I~
         if (Pkey<=0||Pkey>TGTKEYTBLSZ)                             //~1814R~
         	return "";                                             //~1810I~
 		String keynm=tgtkeynametbl[Pkey];                                //~1813R~//~1A29R~
-//        if (Ppos>=USERBTN1)                                      //+1B02R~
-//        {                                                        //+1B02R~
-//            keynm+=","+Integer.toHexString(btnkeytbl[Ppos]);     //+1B02R~
-//        }                                                        //+1B02R~
+//        if (Ppos>=USERBTN1)                                      //~1B02R~
+//        {                                                        //~1B02R~
+//            keynm+=","+Integer.toHexString(btnkeytbl[Ppos]);     //~1B02R~
+//        }                                                        //~1B02R~
 		return keynm;                                              //~1A29I~
     }                                                              //~1531I~
 //*************                                                    //~1809I~
@@ -366,9 +381,9 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
             if (newkeyid==AxeKey.KEYVALUE_ERR)	//AxeList filled;not updated//~1813R~
             	continue;                                          //~1813R~
         	oldkeyid=btn2keyidmap[ii];                             //~1813R~
-//            if (newkeyid!=oldkeyid) //updated                    //+1B02R~
-            if (newkeyid!=oldkeyid 	//func key                     //+1B02I~
-	    	||  oldbtnkeytbl[ii]!=btnkeytbl[ii]);	//user keycode //+1B02I~
+//            if (newkeyid!=oldkeyid) //updated                    //~1B02R~
+            if (newkeyid!=oldkeyid 	//func key                     //~1B02I~
+	    	||  oldbtnkeytbl[ii]!=btnkeytbl[ii]);	//user keycode //~1B02I~
             {                                                      //~1809I~
             	btn2keyidmap[ii]=newkeyid;                         //~1813R~
 		    	savePreference(ii,newkeyid);                       //~1813R~
@@ -420,7 +435,7 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
                     if (Dump.Y) Dump.println("loadPreference termbtn "+key+"="+btnkeytbl[ii]+"="+Integer.toHexString(tgtkeyid));//~1813R~//~1A29R~
                 }                                                      //~1813I~//~1A29R~
         }                                                          //~1809I~
-        System.arraycopy(btnkeytbl,0,oldbtnkeytbl,0,BTNTBLSZ);     //+1B02I~
+        System.arraycopy(btnkeytbl,0,oldbtnkeytbl,0,BTNTBLSZ);     //~1B02I~
     	return rc;                                                 //~1809I~
     }                                                              //~1809I~
 //**********************************************************************//~1810I~
@@ -434,9 +449,9 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
     		AxeG.axeKey.savePreference_KeyValue(PREFKEY,Pkey,strvalue);//~1A29I~
         }                                                          //~1A29I~
         else                                                       //~1A29I~
-        {                                                          //+1B02I~
+        {                                                          //~1B02I~
     		AxeG.axeKey.savePreference_KeyValue(PREFKEY,Pkey,Pvalue);              //~1809I~//~1A29R~
-        }                                                          //+1B02I~
+        }                                                          //~1B02I~
     }                                                              //~1809I~
 //*************                                                    //~1809I~
 	public void onSpinnerItemSelected(int Ppos)                                //~1809I~
@@ -453,23 +468,23 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
         if (Dump.Y) Dump.println("AxeLstTermBtn set edittext spinnerpos="+spinnerPos+",keyname="+keyname);//~1814I~
 //        selectedView2.setText(keyname);                            //~1816R~//~1A29R~
 //        ((EditText)selectedView2).setSelection(keyname.length()); //move cursor at string end//~1A29R~
-//        if (Ppos>=USERBTN1)                                      //+1B02R~
-//            ((EditText)selectedView2).setText(keyname,BufferType.EDITABLE); //show cursor//+1B02R~
-//        else                                                     //+1B02R~
-//            ((EditText)selectedView2).setText(keyname,BufferType.NORMAL);//+1B02R~
-        if (selectedView2!=null)                                   //+1B02I~
-        {                                                          //+1B02I~
-        	if (csrPos>=USERBTN1)                                  //+1B02I~
-            {                                                      //+1B02I~
-        		String old=selectedView2.getText().toString();     //+1B02I~
-            	chkUserKey(Ppos,old);	//chk keycode              //+1B02I~
-            }                                                      //+1B02I~
-            else                                                   //+1B02I~
-            {                                                      //+1B02I~
-    			setInputFilter(selectedView2,false);	//remove filter//+1B02I~
-            }                                                      //+1B02I~
-        	selectedView2.setText(keyname);                        //+1B02I~
-        }                                                          //+1B02I~
+//        if (Ppos>=USERBTN1)                                      //~1B02R~
+//            ((EditText)selectedView2).setText(keyname,BufferType.EDITABLE); //show cursor//~1B02R~
+//        else                                                     //~1B02R~
+//            ((EditText)selectedView2).setText(keyname,BufferType.NORMAL);//~1B02R~
+        if (selectedView2!=null)                                   //~1B02I~
+        {                                                          //~1B02I~
+        	if (csrPos>=USERBTN1)                                  //~1B02I~
+            {                                                      //~1B02I~
+        		String old=selectedView2.getText().toString();     //~1B02I~
+            	chkUserKey(Ppos,old);	//chk keycode              //~1B02I~
+            }                                                      //~1B02I~
+            else                                                   //~1B02I~
+            {                                                      //~1B02I~
+    			setInputFilter(selectedView2,false);	//remove filter//~1B02I~
+            }                                                      //~1B02I~
+        	selectedView2.setText(keyname);                        //~1B02I~
+        }                                                          //~1B02I~
 //      select(csrPos);                                            //~1814R~
 //      selectedView2.requestFocus();                              //~1816R~
     }                                                              //~1809I~
@@ -519,63 +534,63 @@ public class AxeLstTermBtn extends AxeList                        //~1612R~//~18
 //            setSpinnerPrompt(csrPos);                            //~1816R~
 //        }                                                        //~1816R~
 //    }                                                            //~1816R~
-//*********************************************************        //+1B02I~
-	@Override                                                      //+1B02I~
-    public void onFocusChanged(int Ppos,boolean Phasfocus,ListData Pdata)//+1B02I~
-    {                                                              //+1B02I~
-    	TextView v2;                                               //+1B02I~
-        v2=Pdata.textView2;                                        //+1B02I~
-        if (Dump.Y) Dump.println("AxeTermBtn:onFocusChanged focus="+Phasfocus+",pos="+Ppos+",v2="+v2.toString());//+1B02I~
-    	if (Ppos>=USERBTN1)	//editable                             //+1B02I~
-        {                                                          //+1B02I~
-            v2.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS|InputType.TYPE_CLASS_TEXT);//+1B02I~
-//            v2.setEnabled(true);                                 //+1B02I~
-	        if (Dump.Y) Dump.println("AxeTermBtn:onFocusChanged inputtype:not NULL");//+1B02I~
-//            String old=v2.getText().toString();                  //+1B02I~
-//            v2.setText(old,BufferType.EDITABLE);    //not editable//+1B02I~
-            setInputFilter(v2,false);                              //+1B02I~
-        }                                                          //+1B02I~
-        else                                                       //+1B02I~
-        {                                                          //+1B02I~
-            v2.setInputType(InputType.TYPE_NULL);                  //+1B02I~
-            setInputFilter(v2,true);                               //+1B02I~
-	        if (Dump.Y) Dump.println("AxeTermBtn:onFocusChanged inputtype:NULL");//+1B02I~
-//            v2.setEnabled(false);                                //+1B02I~
-//            String old=v2.getText().toString();                  //+1B02I~
-//            v2.setText(old,BufferType.NORMAL);  //not editable   //+1B02I~
-        }                                                          //+1B02I~
-        if (Phasfocus)                                             //+1B02I~
-        	setSelection(Ppos,v2);                                 //+1B02I~
-    }                                                              //+1B02I~
-//*********************************************************        //+1B02I~
-    private void setInputFilter(TextView PeditText,boolean Plock)  //+1B02I~
-    {                                                              //+1B02I~
-    	if (inputFilter==null)                                     //+1B02I~
-        {                                                          //+1B02I~
-            inputFilter=new InputFilter[1];                        //+1B02I~
-            inputFilter[0]=new InputFilter.LengthFilter(0);       //set maxLength=0//+1B02I~
-            inputFilter0=new InputFilter[0];                       //+1B02I~
-        }                                                          //+1B02I~
-        if (Plock)                                                 //+1B02I~
-			PeditText.setFilters(inputFilter);	//maxlength=0      //+1B02I~
-        else                                                       //+1B02I~
-			PeditText.setFilters(inputFilter0);	//null filter      //+1B02I~
-	    if (Dump.Y) Dump.println("AxeTermBtn:setInputFilter lock="+Plock);//+1B02I~
-	}                                                              //+1B02I~
-//*********************************************************        //+1B02I~
-    private void setSelection(int Ppos,TextView PeditView)         //+1B02I~
-    {                                                              //+1B02I~
-		selectedView2=PeditView;                                   //+1B02I~
-		csrPos=Ppos;                                               //+1B02I~
-		setSpinnerPrompt(csrPos);                                  //+1B02I~
-	}                                                              //+1B02I~
-//*********************************************************        //+1B02I~
-    @Override                                                      //+1B02I~
-    public void onTextChanged(int Ppos,TextView Pview,String Pstr) //+1B02I~
-    {                                                              //+1B02I~
-    	if (Ppos<USERBTN1)	//not editable                         //+1B02I~
-			setInputFilter(Pview,true);                            //+1B02I~
-        else                                                       //+1B02I~
-            setInputFilter(Pview,false);                           //+1B02I~
-    }                                                              //+1B02I~
+//*********************************************************        //~1B02I~
+	@Override                                                      //~1B02I~
+    public void onFocusChanged(int Ppos,boolean Phasfocus,ListData Pdata)//~1B02I~
+    {                                                              //~1B02I~
+    	TextView v2;                                               //~1B02I~
+        v2=Pdata.textView2;                                        //~1B02I~
+        if (Dump.Y) Dump.println("AxeTermBtn:onFocusChanged focus="+Phasfocus+",pos="+Ppos+",v2="+v2.toString());//~1B02I~
+    	if (Ppos>=USERBTN1)	//editable                             //~1B02I~
+        {                                                          //~1B02I~
+            v2.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS|InputType.TYPE_CLASS_TEXT);//~1B02I~
+//            v2.setEnabled(true);                                 //~1B02I~
+	        if (Dump.Y) Dump.println("AxeTermBtn:onFocusChanged inputtype:not NULL");//~1B02I~
+//            String old=v2.getText().toString();                  //~1B02I~
+//            v2.setText(old,BufferType.EDITABLE);    //not editable//~1B02I~
+            setInputFilter(v2,false);                              //~1B02I~
+        }                                                          //~1B02I~
+        else                                                       //~1B02I~
+        {                                                          //~1B02I~
+            v2.setInputType(InputType.TYPE_NULL);                  //~1B02I~
+            setInputFilter(v2,true);                               //~1B02I~
+	        if (Dump.Y) Dump.println("AxeTermBtn:onFocusChanged inputtype:NULL");//~1B02I~
+//            v2.setEnabled(false);                                //~1B02I~
+//            String old=v2.getText().toString();                  //~1B02I~
+//            v2.setText(old,BufferType.NORMAL);  //not editable   //~1B02I~
+        }                                                          //~1B02I~
+        if (Phasfocus)                                             //~1B02I~
+        	setSelection(Ppos,v2);                                 //~1B02I~
+    }                                                              //~1B02I~
+//*********************************************************        //~1B02I~
+    private void setInputFilter(TextView PeditText,boolean Plock)  //~1B02I~
+    {                                                              //~1B02I~
+    	if (inputFilter==null)                                     //~1B02I~
+        {                                                          //~1B02I~
+            inputFilter=new InputFilter[1];                        //~1B02I~
+            inputFilter[0]=new InputFilter.LengthFilter(0);       //set maxLength=0//~1B02I~
+            inputFilter0=new InputFilter[0];                       //~1B02I~
+        }                                                          //~1B02I~
+        if (Plock)                                                 //~1B02I~
+			PeditText.setFilters(inputFilter);	//maxlength=0      //~1B02I~
+        else                                                       //~1B02I~
+			PeditText.setFilters(inputFilter0);	//null filter      //~1B02I~
+	    if (Dump.Y) Dump.println("AxeTermBtn:setInputFilter lock="+Plock);//~1B02I~
+	}                                                              //~1B02I~
+//*********************************************************        //~1B02I~
+    private void setSelection(int Ppos,TextView PeditView)         //~1B02I~
+    {                                                              //~1B02I~
+		selectedView2=PeditView;                                   //~1B02I~
+		csrPos=Ppos;                                               //~1B02I~
+		setSpinnerPrompt(csrPos);                                  //~1B02I~
+	}                                                              //~1B02I~
+//*********************************************************        //~1B02I~
+    @Override                                                      //~1B02I~
+    public void onTextChanged(int Ppos,TextView Pview,String Pstr) //~1B02I~
+    {                                                              //~1B02I~
+    	if (Ppos<USERBTN1)	//not editable                         //~1B02I~
+			setInputFilter(Pview,true);                            //~1B02I~
+        else                                                       //~1B02I~
+            setInputFilter(Pview,false);                           //~1B02I~
+    }                                                              //~1B02I~
 }//class                                                           //~1528I~

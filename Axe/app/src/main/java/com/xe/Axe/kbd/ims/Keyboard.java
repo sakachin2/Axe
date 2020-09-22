@@ -1,4 +1,4 @@
-//*CID://+@@@@R~:                             update#=   17;       //~@@@@I~
+//*CID://+@@@@R~:                             update#=   19;       //~@@@@I~
 /*
  * Copyright (C) 2008-2009 Google Inc.
  * 
@@ -21,6 +21,7 @@ package com.xe.Axe.kbd.ims;                                        //~@@@@R~
 import org.xmlpull.v1.XmlPullParserException;
 
 
+import com.ahsv.utils.Utils;
 import com.xe.Axe.R;                                          //~@@@@R~
 import com.xe.Axe.Dump;//~@@@@I~
 import android.content.Context;
@@ -358,6 +359,7 @@ public /*private*/ int mDisplayWidth;                              //~@@@@R~
             } else if (codesValue.type == TypedValue.TYPE_STRING) {
                 codes = parseCSV(codesValue.string.toString());
             }
+//          if (Dump.Y) Dump.println("Keyboard.Key.constructor codes="+ Utils.toHexString(codes));//+@@@@R~
             
             iconPreview = a.getDrawable(/*com.android.internal.*/R.styleable.Keyboard_Key_iconPreview);//~@@@@R~
             if (iconPreview != null) {
@@ -370,7 +372,7 @@ public /*private*/ int mDisplayWidth;                              //~@@@@R~
                     /*com.android.internal.*/R.styleable.Keyboard_Key_popupKeyboard, 0);//~@@@@R~
             repeatable = a.getBoolean(
                     /*com.android.internal.*/R.styleable.Keyboard_Key_isRepeatable, false);//~@@@@R~
-//if (Dump.Y) Dump.println("ims:Keyboard Key code="+ Integer.toHexString(codes[0])+",repeatable="+repeatable);//+@@@@R~
+//if (Dump.Y) Dump.println("ims:Keyboard Key code="+ Integer.toHexString(codes[0])+",repeatable="+repeatable);//~@@@@R~
             modifier = a.getBoolean(
                     /*com.android.internal.*/R.styleable.Keyboard_Key_isModifier, false);//~@@@@R~
             sticky = a.getBoolean(

@@ -3,11 +3,129 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:id="@+id/Root"
     >
-    <Spinner
-         android:id="@+id/Spinner"
-         android:layout_height="wrap_content"
-         android:layout_width="fill_parent"
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="1dp"
+             android:orientation="horizontal"
+	            android:focusable="true"
+	            android:focusableInTouchMode="true"
+             android:id="@+id/DummyFocus"
+        />	<!--dummy for avaoid ime popup;and requestFocus on Name field was comment outed-->
+	<LinearLayout 
+		 android:layout_width="fill_parent"
+		 android:layout_height="36dp"
+		 android:orientation="horizontal"
+                android:gravity="center_vertical"
+ 	>
+        <Spinner
+             android:id="@+id/Spinner"
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+              android:background="#ffffffff"
+              android:textColor="#ff000000"
+                        android:focusable="false"
+                        android:focusableInTouchMode="true"
+        />
+        <TextView
+             android:layout_height="fill_parent"
+             android:layout_width="wrap_content"
+              android:textColor="#ffffffff"
+              android:text="@string/Label_KbdSpinner"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+        />
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="fill_parent"
+             android:orientation="horizontal"
+             android:layout_marginLeft="20dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+        >
+            <Button
+                android:id="@+id/Delete"                   
+                android:layout_height="fill_parent"
+                android:layout_width="wrap_content"
+                android:text="@string/Delete"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/SoftKbd"                   
+                android:layout_height="fill_parent"
+                android:layout_width="wrap_content"
+                android:text="@string/Label_OpenSoftKbd"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+             		android:layout_marginLeft="10dp"
+            />
+            <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="fill_parent"
+                 android:orientation="horizontal"
+    	     android:layout_weight="1"
+             		android:layout_marginLeft="20dp"
+            >
+                <LinearLayout
+                     android:layout_height="fill_parent"
+                     android:layout_width="wrap_content"
+                     android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="#fff0f0f0"
+                >
+                    <EditText
+                        android:id="@+id/etSoftKbd"           
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                            android:clickable="false"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                        android:textColor="#ff000000"
+                        android:cursorVisible="true"
+                        android:textCursorDrawable="@drawable/et_cursor"
+                        android:maxLines="1"
+                        android:imeOptions="actionDone"
+                        android:nextFocusForward="@+id/etSoftKbd"
+                        android:nextFocusDown="@+id/etSoftKbd"
+                    />
+                   <!-- android:imeOptions="ationDone"-->
+                   <!-- android:imeOptions="actionSend"-->
+                </LinearLayout>
+            <!--
+                <LinearLayout
+                        android:id="@+id/LLHardKbd"           
+                     android:layout_height="fill_parent"
+                     android:layout_width="wrap_content"
+                     android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="#ffffff00"
+                 android:layout_marginLeft="40dp"
+                 android:visibility="gone"
+                >
+                    <EditText
+                        android:id="@+id/etHardKbd"           
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                        android:textColor="#ff000000"
+                        android:cursorVisible="true"
+                        android:textCursorDrawable="@drawable/et_cursor"
+                    />
+                </LinearLayout>
+            -->
+            </LinearLayout>
+        <!--        	android:visibility="invisible"-->
+        </LinearLayout>
+	</LinearLayout> 
+    <include layout="@layout/listrowkbdlayout_hdr"
     />
 	<LinearLayout 
 		 android:layout_width="fill_parent"
@@ -20,6 +138,8 @@
             android:id="@+id/List"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
         />
     </LinearLayout>
     <LinearLayout

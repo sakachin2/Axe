@@ -31,8 +31,19 @@ public class Slider                                                //~1726I~
         edittext.setText(Integer.toString(PinitValue));            //~1726I~
     	seekbar.setOnSeekBarChangeListener(this); //request callback this//~1726I~
 //    	setkeylistener(edittext);                                  //~1730R~
-  		EditTextField.setListener(this,edittext);                  //+1730R~
+  		EditTextField.setListener(this,edittext);                  //~1730R~
     }                                                              //~1726I~
+    //***********************************************              //+0704I~
+    @Override                                                      //+0704I~
+    public void beforeTextChangedETF(EditText PeditText, String Ptext, int start, int count, int after){};//+0704I~
+    @Override                                                      //+0704I~
+    public void onTextChangedETF(EditText PeditText,String Ptext,int start,int before,int count){};//+0704I~
+    @Override                                                      //+0704I~
+    public void afterTextChangedETF(EditText PeditText,String Ptext){};//+0704I~
+    @Override                                                      //~0702I~
+    public void onEditTextChanged(int Pviewid,String Pvalue)       //~0702I~
+    {                                                              //~0702I~
+    }                                                              //~0702I~
     @Override                                                      //~1730I~
     public void onEditTextChanged(int Pviewid,int Pvalue)         //~1730I~
     {                                                              //~1730I~

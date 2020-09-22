@@ -1,6 +1,8 @@
-//*CID://+dateR~: update#= 292;                                    //~1528I~
+//*CID://+vc1xR~: update#= 293;                                    //~1528I~//+vc1xR~
 //**********************************************************************//~1528I~
-//*ListView                                                        //~1530R~
+//vc1x 2020/07/08 member variable is initialized when defualt constructor defined(not non default constructor is define)//+vc1xI~
+//**********************************************************************//+vc1xI~
+//*AxeLstShortcut                                                  //~1530R~//+vc1xR~
 //**********************************************************************//~1528I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1109R~//~1528I~
 
@@ -12,14 +14,27 @@ public class AxeLstShortcut extends AxeList                        //~1612R~
 	private static final int ROWID_SHORTCUT =R.layout.listrowshortcut;//~1529I~
                                                                    //~1529I~
 //*****************                                                //~1612I~
-    public AxeLstShortcut(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)                                               //~1112I~//~1612I~
-    {                                                              //~1612I~
-		super(PdialogId,PlayoutView,Pmenuid,Prowid,false/*editableRow*/);                       //~1612I~
-    }                                                              //~1612I~
+//    public AxeLstShortcut(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)                                               //~1112I~//~1612I~//+vc1xR~
+//    {                                                              //~1612I~//+vc1xR~
+//        super(PdialogId,PlayoutView,Pmenuid,Prowid,false/*editableRow*/);                       //~1612I~//+vc1xR~
+//    }                                                              //~1612I~//+vc1xR~
+    public AxeLstShortcut()                                        //+vc1xI~
+    {                                                              //+vc1xI~
+        if (Dump.Y) Dump.println("AxeLstShortCut.defaultConstructor");//+vc1xI~
+    }                                                              //+vc1xI~
+    public static AxeLstShortcut newInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//+vc1xI~
+    {                                                              //+vc1xI~
+        if (Dump.Y) Dump.println("AxeLstShortCut.newInstance");    //+vc1xI~
+	    AxeLstShortcut al=new AxeLstShortcut();                    //+vc1xI~
+        al.initInstance(PdialogId,PlayoutView,Pmenuid,Prowid,false/*editableRow*/);//+vc1xI~
+        return al;
+    }                                                              //+vc1xI~
 //*****************                                                //~1528I~
     public static AxeLstShortcut setupListView(int PdialogId,ViewGroup PlayoutView)//~1612R~
     {                                                              //~1528I~
-        AxeLstShortcut al=new AxeLstShortcut(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID_SHORTCUT);//~1612R~
+        if (Dump.Y) Dump.println("AxeLstShortCut.setupListView");  //+vc1xI~
+//      AxeLstShortcut al=new AxeLstShortcut(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID_SHORTCUT);//~1612R~//+vc1xR~
+        AxeLstShortcut al=AxeLstShortcut.newInstance(PdialogId,PlayoutView,0/*Shift menuId*/,ROWID_SHORTCUT);//+vc1xI~
         return al;                                                 //~1528I~
     }                                                              //~1528I~
 //*****************                                                //~1612I~
@@ -77,7 +92,7 @@ public class AxeLstShortcut extends AxeList                        //~1612R~
     }                                                              //~1612I~
 //******************                                               //~1531I~
 	@Override                                                      //~1612I~
-    public String getKeyname(int Ppos,int Pfldid,int Pkey,String Perr)//~1602R~//+1A29R~
+    public String getKeyname(int Ppos,int Pfldid,int Pkey,String Perr)//~1602R~//~1A29R~
     {                                                              //~1531I~
         if (Pfldid==1)                                             //~1612R~
         	return AxeKey.keyToString(Pkey,Perr);                  //~1611I~

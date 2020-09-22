@@ -9,36 +9,39 @@
 		    <item android:id="@+id/CM_BUTTON_CONFIG"
         		android:title="@string/ContextMenu_Button_Config"
     		>
-    <menu>
-    <item android:id="@+id/CM_BUTTON_LAYOUT"
-        android:title="@string/ContextMenu_Button_Layout"
-    />
-    <item android:id="@+id/CM_TERMINAL_BUTTON"
-        android:title="@string/ContextMenu_TerminalBtn"
-    />
-    <item android:id="@+id/CM_SHORTCUT_KEY"
-        android:title="@string/ContextMenu_ShortcutkeyMap"
-    />
-    <item android:id="@+id/CM_SHIFT_KEY"
-        android:title="@string/ContextMenu_ShiftkeyMap"
-    >
-    </item>
-    <item android:id="@+id/CM_ALTGR_KEY"
-        android:title="@string/ContextMenu_AltGrMap"
-    >
-    </item>
-	    </menu>
+    <!--menu-->
+        <item android:id="@+id/CM_BUTTON_LAYOUT"
+            android:title="@string/ContextMenu_Button_Layout"
+        />
+        <!--item android:id="@+id/CM_TERMINAL_BUTTON"
+            android:title="@string/ContextMenu_TerminalBtn"
+        /-->
+        <!--item android:id="@+id/CM_SHIFT_KEY"
+            android:title="@string/ContextMenu_ShiftkeyMap"
+        >
+        </item-->
+        <!--item android:id="@+id/CM_ALTGR_KEY"
+            android:title="@string/ContextMenu_AltGrMap"
+        >
+        </item-->
+	<!--/menu-->
         	</item>
+		    <item android:id="@+id/CM_KBD_CONFIG_HW"
+        		android:title="@string/ContextMenu_Kbd_ConfigHW"
+    		/>
 		    <item android:id="@+id/CM_KBD_CONFIG"
         		android:title="@string/ContextMenu_Kbd_Config"
     		/>
+	        <item android:id="@+id/CM_SHORTCUT_KEY"
+    	        android:title="@string/ContextMenu_ShortcutkeyMap"
+        	/>
 		    <item android:id="@+id/CM_OTHER"
         		android:title="@string/ContextMenu_SetupOther"
     		/>
 		    <item android:id="@+id/CM_OTHER_ARM"
         		android:title="@string/ContextMenu_SetupOtherArm"
     		/>
-		    <item android:id="@+id/CM_DL_ASSET"
+		    <!--item android:id="@+id/CM_DL_ASSET"
         		android:title="@string/ContextMenu_DownloadAsset"
-    		/>
+    		/-->
 </menu>

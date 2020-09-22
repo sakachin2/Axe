@@ -1,5 +1,17 @@
-//*CID://+vayeR~:                             update#=   56;       //~vayeR~
+//*CID://+vc2UR~:                             update#=  104;       //~vc2UR~
 //*****************************************************************************************//~vabeR~
+//vc2U 2020/09/18 initialize progress dialog not dismiss automatically//~vc2KI~
+//vc2K 2020/08/28 receive intent(View/Edit)                        //~vc2KI~
+//vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//~vc26I~
+//vc1u 2020/07/06 helpdialog for asset/helptexts                   //~vc1uI~
+//vc1t 2020/07/02 multi column EditText ListView callback OnFocusListener called twice True then False(mey be bug)//~vc1tI~
+//                requestFocus after short time may fix it but SoftKbd popup could not be protected(can be disapper after once popupped)//~vc1tI~
+//                Try to receive input by hard/soft keyboard by dummy(InVisible) EditText then send to ListView.//~vc1tI~
+//                Receive HardKbd input by textview(requestFocus), //~vc1tI~
+//                By IME button set dummy EditText to focusable and receive from SoftKbd//~vc1tI~
+//vc1r 2020/06/26 avoid ime popup implicitly                       //~vc1rI~
+//vc1b 2020/06/19 runtime permission frp android6                  //~vc1bI~
+//vc10 2020/06/14 update Dump to write to terminal(copy from Ahsv) //~vc10R~
 //vaye:141125 (Axe)orientationfix allow to change to reverse orientation//~vayeI~
 //vaya:141125 (Axe)utilize actionbar:home button click event(customizable by settion,default is home)//~vayaI~
 //vay5:141122 (Axe)actionBar as alternative of menu button for api>=11(android3)//~vay5I~
@@ -19,6 +31,7 @@
 package com.xe.Axe;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -30,10 +43,24 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+
+import com.ahsv.AG;
+import com.ahsv.utils.URunnable;
+import com.ahsv.utils.URunnableI;
+import com.ahsv.utils.Utils;
+import com.xe.Axe.kbd.AxeKbdDialogHW;
+
+import java.util.Arrays;
 
 public class Axe extends Activity                                  //~vaiqR~
                     implements AxeAlertI                           //~vaiqI~
+                      , URunnableI    //at stop APP                  //~vc10I~
 {                                                                  //~vaiqI~
+    public static final int PERMISSION_LOCATION=1;                 //~vc10I~
+    public static final int PERMISSION_EXTERNAL_STORAGE=2;         //~vc1bI~
+    public static final int PERMISSION_EXTERNAL_STORAGE_READ=3;         //~vc10I~//~vc1bI~
+                                                                   //~vc10I~
     private boolean scrinitialized;                                //~1606R~
     private static boolean destroying=false;                       //~1607I~
     private boolean contextMenuShowing;
@@ -41,6 +68,7 @@ public class Axe extends Activity                                  //~vaiqR~
     public  int axeStat;                                           //~vaicI~
     private int initFirsttime;                                         //~vaiqI~
     private AxeAlert initAlertDialog2;                             //~vaiqI~
+    private AxePermission aAxePermission;                          //~vc1bI~
     public static final int AXES_ORIENTATION_CHANGING=   0x01;      //~vaicI~
     //~1930I~
     @Override                                                      //~1526I~
@@ -50,11 +78,13 @@ public class Axe extends Activity                                  //~vaiqR~
 //  	requestWindowFeature(Window.FEATURE_LEFT_ICON);            //~vay5R~
     	try                                                        //~1528I~
         {                                                          //~1528I~
-            AxeG.init(this);                                       //~1528R~
+    	    Dump.openExOnlyTerminal();	//write exception only to Terminal//~vc10I~
+//          AxeG.init(this);                                       //~vc1uR~
+            new AG(this);                                          //~vc1uR~
             if (AxeG.osVersion<AxeG.HONEYCOMB)  //<android3=api-11 //~vay5R~
             	requestWindowFeature(Window.FEATURE_LEFT_ICON);    //~vay5I~
-          if (AxeG.isDebuggable)                                   //~vaiqI~
-            Dump.open("dump.dat");                                 //~1528I~
+//        if (AxeG.isDebuggable)                                   //~vaiqI~//~vc10R~
+//          Dump.open("dump.dat");                                 //~1528I~//~vc10R~
             AxeView.setContentView();                              //~1606R~
             if (AxeG.startupCtr==0)                                //~vaiqI~
             {                                                      //~vaiqI~
@@ -65,6 +95,8 @@ public class Axe extends Activity                                  //~vaiqR~
             }                                                      //~vaiqI~
 //			AxeG.axeView=new AxeView();                            //~vaiqR~
 			AxeView.setInitialOrientation();                       //~vayeI~
+		    hideSoftKbd();	//TODO test                            //~vc1rI~
+		    AxeG.axeBCR.onCreate();                                //~vc2KI~
         }                                                          //~1528I~
         catch(Exception e)                                         //~1528I~
         {                                                          //~1528I~
@@ -73,6 +105,13 @@ public class Axe extends Activity                                  //~vaiqR~
 //  	this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);//setup menu//~1526R~
 //  	this.getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,R.drawable.wnp);//~1526R~
     }                                                              //~1526I~
+//****************************************                         //~vc2KI~
+    @Override                                                      //~vc2KI~
+    public void onNewIntent(Intent Pintent)                        //~vc2KI~
+	{                                                              //~vc2KI~
+        if (Dump.Y) Dump.println("Axe:onNewIntent intent="+Utils.toString(Pintent));//~vc2KI~
+        AxeG.axeBCR.onNewIntent(Pintent);                          //~vc2KI~
+    }                                                              //~vc2KI~
 //****************************************                         //~vaiqI~
     @Override                                                      //~1526I~
     public boolean onCreateOptionsMenu(Menu Pmenu)                 //~1527R~
@@ -173,22 +212,28 @@ public class Axe extends Activity                                  //~vaiqR~
 //                    AxeG.axeView.initScreen();  //set axeView!=NULL before JNI call//~1715I~
 //                }                                                //~1715I~
             View v=getCurrentFocus();                              //~vaiqI~
-        	if (Dump.Y) Dump.println("onWindowFocusChanged focus="+Phasfocus+"view="+(v==null?"null":v.toString()));//~vaiqR~
+        	if (Dump.Y) Dump.println("Axe.onWindowFocusChanged focus="+Phasfocus+",view="+(v==null?"null":v.toString()));//~vaiqR~//~vc1bR~
+        	if (Dump.Y) Dump.println("Axe.onWindowFocusChanged initFirsttime="+initFirsttime+",scrinitialized="+scrinitialized+",initAlertDialog2="+initAlertDialog2);//~vc2KI~
 				if (AxeG.axeView==null)                            //~vaiqI~
                 {                                                  //~vaiqI~
-		        	if (Dump.Y) Dump.println("onWindowFocusChanged axeView=null");//~vaiqR~
+		        	if (Dump.Y) Dump.println("Axe.onWindowFocusChanged axeView=null");//~vaiqR~//~vc1bR~
                 	if (initFirsttime==1)                          //~vaiqI~
                     {                                              //~vaiqI~
-			        	if (Dump.Y) Dump.println("onWindowFocusChanged init=1");//~vaiqR~
+			        	if (Dump.Y) Dump.println("Axe.onWindowFocusChanged init=1");//~vaiqR~//~vc26R~
 		            	initFirsttime=2;                           //~vaiqR~
     	    			AxeView.waitInitializeWarning();           //~vaiqR~
-                        return;                                    //~vaiqI~
+//                      return;                                    //~vaiqI~//~vc2UR~
                     }                                              //~vaiqI~
-			        if (Dump.Y) Dump.println("onWindowFocusChanged new AxeView");//~vaiqR~
+			        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged new AxeView");//~vaiqR~//~vc1bR~
 					AxeG.axeView=new AxeView();                    //~vaiqI~
-			        if (Dump.Y) Dump.println("onWindowFocusChanged new AxeView end");//~vaiqR~
+			        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged new AxeView end");//~vaiqR~//~vc1bR~
+                  if (initFirsttime!=0)                            //~vc2UI~
+                  {                                                //~vc2UI~
                     initFirsttime=3;	//jni init end             //~vaiqI~
+                    return;                                        //~vc2UI~
+                  }                                                //~vc2UI~
                 }                                                  //~vaiqI~
+    	    	if (Dump.Y) Dump.println("Axe.onWindowFocusChanged initAlertDialog2="+initAlertDialog2);//~vc2UI~
 		        if (initAlertDialog2!=null)                        //~vaiqI~
     				dismissInitAlertDialog();                      //~vaiqI~
 			  if (!scrinitialized)                              //~1715I~
@@ -207,15 +252,15 @@ public class Axe extends Activity                                  //~vaiqR~
         }                                                          //~1714I~
         catch(Exception e)                                         //~1714I~
         {                                                          //~1714I~
-        	Dump.println(e,"onWindowFocusChanged");                //~1714I~
+        	Dump.println(e,"Axe.onWindowFocusChanged");                //~1714I~//~vc26R~
         }                                                          //~1714I~
-        if (Dump.Y) Dump.println("WindowFocusChanged "+Phasfocus); //~1530I~
+        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged "+Phasfocus); //~1530I~//~vc2UR~
         if (Dump.Y) Dump.println("forcus view="+getCurrentFocus());//~1530I~
         Configuration cfg=AxeG.resource.getConfiguration();        //~vaiqI~
-        if (Dump.Y) Dump.println("focuschanged keyboard="+Integer.toHexString(cfg.keyboard));//~vaiqI~
-        if (Dump.Y) Dump.println("focuschanged keyboardHidden="+Integer.toHexString(cfg.keyboardHidden));//~vaiqI~
-        if (Dump.Y) Dump.println("focuschanged hardKeyboardHidden="+Integer.toHexString(cfg.hardKeyboardHidden));//~vaiqI~
-        if (Dump.Y) Dump.println("focuschanged screenLayout="+Integer.toHexString(cfg.screenLayout));//~vaiqI~
+        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged keyboard="+Integer.toHexString(cfg.keyboard));//~vaiqI~//~vc1bR~//~vc2UR~
+        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged keyboardHidden="+Integer.toHexString(cfg.keyboardHidden));//~vaiqI~//~vc1bR~//~vc2UR~
+        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged hardKeyboardHidden="+Integer.toHexString(cfg.hardKeyboardHidden));//~vaiqI~//~vc1bR~//~vc2UR~
+        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged screenLayout="+Integer.toHexString(cfg.screenLayout));//~vaiqI~//~vc1bR~//~vc2UR~
     }                                                              //~1530I~
 //**************************************                           //~1527I~
 //*Config changed                                                  //~1527I~
@@ -225,11 +270,16 @@ public class Axe extends Activity                                  //~vaiqR~
 	{                                                              //~1526I~
     	super.onConfigurationChanged(Pcfg);                        //~1526I~
         boolean orichanged=(Pcfg.orientation==Configuration.ORIENTATION_PORTRAIT)!=(AxeG.displayPL==0);//~1606R~
-        if (Dump.Y) Dump.println("WindowConfiguration changed orichanged="+orichanged); 
-        if (Dump.Y) Dump.println("WindowConfiguration changed keyboard="+Integer.toHexString(Pcfg.keyboard));//~vai8I~
-        if (Dump.Y) Dump.println("WindowConfiguration changed keyboardHidden="+Integer.toHexString(Pcfg.keyboardHidden));//~vai8I~
-        if (Dump.Y) Dump.println("WindowConfiguration changed hardKeyboardHidden="+Integer.toHexString(Pcfg.hardKeyboardHidden));//~vai8I~
-        if (Dump.Y) Dump.println("WindowConfiguration changed screenLayout="+Integer.toHexString(Pcfg.screenLayout));//~vai8I~
+        if (Dump.Y) Dump.println("Axe.onConfigurationChanged orichanged="+orichanged);//~vc1bR~
+        if (Dump.Y) Dump.println("Axe.onConfigurationChanged keyboard="+Integer.toHexString(Pcfg.keyboard));//~vai8I~//~vc1bR~
+        if (Dump.Y) Dump.println("Axe.onConfigurationChanged keyboardHidden="+Integer.toHexString(Pcfg.keyboardHidden));//~vai8I~//~vc1bR~
+        if (Dump.Y) Dump.println("Axe.onConfigurationChanged hardKeyboardHidden="+Integer.toHexString(Pcfg.hardKeyboardHidden));//~vai8I~//~vc1bR~
+        if (Dump.Y) Dump.println("Axe.onConfigurationChanged screenLayout="+Integer.toHexString(Pcfg.screenLayout));//~vai8I~//~vc1bR~
+        boolean swChangeKbd=(Pcfg.hardKeyboardHidden!=AxeG.hardKeyboard);                      //~vc1rR~//~vc1tI~
+        AxeG.setHardKeyboard(Pcfg);                                //~vc1tI~
+//      if (!AxeDlgKbdLayoutHW.configChanged(swChangeKbd))	//AxeDlgKbdLayout is not opened//~vc1tI~//~vc26R~
+//          AxeScreen.configChanged(); 	//open keyboardHW               //~vc1rR~//~vc1tR~//~vc26I~
+        AxeKbdDialogHW.configChanged(swChangeKbd);	//AxeDlgKbdLayout is not opened//~vc26R~
         if (orichanged)                                            //~1606R~
         {                                                          //~vaicI~
     		axeStat|=AXES_ORIENTATION_CHANGING;                    //~vaicI~
@@ -255,20 +305,28 @@ public class Axe extends Activity                                  //~vaiqR~
         if (Dump.Y) Dump.println("onStart");                       //~vaiqM~
 //      View v=getCurrentFocus();                                  //~vaiqM~
 //     	AxeG.mainView.requestFocus();                              //~vaiqM~
+    	AxeG.axeBCR.onStart();                                     //~vc2KI~
 	}                                                              //~vaiqM~
     @Override                                                      //~1A02I~
     public void onPause()                                          //~1A02I~
     {                                                              //~1A02I~
         if (Dump.Y) Dump.println("onPause");                       //~1A02I~
     	super.onPause();                                           //~1A02I~
+    	AxeG.axeBCR.onPause();                                     //~vc2KI~
     }                                                              //~1A02I~
     @Override                                                      //~1A02I~
     public void onResume()                                         //~1A02I~
     {                                                              //~1A02I~
         if (Dump.Y) Dump.println("onResume");                      //~1A02I~
     	super.onResume();                                          //~1A02I~
+    	AxeG.axeBCR.onResume();                                    //~vc2KI~
 //      View v=getCurrentFocus();                                  //~vaiqR~
 //   	AxeG.mainView.requestFocus();                              //~vaiqR~
+		if (aAxePermission==null)                                  //~vc1bI~
+        {                                                          //~vc1bI~
+	        aAxePermission=new AxePermission();    //grant permission//~vc1bI~
+	        aAxePermission.request();                              //~vc1bI~
+        }                                                          //~vc1bI~
     }                                                              //~1A02I~
     //****************************************************         //~1A09I~
     //*when Home button pressed onUserLeaveHint is called          //~1A09I~
@@ -294,6 +352,7 @@ public class Axe extends Activity                                  //~vaiqR~
 	{                                                              //~1607I~
         super.onDestroy();                                         //~1607I~
     	 destroying=true;                                           //~1607I~
+    	AxeG.axeBCR.onDestroy();                                   //~vc2KI~
         if (Dump.Y) Dump.println("OnDestroy configchange="+Integer.toHexString(getChangingConfigurations())+",isfinishing="+isFinishing()+",initfirsttime sw="+initFirsttime);//~vayeR~
         Dump.close();                                              //~1607I~
 //    if (isFinishing())                                           //~vayeR~
@@ -307,12 +366,12 @@ public class Axe extends Activity                                  //~vaiqR~
     	return destroying;                                         //~1607I~
     }                                                              //~1607I~
 //*********************************************                    //~1607I~
-//* callback after OnKey if the view has focus                     //~1607I~
+//* callback after OnKey if the view has focus                     //~vc1rR~
 //*********************************************                    //~1607I~
-    @Override                                                      //~1607I~
+    @Override	// Activity.KeyEventCallback                       //~vc1rI~
     public boolean onKeyDown(int keyCode,KeyEvent event)           //~1607I~
 	{                                                              //~1607I~
-        if (Dump.Y) Dump.println("Axe.onKeyDown keycoed="+keyCode);//+vayeI~
+        if (Dump.Y) Dump.println("Axe.onKeyDown");                 //~vc1rI~
         if (!scrinitialized)                                       //~1607I~
             return false;                                          //~1607I~
         try                                                        //~1607I~
@@ -325,11 +384,11 @@ public class Axe extends Activity                                  //~vaiqR~
         }                                                          //~1607I~
         return false;                                              //~1607I~
     }                                                              //~1607I~
-//******************                                               //~1607I~
-    @Override                                                      //~1607I~
+//******************                                               //~vc1rI~
+    @Override	// Activity.KeyEventCallback                       //~vc1rR~
     public boolean onKeyUp(int keyCode,KeyEvent event)             //~1607I~
 	{                                                              //~1607I~
-        if (Dump.Y) Dump.println("Axe.onKeyUp keycoed="+keyCode);  //+vayeI~
+        if (Dump.Y) Dump.println("Axe.onKeyUp");                   //~vc1rI~
         if (!scrinitialized)                                       //~1607I~
             return false;                                          //~1607I~
         try                                                        //~1607I~
@@ -347,6 +406,7 @@ public class Axe extends Activity                                  //~vaiqR~
     public boolean onTouchEvent(MotionEvent event)                 //~1621I~
 	{                                                              //~1621I~
     	//********************                                         //~@@@@I~//~1621I~
+        if (Dump.Y) Dump.println("Axe.TouchEvent");                //~vc1rI~
         if (!scrinitialized)                                       //~1621I~
             return false;                                          //~1621I~
         try                                                        //~1621I~
@@ -370,14 +430,17 @@ public class Axe extends Activity                                  //~vaiqR~
     //******************************************                   //~vaiqI~
     public int alertOnShow(AxeAlert Paxealert,boolean Pdismiss)                     //~vaiqI~
     {                                                              //~vaiqI~
-        if (Dump.Y) Dump.println("alertOnShow dismiss="+Pdismiss+",initsw="+initFirsttime); //~vaiqR~
+        if (Dump.Y) Dump.println("Axe.alertOnShow dismiss="+Pdismiss+",initsw="+initFirsttime+",initComp="+AxeProp.initCompleted); //~vaiqR~//+vc2UR~
 	    if (initFirsttime==1)	//shown "start firsttime init"     //~vaiqR~
         {                                                          //~vaiqI~
-        	if (Dump.Y) Dump.println("alertOnShow req dismiss 1"); //~vaiqR~
+        	if (Dump.Y) Dump.println("Axe.alertOnShow req dismiss 1"); //~vaiqR~//+vc2UR~
+          if (!Pdismiss)                                           //+vc2UI~
 	        Paxealert.pdlg.dismiss();  //onece lose focus to schedule onfocuschanged//~vaiqR~
         }                                                          //~vaiqI~
         else                                                       //~vaiqI~
-	    if (initFirsttime==2)	//shown "waiting init"             //~vaiqI~
+//      if (initFirsttime==2)	//shown "waiting init"             //~vaiqI~//~vc2UR~
+        if (initFirsttime==2	//shown "waiting init"             //~vc2UI~
+        ||  initFirsttime==3)	//shown "waiting init"             //~vc2UI~
         {                                                          //~vaiqI~
 //            if (AxeG.axeView==null)                              //~vaiqR~
 //            {                                                    //~vaiqR~
@@ -388,22 +451,31 @@ public class Axe extends Activity                                  //~vaiqR~
             if (Pdismiss)                                          //~vaiqI~
     	    	initAlertDialog2=null;	//user pushed "close" button//~vaiqI~
             else                                                   //~vaiqI~
+            {                                                      //+vc2UI~
     	    	initAlertDialog2=Paxealert;                        //~vaiqR~
+        		if (AxeProp.initCompleted)                         //+vc2UI~
+			    	initComp();	//didmiss alert dialog to onwindowfocuschanged//+vc2UI~
+            }                                                      //+vc2UI~
+                                                                   //+vc2UI~
         }                                                          //~vaiqI~
         return 0;                                                  //~vaiqI~
     }                                                              //~vaiqI~
-    //******************************************                   //~vaiqI~
-    //from Axe and AxeProp                                         //~vaiqI~
+    //******************************************                   //~vc2UI~
+    public static void initComp()                                  //~vc2UI~
+    {                                                              //~vc2UM~
+        if (Dump.Y) Dump.println("Axe.initComp initsw="+AxeG.main.initFirsttime);//+vc2UR~
+        AxeG.main.dismissInitAlertDialog();                         //~vc2UI~
+    }                                                              //~vc2UM~
     //******************************************                   //~vaiqI~
     private void dismissInitAlertDialog()                          //~vaiqR~
     {                                                              //~vaiqI~
-        if (Dump.Y) Dump.println("dismissInitAlertDialog dislog2="+(initAlertDialog2==null?"null":"not null")+",initcomp="+AxeProp.initCompleted+",initsw="+initFirsttime);//~vaiqR~
+        if (Dump.Y) Dump.println("Axe.dismissInitAlertDialog dislog2="+(initAlertDialog2==null?"null":"not null")+",initcomp="+AxeProp.initCompleted+",initsw="+initFirsttime);//~vaiqR~//+vc2UR~
         if (initAlertDialog2!=null)                                //~vaiqI~
         {                                                          //~vaiqI~
             if (AxeProp.initCompleted                              //~vaiqR~
             &&  initFirsttime==3)                                  //~vaiqI~
             {                                                      //~vaiqI~
-    	    	if (Dump.Y) Dump.println("dismissInitAlertDialog dismiss dislog2");//~vaiqR~
+    	    	if (Dump.Y) Dump.println("Axe.dismissInitAlertDialog dismiss dislog2");//~vaiqR~//+vc2UR~
 	        	initAlertDialog2.pdlg.dismiss();  //dismiss waiting//~vaiqR~
 	        	initAlertDialog2=null;                             //~vaiqR~
             }                                                      //~vaiqI~
@@ -425,4 +497,61 @@ public class Axe extends Activity                                  //~vaiqR~
         }                                                          //~vayaI~
         return super.onMenuItemSelected(Pfeature,Pitem);           //~vayaI~
 	}                                                              //~vayaI~
+//***********************************************************      //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+    public void destroyClose()                                     //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+    {                                                              //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+        if (Dump.Y) Dump.println("Axe.destroyClose");//~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+        AG.status=AG.STATUS_STOPFINISH;                               //~@@@@I~//~vc10I~
+	    URunnable.setRunFunc(this/*RunnableI*/,0/*sleep*/,null/*parm*/,0/*phase*/);//~@@@@R~//~@@@2I~//~@@@@I~//~vc10I~
+    }                                                              //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+//*************************                                        //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+//*callback from Runnable *                                        //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+//*************************                                        //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+    public void runFunc(Object Pparmobj,int Pphase)                //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+    {                                                              //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+        int wait=0,wait2=100;                                   //~@@@2I~//~@@@@R~//~vc10I~
+    //*********************                                        //~@@@2I~//~@@@@I~//~vc10I~
+    	if (Dump.Y) Dump.println("Axe.destroyClose runfunc phase="+Pphase);   //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+    	if (Pphase==0)	//initial call,close socket streamIO       //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+        {                                                          //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+	    	if (Dump.Y) Dump.println("Axe.destroyClose runfunc phase=0 closeStream");//~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~//~vc2UR~
+		    URunnable.setRunFunc(this/*RunnableI*/,wait2/*sleep ms*/,null/*parm*/,1/*phase*/);//~@@@@R~//~@@@2I~//~@@@@R~//~vc10I~
+	        return;                                                //~@@@@R~//~@@@2I~//~@@@@I~//~vc10I~
+        }                                                          //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+    	if (Pphase==1)	//stop timer,board                         //~@@@2I~//~@@@@I~//~vc10I~
+        {                                                          //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+    		if (Dump.Y) Dump.println("Axe.destroyClose runfunc phase=1 stopBoard");//~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~//~vc2UR~
+            URunnable.setRunFunc(this/*RunnableI*/,wait/*sleep ms*/,null/*parm*/,2/*phase*/);//~@@@@R~//~@@@2I~//~@@@@I~//~vc10I~
+            return;                                            //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+        }                                                          //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+    	if (Pphase==2)	//stop timer,board                         //~@@@2I~//~@@@@I~//~vc10I~
+        {                                                          //~@@@2I~//~@@@@I~//~vc10I~
+    		if (Dump.Y) Dump.println("Axe.destroyClose runfunc phase=2 stop BT");//~@@@@I~//~vc10I~//~vc2UR~
+            URunnable.setRunFunc(this/*RunnableI*/,wait/*sleep ms*/,null/*parm*/,3/*phase*/);//~@@@2I~//~@@@@I~//~vc10I~
+            return;                                                //~@@@2I~//~@@@@I~//~vc10I~
+        }                                                          //~@@@2I~//~@@@@I~//~vc10I~
+    	if (Dump.Y) Dump.println("destroyClose runfunc phase=3"); //~@@@@I~//~@@@2I~//~@@@@R~//~vc10I~
+		finish();	//shedule ondestroy                            //~@@@2I~//~@@@@I~//~vc10I~
+    }                                                              //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
+//***************************************************************************//~9930I~//~1AhdI~//~vc1bI~
+	@Override                                                      //~vc1bI~
+    public void onRequestPermissionsResult(int PrequestID,String[] Ptypes,int[] Presults)//~vc1bI~
+    {                                                              //~vc1bI~
+    	try                                                        //~vc1bI~
+        {                                                          //~vc1bI~
+        	if (Dump.Y) Dump.println("Axe.onRequestPermissionResult reqid="+PrequestID+",type="+ com.ahsv.utils.Utils.toString(Ptypes)+",result="+ Arrays.toString(Presults));//~vc1bR~//~vc2UR~
+            if (Presults.length!=0)                                 //~vc1bI~
+	        	aAxePermission.onRequestPermissionsResult(PrequestID,Ptypes,Presults);//~vc1bR~
+        }                                                          //~vc1bI~
+        catch(Exception e)                                         //~vc1bI~
+        {                                                          //~vc1bI~
+        	Dump.println(e,"Axe.onRequestPermissionsResult");          //~vc1bI~//~vc2UR~
+        }                                                          //~vc1bI~
+    }                                                              //~vc1bI~
+//**********************************                               //~vc1rI~
+    protected void hideSoftKbd()                                   //~vc1rI~
+    {                                                              //~vc1rI~
+	    if (Dump.Y) Dump.println("Axe.hideSoftKbd"); //~vc1rI~     //~vc2UR~
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);//~vc1rI~
+    }                                                              //~vc1rI~
 }//class                                                           //~1621R~

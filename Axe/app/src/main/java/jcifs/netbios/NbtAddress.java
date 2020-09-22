@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    4;       //+vc19I~
+//******************************************************************//+vc19I~
+//vc19 2020/06/18 Warning Map type                                 //+vc19I~
+//******************************************************************//+vc19I~
 /* jcifs smb client library in Java
  * Copyright (C) 2000  "Michael B. Allen" <jcifs at samba dot org>
  * 
@@ -77,6 +81,7 @@ import jcifs.util.Hexdump;
  * @since     jcifs-0.1
  */ 
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public final class NbtAddress {
 
 /*

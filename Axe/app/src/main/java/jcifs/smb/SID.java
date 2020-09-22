@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    4;       //+vc19I~
+//******************************************************************//+vc19I~
+//vc19 2020/06/18 Warning Map type                                 //+vc19I~
+//******************************************************************//+vc19I~
 /* jcifs smb client library in Java
  * Copyright (C) 2006  "Michael B. Allen" <jcifs at samba dot org>
  *                     "Eric Glass" <jcifs at samba dot org>
@@ -44,6 +48,7 @@ import jcifs.dcerpc.msrpc.*;
  * </pre>
  */
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public class SID extends rpc.sid_t {
 
     public static final int SID_TYPE_USE_NONE = lsarpc.SID_NAME_USE_NONE;

@@ -1,3 +1,7 @@
+//*CID://+vc19R~:                             update#=    4;       //+vc19I~
+//******************************************************************//+vc19I~
+//vc19 2020/06/18 Warning Map type                                 //+vc19I~
+//******************************************************************//+vc19I~
 package jcifs.util.transport;
 
 import java.io.*;
@@ -14,6 +18,7 @@ import jcifs.util.LogStream;
  * concurrently.
  */
 
+@SuppressWarnings("unchecked")                                     //+vc19I~
 public abstract class Transport implements Runnable {
 
     static int id = 0;

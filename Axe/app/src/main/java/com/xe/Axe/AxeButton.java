@@ -1,5 +1,6 @@
-//CID://+va15R~:                                                   //~va15I~
+//CID://+vc2yR~:                                                   //~va15I~//~vc2yR~
 //*************************************************************    //~va15I~
+//vc2y 2020/08/11 update buttonupdate dialog                       //~vc2yI~
 //va15:051112 if return maked data when multisolution detected,it is redundant;delete redundancy option add//~va15I~
 //*************************************************************    //~va15I~
 package com.xe.Axe;                                                //~va15I~
@@ -95,8 +96,9 @@ public class AxeButton                                             //~va15R~
         btnFree    =new AxeButton(AxeButton.BUTTON_FREE,     AxeButton.LABEL_FREE          , true , false, false//~va15M~
 					,false);                                       //~va15M~
 		buttonTypeTbl[BUTTON_USER]=                                //~va15M~
-        btnUser    =new AxeButton(AxeButton.BUTTON_USER,     AxeButton.LABEL_USER          , true , false, false//~va15M~
-					,false);                                       //~va15M~
+//      btnUser    =new AxeButton(AxeButton.BUTTON_USER,     AxeButton.LABEL_USER          , true , false, false//~va15M~//~vc2yR~
+//  				,false);                                       //~va15M~//~vc2yR~
+        btnUser=getNewButtonUser();                                //~vc2yI~
 		buttonTypeTbl[BUTTON_SHORTCUT]=                            //~va15M~
         btnShortCut=new AxeButton(AxeButton.BUTTON_SHORTCUT, AxeButton.LABEL_SHORTCUT      , false, true , false//~va15R~
 					,false);                                       //~va15M~
@@ -252,4 +254,12 @@ public class AxeButton                                             //~va15R~
     	actionIndex=Pindex;                                        //~va15I~
         if (Dump.Y) Dump.println("AxeButton setActionIndex button="+name+",index="+Pindex);//~va15I~
     }                                                              //~va15I~
+    //* for multiple instance                                      //~vc2yI~
+    public static AxeButton getNewButtonUser()                     //~vc2yI~
+    {                                                              //~vc2yI~
+        AxeButton  btn=new AxeButton(AxeButton.BUTTON_USER,     AxeButton.LABEL_USER          , true , false, false//~vc2yI~
+					,false);                                       //~vc2yI~
+        if (Dump.Y) Dump.println("AxeButton.getNewButtonUser");    //~vc2yI~
+        return btn;                                                //~vc2yI~
+    }                                                              //~vc2yI~
 }//class                                                           //~va15R~

@@ -1,5 +1,11 @@
-//CID://+vay7R~:   update#=   24                                   //~vay7R~
+//CID://+vc2XR~:   update#=   61                                   //~vc2WR~//~vc2XR~
 //*************************************************************
+//vc2X 2020/09/19 return sdpath even no write permission for utrace//~vc2XI~
+//vc2W 2020/09/19 at first install, uerrexit by ualloc size=0(Gscrbuffwidth); Because notifyOptionChangedOther is called before initscreen; notify trace option by another interface//~vc2WI~
+//vc2J 2020/08/25 add receive intent data scheme content:// additional to file:////~vc2JI~
+//vbrh:200824 (AXE)notify ruler changed to Axe dialog              //~vbrhI~
+//vc1m 2020/06/23 Toast should be on MainThread                    //~vc1mI~
+//vc1f 2020/06/20 ARM;chk sdcard writable                          //~vc1fI~
 //vay7:141122 (Axe)actionBar:save/saveas item                      //~vay7I~
 //vay0:140710 (Axe)jni exception handling                          //~vay0I~
 //vaxa:140628 (Axe)segfault at exit by quit cmd(uerrexit but axe continue process for popup errmsg)//~vaxaI~
@@ -17,24 +23,34 @@
 //*************************************************************
 package com.xe.Axe;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.View;
-import android.widget.Toast;
+
+import com.ahsv.AG;
+import com.ahsv.utils.Utils;
 
 public class AxeJNI
     	implements AxeTimerI
 {
 	private static final String JNILIB="axejni";
-    public static native void jniInit(String Psdpath,String Pwkdir,String Plocale,int Popttrace);
+//  public static native void jniInit(String Psdpath,String Pwkdir,String Plocale,int Popttrace);//~vc1fR~
+    public static native void jniInit(String PsdRoot,String Psdpath,String Pwkdir,String Plocale,int Popttrace);//~vc1fI~
     public static native int jniKbdMsg(int Paction,int  Pkey,int Pscan);
     public static native int jniMouseMsg(int Paction,int Pbutton,int Pflag,int Px,int Py);
     public static native void jniSetScreenSize(int Pw,int Ph);
     public static native void jniTerminateXe();
     public static native void jniFullDraw(int Presize);
-    public static native void jniOptionChangedOther(int Prulermode,int Puseact,boolean Pfreecsr,boolean Pbeep,boolean Pqexit);
+//  public static native void jniOptionChangedOther(int Prulermode,int Puseact,boolean Pfreecsr,boolean Pbeep,boolean Pqexit);//~vc1fR~
+    public static native void jniOptionChangedOther(int Prulermode,int Puseact,boolean Pfreecsr,boolean Pbeep,boolean Pqexit,int PaxeStatus);//~vc1fI~
     public static native void jniOptionChangedColor(int Pbgcolor,int Prulercolor);
 //  public static native void jniOptionChangedFont(String Pfontname,int Pfontwidth,int Pfontheight,int Pcellw,int Pcellh,int Pmonospace,boolean Pligature,int Pbaseline,int Pfontoffsx);
     public static native void jniOptionChangedFont(String Pfontname,int Pfontwidth,int Pfontheight,int Pcellw,int Pcellh,int Pmonospace,boolean Pligature,int Pcellw0,int Pcellh0);
@@ -59,6 +75,7 @@ public class AxeJNI
     public static native void jniDndRepCopy(String Pcmd);
     public static native int  jniIsValidCharset(String Pcharset);  //~vad2R~
     public static native void jniGetCurrentFilename();             //~vay7I~
+    public static native void jniSetEnvPath();                     //~vc1mI~
 
     private static boolean preinitCalled;
                                                                    //~1620I~9
@@ -72,6 +89,8 @@ public class AxeJNI
     {
         try
         {
+            if (Dump.Y) Dump.println("AxeJNI.jniinit:nativeLibraryDir="+ AG.context.getApplicationInfo().nativeLibraryDir);//~vay7I~
+            listEnv();  //for test                                 //~vc1mR~
             System.loadLibrary(JNILIB);
             preinitCalled=true;
             if (Dump.Y) Dump.println("jniinit:jnilib loaded "+JNILIB);
@@ -81,8 +100,9 @@ public class AxeJNI
             if (data!=null)
             {
 	            if (Dump.Y) Dump.println("intentdata @@@@ "+data+",action="+AxeG.intentAction);
-            	if (data.startsWith("file://"))
-                	data=data.substring(7);
+//                if (data.startsWith("file://"))                  //~vc2JR~
+//                    data=data.substring(7);                      //~vc2JR~
+				data=getURIPath(data);                             //~vc2JI~
                 Gxeh.initFile=data;
                 if (AxeG.intentAction.equals(Intent.ACTION_VIEW))
                 	Gxeh.initCmd="-B";	//browse
@@ -91,11 +111,13 @@ public class AxeJNI
             }
             if ((AxeG.optTrace & AxeG.TRACEO_REMAP)!=0)            //~v6k1I~
             	Ucs.resetwidthtbl();                               //~v6k1R~
-            jniInit(sdpath,wkdir,AxeG.Glocale,AxeG.optTrace);      //~vac6R~
+//          jniInit(sdpath,wkdir,AxeG.Glocale,AxeG.optTrace);      //~vac6R~//~vc1fR~
+            jniInit(Gxeh.sdRoot,sdpath,wkdir,AxeG.Glocale,AxeG.optTrace);//~vc1fI~
 //  		String localecs=AxeG.Glocale+"."+Charset.defaultCharset().displayName();//~vac6R~
 //          jniInit(sdpath,wkdir,localecs,AxeG.optTrace);          //~vac6R~
     		setDebugOption(AxeG.optDebug);                         //~vay0I~
             if (Dump.Y) Dump.println("jniinit:returned");
+//          listEnv();  //TODO test                                //~vc1mR~
         }
         catch(Exception e)
         {
@@ -126,7 +148,7 @@ public class AxeJNI
         {
             rc=jniKbdMsg(Paction,Pkey,Pscancode);
 
-            if (Dump.Y) Dump.println("jni call kbdmsg rc="+rc+",key="+Integer.toHexString(Pkey));
+            if (Dump.Y) Dump.println("jni call kbdmsg rc="+rc+",key="+Integer.toHexString(Pkey)+",scancode="+Integer.toHexString(Pscancode));//~vc1mR~
         }
         catch(Exception e)
         {
@@ -400,7 +422,8 @@ public class AxeJNI
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);        //~vay0R~
             intent.putExtra("error",msg);                          //~vay0R~
             AxeG.context.startActivity(intent);                    //~vay0R~
-            Toast.makeText(AxeG.context,"NDKCrash:"+Pmsg,Toast.LENGTH_LONG).show();//~vay0R~
+//          Toast.makeText(AxeG.context,"NDKCrash:"+Pmsg,Toast.LENGTH_LONG).show();//~vay0R~//~vc1mR~
+            Utils.showToastLong("NDKCrash:"+Pmsg);                    //~vc1mI~
         }                                                          //~vay0I~
         catch(Exception e)                                         //~vay0I~
         {                                                          //~vay0I~
@@ -427,14 +450,35 @@ public class AxeJNI
         if (Dump.Y) Dump.println("notifyOptionChangedOther");
         try
         {
-            jniOptionChangedOther(Gxeh.Mrulermode,Gxeh.Museact,Gxeh.Mfreecsr,Gxeh.Mbeep,Gxeh.Mqexit);
+//          jniOptionChangedOther(Gxeh.Mrulermode,Gxeh.Museact,Gxeh.Mfreecsr,Gxeh.Mbeep,Gxeh.Mqexit);//~vc1fR~
+          if (preinitCalled)                                       //~vc1fI~
+          {                                                        //~vc1fI~
+            jniOptionChangedOther(Gxeh.Mrulermode,Gxeh.Museact,Gxeh.Mfreecsr,Gxeh.Mbeep,Gxeh.Mqexit,Gxeh.axeStatus);//~vc1fI~
             if (Dump.Y) Dump.println("jni call optionChangedOther");
+          }                                                        //~vc1fI~
         }
         catch(Exception e)
         {
             Dump.println(e,"JNI:optionChangedOther");              //~vay0R~
         }
     }
+    //===============================================================================//~vc2WI~
+    public static void notifyOptionChangedOtherPermission()        //~vc2WI~
+    {                                                              //~vc2WI~
+        if (Dump.Y) Dump.println("notifyOptionChangedOtherPermission Gxeh.axeStatus="+Gxeh.axeStatus);//~vc2WR~
+        try                                                        //~vc2WI~
+        {                                                          //~vc2WI~
+          if (preinitCalled)                                       //~vc2WI~
+          {                                                        //~vc2WI~
+            jniOptionChangedOther(-1/*id of Permission case */,Gxeh.Museact,Gxeh.Mfreecsr,Gxeh.Mbeep,Gxeh.Mqexit,Gxeh.axeStatus);//~vc2WI~
+            if (Dump.Y) Dump.println("jni call returned optionChangedOtherPermission");//~vc2WI~
+          }                                                        //~vc2WI~
+        }                                                          //~vc2WI~
+        catch(Exception e)                                         //~vc2WI~
+        {                                                          //~vc2WI~
+            Dump.println(e,"JNI:optionChangedOtherPermission");    //~vc2WI~
+        }                                                          //~vc2WI~
+    }                                                              //~vc2WI~
     //===============================================================================
     public static void notifyOptionChangedColor()
     {
@@ -869,6 +913,7 @@ public class AxeJNI
     {
       try                                                          //~vay0I~
       {                                                            //~vay0I~
+        if (Dump.Y) Dump.println("AxeJNI.xecmd cmd="+Pcmd+",opd="+Popd);//~vc2JI~
         jniCmd(Pcmd,Popd);
       }                                                            //~vay0I~
       catch(Exception e)                                           //~vay0I~
@@ -1188,7 +1233,7 @@ public class AxeJNI
         return brc;                                                //~vad2I~
     }                                                              //~vad2I~
     //******************************************                   //~vay7I~
-    public static void getCurrentFilename()                        //+vay7R~
+    public static void getCurrentFilename()                        //~vay7R~
     {                                                              //~vay7I~
         try                                                        //~vay7I~
         {                                                          //~vay7I~
@@ -1198,6 +1243,155 @@ public class AxeJNI
         {                                                          //~vay7I~
             Dump.println(e,"JNI:getCurrentFilename");              //~vay7I~
         }                                                          //~vay7I~
-        if (Dump.Y) Dump.println("AxeJNI:getCurrentFilename:type="+Gxeh.mCurrentFilenameType+",name="+Gxeh.mCurrentFilename);//+vay7R~
+        if (Dump.Y) Dump.println("AxeJNI:getCurrentFilename:type="+Gxeh.mCurrentFilenameType+",name="+Gxeh.mCurrentFilename);//~vay7R~
     }                                                              //~vay7I~
+    //******************************************                   //~vc1mI~
+    public static void updateEnvPath()                             //~vc1mI~
+    {                                                              //~vc1mI~
+        try                                                        //~vc1mI~
+        {                                                          //~vc1mI~
+            jniSetEnvPath();                                       //~vc1mI~
+        }                                                          //~vc1mI~
+        catch(Exception e)                                         //~vc1mI~
+        {                                                          //~vc1mI~
+            Dump.println(e,"JNI:updateEnvPath");                   //~vc1mI~
+        }                                                          //~vc1mI~
+        if (Dump.Y) Dump.println("AxeJNI:getCurrentFilename:type="+Gxeh.mCurrentFilenameType+",name="+Gxeh.mCurrentFilename);//~vc1mI~
+    }                                                              //~vc1mI~
+    //******************************************                   //~vc1mI~
+    public static void listEnv()                                   //~vc1mI~
+    {                                                              //~vc1mI~
+        Map<String,String> env=System.getenv();                    //~vc1mR~
+        if (Dump.Y) Dump.println("AxeJNI.listEnv size="+env.size());//~vc1mR~
+//      System.out.println(env);                                   //~vc1mR~
+        for (String key:env.keySet())                              //~vc1mR~
+        	if (Dump.Y) Dump.println("AxeJNI.listEnv "+key+"="+env.get(key));//~vc1mR~
+    }                                                              //~vc1mI~
+    //***********************************************************  //~vbrhI~
+    //*by S+C+F1/2/3                                               //~vbrhI~
+    //***********************************************************  //~vbrhI~
+    public static void notifyRulerMode(int Prulermode)             //~vbrhI~
+    {                                                              //~vbrhI~
+        try                                                        //~vbrhI~
+        {                                                          //~vbrhI~
+	    	Gxeh.Mrulermode=Prulermode;                            //~vbrhI~
+        }                                                          //~vbrhI~
+        catch(Exception e)                                         //~vbrhI~
+        {                                                          //~vbrhI~
+            Dump.println(e,"JNI:notifyRulerMode");                 //~vbrhI~
+        }                                                          //~vbrhI~
+    }                                                              //~vbrhI~
+//*********************************************                    //~vc2JI~
+	private static String getURIPath(String Puri)                  //~vc2JI~
+    {                                                              //~vc2JI~
+    	String rc=null;                                            //~vc2JI~
+        try                                                        //~vc2JI~
+        {                                                          //~vc2JI~
+	    	Uri uri=Uri.parse(Puri);                              //~vc2JI~
+            String scheme=uri.getScheme();                         //~vc2JI~
+		    if (Dump.Y) Dump.println("AxeJNI.getURIPath scheme="+scheme);//~vc2JI~
+            if (scheme!=null)                                      //~vc2JI~
+            {                                                      //~vc2JI~
+            	if (scheme.equals("file"))                          //~vc2JI~
+                {                                                  //~vc2JI~
+                	rc=uri.getPath();                              //~vc2JI~
+                }                                                  //~vc2JI~
+                else                                               //~vc2JI~
+            	if (scheme.equals("content"))                       //~vc2JI~
+					rc=getURIPathContent(uri);                     //~vc2JI~
+            }                                                      //~vc2JI~
+        }                                                          //~vc2JI~
+        catch(Exception e)                                         //~vc2JI~
+        {                                                          //~vc2JI~
+            Dump.println(e,"JNI:notifyRulerMode");                 //~vc2JI~
+        }                                                          //~vc2JR~
+        if (rc==null)                                              //~vc2JI~
+            Utils.showToastLong(Utils.getStr(R.string.Err_getPathFromUri,Puri));//~vc2JI~
+        else                                                       //~vc2JI~
+        if (rc.startsWith(Gxeh.sdRootPath))                        //~vc2JI~
+            rc=rc.replaceFirst(Gxeh.sdRootPath,Gxeh.sdRoot);       //~vc2JI~
+        if (Dump.Y) Dump.println("AxeJNI.getURIPath rc="+rc+",Puri="+Puri);//~vc2JI~
+        return rc;                                                 //~vc2JI~
+    }                                                              //~vc2JI~
+	private static String getURIPathContent(Uri Puri)              //~vc2JI~
+    {                                                              //~vc2JI~
+//                    ArrayOf<String> projection=arrayOf<String>MediaStore.MediaColumns.DATA);//~vc2JI~
+//                    if (Dump.Y) Dump.println("AxeJNI.getURIPath prohection="+Utils.toString(projection));//~vc2JI~
+//                    Cursaor cursor=AxeG.context.getContentResolver().query(uri,projection,null,null,null);//~vc2JI~
+//                    Cursor cursor=AxeG.context.getContentResolver().query(uri,null,null,null,null);//~vc2JI~
+//                    if (cursor!=null)                            //~vc2JI~
+//                    {                                            //~vc2JI~
+//                        if (Dump.Y) Dump.println("AxeJNI.getURIPath colnames="+Utils.toString(cursor.getColumnNames()));//~vc2JI~
+//                        if (cursor.moveToFirst())                //~vc2JI~
+//                        {                                        //~vc2JI~
+//                            rc=cursor.getString(0);              //~vc2JI~
+//                            for (int ii=0;ii<cursor.getColumnCount();ii++)//~vc2JI~
+//                            {                                    //~vc2JI~
+//                                if (Dump.Y) Dump.println("AxeJNI.getURIPath ii="+ii+" str="+cursor.getString(ii));//~vc2JI~
+//                            }                                    //~vc2JI~
+//                        }                                        //~vc2JI~
+//                          cursor.close();                        //~vc2JI~
+//                    }                                            //~vc2JI~
+		String rc;                                                 //~vc2JI~
+//        if (Dump.Y) Dump.println("AxeJNI.getURIPathContent getEncodedPath="+Puri.getEncodedPath());//~vc2JR~
+//        if (Dump.Y) Dump.println("AxeJNI.getURIPathContent getEncodedSchemeSpecificPart="+Puri.getEncodedSchemeSpecificPart());//~vc2JR~
+//        if (Dump.Y) Dump.println("AxeJNI.getURIPathContent getSchemeSpecificPart="+Puri.getSchemeSpecificPart());//~vc2JR~
+//        if (Dump.Y) Dump.println("AxeJNI.getURIPathContent getEncodedUserInfo="+Puri.getEncodedUserInfo());//~vc2JR~
+//        if (Dump.Y) Dump.println("AxeJNI.getURIPathContent getUserInfo="+Puri.getUserInfo());//~vc2JR~
+//        if (Dump.Y) Dump.println("AxeJNI.getURIPathContent getLastSegmentPath="+Puri.getLastPathSegment());//~vc2JR~
+        if (Dump.Y) Dump.println("AxeJNI.getURIPathContent getAutority="+Puri.getAuthority());//~vc2JI~
+        File f= Environment.getRootDirectory();//TODO test         //~vc2JR~
+        try                                                        //~vc2JI~
+        {                                                          //~vc2JI~
+        if (Dump.Y) Dump.println("AxeJNI.getURIPathContent root: exists="+f.exists()+",getName="+f.getName()+",getPath="+f.getPath()+",getCanonicalPath="+f.getCanonicalPath()+",getAbsolutePath="+f.getAbsolutePath());//~vc2JI~
+        }                                                          //~vc2JI~
+        catch(IOException e)                                       //~vc2JI~
+        {                                                          //~vc2JI~
+            Dump.println(e,"JNI:notifyRulerMode");                 //~vc2JI~
+        }                                                          //~vc2JI~
+        rc=Puri.getPath();                                         //~vc2JI~
+        f= new File("/root");                                      //~vc2JR~
+        try                                                        //~vc2JI~
+        {                                                          //~vc2JI~
+            if (Dump.Y)
+                Dump.println("AxeJNI.getURIPathContent root: exists=" + f.exists() + ",getName=" + f.getName() + ",getPath=" + f.getPath() + ",getCanonicalPath=" + f.getCanonicalPath() + ",getAbsolutePath=" + f.getAbsolutePath());//~vc2JI~
+        }
+            catch(IOException e)                                       //~vc2JI~
+        {                                                          //~vc2JI~
+            Dump.println(e,"JNI:notifyRulerMode");                 //~vc2JI~
+        }                                                          //~vc2JI~
+        f= new File(rc);                                           //~vc2JI~
+        try                                                        //~vc2JI~
+        {                                                          //~vc2JI~
+            if (Dump.Y)                                            //~vc2JI~
+                Dump.println("AxeJNI.getURIPathContent root: exists=" + f.exists() + ",getName=" + f.getName() + ",getPath=" + f.getPath() + ",getCanonicalPath=" + f.getCanonicalPath() + ",getAbsolutePath=" + f.getAbsolutePath());//~vc2JI~
+        }                                                          //~vc2JI~
+            catch(IOException e)                                   //~vc2JI~
+        {                                                          //~vc2JI~
+            Dump.println(e,"JNI:notifyRulerMode");                 //~vc2JI~
+        }                                                          //~vc2JI~
+        if (rc!=null && rc.startsWith("/root/"))                    //~vc2JI~
+            rc=rc.replaceFirst("/root/","/");                      //~vc2JI~
+		if (Dump.Y) Dump.println("AxeJNI.getURIPathContent rc="+rc);//~vc2JI~
+        return rc;                                                 //~vc2JI~
+    }                                                              //~vc2JI~
+//*********************************************                    //~vc2JI~
+	public static void uriReceived(String Paction,String Puri)     //~vc2JI~
+    {                                                              //~vc2JI~
+        if (Dump.Y) Dump.println("AxeJNI.uriReceived action="+Paction+",uri="+Puri);//~vc2JI~
+        if (Puri!=null)                                            //~vc2JI~
+        {                                                          //~vc2JI~
+            String path=getURIPath(Puri);                          //~vc2JI~
+            if (path!=null)                                        //~vc2JI~
+            {                                                      //~vc2JI~
+        		String cmd;                                        //~vc2JI~
+            	if (Paction.equals(Intent.ACTION_VIEW))            //~vc2JI~
+                	cmd="B";  //browse                             //~vc2JR~
+            	else                                               //~vc2JI~
+                	cmd="E";  //edit                               //~vc2JR~
+		        xecmd(cmd,path);                                   //~vc2JI~
+            }                                                      //~vc2JI~
+        }                                                          //~vc2JI~
+        if (Dump.Y) Dump.println("uriReceived returned");          //~vc2JI~
+    }                                                              //~vc2JI~
 }//class

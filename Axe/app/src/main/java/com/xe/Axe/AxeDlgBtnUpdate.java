@@ -1,5 +1,7 @@
-//*CID://+dateR~: update#= 167;                                    //~1107R~
+//*CID://+vc2yR~: update#= 171;                                    //~vc2yR~
 //**********************************************************************//~1107I~
+//vc2y 2020/08/11 update buttonupdate dialog                       //~vc2yI~
+//**********************************************************************//~vc2yI~
 //*AlerDialog                                                      //~1527R~
 //**********************************************************************//~1107I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1527R~
@@ -15,6 +17,7 @@ public class AxeDlgBtnUpdate extends AxeDialog                     //~1604R~
 {                                                                  //~0914I~
 	public  static final int DIALOG_BTNUPDATE     =R.layout.dialogbuttonupdate;//~1604R~
 	private static final int TITLE_BTNUPDATE      =R.string.DialogTitle_BtnUpdate;//~1604R~
+	private static final String HELP_FILE     ="AxeBtnUpdate";        //+vc2yI~
                                                                    //~1604I~
 	public  static final int VIEWID_CB_DELETE      =R.id.Delete;   //~1604R~
 	public  static final int VIEWID_CB_REPLACE     =R.id.Replace;  //~1604R~
@@ -136,15 +139,16 @@ public class AxeDlgBtnUpdate extends AxeDialog                     //~1604R~
         }                                                          //~1602I~
     }                                                              //~1602I~
 //************************************************                 //~1531I~
-//*dialog button ok/can/help                                       //+1923R~
+//*dialog button ok/can/help                                       //~1923R~
 //************************************************                 //~1604I~
-	@Override                                                      //+1923I~
-    protected boolean onClickHelp()                                //+1923I~
-    {                                                              //+1923I~
-    	showDialogHelp(R.string.HelpTitle_ButtonUpdate,R.string.Help_ButtonUpdate);//+1923I~
-        return false;	//no dismiss                               //+1923I~
-    }                                                              //+1923I~
-//*****************                                                //+1923I~
+	@Override                                                      //~1923I~
+    protected boolean onClickHelp()                                //~1923I~
+    {                                                              //~1923I~
+//    	showDialogHelp(R.string.HelpTitle_ButtonUpdate,R.string.Help_ButtonUpdate);//~1923I~//+vc2yR~
+    	showDialogHelp(TITLE_BTNUPDATE,HELP_FILE);                 //+vc2yI~
+        return false;	//no dismiss                               //~1923I~
+    }                                                              //~1923I~
+//*****************                                                //~1923I~
 	@Override
     protected boolean onClickClose()                               //~1821R~
     {                                                              //~1531I~
@@ -189,7 +193,9 @@ public class AxeDlgBtnUpdate extends AxeDialog                     //~1604R~
             }                                                      //~1604I~
         }                                                          //~1604I~
         else                                                       //~1605I~
-        if (funcid!=VIEWID_CB_DELETE)                              //~1605I~
+//      if (funcid!=VIEWID_CB_DELETE)                              //~1605I~//~vc2yR~
+        if (funcid!=VIEWID_CB_DELETE                               //~vc2yI~
+        &&  funcid!=VIEWID_CB_MOVE)                                //~vc2yI~
         {                                                          //~1605I~
             newbtn=getSelectedButtonKey();                         //~1613R~
         }                                                          //~1605I~
@@ -209,7 +215,8 @@ public class AxeDlgBtnUpdate extends AxeDialog                     //~1604R~
         {                                                          //~1613I~
         	pos=btnid-(AxeButton.BUTTON_IDMAX-1);                  //~1613I~
             kd=AxeKeyValue.getUserGDK(pos);                        //~1613R~
-            newbtn=AxeButton.buttonTypeTbl[AxeButton.BUTTON_USER];           //~1613I~
+//          newbtn=AxeButton.buttonTypeTbl[AxeButton.BUTTON_USER];           //~1613I~//~vc2yR~
+            newbtn=AxeButton.getNewButtonUser();                   //~vc2yI~
             newbtn.setUserGDK(kd.keyGDK);                            //~1613I~
             newbtn.label=newbtn.name=kd.keyName;
             if (Dump.Y)Dump.println("getselected extkey userGDK="+Integer.toHexString(kd.keyGDK)+",name="+kd.keyName); //~1613I~

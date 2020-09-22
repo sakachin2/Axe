@@ -1,0 +1,7 @@
+Download and Expand file. (zip,tar,tgz,tar.gz,bz2,tbz2)
+----------------------------------------------------------------------------
+For download, specify "URL" and "Local folder".
+To navigate file path use Search button.
+You can only expand the local file with null URL.
+----------------------------------------------------------------------------
+2020/09/13 AxeDlgDownload
