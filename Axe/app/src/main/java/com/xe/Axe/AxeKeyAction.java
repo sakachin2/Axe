@@ -1,6 +1,6 @@
-//CID://+vaigR~:                                                   //~1621R~//+vaigR~
+//CID://+vaigR~:                                                   //~1621R~//~vaigR~
 //*************************************************************    //~va15I~
-//vaig:130531 Axe:disable by ShortCut:On for direction button for update button function//+vaigI~
+//vaig:130531 Axe:disable by ShortCut:On for direction button for update button function//~vaigI~
 //*************************************************************    //~va15I~
 package com.xe.Axe;                                                //~va15I~
 
@@ -73,15 +73,15 @@ public class AxeKeyAction implements OnKeyListener            //~va15R~
     {                                                              //~va15M~
 //    	screen=Pscreen;                                            //~va15M~//~2402R~
 		Pscreen.setOnKeyListener(this);                            //~va15M~
-        if (Dump.Y) Dump.println("addKeyListener");                //~va15M~
+        if (Dump.Y) Dump.println("AxeKeyAction.addKeyListener");                //~va15M~//+vaigR~
     }                                                              //~va15M~
 //*************                                                    //~va15I~
     public boolean onKeyDown(int Pkeycode,KeyEvent Pevent)           //~va15I~
     {
     	boolean rc=false;                                          //~va15R~
-    	if (Dump.Y) Dump.println("onKeyDown keycode=0x"+Integer.toHexString(Pkeycode)+",flag="+Integer.toHexString(Pevent.getFlags()));//~1831R~
-        if (Dump.Y) Dump.println("onKeyDown metastate=0x"+Integer.toHexString(Pevent.getMetaState())+",scan="+Integer.toHexString(Pevent.getScanCode()));//~1831R~
-        if (Dump.Y) Dump.println("onKeyDown unicode=0x"+Integer.toHexString(Pevent.getUnicodeChar())+",unimeta="+Integer.toHexString(Pevent.getUnicodeChar(Pevent.getMetaState())));//~1831R~
+    	if (Dump.Y) Dump.println("AxeKeyAction.onKeyDown keycode=0x"+Integer.toHexString(Pkeycode)+",flag="+Integer.toHexString(Pevent.getFlags()));//~1831R~//+vaigR~
+        if (Dump.Y) Dump.println("AxeKeyAction.onKeyDown metastate=0x"+Integer.toHexString(Pevent.getMetaState())+",scan="+Integer.toHexString(Pevent.getScanCode()));//~1831R~//+vaigR~
+        if (Dump.Y) Dump.println("AxeKeyAction.onKeyDown unicode=0x"+Integer.toHexString(Pevent.getUnicodeChar())+",unimeta="+Integer.toHexString(Pevent.getUnicodeChar(Pevent.getMetaState())));//~1831R~//+vaigR~
         switch(Pkeycode)                                           //~va15I~
         {                                                          //~va15I~
 //onkeyDown is not scheduled when popup or Menu is up              //~va15I~
@@ -100,7 +100,7 @@ public class AxeKeyAction implements OnKeyListener            //~va15R~
     public boolean onKeyUp(int Pkeycode,KeyEvent Pevent)             //~va15I~
     {
     	boolean rc=false;                                          //~va15R~
-    	if (Dump.Y) Dump.println("onKeyUp keycode="+Pkeycode+",flag="+Integer.toHexString(Pevent.getFlags()));//~va15I~
+    	if (Dump.Y) Dump.println("AxeKeyAction.onKeyUp keycode="+Pkeycode+",flag="+Integer.toHexString(Pevent.getFlags()));//~va15I~//+vaigR~
         switch(Pkeycode)                                           //~va15I~
         {                                                          //~va15I~
         case AxeKeyValue.AKC_BACK:                                 //~va15I~
@@ -133,10 +133,10 @@ public class AxeKeyAction implements OnKeyListener            //~va15R~
         try                                                        //~va15I~
         {                                                          //~va15I~
             action=Pevent.getAction();                          //~v@@@R~//~va15I~
-            if (Dump.Y) Dump.println("Onky action="+Integer.toHexString(action));//~va15I~
-    		if (Dump.Y) Dump.println("onKey keycode=0x"+Integer.toHexString(Pkeycode)+",flag="+Integer.toHexString(Pevent.getFlags()));//~1831R~
-        	if (Dump.Y) Dump.println("onKey metastate=0x"+Integer.toHexString(Pevent.getMetaState())+",scan="+Integer.toHexString(Pevent.getScanCode()));//~1831R~
-        	if (Dump.Y) Dump.println("onKey unicode=0x"+Integer.toHexString(Pevent.getUnicodeChar())+",unimeta="+Integer.toHexString(Pevent.getUnicodeChar(Pevent.getMetaState())));//~1831R~
+            if (Dump.Y) Dump.println("AxeKeyAction.Onkey action="+Integer.toHexString(action));//~va15I~//+vaigR~
+    		if (Dump.Y) Dump.println("AxeKeyAction.onKey keycode=0x"+Integer.toHexString(Pkeycode)+",flag="+Integer.toHexString(Pevent.getFlags()));//~1831R~//+vaigR~
+        	if (Dump.Y) Dump.println("AxeKeyAction.onKey metastate=0x"+Integer.toHexString(Pevent.getMetaState())+",scan="+Integer.toHexString(Pevent.getScanCode()));//~1831R~//+vaigR~
+        	if (Dump.Y) Dump.println("AxeKeyAction.onKey unicode=0x"+Integer.toHexString(Pevent.getUnicodeChar())+",unimeta="+Integer.toHexString(Pevent.getUnicodeChar(Pevent.getMetaState())));//~1831R~//+vaigR~
             btnkey=chkTerminalKey(action,Pkeycode,Pevent);                   //~1810R~//~1926R~
             if (btnkey==0)	//terminal button is used as modifiedr //~1811R~
             	return true;                                       //~1811I~
@@ -675,11 +675,11 @@ public class AxeKeyAction implements OnKeyListener            //~va15R~
 		if (Dump.Y) Dump.println("getCapslockStatus="+capslockStatus);//~va15I~
     	return capslockStatus;                                    //~va15I~
     }                                                              //~va15I~
-    public int getShortcutStatus()                             //+vaigI~
-    {                                                              //+vaigI~
-		if (Dump.Y) Dump.println("getShortcutStatus="+shortcutStatus);//+vaigI~
-        return shortcutStatus;                                     //+vaigI~
-    }                                                              //+vaigI~
+    public int getShortcutStatus()                             //~vaigI~
+    {                                                              //~vaigI~
+		if (Dump.Y) Dump.println("getShortcutStatus="+shortcutStatus);//~vaigI~
+        return shortcutStatus;                                     //~vaigI~
+    }                                                              //~vaigI~
 //enter by ControlR                                                //~va15I~
     public void enterControlR()                                 //~va15I~
     {                                                              //~va15I~
