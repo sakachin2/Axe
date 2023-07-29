@@ -1,5 +1,10 @@
-//*CID://+vc2RR~: update#=  239;                                   //~vc2RR~
+//*CID://+vc5hR~: update#=  251;                                   //~vc5hR~
 //**********************************************************************//~vaagI~
+//vc5h 2023/07/10 at after first install,env path is not set       //~vc5hI~
+//vc5c 2023/07/04 display directory set to access by ACTION_OPEN_DOCUMENT_TREE//~vc53I~
+//vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
+//vc52 2023/06/06 show shared storage path                         //~vc52I~
+//vc4y 2023/05/22 >=android11(Api30),access all file option setting by setting-android related dialog//~vc4yI~
 //vc2R 2020/09/11 Debug option:reverse HelpLang                    //~vc2RI~
 //vc2L 2020/09/02 display TMPDIR                                   //~vc2LI~
 //vc2B 2020/08/12 Help  by file                                    //~vc2BI~
@@ -19,8 +24,11 @@
 package com.xe.Axe;                                                //~@@@@I~
 
 import com.ahsv.AG;
+import com.ahsv.utils.USAF;
 import com.xe.Axe.kbd.AxeKbdDialog;
 import com.xe.Axe.kbd.ims.KeyboardView;
+
+import android.content.DialogInterface;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +74,7 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
     private RadioGroup rgHomeButtonKey;                            //~vayaI~
     private static int homebuttonId;                               //~vayaR~
     public static int homebuttonKeyValue;                          //~vayaI~
+    private boolean swRequestManageAllFile;                        //~vc4yI~
 //**********************************                               //~1725I~
 	public AxeDlgArmOption()                                       //~1821R~
     {                                                              //~1725I~
@@ -85,6 +94,7 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
     {                                                              //~1725I~
     	int buttonid=-1,inputtype;                                           //~1822I~
     //********************                                         //~1821M~
+    	if (Dump.Y) Dump.println("AxeDlgArmOption:setupDialogExtend PlayoutView="+PlayoutView+",layoutview="+layoutView);//~vc53I~
 	    rgOrientation=(RadioGroup)layoutView.findViewById(R.id.SCREEN_ORIENTATION);//~1822I~
 //	    etInternalOption=(EditText)layoutView.findViewById(R.id.INTERNAL_OPTION);//~vay9R~
 		rgTrace=(RadioGroup)layoutView.findViewById(R.id.DEBUG_TRACE);//~vay9I~
@@ -161,6 +171,10 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
         cbCancelXekbdByOutsideTouch.setChecked(AxeG.cancelXekbdByOutsideTouch);//~vaihI~
 //*resetModifier                                                   //~vayaI~
         cbResetModifier.setChecked(AxeG.resetModifier);            //~vayaI~
+//*yourSharedFolder                                                //~vc5cR~
+        showYourSharedFolder(PlayoutView);                         //~vc5cR~
+//*AllFiles                                                        //~vc4yI~
+        showOptionAllFiles(PlayoutView);                           //~vc4yI~
 //*Env-Path                                                        //~vad2I~
         etCharset.setText(Gxeh.localeCharset);                     //~vad2I~
         inputtype=InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS//xml:inputType="textNoSuggestion" is not work//~vad2I~
@@ -203,6 +217,42 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
         	initInternalOption();                                  //~vay9I~
         }                                                          //~vay9I~
     }                                                              //~1821M~
+//************************                                         //~vc4yI~
+    private void showOptionAllFiles(ViewGroup PlayoutView)         //~vc4yI~
+    {                                                              //~vc4yI~
+    	if (Dump.Y) Dump.println("AxeDlgArmOption showOptionAllFiles");//~vc4yI~
+        LinearLayout ll=(LinearLayout)PlayoutView.findViewById(R.id.llAllFile);//~vc4yI~
+		if (AxeG.osVersion<30)  //>=android11(Q)=api-30            //~vc4yI~
+        	ll.setVisibility(View.GONE);                           //~vc4yI~
+        else                                                       //~vc4yI~
+        {                                                          //~vc4yI~
+	        TextView tvAll=(TextView)PlayoutView.findViewById(R.id.tvAllFileAll);//~vc4yI~
+	        TextView tvMedia=(TextView)PlayoutView.findViewById(R.id.tvAllFileMedia);//~vc4yI~
+        	boolean swAllFile= USAF.isAllFileAccess();              //~vc4yI~
+            if (swAllFile)                                        //~vc4yI~
+		        tvMedia.setVisibility(View.INVISIBLE);             //~vc4yR~
+            else                                                   //~vc4yI~
+		        tvAll.setVisibility(View.INVISIBLE);               //~vc4yR~
+		    Button btnAllFiles=(Button)PlayoutView.findViewById(R.id.btnAllFile);//~vc4yI~
+	        setButtonListener(btnAllFiles);                        //~vc4yI~
+	        TextView tvVol=(TextView)PlayoutView.findViewById(R.id.tvAllFileVolume);//~vc52I~
+		    tvVol.setText(Gxeh.SharedStorageVolume);               //~vc52I~
+	        TextView tvAbs=(TextView)PlayoutView.findViewById(R.id.tvAllFileAbsPath);//~vc52I~
+		    tvAbs.setText(Gxeh.SharedStorageAbsPath);              //~vc52I~
+        }                                                          //~vc4yI~
+    }                                                              //~vc4yI~
+//************************                                         //~vc5cR~
+    private void showYourSharedFolder(ViewGroup PlayoutView)       //~vc5cR~
+    {                                                              //~vc5cR~
+    	if (Dump.Y) Dump.println("AxeDlgArmOption showYourSharedFolder PlayoutView="+PlayoutView);//~vc5cR~
+        TextView tv=(TextView)PlayoutView.findViewById(R.id.tvYourSharedFolder);//~vc5cR~
+        String folders=AG.aUSAF.yourSharedFolder;                  //~vc5cR~
+        if (folders==null)                                         //~vc5cR~
+        	folders=Utils.getResourceString(R.string.NoYourSharedFolder);//~vc5cR~
+    	if (Dump.Y) Dump.println("AxeDlgArmOption showYourSharedFolder tv="+tv+",folders="+folders);//~vc5cR~
+        tv.setText(folders);                                       //~vc5cR~
+    	if (Dump.Y) Dump.println("AxeDlgArmOption tvYourSharedFolder="+folders);//~vc5cR~
+    }                                                              //~vc5cR~
 //************************                                         //~1830I~
 	@Override                                                      //~1831I~
     public void onWindowFocusChanged(boolean PhasFocus)            //~1831I~
@@ -234,18 +284,30 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
     //****************                                             //~1821M~
         buttonid=rgOrientation.getCheckedRadioButtonId();          //~1822R~
         newfix=orientationFix;                                     //~1822I~
-        switch(buttonid)                                           //~1821M~
-        {                                                          //~1821I~
-        case R.id.SCREEN_FIX_LANDSCAPE:                            //~1821I~
-            newfix=AxeButtonLayout.LANDSCAPE;                      //~1822I~
-            break;                                                 //~1821I~
-        case R.id.SCREEN_FIX_PORTRAIT:                             //~1821I~
-            newfix=AxeButtonLayout.PORTRAIT;                       //~1822I~
-            break;                                                 //~1821I~
-        case R.id.SCREEN_ROTATE:                                   //~1821R~
-            newfix=AxeButtonLayout.ROTATE;                         //~1822I~
-            break;                                                 //~1821I~
-        }                                                          //~1821I~
+//        switch(buttonid)                                           //~1821M~//~vc53R~
+//        {                                                          //~1821I~//~vc53R~
+//        case R.id.SCREEN_FIX_LANDSCAPE:                            //~1821I~//~vc53R~
+//            newfix=AxeButtonLayout.LANDSCAPE;                      //~1822I~//~vc53R~
+//            break;                                                 //~1821I~//~vc53R~
+//        case R.id.SCREEN_FIX_PORTRAIT:                             //~1821I~//~vc53R~
+//            newfix=AxeButtonLayout.PORTRAIT;                       //~1822I~//~vc53R~
+//            break;                                                 //~1821I~//~vc53R~
+//        case R.id.SCREEN_ROTATE:                                   //~1821R~//~vc53R~
+//            newfix=AxeButtonLayout.ROTATE;                         //~1822I~//~vc53R~
+//            break;                                                 //~1821I~//~vc53R~
+//        }                                                          //~1821I~//~vc53R~
+//      switch(buttonid)                                           //~vc53I~
+//      {                                                          //~vc53I~
+        if (buttonid== R.id.SCREEN_FIX_LANDSCAPE)                  //~vc53R~
+            newfix=AxeButtonLayout.LANDSCAPE;                      //~vc53I~
+        else //break;                                              //~vc53I~
+        if (buttonid== R.id.SCREEN_FIX_PORTRAIT)                   //~vc53R~
+            newfix=AxeButtonLayout.PORTRAIT;                       //~vc53I~
+        else //break;                                              //~vc53I~
+        if (buttonid== R.id.SCREEN_ROTATE)                         //~vc53R~
+            newfix=AxeButtonLayout.ROTATE;                         //~vc53I~
+//          break;                                                 //~vc53I~
+//      }                                                          //~vc53I~
         if (Dump.Y) Dump.println("AxeDialog old="+orientationFix+",newfix="+newfix);//~1822R~
         if (newfix!=orientationFix)                                //~1822I~
         {                                                          //~1821I~
@@ -356,14 +418,41 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
     	boolean rc=false;   //not dismiss at return                //~1826I~
     //****************                                             //~1826I~
         if (Dump.Y) Dump.println("AxeDlgArmOption onClickOther buttonid="+Integer.toHexString(PbuttonId));//~1826I~//~vc1pR~
-        switch(PbuttonId)                                          //~1826I~
-        {                                                          //~1826I~
-        case R.id.IM_PICKER:                                       //~1826I~
-	       	AxeG.axeIME.changeIME();                               //~1825I~//~1826I~
-            break;                                                 //~1826I~
-        }                                                          //~1826I~
+//        switch(PbuttonId)                                          //~1826I~//~vc53R~
+//        {                                                          //~1826I~//~vc53R~
+//        case R.id.IM_PICKER:                                       //~1826I~//~vc53R~
+//            AxeG.axeIME.changeIME();                               //~1825I~//~1826I~//~vc53R~
+//            break;                                                 //~1826I~//~vc53R~
+//        case R.id.btnAllFile:                                     //~vc4yI~//~vc53R~
+//            rc=onClickChangeAllFiles();                            //~vc4yR~//~vc53R~
+//            break;                                                 //~vc4yI~//~vc53R~
+//        }                                                          //~1826I~//~vc53R~
+//      switch(PbuttonId)                                          //~vc53I~
+//      {                                                          //~vc53I~
+        if (PbuttonId== R.id.IM_PICKER)                            //~vc53I~
+            AxeG.axeIME.changeIME();                               //~vc53I~
+        else //break;                                              //~vc53I~
+        if (PbuttonId== R.id.btnAllFile)                           //~vc53I~
+            rc=onClickChangeAllFiles();                            //~vc53I~
+//          break;                                                 //~vc53I~
+//      }                                                          //~vc53I~
         return rc;                                                 //~1826I~
     }                                                              //~1826I~
+//******************                                               //~vc4yI~
+    private boolean onClickChangeAllFiles()                        //~vc4yR~
+    {                                                              //~vc4yI~
+        if (Dump.Y) Dump.println("AxeDlgArmOption onClickChangeAllFiles");//~vc4yI~
+    	swRequestManageAllFile=true;                               //~vc4yI~
+    	return true;	//issue dismiss                            //~vc4yR~
+    }                                                              //~vc4yI~
+//******************                                               //~vc4yI~
+	@Override                                                      //~vc4yI~
+    protected void onDismiss()                     //~vc4yI~
+    {                                                              //~vc4yI~
+        if (Dump.Y) Dump.println("AxeDlgArmOption onDismiss swRequestManageAllFile="+swRequestManageAllFile);//~vc4yI~
+    	if (swRequestManageAllFile)                                //~vc4yI~
+	    	AG.aUSAF.onClickChangeAllFiles();                      //~vc4yI~
+    }                                                              //~vc4yI~
 //******************                                               //~1A03I~
 	@Override                                                      //~1602I~//~1A03I~
     protected boolean onClickHelp()                                //~1821R~//~1A03I~
@@ -414,6 +503,7 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
 //      int remap=0;                                               //~vay9R~
         int debug=0;//~v6k1I~
     //************                                                 //~1824I~
+    	System.out.println("AxeDlgArmOption Pdumpopt="+Pdumpopt);	//TODO test//~vc2RI~
 	    if (!AxeG.isDebuggable)                                    //~vai3I~
         {                                                          //~vai3I~
             AxeG.optDump=0;                                        //~vai3I~
@@ -556,31 +646,55 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
     	int buttonid,trace,dump,debug;                             //~vay9I~
     //*******************************                              //~vay9I~
         buttonid=rgTrace.getCheckedRadioButtonId();                //~vay9I~
-        switch(buttonid)                                           //~vay9I~
-        {                                                          //~vay9I~
-        case R.id.DEBUG_TRACE_ON:                                  //~vay9I~
-            trace=AxeG.TRACEO_ON;                                  //~vay9I~
-            break;                                                 //~vay9I~
-        case R.id.DEBUG_TRACE_ON2:                                  //~vay9I~
-            trace=AxeG.TRACEO_REOPEN;                               //~vay9I~
-            break;                                                 //~vay9I~
-        default:                                                   //~vay9I~
-            trace=0;                                               //~vay9I~
-            break;                                                 //~vay9I~
-        }                                                          //~vay9I~
+//        switch(buttonid)                                           //~vay9I~//~vc53R~
+//        {                                                          //~vay9I~//~vc53R~
+//        case R.id.DEBUG_TRACE_ON:                                  //~vay9I~//~vc53R~
+//            trace=AxeG.TRACEO_ON;                                  //~vay9I~//~vc53R~
+//            break;                                                 //~vay9I~//~vc53R~
+//        case R.id.DEBUG_TRACE_ON2:                                  //~vay9I~//~vc53R~
+//            trace=AxeG.TRACEO_REOPEN;                               //~vay9I~//~vc53R~
+//            break;                                                 //~vay9I~//~vc53R~
+//        default:                                                   //~vay9I~//~vc53R~
+//            trace=0;                                               //~vay9I~//~vc53R~
+//            break;                                                 //~vay9I~//~vc53R~
+//        }                                                          //~vay9I~//~vc53R~
+//      switch(buttonid)                                           //~vc53I~
+//      {                                                          //~vc53I~
+        if (buttonid== R.id.DEBUG_TRACE_ON)                        //~vc53R~
+            trace=AxeG.TRACEO_ON;                                  //~vc53I~
+        else //break;                                              //~vc53I~
+        if (buttonid== R.id.DEBUG_TRACE_ON2)                       //~vc53R~
+            trace=AxeG.TRACEO_REOPEN;                              //~vc53I~
+        else //break;                                              //~vc53I~
+//      default:                                                   //~vc53I~
+            trace=0;                                               //~vc53I~
+//          break;                                                 //~vc53I~
+//      }                                                          //~vc53I~
         buttonid=rgDump.getCheckedRadioButtonId();                 //~vay9I~
-        switch(buttonid)                                           //~vay9I~
-        {                                                          //~vay9I~
-        case R.id.DEBUG_DUMP_ON:                                   //~vay9I~
-            dump=1;                                                //~vay9I~
-            break;                                                 //~vay9I~
-        case R.id.DEBUG_DUMP_ON2:                                   //~vay9I~
-            dump=2;                                                //~vay9I~
-            break;                                                 //~vay9I~
-        default:                                                   //~vay9I~
-            dump=0;                                                //~vay9I~
-            break;                                                 //~vay9I~
-        }                                                          //~vay9I~
+//        switch(buttonid)                                           //~vay9I~//~vc53R~
+//        {                                                          //~vay9I~//~vc53R~
+//        case R.id.DEBUG_DUMP_ON:                                   //~vay9I~//~vc53R~
+//            dump=1;                                                //~vay9I~//~vc53R~
+//            break;                                                 //~vay9I~//~vc53R~
+//        case R.id.DEBUG_DUMP_ON2:                                   //~vay9I~//~vc53R~
+//            dump=2;                                                //~vay9I~//~vc53R~
+//            break;                                                 //~vay9I~//~vc53R~
+//        default:                                                   //~vay9I~//~vc53R~
+//            dump=0;                                                //~vay9I~//~vc53R~
+//            break;                                                 //~vay9I~//~vc53R~
+//        }                                                          //~vay9I~//~vc53R~
+//      switch(buttonid)                                           //~vc53I~
+//      {                                                          //~vc53I~
+        if (buttonid== R.id.DEBUG_DUMP_ON)                         //~vc53R~
+            dump=1;                                                //~vc53I~
+        else //break;                                              //~vc53I~
+        if (buttonid== R.id.DEBUG_DUMP_ON2)                        //~vc53R~
+            dump=2;                                                //~vc53I~
+        else //break;                                              //~vc53I~
+//      default:                                                   //~vc53I~
+            dump=0;                                                //~vc53I~
+//          break;                                                 //~vc53I~
+//      }                                                          //~vc53I~
         if (cbLog.isChecked())                                     //~vay9I~
         	trace |= AxeG.TRACEO_LOGCAT;                           //~vay9I~
         if (cbRemap.isChecked())                                   //~vay9I~
@@ -597,28 +711,46 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
         AxeG.setParameter(AxeG.PREFKEY_DEBUG_TRACE,trace);//putPreference//~vay9I~
         AxeG.setParameter(AxeG.PREFKEY_DEBUG_DUMP,dump);//putPreference//~vay9I~
         AxeG.setParameter(AxeG.PREFKEY_DEBUG_DEBUG,debug);//putPreference//~vay9I~
-        AG.setDebugHelpLang();                                     //+vc2RI~
+        AG.setDebugHelpLang();                                     //~vc2RI~
+        System.out.println("AxeDlgArmOption dump="+dump);	//TODO test//~vc2RI~
     }
     public static void chkHomeButtonKey(boolean PaxeGinit/*from AxeG*/,int Prgbuttonid)//~vayaI~
     {                                                              //~vayaI~
         int keyvalue,buttonid;                                     //~vayaI~
     //************                                                 //~vayaI~
     	buttonid=Prgbuttonid;                                        //~vayaI~
-	    switch(Prgbuttonid)                                          //~vayaI~
-    	{                                                          //~vayaI~
-    	case R.id.HOMEBUTTON_HOME:                                 //~vayaI~
-        	keyvalue=AxeKeyValue.GDK_Home;                         //~vayaI~
-            break;                                                 //~vayaI~
-    	case R.id.HOMEBUTTON_ESC:                                  //~vayaI~
-        	keyvalue=AxeKeyValue.GDK_Escape;                       //~vayaI~
-            break;                                                 //~vayaI~
-    	case R.id.HOMEBUTTON_ENTER:                                //~vayaI~
-        	keyvalue=AxeKeyValue.GDK_Return;                       //~vayaI~
-            break;                                                 //~vayaI~
-        default:                                                   //~vayaI~
-        	buttonid=R.id.HOMEBUTTON_NONE;                         //~vayaI~
-        	keyvalue=0;                                            //~vayaI~
-    	}                                                          //~vayaI~
+//        switch(Prgbuttonid)                                          //~vayaI~//~vc53R~
+//        {                                                          //~vayaI~//~vc53R~
+//        case R.id.HOMEBUTTON_HOME:                                 //~vayaI~//~vc53R~
+//            keyvalue=AxeKeyValue.GDK_Home;                         //~vayaI~//~vc53R~
+//            break;                                                 //~vayaI~//~vc53R~
+//        case R.id.HOMEBUTTON_ESC:                                  //~vayaI~//~vc53R~
+//            keyvalue=AxeKeyValue.GDK_Escape;                       //~vayaI~//~vc53R~
+//            break;                                                 //~vayaI~//~vc53R~
+//        case R.id.HOMEBUTTON_ENTER:                                //~vayaI~//~vc53R~
+//            keyvalue=AxeKeyValue.GDK_Return;                       //~vayaI~//~vc53R~
+//            break;                                                 //~vayaI~//~vc53R~
+//        default:                                                   //~vayaI~//~vc53R~
+//            buttonid=R.id.HOMEBUTTON_NONE;                         //~vayaI~//~vc53R~
+//            keyvalue=0;                                            //~vayaI~//~vc53R~
+//        }                                                          //~vayaI~//~vc53R~
+//      switch(Prgbuttonid)                                        //~vc53I~
+//      {                                                          //~vc53I~
+        if (Prgbuttonid== R.id.HOMEBUTTON_HOME)                    //~vc53I~
+            keyvalue=AxeKeyValue.GDK_Home;                         //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Prgbuttonid== R.id.HOMEBUTTON_ESC)                     //~vc53I~
+            keyvalue=AxeKeyValue.GDK_Escape;                       //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Prgbuttonid== R.id.HOMEBUTTON_ENTER)                   //~vc53I~
+            keyvalue=AxeKeyValue.GDK_Return;                       //~vc53I~
+        else //break;                                              //~vc53I~
+//      default:                                                   //~vc53I~
+        {                                                          //~vc53I~
+            buttonid=R.id.HOMEBUTTON_NONE;                         //~vc53I~
+            keyvalue=0;                                            //~vc53I~
+        }                                                          //~vc53I~
+//      }                                                          //~vc53I~
     	homebuttonId=buttonid;                                     //~vayaI~
     	homebuttonKeyValue=keyvalue;                               //~vayaI~
         if (Dump.Y) Dump.println("chkHomeButtonKey:buttonid="+Integer.toHexString(Prgbuttonid)+",key="+Integer.toHexString(keyvalue));//~vayaI~
@@ -632,7 +764,13 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
         String mypath=Gxeh.addPath;                                //~vc1pR~
         int pos=old.indexOf(mypath);                               //~vc1pR~
         String nativePath=Gxeh.envVarNativePATH;                   //~vc1pI~
+      if (Gxeh.envPath.contains(cpath))                            //~vc5hI~
         ev=Gxeh.envPath.replace(cpath,Gxeh.addPath)+(nativePath==null ? "": ":"+nativePath);//~vc1pR~
+      else                                                         //~vc5hI~
+      if (!Gxeh.envPath.contains(Gxeh.addPath))                    //~vc5hI~
+        ev=Gxeh.addPath+(nativePath==null ? "" : ":"+nativePath);   //myhome/bin+/sbin//~vc5hI~
+      else                                                         //+vc5hI~
+        ev=Gxeh.envVarPATH;                                        //+vc5hI~
         Gxeh.envVarPATH=ev;                                        //~vc1pI~
         if (PswJNICall)                                            //~vc1pI~
 	        AxeJNI.updateEnvPath();                                   //~vc1pI~

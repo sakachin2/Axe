@@ -1,5 +1,9 @@
-//CID://+vagFR~: update#=      9                                   //~vagFR~
+//CID://+vc5qR~: update#=     21                                   //+vc5qR~
 //*************************************************************    //~va15I~
+//vc5q 2023/07/23 reject the function transfer file to mime app because//+vc5qI~
+//                From android7:android.os.FileUriExposedException: file:///data/user/0/com.xe.AxeA9.debug/files/myhome/x1.c exposed beyond app through Intent.getData()//+vc5qI~
+//vc5p 2023/07/22 Dump open with for //Axe/x1.(mime type=text/x-csrc for ////Axe/x1.c. normal file is file:///sdcard/...)//~vc5pI~
+//vc48 2022/03/25 deprecated;Api33, packageManager.queryIntentActivities//~vc48I~
 //vagF:120920 (Axe)local html viewer fail by permission err(uid of process of HtmlViewer was checked)//~vagFI~
 //vabe:120126 (Axe)for the case selected xe on selector by "?" cmd, just terminate//~vabeI~
 //*************************************************************    //~va15I~
@@ -7,9 +11,12 @@ package com.xe.Axe;                                                //~va15I~
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
                                                                    //~1610R~
@@ -26,6 +33,9 @@ public class AxeActivity                                           //~1713R~//~1
 	private static String mailText,mailSubject;//~1A15R~           //~1A16R~
 	private static String[] mailTo;                                //~1A16I~
 	private static final int TID_DRAGSEND=1;                       //~1A18I~
+	private static final String CN="AxeActivity:";                 //~vc5pI~
+	private static final String APP_INTENT_ACTION=Intent.ACTION_SEND; //~vc5pI~
+	private static final String APP_INTENT_ACTION_VIEW=Intent.ACTION_VIEW;//~vc5pI~
     //**************************************                       //~1A06I~//~1A15R~
     //*OpenWith                                                    //~1A06I~//~1A15R~
     //**************************************                       //~1A06I~//~1A15R~
@@ -56,7 +66,8 @@ public class AxeActivity                                           //~1713R~//~1
         intent.setAction(Intent.ACTION_VIEW);                      //~1A07R~
 //        intent.setAction(Intent.ACTION_MAIN);                    //~1A07R~
         intent.setType(Pmimetype);
-        int sz=pm.queryIntentActivities(intent,PackageManager.MATCH_DEFAULT_ONLY).size();//~1A06I~
+//      int sz=pm.queryIntentActivities(intent,PackageManager.MATCH_DEFAULT_ONLY).size();//~1A06I~//~vc48R~
+        int sz=queryActivities(pm,intent).size();                  //~vc48I~
         if (Dump.Y) Dump.println("AxeJNI:getMimeApplication mime="+Pmimetype+",size="+sz);//~1A06I~
 //        if (sz==0)                                               //~1A07R~
 //        {                                                        //~1A07R~
@@ -70,12 +81,16 @@ public class AxeActivity                                           //~1713R~//~1
     {                                                              //~1A19I~
         PackageManager pm=AxeG.context.getPackageManager();        //~1A19I~
         Intent intent=new Intent();                                //~1A19I~
-        intent.setAction(Intent.ACTION_VIEW);                      //~1A19I~
+//      intent.setAction(Intent.ACTION_VIEW);                      //~1A19I~//~vc5pR~
+        intent.setAction(APP_INTENT_ACTION);                       //~vc5pI~
 //        intent.setAction(Intent.ACTION_MAIN);                    //~1A19I~
         Uri uri=Uri.parse(Purl);           //file:///mnt/sdcard/Axe/xehelp/..//~1A19I~
         intent.setDataAndType(uri,Pmimetype);                      //~1A19I~
-        int sz=pm.queryIntentActivities(intent,PackageManager.MATCH_DEFAULT_ONLY).size();//~1A19I~
-        if (Dump.Y) Dump.println("AxeJNI:getMimeApplication_dataandtype uri="+Purl+",mime="+Pmimetype+",size="+sz);//~1A19I~
+//      int sz=pm.queryIntentActivities(intent,PackageManager.MATCH_DEFAULT_ONLY).size();//~1A19I~//~vc48R~
+//      int sz=queryActivities(pm,intent).size();                  //~vc48I~//~vc5pR~
+		List<ResolveInfo> list=queryActivities(pm,intent);         //~vc5pI~
+        int sz=list.size();                                        //~vc5pI~
+        if (Dump.Y) Dump.println(CN+"getMimeApplication_dataandtype uri="+Purl+",mime="+Pmimetype+",size="+sz);//~1A19I~//~vc5pR~
 //        if (sz==0)                                               //~1A19I~
 //        {                                                        //~1A19I~
 //            Intent intent2=Intent.createChooser(intent,Pmimetype);//user selection popup//~1A19I~
@@ -84,6 +99,7 @@ public class AxeActivity                                           //~1713R~//~1
 //		ResolveInfo info=pm.resolveActivity(intent,PackageManager.MATCH_DEFAULT_ONLY);//~1A19I~
         return sz;                                                 //~1A19I~
     }                                                              //~1A19I~
+//***************************************************************************//~vc5pI~
     public static int openWith(String Purl,String Pmimetype)       //~1A06I~
     {                                                              //~1A06I~
         Uri uri;                                                   //~1A06I~
@@ -91,7 +107,7 @@ public class AxeActivity                                           //~1713R~//~1
         Intent intent=null;                                        //~1A06I~
         String label;                                              //~vabeI~
     //***********************  
-    	if (Dump.Y) Dump.println("AxeJNI openWith url="+Purl+",mime="+Pmimetype);//~1A06I~
+    	if (Dump.Y) Dump.println("AxeJNI openWith strUrl="+Purl+",mime="+Pmimetype);//~1A06I~//~vc5pR~
         try                                                        //~1A06I~
         {                                                          //~1A06I~
 //            File f=new File(Purl);                               //~1A06R~
@@ -103,11 +119,38 @@ public class AxeActivity                                           //~1713R~//~1
 			showXeHelp(Purl);                                      //~vagFI~
           else                                                     //~vagFM~
           {                                                        //~vagFM~
+        if (true)                                                  //+vc5qI~
+        {                                                          //+vc5qI~
+	    	if (Dump.Y) Dump.println(CN+"openWith not xeHelp,reject");//+vc5qI~
+        	Utils.showToastLong(R.string.NotSupportedOpenWith);    //+vc5qI~
+            return 4;                                              //+vc5qI~
+        }                                                          //+vc5qI~
             uri=Uri.parse(Purl);           //file:///mnt/sdcard/Axe/xehelp/..//~1A06R~
-                                                                   //~1A06R~
             intent=new Intent();                                   //~1A06R~
+        if (false)//TODO test                                      //~vc5pR~
+        {                                                          //~vc5pI~
+            intent.setAction(APP_INTENT_ACTION_VIEW);    //SEND    //~vc5pI~
+            File f=new File(Purl.substring(7));                    //~vc5pI~
+            uri=Uri.fromFile(f);                                   //~vc5pI~
+            intent.setDataAndType(uri,Pmimetype);                  //~vc5pI~
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);//~vc5pI~
+	    	if (Dump.Y) Dump.println(CN+"openWith VIEW add permission Uri.fromFile uri="+uri);//~vc5pR~
+        }                                                          //~vc5pI~
+        else                                                       //~vc5pI~
+        if (true)//TODO test                                       //~vc5pI~
+        {                                                          //~vc5pI~
+            intent.setAction(APP_INTENT_ACTION);    //SEND         //~vc5pI~
+            intent.setType(Pmimetype);                             //~vc5pI~
+            intent.putExtra(Intent.EXTRA_STREAM,uri);              //~vc5pI~
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);//~vc5pI~
+	    	if (Dump.Y) Dump.println(CN+"openWith SEND add permission putExtra uri="+uri);//~vc5pR~
+        }                                                          //~vc5pI~
+        else                                                       //~vc5pI~
+        {                                                          //~vc5pI~
             intent.setDataAndType(uri,Pmimetype);                  //~1A06R~
-            intent.setAction(Intent.ACTION_VIEW);                  //~1A06R~
+//          intent.setAction(Intent.ACTION_VIEW);                  //~1A06R~//~vc5pR~
+            intent.setAction(APP_INTENT_ACTION);                   //~vc5pI~
+        }                                                          //~vc5pI~
             int pos=Purl.lastIndexOf('/');                         //~vabeI~
             if (pos>0)                                             //~vabeI~
             	label=Purl.substring(pos+1);                         //~vabeI~
@@ -498,6 +541,7 @@ public class AxeActivity                                           //~1713R~//~1
 //********************************************************         //~1A19I~
 	private static void showChooser(Intent Pintent,String Plabel)              //~1A19I~
     {                                                              //~1A19I~
+    	if (Dump.Y) Dump.println(CN+"showChooser label="+Plabel+",intent="+Pintent);//~vc5pI~
       if (Pintent==null)            //test                              //~2127I~//~vabeR~
       {                                                            //~2127I~//~vabeR~
         Intent picker=new Intent(Intent.ACTION_PICK_ACTIVITY);     //~2127I~//~vabeR~
@@ -505,12 +549,67 @@ public class AxeActivity                                           //~1713R~//~1
         AxeG.activity.startActivity(picker);                       //~2127I~//~vabeR~
       }                                                            //~2127I~//~vabeR~
       else                                                         //~2127I~//~vabeR~
+      {                                                            //~vc5pI~
+    	if (Dump.Y) Dump.println(CN+"showChooser startActivity intent="+Pintent);//~vc5pI~
         AxeG.activity.startActivity(Intent.createChooser(Pintent,Plabel));//~1A19I~
+      }                                                            //~vc5pI~
     }                                                              //~1A19I~
 //********************************************************         //~vagFI~
 	private static void showXeHelp(String Purl)                    //~vagFR~
     {                                                              //~vagFI~
     	if (Dump.Y) Dump.println("AxeActivity showXeHelp="+Purl);  //~vagFI~
-    	AxeDlgWebView.showHelp(Purl);                            //+vagFR~
+    	AxeDlgWebView.showHelp(Purl);                            //~vagFR~
     }                                                              //~vagFI~
+//*****************************************                        //~vc48I~
+private static List<ResolveInfo> queryActivities(PackageManager Ppm,Intent Pintent)//~vc48I~
+{                                                                  //~vc48I~
+	if (Dump.Y) Dump.println("AxeActivity.queryActiviries");       //~vc48I~
+	if (AxeG.osVersion>=33)                                        //~vc48I~
+		return queryActivitiesFrom33(Ppm,Pintent);                 //~vc48I~
+    else                                                           //~vc48I~
+		return queryActivitiesUnder33(Ppm,Pintent);                //~vc48I~
+}                                                                  //~vc48I~
+//*****************************************                        //~vc5pI~
+private static void listDump(String Pcmt,List<ResolveInfo> Plist)  //~vc5pI~
+{                                                                  //~vc5pI~
+	if (Dump.Y) Dump.println(CN+"listDump "+Pcmt+", sz="+Plist.size());//~vc5pI~
+    if (Plist.size()>0)                                            //~vc5pI~
+        for (ResolveInfo ri:Plist)                                 //~vc5pI~
+        {                                                          //~vc5pI~
+            if (Dump.Y) Dump.println(CN+"getMimeApplication_dataandtype ResolvInfo="+ri);//~vc5pI~
+            if (Dump.Y) Dump.println(CN+"getMimeApplication_dataandtype activityInfo="+ri.activityInfo);//~vc5pI~
+            if (Dump.Y) Dump.println(CN+"getMimeApplication_dataandtype label="+ri.nonLocalizedLabel);//~vc5pI~
+            if (Dump.Y) Dump.println(CN+"getMimeApplication_dataandtype packageName="+ri.resolvePackageName);//~vc5pI~
+        }                                                          //~vc5pI~
+}                                                                  //~vc5pI~
+//*****************************************                        //~vc48I~
+@SuppressWarnings("deprecation")                                   //~vc48I~
+private static List<ResolveInfo> queryActivitiesUnder33(PackageManager Ppm, Intent Pintent)//~vc48I~
+{                                                                  //~vc48I~
+	List<ResolveInfo> list;                                        //~vc5pI~
+	if (Dump.Y) Dump.println("AxeActivity.queryActivitiesUnder33");//~vc48I~
+//	return Ppm.queryIntentActivities(Pintent,PackageManager.MATCH_DEFAULT_ONLY);//~vc48I~//~vc5pR~
+	int flags;                          //~vc5pI~
+                                                                   //~vc5pI~
+    flags=PackageManager.MATCH_DEFAULT_ONLY;                       //~vc5pI~
+  	list=Ppm.queryIntentActivities(Pintent,flags);                 //~vc5pI~
+    if (Dump.Y) listDump("DefaultOnly",list);                      //~vc5pI~
+                                                                   //~vc5pI~
+    flags=PackageManager.MATCH_SYSTEM_ONLY;                        //~vc5pI~
+  	list=Ppm.queryIntentActivities(Pintent,flags);                 //~vc5pI~
+    if (Dump.Y) listDump("SystemOnly",list);                       //~vc5pI~
+                                                                   //~vc5pI~
+    flags=PackageManager.MATCH_ALL;                                //~vc5pI~
+  	list=Ppm.queryIntentActivities(Pintent,flags);                 //~vc5pI~
+    if (Dump.Y) listDump("All",list);                              //~vc5pI~
+    return list;                                                   //~vc5pI~
+}                                                                  //~vc48I~//~vc5pR~
+//*****************************************                        //~vc48I~
+@TargetApi(33)                                                     //~vc48I~
+private static List<ResolveInfo> queryActivitiesFrom33(PackageManager Ppm,Intent Pintent)//~vc48R~
+{                                                                  //~vc48I~
+	if (Dump.Y) Dump.println("AxeActivity.queryActivitiesFrom33"); //~vc48I~
+    PackageManager.ResolveInfoFlags flags=PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY);//~vc48I~
+    return Ppm.queryIntentActivities(Pintent,flags);               //~vc48I~
+}                                                                  //~vc48I~
 }//class                                                           //~va15R~

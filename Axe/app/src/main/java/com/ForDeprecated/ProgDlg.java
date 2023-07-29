@@ -1,5 +1,6 @@
-//*CID://+vc09R~: update#= 150;                                    //~vc09R~
+//*CID://+vc53R~: update#= 155;                                    //+vc53R~
 //**********************************************************************//~1107I~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
 //vc09 2020/06/14 (Ahsv:1Ah0)for Android9-api28(PlayStore requires),deprected. ProgressDialog at Android8-api26//~vc09R~
 //1Ahe 2020/06/03 WD.stopDiscover send msg PEER_CHANGED with device ctr=0. StopDiscover by only button(Close or Back)//~1AheI~
 //1Ah0 2020/05/30 for Android9-api28(PlayStore requires),deprected. ProgressDialog at Android8-api26//~1Ah0I~
@@ -9,17 +10,13 @@
 package com.ForDeprecated;                                         //~1Ah0I~//~vc09R~
 
 import com.xe.Axe.Dump;                                            //~vc09R~
-
-import java.util.ArrayList;
-
-
 import com.ahsv.AG;                                                //~@@@@R~//~vc09R~
-import com.ForDeprecated.ProgDlgI;                                 //+vc09R~
-import com.xe.Axe.R;                                                 //~@@@@R~//~1A2jR~//+vc09R~
-import com.ahsv.utils.URunnable;                                   //+vc09R~
+//import com.ForDeprecated.ProgDlgI;                                 //~vc09R~
+import com.xe.Axe.R;                                                 //~@@@@R~//~1A2jR~//~vc09R~
+import com.ahsv.utils.URunnable;                                   //~vc09R~
 //import com.Ahsv.URunnableI;
-import com.ahsv.utils.URunnableData;                               //+vc09R~
-import com.ahsv.gui.UButton;                                       //+vc09R~
+import com.ahsv.utils.URunnableData;                               //~vc09R~
+import com.ahsv.gui.UButton;                                       //~vc09R~
 
 import android.app.Dialog;
 //import android.app.ProgressDialog;
@@ -167,12 +164,14 @@ public class ProgDlg                                            //~1107R~//~1211
     	try                                                        //~v@@@I~//~1Ah0I~
         {                                                          //~v@@@I~//~1Ah0I~
         	int id=Pbutton.getId();                                //~v@@@I~//~1Ah0I~
-        	switch(id)                                             //~v@@@I~//~1Ah0I~
-            {                                                      //~v@@@I~//~1Ah0I~
-            case R.id.Close:                                      //~v@@@I~//~1Ah0R~
+//      	switch(id)                                             //~v@@@I~//~1Ah0I~//+vc53R~
+//          {                                                      //~v@@@I~//~1Ah0I~//+vc53R~
+//          case R.id.Close:                                      //~v@@@I~//~1Ah0R~//~vc09R~//+vc53R~
+        	if (id==R.id.Close)                                    //+vc53I~
+            {                                                      //+vc53I~
                 onClickCancel();                                    //~v@@@I~//~1Ah0I~
-                break;                                             //~v@@@I~//~1Ah0I~
-            }                                                      //~v@@@I~//~1Ah0I~
+//              break;                                             //~v@@@I~//~1Ah0I~//+vc53R~
+            }                                                      //~v@@@I~//~1Ah0I~//+vc53R~
         }                                                          //~v@@@I~//~1Ah0I~
         catch(Exception e)                                         //~v@@@I~//~1Ah0I~
         {                                                          //~v@@@I~//~1Ah0I~

@@ -1,5 +1,6 @@
-//CID://+v2cQR~:       update#=  141109                            //~v2cQR~
+//CID://+vc45R~:       update#=  141109                            //+vc45R~
 //*************************************************************    //~va15I~
+//vc45 2022/03/25 deprecated; Java9 new Integer,Boolean,Double-->valueOf//+vc45I~
 //vc2Q 2020/09/08 change font size by pinch action                 //~v2cQI~
 //vaxe:140707 (Axe)shortcut to filedialog from titlebar touch      //~vaxeI~
 //vaim:130601 send mouse rbutton event by long press on AxeScreen  //~vaimI~
@@ -63,7 +64,8 @@ public class AxeMouse                                              //~1621R~
     	initGestureDetector();	//SWIPE                            //~1924I~
     	initSGL();	//pinch                                        //~v2cQI~
         axeTimer=new AxeTimer(this/*callback*/,AxeG.swipeTimeout/*milisec delay*/,false/*repeat*/,null/*parameter*/);//~1924I~//~1A03R~
-        longPressTimer=new AxeTimer(this/*callback*/,AxeG.longPressTimeout/*milisec delay*/,false/*repeat*/,new Integer(1)/*parameter*/);//~vaimR~
+//      longPressTimer=new AxeTimer(this/*callback*/,AxeG.longPressTimeout/*milisec delay*/,false/*repeat*/,new Integer(1)/*parameter*/);//~vaimR~//+vc45R~
+        longPressTimer=new AxeTimer(this/*callback*/,AxeG.longPressTimeout/*milisec delay*/,false/*repeat*/,Integer.valueOf(1)/*parameter*/);//+vc45I~
         travelX=travelY=Math.min(AxeG.screenW,AxeG.screenH)*AxeG.swipeTravel/100;   //minimum swipe travel distance %//~1A03R~
     }                                                              //~1924I~
 //**************************************************               //~va15I~
@@ -659,14 +661,14 @@ public class AxeMouse                                              //~1621R~
         					try                                    //~v2cQI~
         					{                                      //~v2cQI~
             					Axegxedlg.onScale(scaleFactor);    //~v2cQI~
-                                scaleFactor=0;                     //+v2cQI~
+                                scaleFactor=0;                     //~v2cQI~
         					}                                      //~v2cQI~
         					catch(Exception e)                     //~v2cQI~
         					{                                      //~v2cQI~
             					Dump.println(e,"AxeMouse.OnScaleEnd");//~v2cQI~
         					}                                      //~v2cQI~
-                        	super.onScaleEnd(Pdetector);           //+v2cQM~
-    						if (Dump.Y) Dump.println("AxeMouse.onScaleEnd return");//+v2cQI~
+                        	super.onScaleEnd(Pdetector);           //~v2cQM~
+    						if (Dump.Y) Dump.println("AxeMouse.onScaleEnd return");//~v2cQI~
                         }                                          //~v2cQI~
                     	@Override                                  //~v2cQI~
                         public boolean onScale(ScaleGestureDetector Pdetector)//~v2cQI~

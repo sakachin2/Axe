@@ -1,15 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "29.0.2"
+//  compileSdkVersion 28
+    compileSdkVersion 33
+//  buildToolsVersion "29.0.2"          2023/06/22
+    namespace "axe.Ahighlight"
     defaultConfig {
-        applicationId "axe.ahighlight"
+        applicationId "axe.Ahighlight"
 //      minSdkVersion 15           //  pie by "-fpie -pie"
-        minSdkVersion 16           //  always pie
-        targetSdkVersion 28
-        versionCode 101
-        versionName "1.01"
+//      minSdkVersion 16           //  always pie
+        minSdkVersion 24        //fseeko 2023/03/22
+//      targetSdkVersion 28
+        targetSdkVersion 33     //22023/03/22
+        versionCode 102
+        versionName "1.02"
 //      testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 //        externalNativeBuild {
 //            cmake {
@@ -19,8 +23,9 @@ android {
 //            }
 //        }
 	    ndk {
-    			abiFilters 'armeabi-v7a', 'arm64-v8a'
+//    			abiFilters 'armeabi-v7a', 'arm64-v8a'
 //  			abiFilters                'arm64-v8a'
+      			abiFilters 'arm64-v8a', 'x86_64'
     	}
     }
     buildTypes {
@@ -47,6 +52,7 @@ dependencies {
 //      exclude group: 'com.android.support', module: 'support-annotations'
 //  })
 //  compile 'com.android.support:appcompat-v7:25.1.1'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+//  implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 //  testCompile 'junit:junit:4.12'
 }

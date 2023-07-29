@@ -1,4 +1,4 @@
-##//*CID:##+dateR~:#63  update#=   16;                        ##~1C21R~
+##//*CID:##+dateR~:#63  update#=   23;                        ##~1C21R~
         ##################################################################################
         #
         #   CONVERTER      : Converter selection
@@ -6,6 +6,7 @@
         #                        Other option than MAP_A2F and MAP_F2A will be ignored.
         #                    1 : converter is ICU (ICU instalation is required)
         #                    2 : converter is iconv(Linux) or WideCharToMultibyte/MultiByteToWideChar(Windows)
+        #                       (iconv dose not support EBCDIC, use ICU !!)##~3623R~
         #
         #                    For 1 and 2, apply CHARSET_DBCS, CHARSET_DBCS (LOCAL_CHARSET)
         #                    with  optional adjustment by MAP_E2A and MAP_A2E.
@@ -193,8 +194,9 @@
         #        SBCS_CHARSET       cp1047
         #
         ##################################################################################
-        CONVERTER   1                    # ICU                ##~1C21R~
+        CONVERTER   1                    # ICU                ##~1C21R~##~3623R~
 #       ICU_DATA    /system/usr/icu      # data dir##~1C21R~  ##~1C22R~
 #       SBCS_CHARSET ibm-37,swaplfnl     # s390 base          ##~1C21R~
-        SBCS_CHARSET ibm-37_P100-1995,swaplfnl     # s390 base##~1C21R~##+2105R~
-#       SBCS_CHARSET ibm-37_P100-1995     # s390 base         ##~1C21R~
+#       SBCS_CHARSET ibm-37_P100-1995,swaplfnl     # s390 base##~1C21R~##~2105R~##~3623R~
+        SBCS_CHARSET ibm-37_P100-1995     # s390 base         ##~1C21R~##+3623R~
+#       SBCS_CHARSET ISO-8859-1                               ##~3623R~

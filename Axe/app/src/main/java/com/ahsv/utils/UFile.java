@@ -1,5 +1,8 @@
-//*CID://+vc33R~:                             update#=   88;       //~vc33R~
+//*CID://+vc4fR~:                             update#=   92;       //+vc4fR~
 //************************************************************************//~v102I~
+//vc4f 2023/03/26 temporally use /sdcard(TOD TEST)                 //+vc4fI~
+//vc4g 2023/03/26 Dump to private storage                          //~vc4gI~
+//vc4f 2023/03/26 (Bug)getExternalStorageDirectory loop            //~vc4fI~
 //vc33 2020/09/22 getExternalStorageDirectory was deprecated at Android10(Api29)//~vc33I~
 //vc09 2020/06/14 (Ahsv:1Ah0)for Android9-api28(PlayStore requires),deprected. ProgressDialog at Android8-api26//~vc09I~
 //1Ah1 2020/05/30 from BTMJ5                                       //~1AH1I~
@@ -820,6 +823,25 @@ public class UFile                                                 //~v@@@R~
         }//catch                                                   //~1312I~
         return rc;                                                 //~1511I~
     }                                                              //~1312I~
+//***********************************                              //~1ak1I~//~vad5I~//~vc4gI~
+    public static FileOutputStream openOutputDataCacheDir(String Pfname)//~1ak1R~//~vad5I~//~vc4gI~
+    {                                                              //~1ak1I~//~vad5I~//~vc4gI~
+    	if (Dump.Y) Dump.println("UFile.openOutputDataCacheDir file="+Pfname);//~1ak1R~//~vad5I~//~vc4gI~
+    	File fd;                                                   //~1ak1I~//~vad5I~//~vc4gI~
+    	fd=AG.context.getCacheDir();                               //~1ak1R~//~vad5I~//~vc4gI~
+    	if (Dump.Y) Dump.println("UFile.openOutputDataCacheDir cacheDir="+fd.getAbsolutePath()+",file="+Pfname);//~1ak1I~//~vad5I~//~vc4gI~
+	    FileOutputStream out=null;	//FileOutputStream extend OutputStream//~1ak1I~//~vad5I~//~vc4gI~
+        try                                                        //~1ak1I~//~vad5I~//~vc4gI~
+        {                                                          //~1ak1I~//~vad5I~//~vc4gI~
+        	File f= new File(fd,Pfname);                          //~1ak1I~//~vad5I~//~vc4gI~
+            out=new FileOutputStream(f);                           //~1ak1I~//~vad5I~//~vc4gI~
+        }                                                          //~1ak1I~//~vad5I~//~vc4gI~
+        catch (Exception e)                                        //~1ak1I~//~vad5I~//~vc4gI~
+        {                                                          //~1ak1I~//~vad5I~//~vc4gI~
+            Dump.println(e,"UFile.openOutputDataCacheDir "+fd.getAbsolutePath()+"/"+Pfname);//~1ak1I~//~vad5I~//~vc4gI~
+        }//catch                                                   //~1ak1I~//~vad5I~//~vc4gI~
+    	return out;                                                //~1ak1I~//~vad5I~//~vc4gI~
+    }                                                              //~1ak1I~//~vad5I~//~vc4gI~
 //*******************************                                  //~1313I~
 //*SD card                      *                                  //~1313I~
 //*Manifest setting                                                //~1313I~
@@ -834,25 +856,33 @@ public class UFile                                                 //~v@@@R~
     private static String getPublicPath19()                         //~v@@@I~//~vc33R~
     {                                                              //~v@@@I~
 //      String path=Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS).getPath();//~v@@@I~//~vc33R~
-        String path=getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS).getPath();//~vc33I~
+//      String path=getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS).getPath();//~vc33I~//~vc4fR~
+        String path=Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS).getPath();//~vc4fI~
         if (Dump.Y) Dump.println("Ufile.getPublicPath19 ="+path);  //~v@@@I~
         return path;                                               //~v@@@I~
     }                                                              //~v@@@I~
     public static String getPublicPath()                           //~v@@@I~
     {                                                              //~v@@@I~
 //      String path=Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM).getPath();//traditional picture and video//~v@@@I~//~vc33R~
-        String path=getExternalStoragePublicDirectory(DIRECTORY_DCIM).getPath();//traditional picture and video//~vc33I~
+//      String path=getExternalStoragePublicDirectory(DIRECTORY_DCIM).getPath();//traditional picture and video//~vc33I~//~vc4fR~
+        String path=Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM).getPath();//traditional picture and video//~vc4fI~
         if (Dump.Y) Dump.println("Ufile.getPublicPath ="+path);    //~v@@@I~
         return path;                                               //~v@@@I~
     }                                                              //~v@@@I~
 //**************************************************************** //~v@@@I~
     private static String[] getSDPaths()                            //~v@@@I~
     {                                                              //~v@@@I~
+        if (Dump.Y) Dump.println("Ufile.getSDPaths");              //~vc4fI~
         String path;                                               //~v@@@I~
     	List<String> list=new ArrayList<>();                       //~v@@@I~
 //      path=Environment.getExternalStorageDirectory().getPath();  //~v@@@I~//~vc33R~
-        path=getExternalStorageDirectory().getPath();              //~vc33I~
+//      path=getExternalStorageDirectory().getPath();              //~vc33I~//~vc4fR~
+        File f=getExternalStorageDirectory();                      //~vc4fI~
+     if (f!=null)                                                  //~vc4fI~
+     {                                                             //~vc4fI~
+        path=f.getPath();                                          //~vc4fI~
         list.add(path);                                            //~v@@@I~
+     }                                                             //~vc4fI~
         if (AG.osVersion>=19) // Kitkat android 4.4                //~v@@@I~
 			path=getPublicPath19();                                //~v@@@I~
         else                                                       //~v@@@I~
@@ -1170,10 +1200,15 @@ public class UFile                                                 //~v@@@R~
 	@SuppressWarnings("deprecation")                               //~vc33I~
     private static File getExternalStorageDirectory()              //~vc33I~
     {                                                              //~vc33I~
-        if (Dump.Y) Dump.println("UFile.getExternalStorageDirectory");//~vc33I~
+        if (Dump.Y) Dump.println("UFile.getExternalStorageDirectory env="+Environment.getExternalStorageDirectory());//+vc4fR~
         File file;                                                 //~vc33I~
         if (AG.osVersion>=29) // >=android10                       //~vc33I~
-		    file=getExternalStorageDirectory29();                   //~vc33I~
+        {                                                          //~vc4fI~
+//		    file=getExternalStorageDirectory29();                   //~vc33I~//~vc4fR~
+	        if (Dump.Y) Dump.println("UFile.getExternalStorageDirectory API>=29");//+vc4fI~
+//  		    return null;                                       //+vc4fR~
+			file=Environment.getExternalStorageDirectory(); //TODO test//+vc4fI~
+        }                                                          //~vc4fI~
         else                                                       //~vc33I~
 			file=Environment.getExternalStorageDirectory();        //~vc33I~
         if (Dump.Y) Dump.println("UFile.getExternalStorageDirectory path="+file.getPath()+",abs="+file.getAbsolutePath());//~vc33I~
@@ -1184,7 +1219,7 @@ public class UFile                                                 //~v@@@R~
     {                                                              //~vc33I~
         if (Dump.Y) Dump.println("UFile.getExternalStorageDirectory29");//~vc33I~
         File file;                                                 //~vc33I~
-        file=getExternalStorageDirectory();	//by requestLegactExternalStorage="true" on Manifest//+vc33R~
+        file=getExternalStorageDirectory();	//by requestLegactExternalStorage="true" on Manifest//~vc33R~
         return file;                                               //~vc33I~
     }                                                              //~vc33I~
 //*************************************************************************//~vc33I~
@@ -1205,7 +1240,7 @@ public class UFile                                                 //~v@@@R~
     {                                                              //~vc33I~
         if (Dump.Y) Dump.println("UFile.getExternalStoragePublicDirectory29");//~vc33I~
         File file;                                                 //~vc33I~
-        file=getExternalStoragePublicDirectory(Psubdir);	//by requestLegactExternalStorage="true" on Manifest//+vc33R~
+        file=getExternalStoragePublicDirectory(Psubdir);	//by requestLegactExternalStorage="true" on Manifest//~vc33R~
         return file;                                               //~vc33I~
     }                                                              //~vc33I~
 }//class                                                           //~1110I~

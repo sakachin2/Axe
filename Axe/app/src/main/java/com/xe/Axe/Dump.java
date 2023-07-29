@@ -1,6 +1,8 @@
-//*CID://+vc1mR~:                                   update#=   56; //+vc1mR~
+//*CID://+vc4hR~:                                   update#=   62; //~vc4hR~
 //***********************************************                  //~@@@1I~
-//vc1m 2020/06/23 Toast should be on MainThread                    //+vc1mI~
+//vc4h 2023/03/28 Dump control by dialog                           //~vc4hI~
+//vc4g 2023/03/26 Dump to private storage                          //~vc4gI~
+//vc1m 2020/06/23 Toast should be on MainThread                    //~vc1mI~
 //vc10 2020/06/14 update Dump to write to terminal(copy from Ahsv) //~vc10I~
 //1Ah4 2020/05/31 openFileOutput:MODE_WORLD_READABLE deprecated at api17//~1Ah4I~
 //1Ah2 2020/05/31 for Android9(Pie)-api28(PlayStore requires),deprected. DialogFragment,Fragmentmanager//~1Ah2I~
@@ -22,8 +24,8 @@ import com.xe.Axe.R;//~v@@@R~                                        //~1Ad8R~//
 import com.xe.Axe.AxeG;                           //~v@21I~     //~1Ad8R~//~vc10R~
 import com.xe.Axe.Utils;
 import com.ahsv.utils.UFile;                                       //~vc10R~
-//import com.ahsv.utils.UView;                                       //~vc10I~//+vc1mR~
-import com.xe.Axe.Utils;                                         //+vc1mI~
+//import com.ahsv.utils.UView;                                       //~vc10I~//~vc1mR~
+import com.xe.Axe.Utils;                                         //~vc1mI~
 import com.ahsv.Alert;                                             //~1Ah2I~//~vc10I~
 //import com.btmtest.utils.UView;
 
@@ -41,6 +43,7 @@ public class Dump
 	private static boolean exceptionOnly=false;                     //~1507R~//~1Ad8R~
 	private static boolean swSD;	//write to sdcard              //~1Ad8I~
 	private static boolean swNoMsg;	//no Toast                     //~1Ad8I~
+	private static String  fnmDump="Dump.txt";                     //~vc4hI~
     //**************************************************************//~1Ad8I~
 	public static void openEx (String file,boolean PswSD)          //~1Ad8I~
 	{                                                              //~1Ad8I~
@@ -76,10 +79,26 @@ public class Dump
     	swSD=PswSD;                                                //~1Ad8I~
 		open(Pfile);                                               //~1Ad8I~
     }                                                              //~1Ad8I~
+    //**************************************************************//~vc4hI~
+	public static void open(int PoptDump/*1:now,2:later,0:no dump*/,boolean PswSD)//~vc4hI~
+	{                                                              //~vc4hI~
+//      System.out.println("Dump.open optDump="+PoptDump+",swSD="+PswSD);//TODO test//+vc4hR~
+        if (PoptDump!=0)                                           //~vc4hI~
+        {                                                          //~vc4hI~
+			open(fnmDump,PswSD);                                   //~vc4hI~
+            if (PoptDump==2)	//start by dialog                  //~vc4hI~
+            	Y=false;                                           //~vc4hI~
+        }                                                          //~vc4hI~
+//      System.out.println("Dump.open Y="+Y+",Terminal="+Terminal+",exceptionOnly="+exceptionOnly);//TODO test//+vc4hR~
+    }                                                              //~vc4hI~
     //**************************************************************//~1Ad8I~
 	public static void open(String file)                           //~1Ad8R~
 	{                                                              //~1329R~
     	exceptionOnly=false;//not exception only                   //~1506I~
+        if (!file.equals(""))                                      //~1Ad8I~//~vc4gI~
+        {                                                          //~1Ad8I~//~vc4gI~
+        	Terminal=false;                                        //~1Ad8I~//~vc4gI~
+        }                                                          //~1Ad8I~//~vc4gI~
         if (Terminal)                                              //~1Ad8I~
         {                                                          //~1Ad8I~
 			Y = true; //call Dump                                  //~1Ad8I~
@@ -101,7 +120,8 @@ public class Dump
 					out = UFile.openOutputSD("",file); // /sdcard//~1Ad8I~
                 else                                               //~1Ad8I~
 //					out = UFile.openOutputData(file, Context.MODE_WORLD_READABLE); // ../files//~1Ad8R~//~1Ah4R~
-  					out = UFile.openOutputData(file, Context.MODE_PRIVATE); // ../files//~1Ah4I~
+// 					out = UFile.openOutputData(file, Context.MODE_PRIVATE); // ../files//~1Ah4I~//~vc4gR~
+                    out=UFile.openOutputDataCacheDir(file);  // ../cache//~1Ak1I~//~vad5I~//~vaebR~//~vc4gI~
 				if (out != null)                                     //~1Ad8R~
 				{//~1313R~                                         //~1Ad8R~
 					Out = new PrintWriter(new OutputStreamWriter(out, "UTF-8"), true/*autoFlash*/);//~1227I~//~1309R~//~1Ad8R~
@@ -268,8 +288,8 @@ public class Dump
 	        Alert.showMessage("Dump.Exception:"+s,e.toString());   //~1Ad8R~
         else                                                       //~1Ad8I~
         if (!swNoMsg)                                              //~1Ad8I~
-//        	UView.showToastLong(R.string.ErrExceptionDetected,":"+s+":"+e.toString());//~1Ad8R~//+vc1mR~
-          	Utils.showToastLong(R.string.ErrExceptionDetected,":"+s+":"+e.toString());//+vc1mI~
+//        	UView.showToastLong(R.string.ErrExceptionDetected,":"+s+":"+e.toString());//~1Ad8R~//~vc1mR~
+          	Utils.showToastLong(R.string.ErrExceptionDetected,":"+s+":"+e.toString());//~vc1mI~
 	}                                                              //~1Ad8I~
     //**************************************************************//~1B0gI~//~1Ad8I~
 	public synchronized static void println(OutOfMemoryError e,String s)//~1B0gI~//~1Ad8I~

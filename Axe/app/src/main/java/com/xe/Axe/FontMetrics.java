@@ -1,7 +1,7 @@
-//*CID://+vaaxR~:                             update#=    1;       //+vaaxI~
-//******************************************************************//+vaaxI~
-//vaax:120105 (Axe)80% font size if Key label strlen>3             //+vaaxI~
-//******************************************************************//+vaaxI~
+//*CID://+vaaxR~:                             update#=    2;       //~vaaxI~
+//******************************************************************//~vaaxI~
+//vaax:120105 (Axe)80% font size if Key label strlen>3             //~vaaxI~
+//******************************************************************//~vaaxI~
 package com.xe.Axe;                                                //~1108R~//~1716I~
 import android.graphics.Paint;                                     //~1716I~
                                                                    //~1716I~
@@ -60,14 +60,14 @@ public class FontMetrics                                           //~1716I~
         if (Dump.Y) Dump.println("FontMetrics:font="+font.name+" stringwidth="+s+"="+paintText.measureText(s)+",font.getSize()="+font.getSize());//~1212I~//~1303R~//~1718R~
         return (int)paintText.measureText(s);                      //~1718R~
 	}                                                              //~1716I~
-	public static float stringWidth(Paint Ppaint,String Pstr)      //+vaaxI~
-	{                                                              //+vaaxI~
-    	float len;                                                 //+vaaxI~
-	//**************	                                           //+vaaxI~
-        len=Ppaint.measureText(Pstr);                              //+vaaxI~
-        if (Dump.Y) Dump.println("FontMetrics:stringWidth str="+Pstr+",len="+len);//+vaaxI~
-        return len;                                                //+vaaxI~
-	}                                                              //+vaaxI~
+	public static float stringWidth(Paint Ppaint,String Pstr)      //~vaaxI~
+	{                                                              //~vaaxI~
+    	float len;                                                 //~vaaxI~
+	//**************	                                           //~vaaxI~
+        len=Ppaint.measureText(Pstr);                              //~vaaxI~
+        if (Dump.Y) Dump.println("FontMetrics:stringWidth str="+Pstr+",len="+len);//~vaaxI~
+        return len;                                                //~vaaxI~
+	}                                                              //~vaaxI~
 //    public int getAscent()                                         //~1716I~//~1802R~
 //    {                                                              //~1716I~//~1802R~
 //        int ceiling;                                               //~1716I~//~1802R~
@@ -123,7 +123,7 @@ public class FontMetrics                                           //~1716I~
             }                                                      //~1719I~
         }                                                          //~1719I~
         if (Dump.Y) Dump.println(font.name+" average width="+totww+"/"+ctr+"="+totww/ctr);//~1719I~
-        if (Dump.Y) Dump.dump("stringwidths width256",width256);   //~1801I~
+//      if (Dump.Y) Dump.dump("stringwidths width256",width256);   //~1801I~//+vaaxR~
         avww=(int)(totww/ctr);                                            //~1716I~//~1719R~
     	return width256;                                           //~1716I~
 	}                                                              //~1716I~

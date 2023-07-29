@@ -1,6 +1,7 @@
-//*CID://+vc2GR~: update#= 188;                                    //+vc2GR~
+//*CID://+vc49R~: update#= 190;                                    //~vc49R~
 //**********************************************************************//~1107I~
-//vc2G 2020/08/23 chk validity of unicode value                    //+vc2GI~
+//vc49 2023/03/25 deprecated api33; PackageManager.getApplicationInfo//~vc49I~
+//vc2G 2020/08/23 chk validity of unicode value                    //~vc2GI~
 //vc28 2020/07/11 (Bug)getElapsedTime                              //~vc28I~
 //vc09 2020/06/14 (Ahsv:1Ah0)for Android9-api28(PlayStore requires),deprected. ProgressDialog at Android8-api26//~vc09I~
 //1Ahk 2020/06/05 Connect button for all connection type           //~1AhkI~
@@ -400,12 +401,16 @@ public class Utils                                            //~1309R~//~@@@@R~
         return ipa;                                                //~1A86I~
     }                                                              //~1A86I~
 //***********************************************************************//~v107R~
+	@SuppressWarnings("deprecation")                               //~vc49I~
     public static boolean isDebuggable(Context ctx)                //~v107R~
     {                                                              //~v107R~
         PackageManager manager = ctx.getPackageManager();          //~v107R~
         ApplicationInfo appInfo = null;                            //~v107R~
         try                                                        //~v107R~
         {                                                          //~v107R~
+		  if (AG.osVersion>=33)                                  //~vc49I~
+            appInfo = getApplicationInfo33(manager,ctx);           //~vc49I~
+          else                                                     //~vc49I~
             appInfo = manager.getApplicationInfo(ctx.getPackageName(), 0);//~v107R~
         }                                                          //~v107R~
         catch (NameNotFoundException e)                            //~v107R~
@@ -527,7 +532,7 @@ public class Utils                                            //~1309R~//~@@@@R~
 	        s="null";                                              //~1Ah1I~
         else                                                       //~1Ah1I~
             s=Arrays.toString(Psa);                                //~1Ah1I~
-        if (Dump.Y) Dump.println("Utils.toString(String[]) out="+s);//~1Ah1I~
+//      if (Dump.Y) Dump.println("Utils.toString(String[]) out="+s);//~1Ah1I~//+vc49R~
         return s;                                                  //~1Ah1I~
     }                                                              //~1Ah1I~
     //*************************************************            //~1Ah1I~
@@ -739,12 +744,24 @@ public class Utils                                            //~1309R~//~@@@@R~
 	{                                                              //~1AhkI~
         return joinStr(",",Pstrarray);                             //~1AhkI~
     }                                                              //~1AhkI~
-//**********************                                           //+vc2GI~
-    public static boolean isValidUnicode(int Punicode)             //+vc2GI~
-	{                                                              //+vc2GI~
-        int type=Character.getType(Punicode);                      //+vc2GI~
-        boolean rc=type!=Character.UNASSIGNED;                     //+vc2GI~
-        if (Dump.Y) Dump.println("Utils.isValidUnicode unicode="+Integer.toHexString(Punicode)+",rc="+rc+",type="+type);//+vc2GI~
-        return rc;                                                 //+vc2GI~
-    }                                                              //+vc2GI~
-}//class                                                           //+vc2GR~
+//**********************                                           //~vc2GI~
+    public static boolean isValidUnicode(int Punicode)             //~vc2GI~
+	{                                                              //~vc2GI~
+        int type=Character.getType(Punicode);                      //~vc2GI~
+        boolean rc=type!=Character.UNASSIGNED;                     //~vc2GI~
+        if (Dump.Y) Dump.println("Utils.isValidUnicode unicode="+Integer.toHexString(Punicode)+",rc="+rc+",type="+type);//~vc2GI~
+        return rc;                                                 //~vc2GI~
+    }                                                              //~vc2GI~
+//***********************************************************************//~vc49I~
+	@TargetApi(33)                                                 //~vc49I~
+    public static ApplicationInfo getApplicationInfo33(PackageManager Pmgr,Context Pcontext)//~vc49I~
+    	throws NameNotFoundException                               //~vc49I~
+    {                                                              //~vc49I~
+    	if (Dump.Y) Dump.println("Utils.getApplicationInfo33");    //~vc49I~
+    	int flagMgr=0;	//TODO  ?                                  //~vc49I~
+    	PackageManager.ApplicationInfoFlags flags=PackageManager.ApplicationInfoFlags.of(flagMgr);//~vc49I~
+    	ApplicationInfo appInfo = Pmgr.getApplicationInfo(Pcontext.getPackageName(),flags);//~vc49I~
+    	if (Dump.Y) Dump.println("Utils.getApplicationInfo33 appinfo="+appInfo);//~vc49I~
+        return appInfo;                                            //~vc49I~
+    }                                                              //~vc49I~
+}//class                                                           //~vc2GR~

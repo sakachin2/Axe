@@ -2,8 +2,8 @@
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <resources>
     <string name="app_name">Axe</string>
-    <string name="Version">Axe V1.29.1\n			By 水巻マチ</string>
-    <string name="VerDate">2020/09/17</string>
+    <string name="Version">Axe V1.29.2\n			By 水巻マチ</string>
+    <string name="VerDate">2023/07/26</string>
 
     <string name="OptionMenu_Stop">終了</string>
     <string name="OptionMenu_Menu">メニュー</string>
@@ -734,4 +734,31 @@
     <string name="Label_HelpLang">Debug:ヘルプ言語 日英逆</string>
     <string name="Setup_RulerWidth">ルーラー 線幅（pixel)</string>
     <string name="Setup_RulerWidthMax">Max:%1$d</string>
+    <string name="Err_ManageAllFiles">共有ストレージアクセス用オプション \"すべてのファイルを管理する\"を設定できませんでした".</string>
+    <string name="labelAllFile">許可：ファイルとメディア</string>
+    <string name="tvAllFileAll">すべてのファイル</string>
+    <string name="tvAllFileMedia">メディアのみ</string>
+    <string name="btnAllFile">変更</string>
+    <string name="cbStopPopup">次回から通知しない</string>
+    <string name="descAllFiles">
+				\"すべてのファイルのアクセス\"の許可が設定されていません。\n
+				Android11から共有ストレージをアクセスするには権限を設定する必要があります。\n
+				設定しますか？\n\n
+                \"次回から通知しない\"をオンにした権限は設定されませんが、\n
+				\"メニュー\"、\"設定\"、\"アンドロイド関連\"、
+				\"許可：ファイルとメディアで設定が可能です。
+	</string>
+    <string name="descAllFilesAlert">
+				\"すべてのファイルのアクセス\"の許可が設定されていません。\n
+				Android11から共有ストレージをアクセスするには権限を設定する必要があります。\n
+				設定しますか？\n\n
+				後で変更できます。（\"メニュー\"、\"設定\"、\"アンドロイド関連\"）、
+	</string>
+    <string name="DialogTitle_AllFiles">許可要求:ファイルとメディア</string>
+    <string name="Info_ChangedAllFiles">すべてのファイルが許可は %1$s です</string>
+    <string name="tvAllFileVolume">ボリューム：</string>
+    <string name="tvAllFileAbsPath">パス：</string>
+    <string name="DescYourSharedFolder">アクセス権を設定したディレクトリー</string>
+    <string name="NoYourSharedFolder">ありません。(\"SP add //\" で設定できます。）</string>
+    <string name="NotSupportedOpenWith">\"プログラムで開く\"は Android7 以降は無効です</string>
 </resources>

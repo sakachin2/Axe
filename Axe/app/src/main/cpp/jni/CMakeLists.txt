@@ -1,15 +1,15 @@
 ##############################
 set(JAVA_JVM_LIBRARY NotNeeded)
 #set(JAVA_INCLUDE_PATH2 ${JAVA_HOME}/include)
-set(JAVA_INCLUDE_PATH2 "c:/Program Files/Android/Android Studio/jre/include")
+#set(JAVA_INCLUDE_PATH2 "c:/Program Files/Android/Android Studio/jre/include") //2023/06/02 Androidstudio default jdk 11.0.13 has no include dir
 set(JAVA_AWT_LIBRARY NotNeeded)
 set(JAVA_AWT_INCLUDE_PATH NotNeeded)
-find_package(JNI REQUIRED)
+#find_package(JNI REQUIRED)    //2023/06/02 this requires JAVA_INCLUDE_PATH2
 
 include_directories(${INCLUDE_ICONVH})
 include_directories(./)
 include_directories(gxe)
-include_directories(${JAVA_INCLUDE_PATH2}/win32)
+#include_directories(${JAVA_INCLUDE_PATH2}/win32) 2023/06/02
 include_directories(
 					${ULIB}
 					${ULIB}/icuLinux/include
@@ -45,7 +45,8 @@ set (CPPOPTS -funsigned-char -Wall -Wformat=0
 		-Wuninitialized 
 		-Wunreachable-code 
 		-Wno-invalid-source-encoding 
-        -v 
+		-Wno-misleading-indentation   
+#       -v      //skip to show search path 
 #   	-g3
         )
 #add_definitions(${CPPDEFS})
@@ -87,14 +88,17 @@ add_library(
 ####################
 target_link_libraries(axejni log
 				xxe
-				${LIBDIR_ICONV}/libiconv.a
+#   			${LIBDIR_ICONV}/libiconv.a     #2023/06/23
+    			iconv                          #2023/06/23
                 )
 ####################
-#LIBRARY_OUTPUT_PATH did not worked for this txt ###################
+#LIBRARY_OUTPUT_PATH :cpp/libs ###################
 add_custom_command (
         TARGET axejni  POST_BUILD
       COMMAND
         ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${LIBRARY_OUTPUT_PATH}
+      COMMAND
+        ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${RESOURCE_LIBS}    #2023/06/15
       COMMAND
         ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${DEVCONUP_LIBS}
         )

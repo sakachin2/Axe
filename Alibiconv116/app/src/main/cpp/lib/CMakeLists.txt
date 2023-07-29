@@ -1,6 +1,7 @@
 
 #cmake_minimum_required(VERSION 3.4.1)
-cmake_minimum_required(VERSION 3.10.2)
+#cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.22.1)
 
 ##############################
 #$(LIBTOOL_COMPILE) $(CC) $(INCLUDES) $(CPPFLAGS) $(CFLAGS) $(DEFS) -c $(srcdir)/../woe32dll/iconv-exports.c
@@ -45,3 +46,13 @@ add_library(
   			${srcdir}/../libcharset/lib/localcharset.c
   			${srcdir}/relocatable.c
              )
+#set_target_properties(iconv
+#    PROPERTIES
+##   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin/${OUT_SUBDIR}
+#    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/libs/${OUT_SUBDIR}
+#    )
+add_custom_command (TARGET iconv POST_BUILD
+#	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libiconv.a  ${DEVCONUP_LIBS}
+#  	 COMMAND ${CMAKE_COMMAND} -E copy ${ARCHIVE_OUTPUT_DIRECTORY}/libiconv.a  ${DEVCONUP_LIBS}
+   	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libiconv.a  ${DEVCONUP_LIBS}
+	)

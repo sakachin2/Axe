@@ -1,4 +1,4 @@
-//*CID://+vc17R~:                                   update#=  343; //~vc17R~
+//*CID://+vc17R~:                                   update#=  346; //~vc17R~
 //**************************************************************** //~1610I~
 //vc17 2020/06/15 malloc/free requires malloc.h                    //~vc17I~
 //vay0:140710 (Axe)jni exception handling                          //~vay0I~
@@ -348,8 +348,8 @@ void	pango_layout_set_text	(PangoLayout    *layout,           //~1620R~
     int utf8len,ucstbsz,ucsctr,*ucstb,opt,readlen;                 //~1620R~//~1829R~
 	PangoGlyphGeometry *pgeom;                                     //~1724I~
 //***********                                                      //~1620I~
-//  UTRACEP("pango_layout_set_text len=%d,text=%*s\n",length,length,text);//~1716R~//+vc17R~
-    UTRACEP("pango_layout_set_text",text,length);                  //+vc17I~
+//  UTRACEP("pango_layout_set_text len=%d,text=%*s\n",length,length,text);//~1716R~//~vc17R~
+    UTRACEP("pango_layout_set_text",text,length);                  //~vc17I~
 	layout->text=(char*)text;                                      //~1617R~
 	layout->length=length;                                         //~1617I~
 	UTRACED("pango_layout_set_text",text,length);                  //~1716I~
@@ -383,7 +383,7 @@ void	pango_layout_set_text	(PangoLayout    *layout,           //~1620R~
 void           pango_layout_set_font_description (PangoLayout                *layout,//~1617I~
 						  const PangoFontDescription *desc)        //~1617I~
 {                                                                  //~1617I~
-	UTRACEP("pango_layout_set_fontdescription");                     //~1617R~//~1828R~
+	UTRACEP("pango_layout_set_fontdescription\n");                     //~1617R~//~1828R~//~vc17R~
 	layout->font_desc=(PangoFontDescription*)desc;                 //~1617R~
     return;                                                        //~1617I~
 }                                                                  //~1617I~
@@ -617,7 +617,7 @@ GtkWidget *lookup_widget(GtkWidget *Pwidget,char *Pname)           //~1618R~
     jstring jname;                                                 //~1715I~
 //****************************                                     //~1714I~
     penv=getThreadEnv();                                           //~1714I~
-	UTRACEP("lookup_widget env=%p,parent=%p,childname=%s",penv,Pwidget,Pname);//~1714R~
+	UTRACEP("lookup_widget env=%p,parent=%p,childname=%s\n",penv,Pwidget,Pname);//~1714R~//+vc17R~
     jname=utf8z2jstring(penv,Pname);                               //~1715R~
     C2J_GETMETHODID_GOTOIFERR(penv,lookup_widget,"(Ljava/lang/String;)Landroid/view/View;");//~1717R~
 //  view=C2J_OBJ(penv,lookup_widget,jname);           //~1715R~    //~vay0R~
@@ -672,10 +672,13 @@ guint gtk_timeout_add(guint32	       interval,                   //~1618I~
     int timerid/*,func*/;                                          //~vak2R~
     guint handle;                                                  //~1618I~//~1808R~
     JNIEnv *penv;                                                  //~1714I~
+    long longTimer;                                                //~vc17I~
 //****************************                                     //~1714I~
     penv=getThreadEnv();                                           //~1714I~
 	UTRACEP("gtk_timeout_add env=%p,id=%p",penv,data);             //~1714R~
-    timerid=(int)data;                                             //~1618I~
+//  timerid=(int)data;                                             //~1618I~//~vc17R~
+    longTimer=(long)data;                                          //~vc17I~
+    timerid=(int)longTimer;                                        //~vc17I~
 //  func=(int)function;                                            //~vak2R~
     C2J_GETMETHODID_RETIFERR_WITHRC(penv,0,timeout_add,"(IIJ)I");//~1715R~//~1808R~
 //  handle=(guint)C2J_OBJ(penv,timeout_add,timerid,interval,(LONG)function);//~1714R~ //~1718R~//~vay0R~

@@ -1,5 +1,6 @@
-//*CID://+vc11R~:                             update#=   45;       //~vc11R~
+//*CID://+vc4dR~:                             update#=   46;       //+vc4dR~
 //**********************************************************************//~vag0I~
+//vc4d 2023/03/25 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//+vc4dI~
 //vc11 2020/06/14 add indeterminate=false(having max value) type to ProgressDialog//~vc11R~
 //vag0:120719 (Axe)function to download asset from web             //~vag0I~
 //**********************************************************************//~vag0I~
@@ -17,6 +18,7 @@ import android.app.Activity;                                       //~vc11R~
 //import android.app.ProgressDialog;                               //~vc11R~
 import android.content.DialogInterface;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,8 +101,14 @@ public class AxeProgress                                //~vag0I~
 	public class ProgressHandler extends Handler                   //~vag0I~
 	{                                                              //~vag0I~
     	Activity thisActivity;
+		public ProgressHandler(Looper Plooper)                     //+vc4dI~
+        {                                                          //+vc4dI~
+	        super(Plooper);                                            //~@@02I~//+vc4dI~
+    	    if (Dump.Y) Dump.println("AxeProgress.ProgressHandler constructor looper="+Plooper.toString());//~@@02I~//+vc4dI~
+        }                                                          //+vc4dI~
 		public ProgressHandler(Activity Pactivity)                 //~vag0I~
         {                                                          //~vag0I~
+        	this(Looper.getMainLooper());                         //+vc4dI~
         	thisActivity=Pactivity;                                //~vag0I~
         }                                                          //~vag0I~
 		public void handleMessage(Message msg)                     //~vag0I~
@@ -185,7 +193,7 @@ public class AxeProgress                                //~vag0I~
               	swDismiss=true;                                    //~vc11I~
                 axeProgress.dismiss();                             //~vc11R~
               }                                                      //~vag0I~//~vc11R~
-            }                                                      //+vc11I~
+            }                                                      //~vc11I~
         }                                                          //~vag0I~
 //***********************************************************      //~vag0I~
         public void displayMessage(String message)                 //~vag0I~

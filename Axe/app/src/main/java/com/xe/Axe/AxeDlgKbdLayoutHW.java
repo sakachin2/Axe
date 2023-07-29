@@ -1,5 +1,7 @@
-//*CID://+vc2YR~: update#= 367;                                    //~vc2YR~
+//*CID://+vc53R~: update#= 373;                                    //+vc53R~
 //**********************************************************************//~1107I~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
+//vc4a 2023/03/25 deprecated api30; SOFT_INPUT_ADJUST_RESIZE       //~vc4aI~
 //vc2Y 2020/09/19 (BUG)HW spaceKey opens IM                        //~vc2YI~
 //vc2E 2020/08/21 (Bug)have to consider shift effect for ALt/Ctrl+Ascii symbol//~vc2EI~
 //vc2j 2020/07/27 IMopen key on hardKbd                            //~vc2jI~
@@ -15,6 +17,7 @@
 //**********************************************************************//~vc1sI~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1527R~
 
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.view.KeyCharacterMap;
@@ -80,6 +83,7 @@ public class AxeDlgKbdLayoutHW extends AxeDialog                  //~1612I~//~19
     private int keyOpenIM,keycodeOpenIM;                           //~vc2jI~
     private boolean swFocusETIMKey;                                //~vc2jI~
     protected boolean swReopen;                                    //~vc2jI~
+    private boolean swNotResize=false;                             //~vc4aI~
 //**********************************                               //~1211I~
 	public AxeDlgKbdLayoutHW()                                    //~1612I~//~1919R~//~vc1sR~
     {                                                              //~1612I~
@@ -235,7 +239,8 @@ public class AxeDlgKbdLayoutHW extends AxeDialog                  //~1612I~//~19
 	protected void setIMEMode()                                          //~vc1tI~//~vc2jR~
     {                                                              //~vc1tI~
 	    if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.setIMEMode");  //~vc1tI~
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//~vc1tR~
+//		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//~vc1tR~//~vc4aR~
+  		setAdjustResize();                                         //~vc4aI~
     }                                                              //~vc1tI~
 //*********                                                        //~vc1tI~
 	@Override                                                      //~vc1tI~
@@ -424,22 +429,44 @@ public class AxeDlgKbdLayoutHW extends AxeDialog                  //~1612I~//~19
     protected boolean onClickOther(int Pbuttonid)                  //~1923I~
     {                                                              //~1923I~
     	//**********                                                   //~1923I~
-    	switch(Pbuttonid)                                           //~1923I~
-        {                                                          //~1923I~
-        case R.id.Reset:                                           //~1923I~
-	    	if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther reset");     //~1923I~//~vc1sR~
-        	axeList.resetToDefault();                              //~1923I~//~vc1tR~
-        	break;                                                 //~1923I~
-                                                       //~1923I~
-        case R.id.Delete:                                          //~vc1sI~
-	    	if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther Delete");//~vc1sR~
-        	axeList.onClickDelete();          //~vc1sR~            //~vc1tR~
-        	break;                                                 //~vc1sI~
-        case R.id.SoftKbd:                                         //~vc1tI~
-	    	if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther SoftKbd");//~vc1tI~
-        	useSoftKbd();                                          //~vc1tI~
-        	break;                                                 //~vc1tI~
-        }                                                          //~vc1sI~
+//        switch(Pbuttonid)                                           //~1923I~//+vc53R~
+//        {                                                          //~1923I~//+vc53R~
+//        case R.id.Reset:                                           //~1923I~//+vc53R~
+//            if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther reset");     //~1923I~//~vc1sR~//+vc53R~
+//            axeList.resetToDefault();                              //~1923I~//~vc1tR~//+vc53R~
+//            break;                                                 //~1923I~//+vc53R~
+//                                                       //~1923I~ //+vc53R~
+//        case R.id.Delete:                                          //~vc1sI~//+vc53R~
+//            if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther Delete");//~vc1sR~//+vc53R~
+//            axeList.onClickDelete();          //~vc1sR~            //~vc1tR~//+vc53R~
+//            break;                                                 //~vc1sI~//+vc53R~
+//        case R.id.SoftKbd:                                         //~vc1tI~//+vc53R~
+//            if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther SoftKbd");//~vc1tI~//+vc53R~
+//            useSoftKbd();                                          //~vc1tI~//+vc53R~
+//            break;                                                 //~vc1tI~//+vc53R~
+//        }                                                          //~vc1sI~//+vc53R~
+//      switch(Pbuttonid)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (Pbuttonid== R.id.Reset)                                //+vc53I~
+        {                                                          //+vc53I~
+            if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther reset");//+vc53I~
+            axeList.resetToDefault();                              //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+                                                                   //+vc53I~
+        if (Pbuttonid== R.id.Delete)                               //+vc53I~
+        {                                                          //+vc53I~
+            if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther Delete");//+vc53I~
+            axeList.onClickDelete();                               //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pbuttonid== R.id.SoftKbd)                              //+vc53I~
+        {                                                          //+vc53I~
+            if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.onClickOther SoftKbd");//+vc53I~
+            useSoftKbd();                                          //+vc53I~
+        }                                                          //+vc53I~
+//           break;                                                //+vc53I~
+//      }                                                          //+vc53I~
         return false;                                              //~1923I~
     }                                                              //~1923I~
     //*******************************                              //~1809I~
@@ -797,7 +824,7 @@ public class AxeDlgKbdLayoutHW extends AxeDialog                  //~1612I~//~19
     	    int action=Pevent.getAction();                         //~vc2jI~
         	int unicode=Pevent.getUnicodeChar();                   //~vc2jI~
     	    if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.isOpenIMKey action="+action+",meta="+Integer.toHexString(meta)+",unicode="+Integer.toHexString(unicode));//~vc2jR~
-    	    if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.isOpenIMKey AxeG.keyOpenIM="+Integer.toHexString(AxeG.keyOpenIM));//+vc2YI~
+    	    if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.isOpenIMKey AxeG.keyOpenIM="+Integer.toHexString(AxeG.keyOpenIM));//~vc2YI~
             rc=false;                                              //~vc2jI~
             if (action==KeyEvent.ACTION_DOWN)                      //~vc2jI~
             {                                                      //~vc2jI~
@@ -829,4 +856,33 @@ public class AxeDlgKbdLayoutHW extends AxeDialog                  //~1612I~//~19
 //      AxeG.axeIME.showKbdP();                                    //~vc2jR~
         AxeG.axeIME.showKbdPDelayed();	//delayed to avoid focus lost by onkey up//~vc2jR~
     }                                                              //~vc2jI~
+    //*******************************************************      //~vc4aI~
+	private void setAdjustResize()                                 //~vc4aI~
+    {                                                              //~vc4aI~
+	    if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.setAdjustResize");//~vc4aI~
+        if (AxeG.osVersion>=30)                                    //~vc4aI~
+			setAdjustResizeFrom30();                               //~vc4aI~
+        else                                                       //~vc4aI~
+			setAdjustResizeUnder30();                              //~vc4aI~
+    }                                                              //~vc4aI~
+    //*******************************************************      //~vc4aI~
+    @SuppressWarnings("deprecation")                               //~vc4aI~
+	private void setAdjustResizeUnder30()                                 //~vc4aI~
+    {                                                              //~vc4aI~
+	    if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.setAdjustResizeUnder30");//~vc4aI~
+  		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//~vc4aI~
+    }                                                              //~vc4aI~
+    //*******************************************************      //~vc4aI~
+    @TargetApi(30)   //>=30                                        //~vc4aR~
+	private void setAdjustResizeFrom30()                           //~vc4aR~
+    {                                                              //~vc4aI~
+	    if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.setAdjustResizeFrom30 swNotResize="+swNotResize);//~vc4aR~
+  		getWindow().setDecorFitsSystemWindows(swNotResize);        //~vc4aI~
+    }                                                              //~vc4aI~
+	private void cancelResize()                                    //~vc4aI~
+    {                                                              //~vc4aI~
+	    if (Dump.Y) Dump.println("AxeDlgKbdLayoutHW.cancelResizese swNotResize="+swNotResize);//~vc4aI~
+        swNotResize=!swNotResize;                                  //~vc4aI~
+  		getWindow().setDecorFitsSystemWindows(swNotResize);        //~vc4aI~
+    }                                                              //~vc4aI~
 }//class                                                           //~1612R~

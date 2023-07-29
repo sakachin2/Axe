@@ -15,8 +15,8 @@ cmake_minimum_required(VERSION 3.4.1)
 # you want to add. CMake verifies that the library exists before
 # completing its build.
 ###############################################
-set(PTOP x:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
-set(UPDATE x:/AndroidStudioProjects/Ahighlight/app/srcupdate)
+set(PTOP w:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
+set(UPDATE w:/AndroidStudioProjects/Ahighlight/app/srcupdate)
 set(SRCTOP ${PTOP}/src)
 set(P ${SRCTOP}/core)
 set(Q ${P}/astyle)

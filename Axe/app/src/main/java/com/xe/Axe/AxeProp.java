@@ -1,5 +1,11 @@
-//*CID://+vc33R~:                                   update#=  149; //~vc33R~
+//*CID://+vc5gR~:                                   update#=  173; //+vc5gR~
 //**************************************************************** //~vaa8I~
+//vc5g 2023/07/10 no more need setup additional ebc converter(libicuuc now contains those)//+vc5gI~
+//vc54 2023/06/20 toolbin.zipfile update chk to unzip not by size but new asset file toolibin.zipfile.ts(dir output:timestamp and size)//~vc4pI~
+//vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
+//vc4n 2023/03/30 (Bug)coud not reset writable                     //~vc4nI~
+//vc4m 2023/03/30 android10(api29) executable permission; call exec() fails by W^X violation. try chmod 555<==755.//~vc4mI~
+//vc4g 2023/03/28 ICU coverter install only once at each app re-installation.//~vc4gI~
 //vc33 2020/09/22 getExternalStorageDirectory was deprecated at Android10(Api29)//~vc33I~
 //vc2X 2020/09/19 return sdpath even no write permission for utrace//~vc2XI~
 //vc2U 2020/09/18 initialize progress dialog not dismiss automatically//~vc2UI~
@@ -55,10 +61,12 @@ import android.os.StatFs;
 
 import com.ForDeprecated.AxeProgress;
 import com.ahsv.utils.UFile;
+import com.ahsv.AG;                                                //~vc4pI~
 
 
 public class AxeProp
 {
+	private static final String CN="AxeProp:";                      //~vc4qI~//~vc54R~
     public static final String GAMEFILE="GameFileFolder";
 
 	public static final String DATAFILE_PREFIX="save";
@@ -66,6 +74,7 @@ public class AxeProp
     public static final String helpZipfile="xehelp.zip";
 //  public static final String toolbinZipfile="toolbin.zip";       //~vc1kR~
     public static final String toolbinZipfile="toolbin.zipfile";   //~vc1kI~
+    public static final String toolbinZipfileTS="toolbin.zipfile.ts";//~vc54R~
     public static final String htmlhelpZipfile="xehelp.zipfile"; //.zip err by openFD failed ,it may be compressed//~vc1kR~
     public static final String icuZipfile="icucnvadd.zip";         //~vaafI~
     public static final String HOSTS="xehosts";
@@ -100,6 +109,7 @@ public class AxeProp
     public static int assetMode;                                   //~vbcEI~
     private static float bunzipassumedcompressrate=4.0f;           //~vag0R~
     private static int bunzipctr;                                  //~vag0I~
+    private static String newToolsTS;                              //~vc54R~
 //********************************************************
 //*open Assetfile for Agnugo copy
 //********************************************************
@@ -384,6 +394,7 @@ public class AxeProp
     public static String getPreference(String Pkey)
     {
 	    String rc=getPreference(Pkey,"");                          //~vc1qR~
+//      System.out.println("AxeProp.getPreference key="+Pkey+",rc="+rc); //TODO test//~vc4gR~
         if (Dump.Y) Dump.println("AxeProp.getPreference rc="+rc);  //~vc1qI~
 	    return rc;                                                 //~vc1qI~
     }
@@ -409,6 +420,7 @@ public class AxeProp
         SharedPreferences.Editor editor=pref.edit();               //~vaiqI~
         editor.putInt(Pkey,Pvalue);                                //~vaiqI~
         editor.commit();                                           //~vaiqI~
+//      System.out.println("AxeProp.putPreference int key="+Pkey+",value="+Pvalue);   //TODO test//~vc4gR~
     }                                                              //~vaiqI~
     //******************
     public static void putPreference(String Pkey,String Pvalue)
@@ -421,10 +433,12 @@ public class AxeProp
         else
     	    editor.putString(Pkey,Pvalue);
         editor.commit();
+//      System.out.println("AxeProp.putPreference String key="+Pkey+",value="+Pvalue);	//TODO test//~vc4gR~
     }//putPreference                                               //~vaiqR~
     //******************
     private static SharedPreferences getPreferenceName()
     {
+//      System.out.println("AxeProp.getPreferenceName name="+AxeG.appName+"-PrivatePreference");	//TODO test//~vc4gR~
         return AxeG.context.getSharedPreferences(AxeG.appName+"-PrivatePreference",Context.MODE_PRIVATE);
     }
     //***************************************************          //~vaa8R~
@@ -436,10 +450,17 @@ public class AxeProp
 		Gxeh.privateTop=getDataFileFullpath(null);                 //~vavcI~
 //  	Gxeh.homeDir=getDataFileFullpath(null);	//set befor JNI.init;retrieve from jnij2c//~vc1qR~
     	Gxeh.homeDir=getDataDir("myhome");	//avoid in home with xewd//~vc1qI~
+      if (AxeG.osVersion>=AxeG.API29)  //>=android10=api-29 //~vay5R~//~vc4pR~
+      {                                                            //~vc4pI~
+        String mylib=AG.context.getApplicationInfo().nativeLibraryDir;//~vc4pR~
+		Gxeh.addPath=Gxeh.homeDir+"/"+shFolder+":"+mylib;          //~vc4pR~
+      }                                                            //~vc4pI~
+      else                                                         //~vc4pI~
 		Gxeh.addPath=Gxeh.homeDir+"/"+shFolder+":"+Gxeh.homeDir+"/"+binFolder;
+        if (Dump.Y) Dump.println("AxeProp.initFiles addPath="+Gxeh.addPath);//~vc4pI~
 //  	Gxeh.addPath+=":"+Sbusybox_path;    ///system/bin or /system/xbin is set as native PATH//~vc1qR~
 //  	Gxeh.homeDir=getDataDir("myhome");	//avoid in home with xewd//~vavdR~//~vc1qR~
-	    initEbcMap();   //synchrounous,executed before mapinit     //~vaafI~
+//      initEbcMap();   //synchrounous,executed before mapinit     //~vaafI~//+vc5gR~
         if (Dump.Y) Dump.println("AxeProp.initFiles home="+Gxeh.homeDir+",addPath="+Gxeh.addPath);             //~vc1kI~//~vc1qR~
       new Thread(new Runnable()                                    //~vaa8I~
       {                                                            //~vaa8I~
@@ -451,6 +472,7 @@ public class AxeProp
         if (Dump.Y) Dump.println("AxeProp.initFiles.run start");   //~vc1kI~
 	    initHelpfile();
 	    initHosts();
+      if (AxeG.osVersion<AxeG.API29)  //                           //~vc4pI~
 	    unziptool();
 	    unziphtmlhelp();                                           //~vc1kI~
 	    initHighlight();                                           //~vaaDR~
@@ -473,7 +495,7 @@ public class AxeProp
         if (assetMode!=0)	//old version                          //~vbcEI~
         	return;                                                //~vbcEI~
     	String folder=getSDPath("");	//mnt/sdcard/Axe
-        if (Dump.Y) Dump.println("AxeProp.initHelp folder="+folder);//+vc33I~
+        if (Dump.Y) Dump.println("AxeProp.initHelp folder="+folder);//~vc33I~
     	int oldsz=AxeG.getParameter(AxeG.PREFKEY_HELPSZ,0/*default*/);
     	int newsz=(int)getAssetFileSize(helpZipfile);
         if (oldsz!=newsz && newsz>0)
@@ -492,26 +514,91 @@ public class AxeProp
 //      if (assetMode!=0)	//old version                          //~vbcEI~//~vc1kR~
 //      	return;                                                //~vbcEI~//~vc1kR~
     	String folder=Gxeh.homeDir+"/"+binFolder; //data/../files
-    	int oldsz=AxeG.getParameter(AxeG.PREFKEY_TOOLBINSZ,0/*default*/);
+//    	int oldsz=AxeG.getParameter(AxeG.PREFKEY_TOOLBINSZ,0/*default*/);//~vc54R~
+      	boolean swUnzip=false;                                     //~vc54R~
        File file=new File(folder);
        if (!file.exists())
        {
-           oldsz=0;	//reload if bin dir was deleted
+//         oldsz=0;	//reload if bin dir was deleted                //~vc54R~
+           swUnzip=true;                                           //~vc54R~
        }
 
-    	int newsz=(int)getAssetFileSize(toolbinZipfile);
-    	int chmod=0755;
-        if (Dump.Y) Dump.println("AxeProp.unziptool oldsz="+oldsz+",newsz="+newsz+",fnm="+toolbinZipfile);//~vc1kI~
+//    	int newsz=(int)getAssetFileSize(toolbinZipfile);           //~vc54R~
+//  	int chmod=0755;                                            //~vc4mR~
+    	int chmod=0555;       //except W                           //~vc4mI~
+//      if (Dump.Y) Dump.println("AxeProp.unziptool oldsz="+oldsz+",newsz="+newsz+",fnm="+toolbinZipfile);//~vc1kI~
         unzipfilepopup=Utils.getResourceString(R.string.Info_ToolInstalling);
-        if (oldsz!=newsz && newsz>0)
+//      if (oldsz!=newsz && newsz>0)                               //~vc54R~
+		if (!swUnzip)                                              //~vc54R~
+        	swUnzip=isToolUpdated();	//also output newToolsTS   //~vc54R~
+		if (swUnzip)                                               //~vc54R~
         {
         	if (unzipAsset(folder,toolbinZipfile,chmod))
-		    	AxeG.setParameter(AxeG.PREFKEY_TOOLBINSZ,newsz);
+            {                                                      //~vc54I~
+//		    	AxeG.setParameter(AxeG.PREFKEY_TOOLBINSZ,newsz);   //~vc54R~
+  		    	AxeG.setParameter(AxeG.PREFKEY_TOOLBINTS,newToolsTS);//~vc54R~
+        		if (Dump.Y) Dump.println("AxeProp.unziptool setParameter key="+AxeG.PREFKEY_TOOLBINTS+",val="+newToolsTS);//~vc54I~
+            }                                                      //~vc54I~
             Utils.showToast(R.string.Info_UnzipToolComp);          //~vaa8I~
         }
 	    unzipfilepopup=null;
         if (Dump.Y) Dump.println("AxeProp.unziptool end fnm="+toolbinZipfile);//~vc1kI~
     }
+    //**********************************************************************//~vc54R~
+    //*rc;true:do unzip toolbin                                    //~vc54R~
+    //**********************************************************************//~vc54R~
+    private static boolean isToolUpdated()                         //~vc54R~
+    {                                                              //~vc54R~
+        int BUFFSZ=2048;                                           //~vc54R~
+        InputStream is;                                            //~vc54R~
+        boolean rc=false;                                          //~vc54R~
+        String line=null;                                          //~vc54R~
+	//*********************                                        //~vc54R~
+    	if (Dump.Y) Dump.println(CN+"isToolUpdated");              //~vc54R~
+	    is=openAssetFile(toolbinZipfileTS);                        //~vc54R~
+        if (is==null)                                              //~vc54R~
+        	return true;                                           //~vc54R~
+        try                                                        //~vc54R~
+        {                                                          //~vc54R~
+            InputStreamReader in=new InputStreamReader(is);        //~vc54R~
+            BufferedReader br=new BufferedReader(in);              //~vc54R~
+        	line=br.readLine();                                    //~vc54R~
+	    	if (Dump.Y) Dump.println(CN+"readline line="+line);    //~vc54R~
+        }                                                          //~vc54R~
+        catch (Exception e)                                        //~vc54R~
+        {                                                          //~vc54R~
+            Dump.println(e,CN+"isToolUpdated:read "+toolbinZipfileTS);//~vc54R~
+        }//catch                                                   //~vc54R~
+        try                                                        //~vc54R~
+        {                                                          //~vc54R~
+        	is.close();                                            //~vc54R~
+        }                                                          //~vc54R~
+        catch(IOException e)                                       //~vc54R~
+        {                                                          //~vc54R~
+            Dump.println(e,CN+"isToolUpdated:close "+toolbinZipfileTS);//~vc54R~
+        }                                                          //~vc54R~
+        if (line==null)                                            //~vc54R~
+        {                                                          //~vc54R~
+	    	if (Dump.Y) Dump.println(CN+"isToolUpdated rc=true by toolbin.zipfile.ts record len=0");//~vc54R~
+        	return true;                                           //~vc54R~
+        }                                                          //~vc54R~
+		String newTS=line;                                         //~vc54R~
+		String oldTS=AxeG.getParameter(AxeG.PREFKEY_TOOLBINTS);    //~vc54R~
+        newToolsTS=newTS;                                          //~vc54M~
+    	if (Dump.Y) Dump.println(CN+"isToolUpdated old="+oldTS+",new="+newTS);//~vc54R~
+        if (oldTS==null || oldTS.equals(""))                       //~vc54R~
+        {                                                          //~vc54R~
+	    	if (Dump.Y) Dump.println(CN+"isToolUpdated rc=true by old=null");//~vc54R~
+        	return true;                                           //~vc54R~
+        }                                                          //~vc54R~
+        if (oldTS.equals(newTS))                                   //~vc54R~
+        {                                                          //~vc54R~
+	    	if (Dump.Y) Dump.println(CN+"isToolUpdated rc=false by old=new");//~vc54R~
+        	return false;                                          //~vc54R~
+        }                                                          //~vc54R~
+	    if (Dump.Y) Dump.println(CN+"isToolUpdated rc=true by old!=new("+newToolsTS+")");//~vc54R~
+        return true;                                               //~vc54R~
+    }                                                              //~vc54R~
     //******************                                           //~vc1kI~
     //*htmlhelp                                                    //~vc1kI~
     //******************                                           //~vc1kI~
@@ -629,6 +716,7 @@ public class AxeProp
         unzipAsset(folder,icuZipfile,chmod);                       //~vaafI~
         Utils.showToast(R.string.Info_UnzipICUComp);               //~vaafI~
 	    unzipfilepopup=null;
+        touchFile(installedSW,false);                              //~vc4gR~
 	    return true;//~vaafI~
     }                                                              //~vaafI~
 //********************************************************
@@ -792,7 +880,8 @@ public class AxeProp
                     bufferedOutputStream.flush();
                     bufferedOutputStream.close();
                     if (Pchmod!=-1)
-    					chmod(innerFile,0755);
+//    					chmod(innerFile,0755);                     //~vc4mR~
+      					chmod(innerFile,Pchmod);                   //~vc4mI~
                 }
                 inputStream.closeEntry();
             }
@@ -1366,21 +1455,75 @@ public class AxeProp
 //****************************************                         //~vag0I~
     public static void chmod(File Pf,int Pattr)
     {
-    	if ((Pattr & 0011)!=0)
-			Pf.setExecutable(true/*owner*/,false/*owner only*/);
-        else
-        if ((Pattr & 0100)!=0)
-		    Pf.setExecutable(true/*owner*/,true/*other*/);
-    	if ((Pattr & 0044)!=0)
-			Pf.setReadable(true/*owner*/,false/*owner only*/);
-        else
-        if ((Pattr & 0400)!=0)
-		    Pf.setReadable(true/*owner*/,true/*other*/);
-    	if ((Pattr & 0022)!=0)
-			Pf.setWritable(true/*owner*/,false/*owner only*/);
-        else
-        if ((Pattr & 0200)!=0)
-		    Pf.setWritable(true/*owner*/,true/*other*/);
+//        if ((Pattr & 0011)!=0)                                   //~vc4nR~
+//            Pf.setExecutable(true/*owner*/,false/*owner only*/); //~vc4nR~
+//        else                                                     //~vc4nR~
+//        if ((Pattr & 0100)!=0)                                   //~vc4nR~
+//            Pf.setExecutable(true/*owner*/,true/*other*/);       //~vc4nR~
+//*execute                                                         //~vc4nI~
+        if ((Pattr & 0100)!=0)    //owner                          //~vc4nI~
+        {                                                          //~vc4nI~
+			if ((Pattr & 0011)!=0)                                 //~vc4nI~
+            	Pf.setExecutable(true/*owner*/,false/*ownerOnly*/);//~vc4nI~
+            else                                                   //~vc4nI~
+            	Pf.setExecutable(true/*owner*/,true/*ownerOnly*/); //~vc4nI~
+        }                                                          //~vc4nI~
+        else                                                       //~vc4nI~
+        {                                                          //~vc4nI~
+			if ((Pattr & 0011)!=0)                                 //~vc4nI~
+            {                                                      //~vc4nI~
+            	Pf.setExecutable(true/*owner*/,false/*ownerOnly*/);//~vc4nI~
+            	Pf.setExecutable(false/*owner*/,true/*ownerOnly*/);//~vc4nI~
+            }                                                      //~vc4nI~
+            else                                                   //~vc4nI~
+            	Pf.setExecutable(false/*owner*/,false/*ownerOnly*/);//~vc4nI~
+        }                                                          //~vc4nI~
+//*writable                                                        //~vc4nI~
+//        if ((Pattr & 0044)!=0)                                   //~vc4nR~
+//            Pf.setReadable(true/*owner*/,false/*owner only*/);   //~vc4nR~
+//        else                                                     //~vc4nR~
+//        if ((Pattr & 0400)!=0)                                   //~vc4nR~
+//            Pf.setReadable(true/*owner*/,true/*other*/);         //~vc4nR~
+        if ((Pattr & 0400)!=0)                                     //~vc4nI~
+        {                                                          //~vc4nI~
+			if ((Pattr & 0044)!=0)                                 //~vc4nI~
+            	Pf.setReadable(true/*owner*/,false/*ownerOnly*/);  //~vc4nI~
+            else                                                   //~vc4nI~
+            	Pf.setReadable(true/*owner*/,true/*ownerOnly*/);   //~vc4nI~
+        }                                                          //~vc4nI~
+        else                                                       //~vc4nI~
+        {                                                          //~vc4nI~
+			if ((Pattr & 0044)!=0)                                 //~vc4nI~
+            {                                                      //~vc4nI~
+            	Pf.setReadable(true/*owner*/,false/*ownerOnly*/);  //~vc4nI~
+            	Pf.setReadable(false/*owner*/,true/*ownerOnly*/);  //~vc4nI~
+            }                                                      //~vc4nI~
+            else                                                   //~vc4nI~
+            	Pf.setReadable(false/*owner*/,false/*ownerOnly*/); //~vc4nI~
+        }                                                          //~vc4nI~
+//*readable                                                        //~vc4nI~
+//        if ((Pattr & 0022)!=0)                                   //~vc4nR~
+//            Pf.setWritable(true/*owner*/,false/*owner only*/);   //~vc4nR~
+//        else                                                     //~vc4nR~
+//        if ((Pattr & 0200)!=0)                                   //~vc4nR~
+//            Pf.setWritable(true/*owner*/,true/*other*/);         //~vc4nR~
+        if ((Pattr & 0200)!=0)                                     //~vc4nI~
+        {                                                          //~vc4nI~
+			if ((Pattr & 0022)!=0)                                 //~vc4nI~
+            	Pf.setWritable(true/*owner*/,false/*other*/);      //~vc4nI~
+            else                                                   //~vc4nI~
+            	Pf.setWritable(true/*owner*/,true/*other*/);       //~vc4nI~
+        }                                                          //~vc4nI~
+        else                                                       //~vc4nI~
+        {                                                          //~vc4nI~
+			if ((Pattr & 0022)!=0)                                 //~vc4nI~
+            {                                                      //~vc4nI~
+            	Pf.setWritable(true/*owner*/,false/*other*/);      //~vc4nI~
+            	Pf.setWritable(false/*owner*/,true/*other*/);      //~vc4nI~
+            }                                                      //~vc4nI~
+            else                                                   //~vc4nI~
+            	Pf.setWritable(false/*owner*/,false/*other*/);     //~vc4nI~
+        }                                                          //~vc4nI~
     }
     //******************
     //*xehosts         *
@@ -1795,4 +1938,23 @@ public class AxeProp
         Gxeh.sdRoot=rs;                                            //~vc1fI~
         return rs;                                                 //~vay8I~
     }                                                              //~vay8I~
+    //***************************************************************//~vc4gR~
+    private static void touchFile(File Pfile,boolean PswExist)     //~vc4gR~
+    {                                                              //~vc4gR~
+        if (Dump.Y) Dump.println("AxeProp.touchFile swExist="+PswExist+",fnm="+Pfile.getPath());//~vc4gR~
+      	try                                                        //~vc4gR~
+      	{                                                          //~vc4gR~
+            if (!PswExist)                                         //~vc4gI~
+            {                                                      //~vc4gI~
+            	new FileOutputStream(Pfile).close();               //~vc4gI~
+            }                                                      //~vc4gI~
+        	long ts=System.currentTimeMillis();                    //~vc4gR~
+        	boolean rc=Pfile.setLastModified(ts);                  //~vc4gR~
+	        if (Dump.Y) Dump.println("AxeProp.touchFile rc="+rc);  //~vc4gI~
+        }                                                          //~vc4gR~
+	    catch(Exception e)                                         //~vc4gR~
+      	{                                                          //~vc4gR~
+            Dump.println(e,"touchFile"+Pfile.getPath());  //~vc4gR~
+      	}                                                          //~vc4gR~
+    }                                                              //~vc4gR~
 }//class

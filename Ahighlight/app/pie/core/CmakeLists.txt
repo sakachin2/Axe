@@ -15,8 +15,8 @@
 # you want to add. CMake verifies that the library exists before
 # completing its build.
 ###############################################
-set(PTOP x:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
-set(UPDATE x:/AndroidStudioProjects/Ahighlight/app/srcupdate)
+set(PTOP w:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
+set(UPDATE w:/AndroidStudioProjects/Ahighlight/app/srcupdate)
 set(SRCTOP ${PTOP}/src)
 set(P ${SRCTOP}/core)
 set(Q ${P}/astyle)
@@ -58,9 +58,11 @@ set(SRC_CORE
 #
 set(UDEF -DHL_DATA_DIR="./" -DHL_CONFIG_DIR="./"
    )
-set(CF_PIE -fPIE)
+#set(CF_PIE -fPIE)
+ set(CF_PIE -fPIE -fPIC)
 set(LF_PIE "-fPIE -pie")
 set(CFLGS ${CF_PIE}
+ "-funsigned-char"
    )
 set(LDFLGS ${LF_PIE}
    )

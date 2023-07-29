@@ -1,5 +1,6 @@
-//*CID://+vb12R~: update#= 28;                                     //~vb12R~
+//*CID://+vc53R~: update#= 29;                                     //+vc53R~
 //**********************************************************************
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
 //vb12 2017/02/28 WebView:PictureListener was deprecated API-12(Android3.1.x honeycomb MR1)//~vb12I~
 //vaxg:140707 (Axe)WebView dose not support frameset,changed to iframe(pagedown is not effective)//~vaxgI~
 //vagF:120920 (Axe)local html viewer fail by permission err(uid of process of HtmlViewer was checked)
@@ -92,44 +93,59 @@ public class AxeDlgWebView extends AxeDialog                       //~vagFR~
     	boolean rc=false;   //not dismiss at return
     //****************
         if (Dump.Y) Dump.println("AxeDlhgArmOption onClickOther buttonid="+Integer.toHexString(PbuttonId));
-        switch(PbuttonId)
-        {
-        case btnidBack:                                            //~vagFR~
-			webView.goBack();                                      //~vagFI~
-            break;
-        case btnidFwd:                                             //~vagFI~
-			webView.goForward();                                   //~vagFR~
-            break;                                                 //~vagFI~
-        case btnidZin:                                             //~vagFI~
-			webView.zoomIn();                                      //~vagFI~
-            break;                                                 //~vagFI~
-        case btnidZout:                                            //~vagFI~
-			webView.zoomOut();                                     //~vagFI~
-            break;                                                 //~vagFI~
-//        case btnidTop:                                           //~vaxgR~
-//            webView.pageUp(true);                                //~vaxgR~
-//            break;                                               //~vaxgR~
-//        case btnidBottom:                                        //~vaxgR~
-//            boolean scrolled=webView.pageDown(true);             //~vaxgR~
-//            if (!scrolled)                                       //~vaxgR~
-//            {                                                    //~vaxgR~
-//                int hh=webView.getContentHeight();               //~vaxgR~
-//                if (Dump.Y)  Dump.println("WebView Button Bottom contentHeight="+hh);//~vaxgR~
-//                if (Soldposy!=0 && Soldposy==hh)                 //~vaxgR~
-//                {                                                //~vaxgR~
-//                    if (++Stryctr>1)                             //~vaxgR~
-//                        Utils.showToast(R.string.Html_TryDoubleTap);    //SHORT//~vaxgR~
-//                }                                                //~vaxgR~
-//                else                                             //~vaxgR~
-//                {                                                //~vaxgR~
-//                    Soldposy=hh;                                 //~vaxgR~
-//                    Stryctr=0;                                   //~vaxgR~
-//                }                                                //~vaxgR~
-//            }                                                    //~vaxgR~
-//            else                                                 //~vaxgR~
-//                Soldposy=0;                                      //~vaxgR~
-//            break;                                               //~vaxgR~
-        }
+//        switch(PbuttonId)                                        //+vc53R~
+//        {                                                        //+vc53R~
+//        case btnidBack:                                            //~vagFR~//+vc53R~
+//            webView.goBack();                                      //~vagFI~//+vc53R~
+//            break;                                               //+vc53R~
+//        case btnidFwd:                                             //~vagFI~//+vc53R~
+//            webView.goForward();                                   //~vagFR~//+vc53R~
+//            break;                                                 //~vagFI~//+vc53R~
+//        case btnidZin:                                             //~vagFI~//+vc53R~
+//            webView.zoomIn();                                      //~vagFI~//+vc53R~
+//            break;                                                 //~vagFI~//+vc53R~
+//        case btnidZout:                                            //~vagFI~//+vc53R~
+//            webView.zoomOut();                                     //~vagFI~//+vc53R~
+//            break;                                                 //~vagFI~//+vc53R~
+////        case btnidTop:                                           //~vaxgR~//+vc53R~
+////            webView.pageUp(true);                                //~vaxgR~//+vc53R~
+////            break;                                               //~vaxgR~//+vc53R~
+////        case btnidBottom:                                        //~vaxgR~//+vc53R~
+////            boolean scrolled=webView.pageDown(true);             //~vaxgR~//+vc53R~
+////            if (!scrolled)                                       //~vaxgR~//+vc53R~
+////            {                                                    //~vaxgR~//+vc53R~
+////                int hh=webView.getContentHeight();               //~vaxgR~//+vc53R~
+////                if (Dump.Y)  Dump.println("WebView Button Bottom contentHeight="+hh);//~vaxgR~//+vc53R~
+////                if (Soldposy!=0 && Soldposy==hh)                 //~vaxgR~//+vc53R~
+////                {                                                //~vaxgR~//+vc53R~
+////                    if (++Stryctr>1)                             //~vaxgR~//+vc53R~
+////                        Utils.showToast(R.string.Html_TryDoubleTap);    //SHORT//~vaxgR~//+vc53R~
+////                }                                                //~vaxgR~//+vc53R~
+////                else                                             //~vaxgR~//+vc53R~
+////                {                                                //~vaxgR~//+vc53R~
+////                    Soldposy=hh;                                 //~vaxgR~//+vc53R~
+////                    Stryctr=0;                                   //~vaxgR~//+vc53R~
+////                }                                                //~vaxgR~//+vc53R~
+////            }                                                    //~vaxgR~//+vc53R~
+////            else                                                 //~vaxgR~//+vc53R~
+////                Soldposy=0;                                      //~vaxgR~//+vc53R~
+////            break;                                               //~vaxgR~//+vc53R~
+//        }                                                        //+vc53R~
+//      switch(PbuttonId)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (PbuttonId== btnidBack)                                 //+vc53I~
+            webView.goBack();                                      //+vc53I~
+        else //break;                                              //+vc53I~
+        if (PbuttonId== btnidFwd)                                  //+vc53I~
+            webView.goForward();                                   //+vc53I~
+        else //break;                                              //+vc53I~
+        if (PbuttonId== btnidZin)                                  //+vc53I~
+            webView.zoomIn();                                      //+vc53I~
+        else //break;                                              //+vc53I~
+        if (PbuttonId== btnidZout)                                 //+vc53I~
+            webView.zoomOut();                                     //+vc53I~
+//          break;                                                 //+vc53I~
+//      }                                                          //+vc53I~
         return rc;
     }
     //****************************************                     //~vagFI~

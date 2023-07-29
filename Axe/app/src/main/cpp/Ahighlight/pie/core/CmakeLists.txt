@@ -1,0 +1,85 @@
+# Sets the minimum version of CMake required to build the native
+# library. You should either keep the default value or only pass a
+# value of 3.4.0 or lower.
+
+#cmake_minimum_required(VERSION 3.4.1)
+
+# Creates and names a library, sets it as either STATIC
+# or SHARED, and provides the relative paths to its source code.
+# You can define multiple libraries, and CMake builds it for you.
+# Gradle automatically packages shared libraries with your APK.
+
+# Searches for a specified prebuilt library and stores the path as a
+# variable. Because system libraries are included in the search path by
+# default, you only need to specify the name of the public NDK library
+# you want to add. CMake verifies that the library exists before
+# completing its build.
+###############################################
+set(PTOP w:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
+set(UPDATE w:/AndroidStudioProjects/Ahighlight/app/srcupdate)
+set(SRCTOP ${PTOP}/src)
+set(P ${SRCTOP}/core)
+set(Q ${P}/astyle)
+set(R ${P}/re)
+set(U ${UPDATE}/core)
+set(SRC_CORE
+#${P}/configurationreader.cpp 
+ ${U}/configurationreader.cpp 
+ ${P}/stylecolour.cpp         
+ ${P}/stringtools.cpp         
+ ${P}/xhtmlgenerator.cpp      
+ ${P}/latexgenerator.cpp      
+ ${P}/texgenerator.cpp        
+ ${P}/rtfgenerator.cpp        
+ ${P}/htmlgenerator.cpp       
+ ${P}/ansigenerator.cpp       
+ ${P}/xmlgenerator.cpp        
+ ${P}/svggenerator.cpp        
+#${P}/codegenerator.cpp       
+ ${U}/codegenerator.cpp       #2023/06/23
+ ${P}/xterm256generator.cpp   
+ ${P}/bbcodegenerator.cpp     
+#${P}/languagedefinition.cpp  
+ ${U}/languagedefinition.cpp  #2023/06/23
+ ${P}/elementstyle.cpp        
+ ${P}/documentstyle.cpp       
+ ${P}/datadir.cpp             
+ ${P}/preformatter.cpp        
+ ${P}/platform_fs.cpp         
+ ${P}/ctagsreader.cpp
+
+ ${Q}/ASStreamIterator.cpp
+ ${Q}/ASResource.cpp      
+ ${Q}/ASFormatter.cpp     
+ ${Q}/ASBeautifier.cpp    
+ ${Q}/ASEnhancer.cpp
+
+ ${R}/Pattern.cpp
+ ${R}/Matcher.cpp
+             )
+#
+set(UDEF -DHL_DATA_DIR="./" -DHL_CONFIG_DIR="./"
+   )
+#set(CF_PIE -fPIE)
+ set(CF_PIE -fPIE -fPIC)
+set(LF_PIE "-fPIE -pie")
+set(CFLGS ${CF_PIE}
+ "-funsigned-char"
+   )
+set(LDFLGS ${LF_PIE}
+   )
+set(LDFLGS "${LF_PIE}"
+   )
+###############################################
+include_directories(
+				${P}
+             )
+add_definitions(
+				 ${UDEF}
+				 ${CFLGS}
+             )
+add_library(
+             core_pie
+             STATIC
+ 			${SRC_CORE}
+             )

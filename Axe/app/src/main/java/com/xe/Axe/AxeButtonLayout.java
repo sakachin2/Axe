@@ -1,5 +1,6 @@
-//CID://+vc2ZR~:         update#=     16                           //~vc2ZR~
+//CID://+vc53R~:         update#=     17                           //+vc53R~
 //*************************************************************
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
 //vc2Z 2020/09/20 set Default button layout to HW                  //~vc2ZI~
 //vc2A 2020/08/12 (BUG)ButtonLayout insert after 1st line end added to last of 2nd line//~vc2AI~
 //vc2x 2020/08/10 change buttons layout for HWKbd                  //~vc2xI~
@@ -146,7 +147,7 @@ public class AxeButtonLayout
 //        AxeButtonIO.save(PbuttonNo,buttonLayout[PbuttonNo]);
 //    }
 //**************
-    private void initialload()                                     //+vc2ZR~
+    private void initialload()                                     //~vc2ZR~
     {
     	AxeButton btn;
         for (int ii=0;ii<MAX_BUTTONS;ii++)
@@ -159,13 +160,13 @@ public class AxeButtonLayout
         if (Dump.Y) Dump.println("AxeButtonLayout.initialLoad buttonNo1="+buttonNo1);//~vc2kI~
     }
 //**************
-    private void loadoptions()                                     //+vc2ZR~
+    private void loadoptions()                                     //~vc2ZR~
     {
 //  	sticky=restoreOptionBoolean(PREFKEY_STICKY);               //~1609R~
-//  	buttonNo1=restoreOptionInt(PREFKEY_BUTTONNO+1,DEFAULT_BUTTONS);//+vc2ZR~
-//  	buttonNo2=restoreOptionInt(PREFKEY_BUTTONNO+2,DEFAULT_BUTTONS);//+vc2ZR~
-    	buttonNo1=restoreOptionInt(PREFKEY_BUTTONNO+1,HWKBD_BUTTONS1);//+vc2ZI~
-    	buttonNo2=restoreOptionInt(PREFKEY_BUTTONNO+2,HWKBD_BUTTONS2);//+vc2ZI~
+//  	buttonNo1=restoreOptionInt(PREFKEY_BUTTONNO+1,DEFAULT_BUTTONS);//~vc2ZR~
+//  	buttonNo2=restoreOptionInt(PREFKEY_BUTTONNO+2,DEFAULT_BUTTONS);//~vc2ZR~
+    	buttonNo1=restoreOptionInt(PREFKEY_BUTTONNO+1,HWKBD_BUTTONS1);//~vc2ZI~
+    	buttonNo2=restoreOptionInt(PREFKEY_BUTTONNO+2,HWKBD_BUTTONS2);//~vc2ZI~
     }
 //**************
     public static boolean restoreOptionBoolean(String Pkey)
@@ -414,26 +415,46 @@ public class AxeButtonLayout
     {      
     	AxeButton button=Pnewbtn;
         int btnno=Paction.buttonNo;
-    	switch(Pfuncid)
-        {
-        case AxeDlgBtnUpdate.VIEWID_CB_DELETE:
-        	setButtonStatus1(btnno,AxeButton.btnGone);
-        	break;
-        case AxeDlgBtnUpdate.VIEWID_CB_REPLACE:
-        	setButtonStatus1(btnno,button);
-        	break;
-        case AxeDlgBtnUpdate.VIEWID_CB_INSERTAFTER:
-			buttonUpdate_Insert(btnno+1,button);
-        	break;
-        case AxeDlgBtnUpdate.VIEWID_CB_INSERTBEFORE:
-			buttonUpdate_Insert(btnno,button);
-        	break;
-        case AxeDlgBtnUpdate.VIEWID_CB_MOVE:
-			buttonUpdate_Move(btnno,button,Pmovevalue);
-        	break;
-        default:
-        	return true;
-        }
+//        switch(Pfuncid)                                          //+vc53R~
+//        {                                                        //+vc53R~
+//        case AxeDlgBtnUpdate.VIEWID_CB_DELETE:                   //+vc53R~
+//            setButtonStatus1(btnno,AxeButton.btnGone);           //+vc53R~
+//            break;                                               //+vc53R~
+//        case AxeDlgBtnUpdate.VIEWID_CB_REPLACE:                  //+vc53R~
+//            setButtonStatus1(btnno,button);                      //+vc53R~
+//            break;                                               //+vc53R~
+//        case AxeDlgBtnUpdate.VIEWID_CB_INSERTAFTER:              //+vc53R~
+//            buttonUpdate_Insert(btnno+1,button);                 //+vc53R~
+//            break;                                               //+vc53R~
+//        case AxeDlgBtnUpdate.VIEWID_CB_INSERTBEFORE:             //+vc53R~
+//            buttonUpdate_Insert(btnno,button);                   //+vc53R~
+//            break;                                               //+vc53R~
+//        case AxeDlgBtnUpdate.VIEWID_CB_MOVE:                     //+vc53R~
+//            buttonUpdate_Move(btnno,button,Pmovevalue);          //+vc53R~
+//            break;                                               //+vc53R~
+//        default:                                                 //+vc53R~
+//            return true;                                         //+vc53R~
+//        }                                                        //+vc53R~
+//      switch(Pfuncid)                                            //+vc53I~
+//      {                                                          //+vc53I~
+        if (Pfuncid== AxeDlgBtnUpdate.VIEWID_CB_DELETE)            //+vc53I~
+            setButtonStatus1(btnno,AxeButton.btnGone);             //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pfuncid== AxeDlgBtnUpdate.VIEWID_CB_REPLACE)           //+vc53I~
+            setButtonStatus1(btnno,button);                        //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pfuncid== AxeDlgBtnUpdate.VIEWID_CB_INSERTAFTER)       //+vc53I~
+            buttonUpdate_Insert(btnno+1,button);                   //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pfuncid== AxeDlgBtnUpdate.VIEWID_CB_INSERTBEFORE)      //+vc53I~
+            buttonUpdate_Insert(btnno,button);                     //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pfuncid== AxeDlgBtnUpdate.VIEWID_CB_MOVE)              //+vc53I~
+            buttonUpdate_Move(btnno,button,Pmovevalue);            //+vc53I~
+        else //break;                                              //+vc53I~
+//      default:                                                   //+vc53I~
+            return true;                                           //+vc53I~
+//      }                                                          //+vc53I~
         if (Pfuncid!=AxeDlgBtnUpdate.VIEWID_CB_MOVE)
 		    resetButtonNo();	//update ctr/line
 	    setButtonLayout(buttonNo1,buttonNo2);	//keep btn count on each line

@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 ###############
-set(PTOP x:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
+set(PTOP w:/AndroidStudioProjects/Ahighlight.copyofhome3/jni/highlight-2.16)
 set(SRCTOP ${PTOP}/src)
 set(P ${SRCTOP}/cli)
 set(DIR_CORE ${SRCTOP}/core)

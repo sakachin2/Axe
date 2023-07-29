@@ -28,6 +28,15 @@ Flick Timeout:
 Flick Distance:
 	Minimum swipe distance for "Flick". % of screen height/width.
 	(On soft-keyboard, this is fixed to 50% of the key height/width.)
+Directory you granted to access.
+    Selecting specific directory, you can edit, add, delete files in the directory.
+    Use "SP add // " command to set your own directory.
+    To access file in the directory, specify path name like as "e //Axe/abc.txt".
+    However, up to Android-9(R):Api28, directory access tool like as grep, xfg are not work for this directory.
+Permission:Files and Media (Option for Android-10(Q) and later)
+    Show status of Permission to access All files on shared storage.
+    Push "Change" button to change the status.
+    "All files" enable also access it by system tool(grep,...) and Axe tool(xfg,...).
 env-PATH:
 	add your bin path if required.
 	e.g.) /data/busybox:$PATH
@@ -41,4 +50,4 @@ Followings are shown additionally.
 		But it's permission may be 771(owner:shell).
 		If you could use tool:adb, try "adb shell; chmod 775 ____".
 ----------------------------------------------------------------------------
-2020/09/13 ArmOption
+2023/06/30 ArmOption

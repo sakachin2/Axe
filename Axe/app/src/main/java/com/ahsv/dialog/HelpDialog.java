@@ -1,5 +1,6 @@
-//*CID://+vc1uR~:                             update#=  164;       //~vc1uR~
+//*CID://+vc53R~:                             update#=  166;       //~vc1uR~//~vc53R~
 //*****************************************************************//~v101I~
+//vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
 //vc1u 2020/07/06 helpdialog for asset/helptexts                   //~vc1uR~
 //1Ahm 2020/06/05 fromHtml deprecated at AndroidN(api24)           //~1AhmI~
 //1Ahk 2020/06/05 Connect button for all connection type           //~1AhkI~
@@ -93,7 +94,7 @@ public class HelpDialog extends Dialog                               //~v@@@R~//
 		    txt=UFile.getHelpFileText(helpFilename);               //~v@@@R~
 	    	tvMessage.setText(txt);                                //~v@@@R~
         }                                                          //~v@@@I~
-        UView.setDialogWidthMatchParentPortrait(this);             //+vc1uI~
+        UView.setDialogWidthMatchParentPortrait(this);             //~vc1uI~
     }                                                              //~v@@@M~
 //**********************************                               //~v@@@I~
     private String adjustHtml(String Ptxt)                                        //~v@@@I~
@@ -145,12 +146,13 @@ public class HelpDialog extends Dialog                               //~v@@@R~//
     	try                                                        //~1AhkI~
         {                                                          //~1AhkI~
         	int id=Pbutton.getId();                                //~1AhkI~
-        	switch(id)                                             //~1AhkI~
-            {                                                      //~1AhkI~
-            case R.id.Close:                                       //~1AhkI~
+//      	switch(id)                                             //~1AhkI~//+vc53R~
+//          {                                                      //~1AhkI~//~vc53R~
+//          case R.id.Close:                                       //~1AhkI~//~vc53R~
+        	if (id==R.id.Close)                                    //~vc53I~
     	    	dismiss();                                         //~1AhkI~
-                break;                                             //~1AhkI~
-            }                                                      //~1AhkI~
+//              break;                                             //~1AhkI~//~vc53R~
+//          }                                                      //~1AhkI~//~vc53R~
         }                                                          //~1AhkI~
         catch(Exception e)                                         //~1AhkI~
         {                                                          //~1AhkI~

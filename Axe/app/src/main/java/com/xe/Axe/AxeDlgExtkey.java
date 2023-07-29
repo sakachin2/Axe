@@ -1,6 +1,7 @@
-//*CID://+vc2GR~: update#= 168;                                    //+vc2GR~
+//*CID://+vc53R~: update#= 169;                                    //+vc53R~
 //**********************************************************************//~1107I~
-//vc2G 2020/08/23 chk validity of unicode value                    //+vc2GR~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
+//vc2G 2020/08/23 chk validity of unicode value                    //~vc2GR~
 //vc2r 2020/08/07 (BUG)Shortcut modifier was not saved             //~vc2rI~
 //**********************************************************************//~vc2rI~
 //*AlerDlgExtKey                                                   //~1527R~//~0807R~
@@ -163,9 +164,9 @@ public class AxeDlgExtkey extends AxeDialog                        //~1602R~
             String str=tv.getText().toString();                    //~1821R~
             value=str;                                             //~1821R~
             int unicode=Utils.hexstrToNum(str,AxeKey.KEYVALUE_ERR);//~1821R~
-            if (unicode!=AxeKey.KEYVALUE_ERR)                      //+vc2GR~
-            	if (!Utils.isValidUnicode(unicode))                //+vc2GR~
-	            	unicode=AxeKey.KEYVALUE_ERR;                   //+vc2GR~
+            if (unicode!=AxeKey.KEYVALUE_ERR)                      //~vc2GR~
+            	if (!Utils.isValidUnicode(unicode))                //~vc2GR~
+	            	unicode=AxeKey.KEYVALUE_ERR;                   //~vc2GR~
             if (unicode==AxeKey.KEYVALUE_ERR)                      //~1821R~
             {                                                      //~1821R~
               unicode=value.charAt(0);                             //~vc2rI~
@@ -204,11 +205,13 @@ public class AxeDlgExtkey extends AxeDialog                        //~1602R~
         int intval=AxeKey.KEYVALUE_NOTDEF;                         //~1821I~
         String value="";                                           //~1821I~
     //**************                                               //~1821I~
-        switch(PbuttonId)                                          //~1821I~
-        {                                                          //~1821I~
-        case R.id.Clear:                                           //~1821I~
+//      switch(PbuttonId)                                          //~1821I~//+vc53R~
+//      {                                                          //~1821I~//+vc53R~
+//      case R.id.Clear:                                           //~1821I~//+vc53R~
+        if (PbuttonId==R.id.Clear)                                 //+vc53I~
+        {                                                          //+vc53I~
 	    	updateItem(intval,value);                      //~1821I~
-            break;                                                 //~1821I~
+//          break;                                                 //~1821I~//+vc53R~
         }                                                          //~1821I~
         return rc;                                                 //~1821I~
     }                                                              //~1821I~

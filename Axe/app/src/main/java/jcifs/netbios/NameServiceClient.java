@@ -1,7 +1,8 @@
-//*CID://+vc19R~:                             update#=    4;       //+vc19I~
-//******************************************************************//+vc19I~
-//vc19 2020/06/18 Warning Map type                                 //+vc19I~
-//******************************************************************//+vc19I~
+//*CID://+vc45R~:                             update#=    5;       //+vc45R~
+//******************************************************************//~vc19I~
+//vc45 2023/03/25 deprecated; Java9 new Integer,Boolean,Double,Long-->valueOf//+vc45I~
+//vc19 2020/06/18 Warning Map type                                 //~vc19I~
+//******************************************************************//~vc19I~
 /* jcifs smb client library in Java
  * Copyright (C) 2000  "Michael B. Allen" <jcifs at samba dot org>
  * 
@@ -30,7 +31,7 @@ import jcifs.Config;
 import jcifs.util.Hexdump;
 import jcifs.util.LogStream;
 
-@SuppressWarnings("unchecked")                                     //+vc19I~
+@SuppressWarnings("unchecked")                                     //~vc19I~
 class NameServiceClient implements Runnable {
 
     static final int DEFAULT_SO_TIMEOUT = 5000;
@@ -188,7 +189,8 @@ class NameServiceClient implements Runnable {
                     log.println( "NetBIOS: new data read from socket" );
 
                 nameTrnId = NameServicePacket.readNameTrnId( rcv_buf, 0 );
-                response = (NameServicePacket)responseTable.get( new Integer( nameTrnId ));
+//              response = (NameServicePacket)responseTable.get( new Integer( nameTrnId ));//+vc45R~
+               response = (NameServicePacket)responseTable.get( Integer.valueOf(nameTrnId ));//+vc45I~
                 if( response == null || response.received ) {
                     continue;
                 }
@@ -225,7 +227,8 @@ class NameServiceClient implements Runnable {
                 try {
                     synchronized( LOCK ) {
                         request.nameTrnId = getNextNameTrnId();
-                        nid = new Integer( request.nameTrnId );
+//                      nid = new Integer( request.nameTrnId );    //+vc45R~
+                        nid =Integer.valueOf( request.nameTrnId ); //+vc45I~
 
                         out.setAddress( request.addr );
                         out.setLength( request.writeWireFormat( snd_buf, 0 ));

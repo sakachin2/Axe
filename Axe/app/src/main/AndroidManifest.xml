@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      android:versionCode="1292"
+      android:versionName="1.29.2">
+<!--
       package="com.xe.Axe"
-      android:versionCode="1291"
-      android:versionName="1.29.1">
+-->
     <uses-permission android:name="android.permission.BIND_INPUT_METHOD"></uses-permission>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <!--uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE">2023/05/20del</uses-permission-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+					 android.maxSdkVersion="28"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+					 />       <!--2023/05/20-->
     <!--uses-sdk android:minSdkVersion="15" android:targetSdkVersion="15"/--> 
-    <application android:icon="@drawable/wxe" android:label="@string/app_name"
+    <application android:label="@string/app_name"
+                 android:icon="@mipmap/wxe"
+                 android:roundIcon="@mipmap/wxe"
      					android:name="AxeACRA"
      	        		android:theme="@style/ThemeV10"      
      	        		android:requestLegacyExternalStorage="true"
+     	        		android:extractNativeLibs="true"
     >
     <!--				android:debuggable="true" -->
  <!--					android:debuggable="false" true for gdbndk  -->
@@ -21,6 +30,7 @@
                   android:windowSoftInputMode="adjustPan"
                   android:launchMode="singleTask"
      	        		android:theme="@style/ThemeV10"      
+                android:exported="true"
 		>
 <!--               android:windowSoftInputMode="adjustPan|stateAlwaysHidden"-->
 <!--                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden"-->
@@ -64,6 +74,7 @@
         <activity android:name=".AxeChild"
                   android:label="Axe:exit by error"
 			      android:process=":AxeUerrexit"
+                android:exported="true"
 		>
              <!--     android:launchMode="singleTask" -->
             <intent-filter>

@@ -1,6 +1,7 @@
 
 #cmake_minimum_required(VERSION 3.4.1)
-cmake_minimum_required(VERSION 3.10.2)
+#cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.22.1)
 
 ##############################
 #iconv.o : $(srcdir)/iconv.c
@@ -42,7 +43,18 @@ target_link_libraries( # Specifies the target library.
                        c         #libc
                        ${OPT_STRIP}
                        )
+#set_target_properties(iconv.bin
+#    PROPERTIES
+#    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin/${OUT_SUBDIR}
+#    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/libs/${OUT_SUBDIR}
+#    )
+
+#add_custom_command (TARGET iconv.bin POST_BUILD
+#	 COMMAND ${CMAKE_COMMAND} -E copy ${EXECUTABLE_OUTPUT_PATH}/iconv.bin ${DEVCONUP_BIN}/iconv
+#	 COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libiconv.a  ${DEVCONUP_LIBS}
+#	)
 add_custom_command (TARGET iconv.bin POST_BUILD
-	 COMMAND ${CMAKE_COMMAND} -E copy ${EXECUTABLE_OUTPUT_PATH}/iconv.bin ${DEVCONUP_BIN}/iconv
-	 COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libiconv.a  ${DEVCONUP_LIBS}
+# 	 COMMAND ${CMAKE_COMMAND} -E copy ${EXECUTABLE_OUTPUT_DIRECTORY}/iconv.bin ${DEVCONUP_BIN}/iconv
+# 	 COMMAND ${CMAKE_COMMAND} -E copy ${RUNTIME_OUTPUT_DIRECTORY}/iconv.bin ${DEVCONUP_BIN}/iconv
+   	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/iconv.bin ${DEVCONUP_BIN}/iconv
 	)

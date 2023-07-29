@@ -1,7 +1,8 @@
-//*CID://+vc2MR~: update#= 233;                                    //~vc2MR~
+//*CID://+vc53R~: update#= 235;                                    //~vc53R~
 //**********************************************************************
 //*AlerDlgFileChooser                                              //~vayhR~
 //**********************************************************************
+//vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
 //vc2M 2020/08/24 xehelp folder download                           //~vc2MI~
 //vb04 2014/11/30 FileDialog:change sort button color,assending descending//~vb04I~
 //vayh:141125 (Axe)save to preference the name for filedialog      //~vayhI~
@@ -31,8 +32,8 @@ public class AxeDlgFileChooser extends AxeDialog                   //~vaxbR~
 	private static final String HELP_FILE="AxeDlgFileChooser";     //~vc2MI~
 //	private static final int COLOR_SORT_ONA        =0xffffff00;    //~vaxbR~//~vb04R~
 //	private static final int COLOR_SORT_OND        =0xff00ffff;    //~vaxbR~//~vb04R~
-  	private static final int COLOR_SORT_ONA        =0xffff8020; //orange//~vb04R~//+vc2MR~
-	private static final int COLOR_SORT_OND        =0xffff8020;    //~vb04R~//+vc2MR~
+  	private static final int COLOR_SORT_ONA        =0xffff8020; //orange//~vb04R~//~vc2MR~
+	private static final int COLOR_SORT_OND        =0xffff8020;    //~vb04R~//~vc2MR~
 	private static final int COLOR_SORT_OFF       =Color.BLACK;    //~vaxbI~
     private EditText   etNewName;                                  //~vaxbR~
     private EditText   etFilter;                                   //~vaxbI~
@@ -174,60 +175,132 @@ public class AxeDlgFileChooser extends AxeDialog                   //~vaxbR~
     	String fnm;
     //********mp.Y) Dump.println("AxeDlgFileChooser onClickOther buttonid="+Integer.toHexString(Pbuttonid));//~vaxbR~
         cmdFilename="";                                            //~vaxbI~
-        switch(Pbuttonid)                                          //~vaxbI~
-        {                                                          //~vaxbI~
-        case R.id.Save:                                            //~vaxbR~
-	        fnm=getNewName();                                      //~vaxcI~
-        	AxeProp.putPreference(PREF_NEWNAME,fnm);               //~vayhI~
-           if (!fnm.startsWith("/"))                               //~vay7I~
-        	cmdFilename=axeListFileChooser.getSelectedFullpath(Pbuttonid,fnm);//mey return null//~vaxbR~//~vaxcR~
-           else                                                    //~vay7I~
-        	cmdFilename=fnm;                                       //~vay7I~
-            cmdFilename=encloseIfSpaceEmbedding(cmdFilename);      //~vayhI~
-            if (cmdFilename==null)	//err, missing filename        //~vaxcI~
-            {                                                      //~vaxcI~
-            	cmdFilename="";	//no dismiss                       //~vaxcI~
-            }                                                      //~vaxcI~
-        	break;                                                 //~vaxbR~
-        case R.id.Edit:                                            //~vaxbI~
-        case R.id.Browse:                                          //~vaxbI~
-	        fnm=getNewName();                                      //~vaxcR~
-        	AxeProp.putPreference(PREF_NEWNAME,fnm);               //~vayhI~
-           if (!fnm.startsWith("/"))                               //~vay7I~
-        	cmdFilename=axeListFileChooser.getSelectedFullpath(Pbuttonid,fnm);//may return null//~vaxbI~//~vaxcR~
-           else                                                    //~vay7I~
-        	cmdFilename=fnm;                                       //~vay7I~
-            cmdFilename=encloseIfSpaceEmbedding(cmdFilename);      //~vayhI~
-        	break;                                                 //~vaxbI~
-        case R.id.Detail:                                          //~vaxbI~
-        	axeListFileChooser.toggleDetail();                 //~vaxbI~
-	    	rc=false;	//not dismiss               **                                                   //~vaxbI~
-        	break;                                                 //~vaxbI~
-        case R.id.DirUp:                                           //~vaxbI~
-        	axeListFileChooser.listParent();                       //~vaxbI~
-	    	rc=false;	//not dismiss                              //~vaxbI~
-        	break;                                                 //~vaxbI~
-        case R.id.SortName:                                        //~vaxbR~
-        	axeListFileChooser.sortList(1);                        //~vaxbR~
-	    	rc=false;	//not dismiss                              //~vaxbI~
-        	break;                                                 //~vaxbI~
-        case R.id.SortAttr:                                        //~vaxbI~
-        	axeListFileChooser.sortList(2);                        //~vaxbI~
-	    	rc=false;	//not dismiss                              //~vaxbI~
-        	break;                                                 //~vaxbI~
-        case R.id.BtnFilter:                                       //~vaxbI~
-        	axeListFileChooser.applyFilter();                      //~vaxbI~
-	    	rc=false;	//not dismiss                              //~vaxbI~
-        	break;                                                 //~vaxbI~
-        case R.id.BtnFilterClear:                                  //~vaxcI~
-        	etFilter.setText("");                                   //~vaxcI~
-	    	rc=false;	//not dismiss                              //~vaxcI~
-        	break;                                                 //~vaxcI~
-        case R.id.BtnNameClear:                                    //~vaxcI~
-        	etNewName.setText("");                                 //~vaxcI~
-	    	rc=false;	//not dismiss                              //~vaxcI~
-        	break;                                                 //~vaxcI~
-        }                                                          //~vaxbI~
+//        switch(Pbuttonid)                                          //~vaxbI~//~vc53R~
+//        {                                                          //~vaxbI~//~vc53R~
+//        case R.id.Save:                                            //~vaxbR~//~vc53R~
+//            fnm=getNewName();                                      //~vaxcI~//~vc53R~
+//            AxeProp.putPreference(PREF_NEWNAME,fnm);               //~vayhI~//~vc53R~
+//           if (!fnm.startsWith("/"))                               //~vay7I~//~vc53R~
+//            cmdFilename=axeListFileChooser.getSelectedFullpath(Pbuttonid,fnm);//mey return null//~vaxbR~//~vaxcR~//~vc53R~
+//           else                                                    //~vay7I~//~vc53R~
+//            cmdFilename=fnm;                                       //~vay7I~//~vc53R~
+//            cmdFilename=encloseIfSpaceEmbedding(cmdFilename);      //~vayhI~//~vc53R~
+//            if (cmdFilename==null)  //err, missing filename        //~vaxcI~//~vc53R~
+//            {                                                      //~vaxcI~//~vc53R~
+//                cmdFilename=""; //no dismiss                       //~vaxcI~//~vc53R~
+//            }                                                      //~vaxcI~//~vc53R~
+//            break;                                                 //~vaxbR~//~vc53R~
+//        case R.id.Edit:                                            //~vaxbI~//~vc53R~
+//        case R.id.Browse:                                          //~vaxbI~//~vc53R~
+//            fnm=getNewName();                                      //~vaxcR~//~vc53R~
+//            AxeProp.putPreference(PREF_NEWNAME,fnm);               //~vayhI~//~vc53R~
+//           if (!fnm.startsWith("/"))                               //~vay7I~//~vc53R~
+//            cmdFilename=axeListFileChooser.getSelectedFullpath(Pbuttonid,fnm);//may return null//~vaxbI~//~vaxcR~//~vc53R~
+//           else                                                    //~vay7I~//~vc53R~
+//            cmdFilename=fnm;                                       //~vay7I~//~vc53R~
+//            cmdFilename=encloseIfSpaceEmbedding(cmdFilename);      //~vayhI~//~vc53R~
+//            break;                                                 //~vaxbI~//~vc53R~
+//        case R.id.Detail:                                          //~vaxbI~//~vc53R~
+//            axeListFileChooser.toggleDetail();                 //~vaxbI~//~vc53R~
+//            rc=false;   //not dismiss               **                                                   //~vaxbI~//~vc53R~
+//            break;                                                 //~vaxbI~//~vc53R~
+//        case R.id.DirUp:                                           //~vaxbI~//~vc53R~
+//            axeListFileChooser.listParent();                       //~vaxbI~//~vc53R~
+//            rc=false;   //not dismiss                              //~vaxbI~//~vc53R~
+//            break;                                                 //~vaxbI~//~vc53R~
+//        case R.id.SortName:                                        //~vaxbR~//~vc53R~
+//            axeListFileChooser.sortList(1);                        //~vaxbR~//~vc53R~
+//            rc=false;   //not dismiss                              //~vaxbI~//~vc53R~
+//            break;                                                 //~vaxbI~//~vc53R~
+//        case R.id.SortAttr:                                        //~vaxbI~//~vc53R~
+//            axeListFileChooser.sortList(2);                        //~vaxbI~//~vc53R~
+//            rc=false;   //not dismiss                              //~vaxbI~//~vc53R~
+//            break;                                                 //~vaxbI~//~vc53R~
+//        case R.id.BtnFilter:                                       //~vaxbI~//~vc53R~
+//            axeListFileChooser.applyFilter();                      //~vaxbI~//~vc53R~
+//            rc=false;   //not dismiss                              //~vaxbI~//~vc53R~
+//            break;                                                 //~vaxbI~//~vc53R~
+//        case R.id.BtnFilterClear:                                  //~vaxcI~//~vc53R~
+//            etFilter.setText("");                                   //~vaxcI~//~vc53R~
+//            rc=false;   //not dismiss                              //~vaxcI~//~vc53R~
+//            break;                                                 //~vaxcI~//~vc53R~
+//        case R.id.BtnNameClear:                                    //~vaxcI~//~vc53R~
+//            etNewName.setText("");                                 //~vaxcI~//~vc53R~
+//            rc=false;   //not dismiss                              //~vaxcI~//~vc53R~
+//            break;                                                 //~vaxcI~//~vc53R~
+//        }                                                          //~vaxbI~//~vc53R~
+//      switch(Pbuttonid)                                          //~vc53I~
+//      {                                                          //~vc53I~
+        if (Pbuttonid== R.id.Save)                                 //~vc53I~
+        {                                                          //~vc53I~
+            fnm=getNewName();                                      //~vc53I~
+            AxeProp.putPreference(PREF_NEWNAME,fnm);               //~vc53I~
+           if (!fnm.startsWith("/"))                               //~vc53I~
+            cmdFilename=axeListFileChooser.getSelectedFullpath(Pbuttonid,fnm);//mey return null//~vc53I~
+           else                                                    //~vc53I~
+            cmdFilename=fnm;                                       //~vc53I~
+            cmdFilename=encloseIfSpaceEmbedding(cmdFilename);      //~vc53I~
+            if (cmdFilename==null)  //err, missing filename        //~vc53I~
+            {                                                      //~vc53I~
+                cmdFilename=""; //no dismiss                       //~vc53I~
+            }                                                      //~vc53I~
+        }                                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Pbuttonid== R.id.Edit                                  //+vc53R~
+        ||  Pbuttonid== R.id.Browse)                               //~vc53I~
+        {                                                          //~vc53I~
+            fnm=getNewName();                                      //~vc53I~
+            AxeProp.putPreference(PREF_NEWNAME,fnm);               //~vc53I~
+           if (!fnm.startsWith("/"))                               //~vc53I~
+            cmdFilename=axeListFileChooser.getSelectedFullpath(Pbuttonid,fnm);//may return null//~vc53I~
+           else                                                    //~vc53I~
+            cmdFilename=fnm;                                       //~vc53I~
+            cmdFilename=encloseIfSpaceEmbedding(cmdFilename);      //~vc53I~
+        }                                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Pbuttonid== R.id.Detail)                               //~vc53I~
+        {                                                          //~vc53I~
+            axeListFileChooser.toggleDetail();                     //~vc53I~
+            rc=false;   //not dismiss               **             //~vc53I~
+        }                                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Pbuttonid== R.id.DirUp)                                //~vc53I~
+        {                                                          //~vc53I~
+            axeListFileChooser.listParent();                       //~vc53I~
+            rc=false;   //not dismiss                              //~vc53I~
+        }                                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Pbuttonid== R.id.SortName)                             //~vc53I~
+        {                                                          //~vc53I~
+            axeListFileChooser.sortList(1);                        //~vc53I~
+            rc=false;   //not dismiss                              //~vc53I~
+        }                                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Pbuttonid== R.id.SortAttr)                             //~vc53I~
+        {                                                          //~vc53I~
+            axeListFileChooser.sortList(2);                        //~vc53I~
+            rc=false;   //not dismiss                              //~vc53I~
+        }                                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Pbuttonid== R.id.BtnFilter)                            //~vc53I~
+        {                                                          //~vc53I~
+            axeListFileChooser.applyFilter();                      //~vc53I~
+            rc=false;   //not dismiss                              //~vc53I~
+        }                                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Pbuttonid== R.id.BtnFilterClear)                       //~vc53I~
+        {                                                          //~vc53I~
+            etFilter.setText("");                                  //~vc53I~
+            rc=false;   //not dismiss                              //~vc53I~
+        }                                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (Pbuttonid== R.id.BtnNameClear)                         //~vc53I~
+        {                                                          //~vc53I~
+            etNewName.setText("");                                 //~vc53I~
+            rc=false;   //not dismiss                              //~vc53I~
+        }                                                          //~vc53I~
+//          break;                                                 //~vc53I~
+//      }                                                          //~vc53I~
         if (cmdFilename.equals(""))                                //~vaxbI~
         	return false;                                          //~vaxbI~
         cmdId=Pbuttonid;                                           //~vaxbI~
@@ -255,18 +328,30 @@ public class AxeDlgFileChooser extends AxeDialog                   //~vaxbR~
         if (filter==null)                                          //~vaxbI~
         	filter="";                                             //~vaxbI~
         AxeProp.putPreference(PREF_FILTER,filter);                 //~vaxbI~
-        switch(cmdId)                                              //~vaxbI~
-        {                                                          //~vaxbM~
-    	case R.id.Edit:                                            //~vaxbI~
-	        AxeJNI.xecmd("Edit",cmdFilename);                      //~vaxbI~
-            break;                                                 //~vaxbM~
-    	case R.id.Browse:                                          //~vaxbI~
-	        AxeJNI.xecmd("Browse",cmdFilename);                    //~vaxbI~
-            break;                                                 //~vaxbI~
-    	case R.id.Save:                                            //~vaxbI~
-	        AxeJNI.xecmd("Save",cmdFilename);                      //~vaxbI~
-            break;                                                 //~vaxbI~
-        }                                                          //~vaxbM~
+//        switch(cmdId)                                              //~vaxbI~//~vc53R~
+//        {                                                          //~vaxbM~//~vc53R~
+//        case R.id.Edit:                                            //~vaxbI~//~vc53R~
+//            AxeJNI.xecmd("Edit",cmdFilename);                      //~vaxbI~//~vc53R~
+//            break;                                                 //~vaxbM~//~vc53R~
+//        case R.id.Browse:                                          //~vaxbI~//~vc53R~
+//            AxeJNI.xecmd("Browse",cmdFilename);                    //~vaxbI~//~vc53R~
+//            break;                                                 //~vaxbI~//~vc53R~
+//        case R.id.Save:                                            //~vaxbI~//~vc53R~
+//            AxeJNI.xecmd("Save",cmdFilename);                      //~vaxbI~//~vc53R~
+//            break;                                                 //~vaxbI~//~vc53R~
+//        }                                                          //~vaxbM~//~vc53R~
+//      switch(cmdId)                                              //~vc53I~
+//      {                                                          //~vc53I~
+        if (cmdId== R.id.Edit)                                     //~vc53I~
+            AxeJNI.xecmd("Edit",cmdFilename);                      //~vc53I~
+        else //break;                                              //~vc53I~
+        if (cmdId== R.id.Browse)                                   //~vc53I~
+            AxeJNI.xecmd("Browse",cmdFilename);                    //~vc53I~
+        else //break;                                              //~vc53I~
+        if (cmdId== R.id.Save)                                     //~vc53I~
+            AxeJNI.xecmd("Save",cmdFilename);                      //~vc53I~
+//          break;                                                 //~vc53I~
+//      }                                                          //~vc53I~
     }                                                              //~vaxbI~
 //**********************************                               //~vay7R~
 //    private static void xecmdSave()                              //~vay7R~

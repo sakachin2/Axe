@@ -1,5 +1,6 @@
-//*CID://+va20R~:                             update#=  124;       //~vXXER~//~va20R~
+//*CID://+vby0R~:                             update#=  125;       //+vby0R~
 //********************************************************************//~2B09I~
+//vby0:230322 for Axe Api33; ld duplicate symbole                  //+vby0I~
 //va6y:000706 CUPs default printer is not same as gnome default    //~va20I~
 //va20:091125 (UTF8)UTF8 full support(display utf8 also unprintable as locale code)//~va20I~
 //vXXE:050611 new for XXE                                          //~vXXEI~
@@ -47,7 +48,11 @@ void gxepage_Font_OnApply(void);                                   //~vXXEI~
 int  gxepage_prtgetformsz(int Plandscape,char *Pformtype,int *Ppwidth,int *Ppheight);//~vXXER~
 void gxepage_OnChanged_ComboPrinter(GtkEditable *editable,gpointer user_data);//~va20I~
 //********************************************************************//~vXXEI~
+#ifdef GBL_XXEMAIN                                                 //+vby0I~
 	int		Mcurpage;                                              //~vXXEM~
+#else                                                              //+vby0I~
+	extern int Mcurpage;                                           //+vby0I~
+#endif                                                             //+vby0I~
 #ifndef XXE                                                        //~vXXEI~
 };
 

@@ -1,4 +1,4 @@
-##*CID:##+v700R~:                             update#=   33;##~v700I~
+##*CID:##+v700R~:                             update#=   42;##~v700I~
 #arm-linux-androideabi-gcc
 #-c
 #-o
@@ -75,7 +75,7 @@
 ##+v700I~
 
 #set(AXEJNI x:/AndroidStudioProjects/Axe/app/src/main/jni)##~v700R~
-set(AXEJNI x:/AndroidStudioProjects/Axe/app/src/main/cpp/jni)##~v700I~
+#set(AXEJNI w:/AndroidStudioProjects/Axe/app/src/main/cpp/jni)##~v700R~
 #set(RH9JGXE g:/src/gxe-rh9j)
 #set(LIBICONV c:/users/sakstyle/AppData/Local/Android/sdk/ndk-bundle/sources/android/support/include) 
 #set(LIBICONV ${ANDROID_NDK}/sources/android/support/include) 
@@ -84,7 +84,8 @@ set(ULIB g:/src/ulib)
 set(XE g:/src/xe)
 #set(GXE g:/src/gxe-rh9j)
 #set(GXE x:/AndroidStudioProjects/Axe/app/src/main/jni/gxe)##~v700R~
-set(GXE x:/AndroidStudioProjects/Axe/app/src/main/cpp/jni/gxe)##~v700I~
+set(GXE w:/AndroidStudioProjects/Axe/app/src/main/cpp/jni/gxe)##~v700R~
+set(AXE_JNI w:/AndroidStudioProjects/Axe/app/src/main/cpp/jni)##+v700I~
 #set(OPTDEBUG "-DTRACE -g3") 
 set(OPTDEBUG ${OPT_TRACE})##~v700R~
 set(UDEF "-DANDROID -DSK_RELEASE -DNDEBUG -UDEBUG -DLNX -DUNX -DARM -DARMAPI9 -DNOMT -DLNXLC2 -DXXE -DGTK -D_FILE_OFFSET_BITS=64 -DUTF8SUPPH -DUTF8UCS2 -DUTF8EBCD ${OPTDEBUG}" )##~v700R~
@@ -92,15 +93,16 @@ set(UDEF "-DANDROID -DSK_RELEASE -DNDEBUG -UDEBUG -DLNX -DUNX -DARM -DARMAPI9 -D
 set(CFLGS   "               -fpic              -fno-exceptions -fstack-protector -Wall -Wno-pointer-sign -Wuninitialized -O0 -funsigned-char")##~v700R~
 
 #set(CFLGS2 "-finput-charset=cp932")
-set(CFLGS2 "-Wno-invalid-source-encoding")
+set(CFLGS2 "-Wno-invalid-source-encoding -Wno-misleading-indentation")##~v700I~
 #-I/rh9j/home/sak/Projects/gxe/src 
 include_directories(
 				${INCLUDE_ULIB_UPDATE}##~v700I~
 				${INCLUDE_ICONVH}##~v700I~
              	${ULIB}
              	${XE}
+				${AXE_JNI}
              	${GXE}
-             	../ulib##~v700I~
+             	../ulib
              )
 add_definitions(
                  ${CFLGS}

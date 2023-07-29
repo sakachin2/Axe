@@ -1,6 +1,7 @@
-//*CID://+vc2MR~:                             update#=   27;       //+vc2MR~
+//*CID://+vc53R~:                             update#=   28;       //+vc53R~
 //**********************************************************************
-//vc2M 2020/08/24 xehelp folder download                           //+vc2MI~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
+//vc2M 2020/08/24 xehelp folder download                           //~vc2MI~
 //vaxc:140705 (Axe)FileDialog from menutop(from"File" menu,"Open" and Download" to top)//~vaxcI~
 //vag0:120719 (Axe)function to download asset from web
 //**********************************************************************
@@ -17,7 +18,7 @@ public class AxeDlgDownload extends AxeDialog
 {
 /////////////////////////////////////////////////////////////////////////////
 //**********************************************************************
-	private static final String HELP_FILE  ="AxeDlgDownload";       //+vc2MI~
+	private static final String HELP_FILE  ="AxeDlgDownload";       //~vc2MI~
 	private static final int LAYOUT=R.layout.dialogdownload;
 	private static final int TITLE =R.string.DialogTitle_Download;
     private static final String defaultAssetURL="http://www.geocities.jp/sakachin2/Axe/AxeAsset.zip";//~vag0I~
@@ -149,8 +150,8 @@ public class AxeDlgDownload extends AxeDialog
 	@Override
     protected boolean onClickHelp()
     {
-//  	showDialogHelp(R.string.HelpTitle_Download,R.string.Help_Download);//+vc2MR~
-    	showDialogHelp(TITLE,HELP_FILE);                           //+vc2MI~
+//  	showDialogHelp(R.string.HelpTitle_Download,R.string.Help_Download);//~vc2MR~
+    	showDialogHelp(TITLE,HELP_FILE);                           //~vc2MI~
         return false;	//no dismiss
     }
 //**********************************                               //~vaxcR~
@@ -160,9 +161,11 @@ public class AxeDlgDownload extends AxeDialog
     	boolean rc=true;	//dismiss                              //~vaxcR~
     	String fnm;                                                //~vaxcR~
     //********mp.Y) Dump.println("AxeDlgFileChooser onClickOther buttonid="+Integer.toHexString(Pbuttonid));//~vaxcR~
-        switch(Pbuttonid)                                          //~vaxcR~
-        {                                                          //~vaxcR~
-        case R.id.DL_BtnLocalRef:                                  //~vaxcR~
+//      switch(Pbuttonid)                                          //~vaxcR~//+vc53R~
+//      {                                                          //~vaxcR~//+vc53R~
+//      case R.id.DL_BtnLocalRef:                                  //~vaxcR~//+vc53R~
+        if (Pbuttonid==R.id.DL_BtnLocalRef)                        //+vc53I~
+        {                                                          //+vc53I~
         	fnm=etURL.getText().toString();                        //~vaxcR~
             if (fnm==null)                                         //~vaxcR~
             	fnm="";                                            //~vaxcR~
@@ -174,7 +177,7 @@ public class AxeDlgDownload extends AxeDialog
             }                                                      //~vaxcR~
 		    fileChooser=AxeDlgFileChooser.showDialog(AxeLstFileChooser.OPEN_REF,(TextView)etLocalFile,fnm);//~vaxcR~
             rc=false;                                              //~vaxcR~
-        	break;                                                 //~vaxcR~
+//      	break;                                                 //~vaxcR~//+vc53R~
         }                                                          //~vaxcR~
         return rc;                                                 //~vaxcR~
     }                                                              //~vaxcR~

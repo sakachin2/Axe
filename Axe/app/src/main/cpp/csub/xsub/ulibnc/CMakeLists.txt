@@ -80,12 +80,12 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds it for you.
 # Gradle automatically packages shared libraries with your APK.
 
-set(AXEJNI x:/AndroidStudioProjects/Axe/app/src/main/jni)
+#set(AXEJNI w:/AndroidStudioProjects/Axe/app/src/main/cpp/jni)	//2023/06/14 del
 #set(RH9JGXE g:/src/gxe-rh9j)
 #set(LIBICONV c:/users/sakstyle/AppData/Local/Android/sdk/ndk-bundle/sources/android/support/include) 
 #set(LIBICONV ${ANDROID_NDK}/sources/android/support/include) 
-#set(LIBICONV x:/AndroidStudioProjects/libiconv114LinuxMade/libiconv-1.14/include)
-#set(ICONV_TOP x:/AndroidStudioProjects/libiconv-1.14.cfgathome3)
+#set(LIBICONV W:/AndroidStudioProjects/libiconv114LinuxMade/libiconv-1.14/include)
+#set(ICONV_TOP W:/AndroidStudioProjects/libiconv-1.14.cfgathome3)
 #set(ICONV_INC ${ICONV_TOP}/include)
 set(ULIB g:/src/ulib)
 #set(OPTDEBUG "-DTRACE -g3") 
@@ -97,7 +97,9 @@ set(UDEF "-DLNX -DUNX -DXSUB -DNOCURSES -DARM -DARMAPI9 -DNOMT -DNOMT_TRACE -DAN
  set(CFLGS  "               -fpic              -fno-exceptions -fstack-protector -Wall -Wno-pointer-sign -Wuninitialized -O0 -funsigned-char")
 
 #set(CFLGS2 "-finput-charset=cp932")
-set(CFLGS2 "-Wno-invalid-source-encoding")
+#set(CFLGS2 "-Wno-invalid-source-encoding -Wno-misleading-indentation")
+#set(CFLGS2 "-Wno-invalid-source-encoding -Wno-misleading-indentation -ffunction-sections -fdata-sections")  #2023/0622 to remove dead section
+ set(CFLGS2 "-Wno-invalid-source-encoding -Wno-misleading-indentation                                    ")  #2023/0622 to remove dead section
 #-I/rh9j/home/sak/Projects/gxe/src 
 include_directories(
 				${INCLUDE_ULIB_UPDATE}
@@ -181,6 +183,7 @@ add_library(
             ${ULIB}/uunxsub.c
             ${ULIB}/uregex.c
             ${ULIB}/ulibarm.c
+            ${ULIB}/uprocExit.c        #2023/06/22
              )
 #debug and release exchanging deletes other side debug/release so save to DevConUp 
 add_custom_command (TARGET userxxe_nc POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libuserxxe_nc.a ${DEVCONUP_LIBS})

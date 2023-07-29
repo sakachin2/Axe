@@ -1,5 +1,6 @@
-//*CID://+vaxdR~: update#=  219;                                   //~vaxdR~
+//*CID://+vc53R~: update#=  220;                                   //+vc53R~
 //********************************************************************//~vaaBI~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
 //vaxd:140706 (Axe)Show IM even when hardware kbsd is connected    //~vaxdI~
 //vaaC:120110 close preedit when IM was closed by back key         //~vaaCI~
 //vaaB:120110 (Axe:Bug)close IM when preedit preview was closed    //~vaaBI~
@@ -95,7 +96,7 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
                 public void onShow(DialogInterface Pdialog)        //~1828I~
                 {                                                  //~1828I~
 					if (Dump.Y) Dump.println("AxeDlgImePreedit:onShow");//~vaxdR~
-					etPreedit.requestFocus();	//TODO test        //+vaxdM~
+					etPreedit.requestFocus();	//TODO test        //~vaxdM~
             		AxeG.axeIME.showDefaultKbd(etPreedit);                //~1828I~
 					requestedHideIME=false;                        //~vaaCI~
                 }                                                  //~1828I~
@@ -150,9 +151,11 @@ public class AxeDlgImePreedit extends AxeDialog                     //~1821R~//~
 	@Override                                                      //~1919I~
 	protected boolean onClickOther(int PbuttonId)                  //~1919I~
     {                                                              //~1919I~
-    	switch(PbuttonId)                                          //~1919I~
-        {                                                          //~1919I~
-        case ID_CLOSEIMAGEBUTTON:                                             //~1919I~
+//  	switch(PbuttonId)                                          //~1919I~//+vc53R~
+//      {                                                          //~1919I~//+vc53R~
+//      case ID_CLOSEIMAGEBUTTON:                                             //~1919I~//+vc53R~
+    	if    (PbuttonId==ID_CLOSEIMAGEBUTTON)                     //+vc53I~
+        {                                                          //+vc53I~
             AxeG.axeIME.hideKbd(etPreedit);                           //~1827R~//~vaaBI~
         	return onClickClose();	//return true fo dismiss       //~1919I~
         }                                                          //~1919I~

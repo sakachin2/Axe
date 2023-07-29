@@ -1,5 +1,19 @@
-//*CID://+vc2WR~:                                   update#=  407; //~vc2WR~
+//*CID://+v5crR~:                                   update#=  482; //+v5crR~
 //**************************************************************** //~1822R~
+//vc5r 2023/07/25 try /sdcard for realpath for api<30              //+v5crI~
+//v77T:230708 ARM;locale was not set for xsub tool(pass Gjnilocale by putenv)//~v77TI~
+//v77Q:230630 (BUG)utempnam returns /sdcard, it cause permission err. use private for also XSUB; /data/local/tmp is also permission err//~v77QI~
+//vc59 2023/06/26 (Bug)clush at initial install for traceopen of sdcard if TRACE OFF//~vc59I~
+//v77C:230617 ARM;try dlopen to execute xe tool for >=Android10:api29//~v77CI~
+//vbym:230612 ARM;warning by audroidstudio compiler                //~vbymI~
+//v77m:230429 ARM:try stat(fpath) by fstat(fd) for ufstat          //~v77mI~
+//v77h:230424 ARM;copy                                             //~v77hI~
+//v77e:230424 ARM;try fd for opendir/readdir                       //~v77eI~
+//vby8:230415 (ARM)open document file                              //~vby8I~
+//vc4q 2023/04/01 support shared storage using SAF(StorageAccessFramework)//~vc4qI~
+//vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
+//vc4k 2023/03/28 always utrace.out to private(not on /sdcard)     //~vc4kI~
+//vby0:230322 for Axe Api33; ld duplicate symbole                  //~vby0I~
 //vc2W 2020/09/19 at first install, uerrexit by ualloc size=0(Gscrbuffwidth); Because notifyOptionChangedOther is called before initscreen; notify trace option by another interface//~vc2WI~
 //vc2L 2020/09/02 display TMPDIR                                   //~vc2LI~
 //vc2H 2020/08/24 xehelp folder changed to files/myhome/xehelp from files/xehelp//~vc2HI~
@@ -39,13 +53,14 @@
 #include <stdio.h>                                                 //~1A12I~
 #include <string.h>                                                //~1614I~
 //*********************                                            //~1702R~
-#define JNIGBL                                                     //~1616M~
+//#define JNIGBL       //external, jnic2j defines gbl                                      //~1616M~//~vby0R~
 #include "jnig.h"                                                  //~1616M~
 #include "jnia.h"                                                  //~1616I~
 #include <android/log.h>                                           //~1616M~
                                                                    //~1616I~
 #include "AxeJNI_sig.h"                                            //~1610I~
 #include "jnij2c.h"                                                //~1617R~
+#include "jnic2j.h"                                                //~vby8I~
 #include "jnisigh.h"                                               //~vay0I~
                                                                    //~1614I~
 #include <ulib.h>                                                  //~1614I~
@@ -58,6 +73,7 @@
 #include <utf.h>                                                   //~vab7I~
 #include <ucvext.h>                                                //~v6dgI~
 #include <ufile.h>                                                 //~vay7I~
+#include <ufiledoc.h>                                              //~vby8I~
 #include <ustring.h>                                               //~vay7I~
                                                                    //~1717I~
 #include <gxe.h>                                                   //~1717M~
@@ -73,10 +89,11 @@
 #include <xescr.h>                                                 //~vay7I~
 #include <xefile.h>                                                //~vay7I~
 #include <xeutf2.h>                                                //~vay7I~
+#include <xefcmd7.h>                                               //~vc4qI~
                                                                    //~1717M~
 //********************************                                 //~1610I~
-#define CLASSNAME_C2J "com/xe/Axe/AxeJNI"                          //~1616R~
-#define CLASSNAME_GXEH "com/xe/Axe/Gxeh"                           //~1716I~
+#define CLASSNAME_C2J "com/xe/Axe/AxeJNI"                          //~1616R~//~v77eR~
+#define CLASSNAME_GXEH "com/xe/Axe/Gxeh"                           //~1716I~//~v77eR~
 //static char *Sbusybox_path="/data/busybox"; set at AxeProp                       //~vab5I~//~vc1pR~
 //#define CALLC2J (*Gpjnienv)->CallStaticVoidMethod(Gpjnienv,Gclass//~1616I~
 //********************************                                 //~1610R~
@@ -92,6 +109,7 @@ void setupMouseEvent(GdkEventButton *Pevent,int Paction,int Pbutton,int Pflag,in
 void setupMotionEvent(GdkEventMotion *Pevent,int Paction,int Pbutton,int Pflag,int Px,int Py);//~1927R~
 void dragStart(int Pflag,int Px,int Py);                           //~1A05I~
 void dragEnd(JNIEnv *Penv,int Pflag,int Px,int Py);                //~1A18I~
+static char Swdpath[_MAX_PATH];                                    //~vc59R~
 //********************************                                 //~1803I~
 //*notify inidata after read ini save                              //~1803I~
 //********************************                                 //~1803I~
@@ -229,9 +247,11 @@ void setpath(JNIEnv *Penv)                                         //~1A26M~
 //********************************                                 //~vc1pI~
 void setArmEnvPATH()                                               //~vc1pR~
 {                                                                  //~vc1pM~
+    char *old;                                                     //~v77TI~
+	int opt=UDSE_IGNOREDUP;                                                     //~vc1pM~//~v77TR~
 //*******************************                                  //~vc1pM~
-    UTRACEP("%s:envPATH=%s\n",UTT,GenvVarPATH);                    //~vc1pR~
-	int opt=0;                                                     //~vc1pM~
+    old=getenv("PATH");                                            //~v77TI~
+    UTRACEP("%s:envPATH=%s,old=%s\n",UTT,GenvVarPATH,old);                    //~vc1pR~//~v77TI~
     udos_setenv(opt,"PATH",GenvVarPATH);                           //~vc1pR~
 }                                                                  //~vc1pM~
 //********************************                                 //~vc1pI~
@@ -245,6 +265,15 @@ void setpath(JNIEnv *Penv)                                         //~vc1pI~
     UTRACEP("%s:envPATH=%s\n",UTT,GenvVarPATH);                    //~vc1pI~
     setArmEnvPATH();                                               //~vc1pR~
 }                                                                  //~vc1pI~
+//********************************                                 //~v77QI~
+void setEnvTmp(char *PprivatePath)                                 //~v77QI~
+{                                                                  //~v77QI~
+	char tmp[_MAX_PATH];                                     //~v77QI~
+//*******************************                                  //~v77QI~
+	sprintf(tmp,"%s/tmp",PprivatePath);                            //~v77QI~
+    LOGPD("tmp=%s",tmp);                                          //~v77QI~
+	udos_setenv(UDSE_PREPEND,ENV_TMPDIR,tmp);                      //~v77QR~
+}                                                                  //~v77QI~
 //********************************                                 //~vc1pM~
 JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniSetEnvPath        //~vc1pM~
   (JNIEnv *Penv, jclass Pthis)                                     //~vc1pM~
@@ -254,6 +283,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniSetEnvPath        //~vc1pM~
 	NDK_TRY_CATCH(Penv,"jniSetEnvPath",                            //~vc1pM~
 					jniSetEnvPath(Penv,Pthis);                     //~vc1pM~
         		 );                                                //~vc1pM~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vc1pM~
 //********************************                                 //~vc1pM~
 void jniSetEnvPath(JNIEnv *Penv,jclass Pthis)                      //~vc1pM~
@@ -285,6 +315,8 @@ void setgbl(JNIEnv *Penv)                                                      /
 	pc=GETSTATIC_STRING(Penv,envVarTMPDIR);                        //~vc2LI~
     if (pc)                                                        //~vc2LR~
 	    udos_setenv(0,ENV_TMPDIR,pc);                              //~vc2LR~
+	setEnvTmp(Gjniprivatepath);   //prepend private data area(files/tmp)//~v77QI~
+	udos_setenv(0,ENV_AXELOCALE,Gjnilocale);                       //~v77TI~
     UTRACEP("%s:envVarTMPDIR=%s,pc=%s\n",UTT,getenv(ENV_TMPDIR),pc);//~vc2LR~
 }                                                                  //~1703M~
 //********************************                                 //~1713I~
@@ -298,6 +330,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *Pvm,void *Preserved)     //~1713I~
     if (Sloadctr>1)                                                //~1714I~
     {                                                              //~1714I~
     	UTRACEP("JNI_OnLoad ctr=%p\n",Sloadctr);                   //~1714I~
+		UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                //~vc4qR~
     }                                                              //~1714I~
     return JNI_VERSION;                                            //~1714R~
 }                                                                  //~1713I~
@@ -313,6 +346,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniInit              //~1623R~
 //  				jniInit(Penv,Pthis,Psdpath,Pwkdir,Plocale,Ptraceopt);//~vay0I~//~vc1fR~
     				jniInit(Penv,Pthis,PsdRoot,Psdpath,Pwkdir,Plocale,Ptraceopt);//~vc1fI~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 //void jniInit(JNIEnv *Penv,jobject Pthis,jstring Psdpath,jstring Pwkdir,jstring Plocale,int Ptraceopt)//~vay0I~//~vc1fR~
@@ -336,8 +370,10 @@ void jniInit(JNIEnv *Penv,jobject Pthis,jstring PsdRoot,jstring Psdpath,jstring 
 //  SAVE_JAVA_EXCEPTION(Penv,jt);    //save pending exception      //~1715R~
 //    Gthis=(*Penv)->NewGlobalRef(Penv,Pthis);                     //~1714R~
 //    LOGPD("jniInit Gthis=%p",Gthis);                             //~1714R~
-  	Gclass=(*Penv)->FindClass(Penv,CLASSNAME_C2J);                 //~1714R~
-    GclassGxeh=(*Penv)->FindClass(Penv,CLASSNAME_GXEH);            //~1716I~
+//  Gclass=(*Penv)->FindClass(Penv,CLASSNAME_C2J);                 //~1714R~//~v77eR~
+//  GclassGxeh=(*Penv)->FindClass(Penv,CLASSNAME_GXEH);            //~1716I~//~v77eR~
+  	Gclass=(*Penv)->FindClass(Penv, "com/xe/Axe/AxeJNI");          //~v77eR~
+    GclassGxeh=(*Penv)->FindClass(Penv, "com/xe/Axe/Gxeh");        //~v77eR~
     LOGPD("jniInit FindClass %s=%p,%s=%p\n",CLASSNAME_C2J,Gclass,CLASSNAME_GXEH,GclassGxeh);//~1716R~
     Gclass=(*Penv)->NewGlobalRef(Penv,Gclass);                     //~1714R~
     GclassGxeh=(*Penv)->NewGlobalRef(Penv,GclassGxeh);             //~1716I~
@@ -358,7 +394,8 @@ void jniInit(JNIEnv *Penv,jobject Pthis,jstring PsdRoot,jstring Psdpath,jstring 
     strncpy(Gjnilocale,locale,sizeof(Gjnilocale));  //in ulibarm.h //~1820R~
     ufree(locale);                                                 //~v6dgI~
     wdpath=jstring2char(Penv,Pwkdir);                              //~1820I~
-    LOGPD("jniInit wdpath=%s",wdpath);                             //~1820I~
+    strcpy(Swdpath,wdpath);                                        //~vc59I~
+    LOGPD("jniInit Swdpath=%s",Swdpath);                             //~1820I~//~vc59R~
 #ifdef NDEBUG                                                      //~vb05I~
     LOGPD("Release version by -DNDEBUG");                          //~vb05R~
 #else                                                              //~vb05I~
@@ -382,8 +419,8 @@ void jniInit(JNIEnv *Penv,jobject Pthis,jstring PsdRoot,jstring Psdpath,jstring 
 //#ifndef NOTRACE                                                  //~vb05R~
 #ifdef TRACE                                                       //~vb05I~
 //  sprintf(wkdirparm,"%s/utrace.out",wdpath);                     //~vai1R~
-    sprintf(wkdirparm,"%s/utrace.out",Gjnisdpath);                 //~vai1I~
-    if (!Gjnisdpath||(GaxeStatus & (AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE|AXES_NOT_CANWRITE)))//~vc1dR~//~vc1fR~
+//  sprintf(wkdirparm,"%s/utrace.out",Gjnisdpath);                 //~vai1I~//~vc4kR~
+//  if (!Gjnisdpath||(GaxeStatus & (AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE|AXES_NOT_CANWRITE)))//~vc1dR~//~vc1fR~//~vc4kR~
 	    sprintf(wkdirparm,"%s/utrace.out",wdpath);                 //~vc1dI~
     LOGPD("TRACEINIT=%s",wkdirparm);                               //~1629I~
     LOGPD("TRACEINIT=%d",Ptraceopt);                               //~1824I~
@@ -397,9 +434,9 @@ void jniInit(JNIEnv *Penv,jobject Pthis,jstring PsdRoot,jstring Psdpath,jstring 
 //  UTRACE_INIT(wkdirparm,UTRACEO_ON | UTRACEO_LOGCAT);     //TODO test//~vc1aR~//~vc1fR~
     inittraceopt=Ptraceopt; //activate LOGCAT at screeninit        //~1A18I~
 #else                                                              //~vay0I~
-    sprintf(wkdirparm,"%s/utrace.out",Gjnisdpath);                 //~vb04I~
+//  sprintf(wkdirparm,"%s/utrace.out",Gjnisdpath);                 //~vb04I~//~vc59R~
 //  if (!Gjnisdpath)                                               //~vc1dR~
-    if (!Gjnisdpath||(GaxeStatus & (AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE|AXES_NOT_CANWRITE)))//~vc1fI~
+//  if (!Gjnisdpath||(GaxeStatus & (AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE|AXES_NOT_CANWRITE)))//~vc1fI~//~vc59R~
 	    sprintf(wkdirparm,"%s/utrace.out",wdpath);                 //~vc1dI~
     LOGPD("NOTRACE:TRACEINIT=%s",wkdirparm);                       //~vb04I~
 //  utrace_init(0,0);	//for the case ulib/xe compiled with !NOTRACE that open utrace.out//~vb04R~
@@ -425,6 +462,10 @@ void jniInit(JNIEnv *Penv,jobject Pthis,jstring PsdRoot,jstring Psdpath,jstring 
 #endif                                                             //~1629I~
     ufree(wdpath);                                                 //~1623I~
     GjnisdRootPath=GETSTATIC_STRING(Penv,sdRootPath);              //~vc1iI~
+    GjniNativeLibraryDir=GETSTATIC_STRING(Penv,nativeLibraryDir);  //~vc4pR~
+    GjniNativeLibraryPath=strdup(GjniNativeLibraryDir);            //~v77CI~
+    UTRACEP("%s:GjniNativeLibraryDir=%s\n",UTT,GjniNativeLibraryDir);//~vc4pI~
+	udos_setenv(0,"LD_LIBRARY_PATH",GjniNativeLibraryDir);    //add to old//~v77CI~
     pc=GETSTATIC_STRING(Penv,initCmd);                             //~1A17R~
     LOGPD("initcmd=%s\n",pc);                                      //~1A17R~
     if (pc)                                                        //~1A17I~
@@ -468,6 +509,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniSetScreenSize     //~1623R~
 	NDK_TRY_CATCH(Penv,"jniSetScreenSize",                         //~vay0I~
 					jniSetScreenSize(Penv,Pthis,Pw,Ph);            //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniSetScreenSize(JNIEnv *Penv, jclass Pthis,jint Pw,jint Ph)  //~vay0I~
@@ -475,7 +517,7 @@ void jniSetScreenSize(JNIEnv *Penv, jclass Pthis,jint Pw,jint Ph)  //~vay0I~
 //  jthrowable jt;                                                 //~1715R~
     static int Ssw1st=1;                                           //~1821I~
 //*************                                                    //~1617I~
-    UTRACEP("jniInit jniSetScreenSize env=%p,this=%p,\n",Penv,Pthis);//~1714R~
+    UTRACEP("jnij2c.jniSetScreenSize env=%p,this=%p,\n",Penv,Pthis);//~1714R~//~vc4qR~
 //  SAVE_JAVA_EXCEPTION(Penv,jt);    //save pending exception      //~1715R~
 //  Gclass=(*Penv)->GetObjectClass(Penv,Pclass);                   //~1714R~
 //  LOGPD("jniSetScreenSize GetObjectClass=%p",Gclass);            //~1713R~
@@ -500,6 +542,7 @@ void jniSetScreenSize(JNIEnv *Penv, jclass Pthis,jint Pw,jint Ph)  //~vay0I~
 //        LOGPD("jniSetScreenSize traceopt=%x\n",inittraceopt);    //~1A19R~
 //        UTRACE_INIT(0,inittraceopt);     //set LOGCAT//~1A18I~   //~1A19R~
 //    }                                                            //~1A19R~
+    UTRACE_FLUSH("jnij2c.jniSetScreenSize exit\n");                //~vc4qI~
     return;                                                        //~1623R~
 }                                                                  //~1617I~
 //********************************                                 //~1617I~
@@ -511,6 +554,7 @@ JNIEXPORT jint JNICALL Java_com_xe_Axe_AxeJNI_jniKbdMsg            //~1617R~
 	NDK_TRY_CATCH(Penv,"jniKbdMsg",                                //~vay0I~
 					rc=jniKbdMsg(Penv,Pthis,Paction,Pkey,Pscancode);//~vay0R~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 	return rc;                                                     //~vay0I~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
@@ -547,6 +591,7 @@ int jniKbdMsg(JNIEnv *Penv, jclass Pthis, jint Paction,jint Pkey,jint Pscancode)
     }                                                              //~1616R~
 //  c2jdraw(key);//test@@@@                                        //~1621R~
 //  THROW_JAVA_EXCEPTION_IF_SAVED(Penv,jt);    //save pending exception//~1715R~
+    UTRACE_FLUSH("jnij2c.kbdMsg exit\n");                          //~vc4qI~
 	return 0;                                                      //~1610I~
 }
 //*******************************************                      //~1614I~
@@ -590,6 +635,7 @@ JNIEXPORT jint JNICALL Java_com_xe_Axe_AxeJNI_jniMouseMsg          //~1621R~
 	NDK_TRY_CATCH(Penv,"jniMouseMsg",                              //~vay0I~
 					rc=jniMouseMsg(Penv,Pthis,Paction,Pbutton,Pflag,Px,Py);//~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
     return rc;                                                     //~vay0I~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
@@ -645,6 +691,7 @@ jint jniMouseMsg(JNIEnv *Penv, jclass Pthis, jint Paction,jint Pbutton,jint Pfla
         break;                                                     //~1A04I~
     }                                                              //~1621I~
 //  THROW_JAVA_EXCEPTION_IF_SAVED(Penv,jt);    //save pending exception//~1715R~
+    UTRACE_FLUSH("jnij2c.MouseMsg exit\n");                        //~vc4qI~
 	return 0;                                                      //~1621I~
 }                                                                  //~1621I~
 //*******************************************                      //~1621I~
@@ -785,6 +832,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniTerminateXe       //~1925R~
 	NDK_TRY_CATCH(Penv,"jniTerminateXe",                           //~vay0I~
 					jniTerminateXe(Penv,Pthis);                    //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniTerminateXe(JNIEnv *Penv, jclass Pthis)                    //~vay0I~
@@ -806,12 +854,15 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOptionChangedOther//~1803I~
 //  				jniOptionChangedOther(Penv,Pthis,Prulermode,Puseact,Pfreecsr,Pbeep,Pqexit);//~vay0I~//~vc1fR~
     				jniOptionChangedOther(Penv,Pthis,Prulermode,Puseact,Pfreecsr,Pbeep,Pqexit,PaxeStatus);//~vc1fI~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //*************************                                                           //~vay0I~//~vc2WR~
 void jniOptionChangedOtherPermission(JNIEnv *Penv, jclass Pthis,jint PaxeStatus)//~vc2WI~
 {                                                                  //~vc2WI~
+#ifdef TRACE                                                       //~v77mI~
     char wkdirparm[_MAX_PATH];                                     //~vc2WI~
     int traceopt;                                                  //~vc2WI~
+#endif                                                             //~v77mI~
 //*************                                                    //~vc2WI~
 //  Mrulermode=Prulermode;                                         //~vc2WI~
 //  Museact=Puseact;                                               //~vc2WI~
@@ -824,17 +875,18 @@ void jniOptionChangedOtherPermission(JNIEnv *Penv, jclass Pthis,jint PaxeStatus)
 //  	Gwxestat&=~GWXES_OPT_QEXIT;                                //~vc2WI~
 #ifdef TRACE                                                       //~vc2WI~
 	traceopt=utrace_getopt();                                      //~vc2WI~
-    UTRACEP("%s:traceopt=x%x,PaxeStatus=x%x,GaxeStatus=x%x\n",UTT,traceopt,PaxeStatus,GaxeStatus);//+vc2WR~
+    UTRACEP("%s:traceopt=x%x,PaxeStatus=x%x,GaxeStatus=x%x\n",UTT,traceopt,PaxeStatus,GaxeStatus);//~vc2WR~
     UTRACEDIFNZ("Gjnisdpath",Gjnisdpath,strlen(Gjnisdpath));       //~vc2WI~
     if ((traceopt & UTRACEO_ON)                                    //~vc2WI~
-    &&  Gjnisdpath                                                 //~vc2WI~
-    &&  (!(PaxeStatus & AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE) //~vc2WI~
-    &&  GaxeStatus & AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE)    //~vc2WI~
+//  &&  Gjnisdpath                                                 //~vc2WI~//~vc59R~
+//  &&  (!(PaxeStatus & AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE) //~vc2WI~//~vc59R~
+//  &&  GaxeStatus & AXES_NOPERMISSION_EXTERNAL_STIORAGE_WRITE)    //~vc2WI~//~vc59R~
     )                                                              //~vc2WI~
     {                                                              //~vc2WI~
-	    sprintf(wkdirparm,"%s/utrace.out",Gjnisdpath);             //~vc2WI~
+//      sprintf(wkdirparm,"%s/utrace.out",Gjnisdpath);             //~vc2WI~//~vc59R~
+        sprintf(wkdirparm,"%s/utrace.out",Swdpath);                //~vc59I~
         UTRACE_INIT(wkdirparm,UTRACEO_ON);     //at start ignore LOGCAT//~vc2WI~
-	    UTRACEP("%s:traceopt=x%x,PaxeStatus=x%x,GaxeStatus=x%x\n",UTT,traceopt,PaxeStatus,GaxeStatus);//+vc2WR~
+	    UTRACEP("%s:traceopt=x%x,PaxeStatus=x%x,GaxeStatus=x%x\n",UTT,traceopt,PaxeStatus,GaxeStatus);//~vc2WR~
     	UTRACEDIFNZ("Gjnisdpath",Gjnisdpath,strlen(Gjnisdpath));   //~vc2WI~
     }                                                              //~vc2WI~
 #endif                                                             //~vc2WI~
@@ -874,6 +926,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOptionChangedColor//~1803R~
 	NDK_TRY_CATCH(Penv,"jniOptionChangedColor",                    //~vay0I~
 					jniOptionChangedColor(Penv,Pthis,Pbgcolor,Prulercolor);//~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOptionChangedColor(JNIEnv *Penv, jclass Pthis,jint Pbgcolor,jint Prulercolor)//~vay0I~
@@ -896,6 +949,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOptionChangedFont //~1803I~
 	NDK_TRY_CATCH(Penv,"jniOptionChangedFont",                     //~vay0I~
 					jniOptionChangedFont(Penv,Pthis,Pfontname,Pfontwidth,Pfontheight,Pcellw,Pcellh,Pmonospace,Pligature,Pcellw0,Pcellh0);//~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOptionChangedFont(JNIEnv *Penv, jclass Pthis,jstring Pfontname,int Pfontwidth,int Pfontheight,int Pcellw,int Pcellh,int Pmonospace,jboolean Pligature,int Pcellw0,int Pcellh0)//~vay0I~
@@ -929,6 +983,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniFullDraw          //~1823R~
 	NDK_TRY_CATCH(Penv,"jniFullDraw",                              //~vay0I~
 					jniFullDraw(Penv,Pthis,Presize);               //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniFullDraw(JNIEnv *Penv, jclass Pthis ,jint Presize)         //~vay0I~
@@ -952,6 +1007,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnTimer           //~1808I~
 	NDK_TRY_CATCH(Penv,"jniOnTimer",                               //~vay0I~
 					jniOnTimer(Penv,Pthis,Ptimerid,Pcallback);     //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnTimer(JNIEnv *Penv, jclass Pthis,jint Ptimerid,jlong Pcallback)//~vay0I~
@@ -973,6 +1029,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniGetSampleColor    //~1821I~
 	NDK_TRY_CATCH(Penv,"jniGetSampleColor",                        //~vay0I~
 					jniGetSampleColor(Penv,Pthis,Psamplecolor);    //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniGetSampleColor(JNIEnv *Penv,jclass Pthis,jintArray Psamplecolor)//~vay0I~
@@ -1004,6 +1061,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniSetTraceOpt       //~1824R~
 	NDK_TRY_CATCH(Penv,"jniSetTraceOpt",                           //~vay0I~
 					jniSetTraceOpt(Penv,Pthis,Ptraceopt);          //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniSetTraceOpt(JNIEnv *Penv, jclass Pthis,jint Ptraceopt)     //~vay0I~
@@ -1026,6 +1084,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniSetDebugOpt       //~vay0I~
 	NDK_TRY_CATCH(Penv,"jniSetDebugOpt",                           //~vay0I~
 					jniSetDebugOpt(Penv,Pthis,Pdebugopt);          //~vay0R~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniSetDebugOpt(JNIEnv *Penv,jclass Pthis,jint Pdebugopt)      //~vay0I~
@@ -1051,6 +1110,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnContextMenuClosed//~1930I~
     NDK_TRY_CATCH(Penv,"jniContextMenuClosed",                     //~vay1R~
 					jniOnContextMenuClosed(Penv,Pthis);            //~vay0I~
                  );                                                //~vay1R~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnContextMenuClosed(JNIEnv *Penv,jclass Pthis)             //~vay0I~
@@ -1069,6 +1129,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnEditCut         //~1A02R~
 	NDK_TRY_CATCH(Penv,"jniOnEditCut",                             //~vay0I~
 					jniOnEditCut(Penv,Pthis);                      //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnEditCut(JNIEnv *Penv,jclass Pthis)                       //~vay0I~
@@ -1083,6 +1144,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnEditCopy        //~1A02R~
 	NDK_TRY_CATCH(Penv,"jniOnEditCopy",                            //~vay0I~
 					jniOnEditCopy(Penv,Pthis);                     //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnEditCopy(JNIEnv *Penv,jclass Pthis)                      //~vay0I~
@@ -1097,6 +1159,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnEditClear       //~1A02R~
 	NDK_TRY_CATCH(Penv,"jniOnEditClear",                           //~vay0I~
 					jniOnEditClear(Penv,Pthis);                    //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnEditClear(JNIEnv *Penv,jclass Pthis)                     //~vay0I~
@@ -1111,6 +1174,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnEditPasteV      //~1A02R~
 	NDK_TRY_CATCH(Penv,"jniOnEditPasteV",                          //~vay0I~
 					jniOnEditPasteV(Penv,Pthis);                   //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnEditPasteV(JNIEnv *Penv, jclass Pthis)                   //~vay0I~
@@ -1125,6 +1189,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnEditPasteIns    //~1A02R~
 	NDK_TRY_CATCH(Penv,"jniOnEditPasteIns",                        //~vay0I~
 					jniOnEditPasteIns(Penv,Pthis);                 //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnEditPasteIns(JNIEnv *Penv, jclass Pthis)                 //~vay0I~
@@ -1139,6 +1204,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnEditPasteRep    //~1A02R~
 	NDK_TRY_CATCH(Penv,"jniOnEditPasteRep",                        //~vay0I~
 					jniOnEditPasteRep(Penv,Pthis);                 //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnEditPasteRep(JNIEnv *Penv, jclass Pthis)                 //~vay0I~
@@ -1154,6 +1220,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnFileEnd         //~vainI~
 	NDK_TRY_CATCH(Penv,"jniOnFileEnd",                             //~vay0I~
 					jniOnFileEnd(Penv,Pthis);                      //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnFileEnd(JNIEnv *Penv, jclass Pthis)                      //~vay0I~
@@ -1169,6 +1236,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnFileCancel      //~vainI~
 	NDK_TRY_CATCH(Penv,"jniOnFileCancel",                          //~vay0I~
 					jniOnFileCancel(Penv,Pthis);                   //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnFileCancel(JNIEnv *Penv, jclass Pthis)                   //~vay0I~
@@ -1184,6 +1252,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniOnFileOpenWith    //~vainI~
 	NDK_TRY_CATCH(Penv,"jniOnFileOpenWith",                        //~vay0I~
 					jniOnFileOpenWith(Penv,Pthis);                 //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniOnFileOpenWith(JNIEnv *Penv, jclass Pthis)                 //~vay0I~
@@ -1227,6 +1296,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniSwipeHorizontal   //~1A03I~
 	NDK_TRY_CATCH(Penv,"jniSwipeHorizontal",                       //~vay0I~
 					jniSwipeHorizontal(Penv,Pthis,Pmodstatus,Pdest,Prate);//~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniSwipeHorizontal(JNIEnv *Penv,jclass Pthis,jint Pmodstatus,jint Pdest,jint Prate)//~vay0I~
@@ -1248,6 +1318,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniSwipeVertical     //~1A03I~
 	NDK_TRY_CATCH(Penv,"jniSwipeVertical",                         //~vay0I~
 					jniSwipeVertical(Penv,Pthis,Pmodstatus,Pdest,Prate);//~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniSwipeVertical(JNIEnv *Penv, jclass Pthis, jint Pmodstatus,jint Pdest, jint Prate)//~vay0I~
@@ -1272,6 +1343,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniCmd               //~1A07I~
 	NDK_TRY_CATCH(Penv,"jniCmd",                                   //~vay0I~
 					jniCmd(Penv,Pthis,Pcmd,Popd);                  //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniCmd(JNIEnv *Penv, jclass Pthis, jstring Pcmd, jstring Popd)//~vay0I~
@@ -1295,6 +1367,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniUserMsg           //~1A18I~
 	NDK_TRY_CATCH(Penv,"jniUserMsg",                               //~vay0I~
 					jniUserMsg(Penv,Pthis,Pmsgid,Pparm);           //~vay0R~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniUserMsg(JNIEnv *Penv, jclass Pthis, jint Pmsgid, jlong Pparm)//~vay0I~
@@ -1326,6 +1399,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniDndRepCopy        //~1A22I~
 	NDK_TRY_CATCH(Penv,"jniDndRepCopy",                            //~vay0I~
 					jniDndRepCopy(Penv,Pthis,Pcmd);                //~vay0R~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
 void jniDndRepCopy(JNIEnv *Penv, jclass Pthis, jstring Pcmd)       //~vay0I~
@@ -1348,6 +1422,7 @@ JNIEXPORT jint JNICALL Java_com_xe_Axe_AxeJNI_jniIsValidCharset    //~vay0R~
 	NDK_TRY_CATCH(Penv,"jniIsValidCharset",                        //~vay0I~
 					rc=jniIsValidCharset(Penv,Pthis,Pcharset);     //~vay0I~
         		 );                                                //~vay0I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
     return rc;                                                     //~vay0I~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
@@ -1370,6 +1445,7 @@ JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniGetCurrentFilename//~vay7I~
 	NDK_TRY_CATCH(Penv,"jniGetCurrentFilename",                    //~vay7I~
 					jniGetCurrentFilename(Penv,Pthis);             //~vay7I~
         		 );                                                //~vay7I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
 }                                                                  //~vay7I~
 void jniGetCurrentFilename(JNIEnv *Penv,jclass Pthis)              //~vay7I~
 {                                                                  //~vay7I~
@@ -1408,4 +1484,263 @@ void jniGetCurrentFilename(JNIEnv *Penv,jclass Pthis)              //~vay7I~
     }                                                              //~vay7I~
     SETSTATIC_STRING(Penv,mCurrentFilename,fnm);                   //~vay7I~
     SETSTATIC_INT(Penv,mCurrentFilenameType,rc);                   //~vay7I~
-}                                                                  //~vay7I~
+}                                                                  //~vc4qI~
+//*****************************************************************//~vc4qR~
+JNIEXPORT jint JNICALL Java_com_xe_Axe_AxeJNI_j2cOnActivityResult  //~vc4qI~
+  (JNIEnv *Penv, jclass Pthis, jint PreqID,jint Prc,jstring Pparm,jstring PstrUri,jstring Ppath)//~vc4qI~
+{                                                                  //~vc4qI~
+	int rc=0;                                                     //~vc4qI~
+    UTRACEP("%s:reqid=%d,Prc=%d,Pparm=%p,PstrUri=%p,Ppath=%p\n",UTT,(int)PreqID,(int)Prc,Pparm,PstrUri,Ppath);//~vc4qI~
+	void j2cOnActivityResult(JNIEnv *Penv, jclass Pthis, jint PreqID,jint Prc,jstring Pparm,jstring PstrUri,jstring Ppath);//~vc4qI~
+	NDK_TRY_CATCH(Penv,"j2cOnActivityResult",                      //~vc4qI~
+					j2cOnActivityResult(Penv,Pthis,PreqID,Prc,Pparm,PstrUri,Ppath);//~vc4qI~
+        		 );                                                //~vc4qI~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
+	return rc;                                                     //~vc4qI~
+}                                                                  //~vc4qI~
+//*****************************************************************//~vc4qI~
+void j2cOnActivityResult(JNIEnv *Penv, jclass Pthis, jint PreqID,jint Prc,jstring Pparm,jstring PstrUri,jstring Ppath)//~vc4qI~
+{                                                                  //~vc4qI~
+    char *parm,*strUri,*path;                                      //~vc4qI~
+    int swfreeparm=0,swfreestruri=0,swfreepath=0;                  //~vc4qI~
+//*************                                                    //~vc4qI~
+    if (Pparm)                                                     //~vc4qI~
+    {                                                              //~vc4qI~
+	    parm=jstring2char(Penv,Pparm);                             //~vc4qI~
+        swfreeparm=1;                                              //~vc4qI~
+    }                                                              //~vc4qI~
+    else                                                           //~vc4qI~
+    	parm="";                                                   //~vc4qI~
+    if (PstrUri)                                                   //~vc4qI~
+    {                                                              //~vc4qI~
+    	strUri=jstring2char(Penv,PstrUri);                         //~vc4qI~
+        swfreestruri=1;                                            //~vc4qI~
+    }                                                              //~vc4qI~
+    else                                                           //~vc4qI~
+    	strUri="";                                                 //~vc4qI~
+    if (Ppath)                                                     //~vc4qI~
+    {                                                              //~vc4qI~
+	    path=jstring2char(Penv,Ppath);                             //~vc4qI~
+        swfreepath=1;                                              //~vc4qI~
+    }                                                              //~vc4qI~
+    else                                                           //~vc4qI~
+    	path="";                                                   //~vc4qI~
+    UTRACEP("j2cOnActivityResult env=%p,this=%p,reqID=%d,rc=%d,parm=%p=%s,strUri=%p=%s,path=%p=%s\n",Penv,Pthis,(int)PreqID,(int)Prc,parm,parm,strUri,strUri,path,path);//~vc4qR~
+    xefc7_OnActivityResult((int)PreqID,(int)Prc,parm,strUri,path); //~vc4qR~
+    if (swfreeparm)                                                //~vc4qR~
+	    ufree (parm);                                              //~vc4qI~
+    if (swfreestruri)                                              //~vc4qR~
+	    ufree (strUri);                                            //~vc4qI~
+    if (swfreepath)                                                //~vc4qR~
+	    ufree (path);                                              //~vc4qI~
+    UTRACE_FLUSH("j2cOnActivityResult exit");                      //~vc4qR~
+}                                                                  //~vay7I~//~vc4qI~
+//******************************************************************//~vby8I~
+JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniNotifyOpenDocResult//~vby8I~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jint PrcOpt, jstring PrcString, jbyteArray PrcByte)//~vby8I~
+{                                                                  //~vby8I~
+	void jniNotifyOpenDocResult(JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jint PrcOpt, jstring PrcString, jbyteArray PrcByte);//~vby8I~
+	NDK_TRY_CATCH(Penv,"jniNotifyOpenDocResult",                   //~vby8R~
+					jniNotifyOpenDocResult(Penv,Pthis,Popt,Pfpath,PrcOpt,PrcString,PrcByte);//~vby8I~
+        		 );                                                //~vby8I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vby8I~
+}                                                                  //~vby8I~
+//************************************************************     //~vby8R~
+void jniNotifyOpenDocResult                                        //~vby8I~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jint PrcOpt, jstring PrcString, jbyteArray PrcByte)//~vby8I~
+{                                                                  //~vby8I~
+//  char *pbuff=0,*pfpath,*parmBuffer;                             //~vby8R~//~vbymR~
+    char *pbuff=0,*pfpath            ;                             //~vbymI~
+//  int sz=0;                                                      //~vby8R~//~vbymR~
+    char fpath[_MAX_PATH];                                         //~vby8I~
+//********************                                             //~vby8I~
+	UTRACEP("%s:entry opt=0x%x,rcOpt=0x%x\n",UTT,Popt,PrcOpt);     //~vby8I~
+	pfpath=fpath;                                                  //~vby8I~
+    jstr2UTFcharCopy(Penv,Pfpath,&pfpath);   //copy to fpath       //~vby8R~
+	UTRACEP("%s:fpath=%s\n",UTT,fpath);                            //~vby8R~
+//  parmBuffer=c2j_getOpenDocParm();                               //~vby8R~
+//  parmBuffer=c2j_notifiedOpenDocResult(PrcOpt);                  //~vby8I~//~vbymR~
+               c2j_notifiedOpenDocResult(PrcOpt);                  //~vbymI~
+    if (PrcString)                                                 //~vby8I~
+    {                                                              //~vby8I~
+//      sz=jstr2UTFcharCopy(Penv,PrcString,&pbuff);	//pbuff:umalloced addr//~vby8R~//~vbymR~
+           jstr2UTFcharCopy(Penv,PrcString,&pbuff);	//pbuff:umalloced addr//~vbymI~
+    }                                                              //~vby8I~
+    else                                                           //~vby8I~
+    if (PrcByte)                                                   //~vby8I~
+    {                                                              //~vby8I~
+//      sz=jbyte2byteCopy(Penv,PrcByte,&pbuff);	//pbyte:umalloced addr//~vby8R~//~vbymR~
+           jbyte2byteCopy(Penv,PrcByte,&pbuff);	//pbyte:umalloced addr//~vbymI~
+    }                                                              //~vby8I~
+//  ufile_openDocResult(fpath,Popt,PrcOpt,pbuff,sz);               //~vby8R~
+    if (pbuff)	 //pbuff malloced                                  //~vby8R~
+	    ufree(pbuff);                                              //~vby8R~
+}                                                                  //~vby8I~
+//******************************************************************//~vby8I~
+JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniNotifyfgetsDocResult//~vby8R~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jstring PrcString, jint Pbuffsz)//~vby8I~
+{                                                                  //~vby8I~
+	void jniNotifyfgetsDocResult(JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jstring PrcString, jint Pbuffsz);//~vby8R~
+	NDK_TRY_CATCH(Penv,"jniNotifyfgetsDocResult",                  //~vby8R~
+					jniNotifyfgetsDocResult(Penv,Pthis,Popt,Pfpath,PrcString,Pbuffsz);//~vby8R~
+        		 );                                                //~vby8I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vby8I~
+}                                                                  //~vby8I~
+//************************************************************     //~vby8I~
+void jniNotifyfgetsDocResult                                       //~vby8R~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jstring PrcString,jint Pbuffsz)//~vby8R~
+{                                                                  //~vby8I~
+//  char *pbuff=0,*pfpath,*parmBuffer,*pu8work;                    //~vby8R~//~vbymR~
+    char          *pfpath,*parmBuffer,*pu8work;                    //~vbymI~
+    char fpath[_MAX_PATH];                                         //~vby8I~
+//********************                                             //~vby8I~
+	UTRACEP("%s:entry opt=0x%x,buffsz=%d\n",UTT,Popt,Pbuffsz);     //~vby8R~
+	pfpath=fpath;                                                  //~vby8I~
+    jstr2UTFcharCopy(Penv,Pfpath,&pfpath);   //copy to fpath       //~vby8I~
+	UTRACEP("%s:fpath=%s\n",UTT,fpath);                            //~vby8I~
+    parmBuffer=c2j_get_fgetsDocParm();                             //~vby8R~
+//  pbuff=parmBuffer;                                              //~vby8I~//~vbymR~
+	jstr2UTFcharCopy(Penv,PrcString,&pu8work);	//u8work:umalloced addr//~vby8R~
+    ustrncpyz(parmBuffer,pu8work,Pbuffsz);                         //~vby8I~
+	ufree(pu8work);                                                //~vby8R~
+    return;                                                        //~vby8I~
+}                                                                  //~vby8I~
+//******************************************************************//~vby8I~
+JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniNotifyfreadDocResult//~vby8R~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jbyteArray PrcByte, jint Preadlen)//~vby8I~
+{                                                                  //~vby8I~
+	void jniNotifyfreadDocResult(JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jbyteArray PrcByte, jint Preadlen);//~vby8I~
+	NDK_TRY_CATCH(Penv,"jniNotifyfreadDocResult",                  //~vby8R~
+					jniNotifyfreadDocResult(Penv,Pthis,Popt,Pfpath,PrcByte,Preadlen);//~vby8R~
+        		 );                                                //~vby8I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vby8I~
+}                                                                  //~vby8I~
+//************************************************************     //~vby8I~
+void jniNotifyfreadDocResult                                       //~vby8R~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath, jbyteArray PrcByte,jint Preadlen)//~vby8R~
+{                                                                  //~vby8I~
+    char *pbuff=0,*pfpath,*parmBuffer;                             //~vby8R~
+    char fpath[_MAX_PATH];                                         //~vby8I~
+//********************                                             //~vby8I~
+	UTRACEP("%s:entry opt=0x%x,buffsz=%d\n",UTT,Popt,Preadlen);    //~vby8R~
+	pfpath=fpath;                                                  //~vby8I~
+    jstr2UTFcharCopy(Penv,Pfpath,&pfpath);   //copy to fpath       //~vby8I~
+	UTRACEP("%s:fpath=%s\n",UTT,fpath);                            //~vby8I~
+    parmBuffer=c2j_notified_freadDocResult(Preadlen);              //~vby8R~
+    pbuff=parmBuffer;                                              //~vby8I~
+	jbyte2byteCopy(Penv,PrcByte,&pbuff);                           //~vby8R~
+//  memcpy(parmBuffer,pcopybuff,Preadlen);                           //~vby8R~
+	UTRACED("byteBuff",pbuff,Preadlen);                            //~vby8I~
+//	ufree(pcopybuff);                                              //~vby8R~
+}                                                                  //~vby8I~
+//******************************************************************//~vby8I~
+JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniNotifyfwriteDocResult//~vby8I~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath,jint Pwritelen)//~vby8R~
+{                                                                  //~vby8I~
+	void jniNotifyfwriteDocResult(JNIEnv *Penv, jclass Pthis, jint Popt,jstring Pfpath,jint Pwritelen);//~vby8R~
+	NDK_TRY_CATCH(Penv,"jniNotifyfwriteDocResult",                 //~vby8I~
+					jniNotifyfwriteDocResult(Penv,Pthis,Popt,Pfpath,Pwritelen);//~vby8R~
+        		 );                                                //~vby8I~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vby8I~
+}                                                                  //~vby8I~
+//************************************************************     //~vby8I~
+void jniNotifyfwriteDocResult                                      //~vby8I~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath,jint Pwritelen)//~vby8I~
+{                                                                  //~vby8I~
+    char *pfpath;                                                  //~vby8R~
+    char fpath[_MAX_PATH];                                         //~vby8I~
+//********************                                             //~vby8I~
+	UTRACEP("%s:entry opt=0x%x,buffsz=%d\n",UTT,Popt,Pwritelen);   //~vby8R~
+	pfpath=fpath;                                                  //~vby8I~
+    jstr2UTFcharCopy(Penv,Pfpath,&pfpath);   //copy to fpath       //~vby8I~
+	UTRACEP("%s:fpath=%s\n",UTT,fpath);                            //~vby8I~
+    c2j_notified_fwriteDocResult(Pwritelen);                       //~vby8R~
+}                                                                  //~vby8I~
+//******************************************************************//~v77eI~
+JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniNotifyopendirDocResult//~v77eI~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath,jint Pfd)//~v77eI~
+{                                                                  //~v77eI~
+	void jniNotifyopendirDocResult(JNIEnv *Penv, jclass Pthis, jint Popt,jstring Pfpath,jint Pfd);//~v77eR~
+	NDK_TRY_CATCH(Penv,"jniNotifyopendirDocResult",                //~v77eI~
+					jniNotifyopendirDocResult(Penv,Pthis,Popt,Pfpath,Pfd);//~v77eR~
+        		 );                                                //~v77eI~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~v77eI~
+}                                                                  //~v77eI~
+//************************************************************     //~v77eI~
+void jniNotifyopendirDocResult                                     //~v77eI~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath,jint Pfd) //~v77eI~
+{                                                                  //~v77eI~
+    char *pfpath;                                                  //~v77eI~
+    char fpath[_MAX_PATH];                                         //~v77eI~
+//********************                                             //~v77eI~
+	UTRACEP("%s:entry opt=0x%x,fd=%d\n",UTT,Popt,Pfd);             //~v77eR~
+	pfpath=fpath;                                                  //~v77eI~
+    jstr2UTFcharCopy(Penv,Pfpath,&pfpath);   //copy to fpath       //~v77eI~
+	UTRACEP("%s:fpath=%s\n",UTT,fpath);                            //~v77eI~
+    c2j_notified_opendirDocResult(Pfd);                            //~v77eI~
+}                                                                  //~v77eI~
+//******************************************************************//~v77hI~
+JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniNotifycopyDocResult//~v77hI~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jint PerrSrc,jint PerrTgt)//~v77hI~
+{                                                                  //~v77hI~
+	void jniNotifycopyDocResult(JNIEnv *Penv, jclass Pthis, jint Popt,jint PerrSrc,jint PerrTgt);//~v77hI~
+	NDK_TRY_CATCH(Penv,"jniNotifycopyDocResult",                   //~v77hR~
+					jniNotifycopyDocResult(Penv,Pthis,Popt,PerrSrc,PerrTgt);//~v77hR~
+        		 );                                                //~v77hI~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~v77hI~
+}                                                                  //~v77hI~
+//************************************************************     //~v77hI~
+void jniNotifycopyDocResult                                        //~v77hI~
+  (JNIEnv *Penv, jclass Pthis,jint Popt,jint PerrSrc,jint PerrTgt) //~v77hI~
+{                                                                  //~v77hI~
+//********************                                             //~v77hI~
+	UTRACEP("%s:entry opt=0x%x,errSrc=%d,errTgt=%d\n",UTT,Popt,PerrSrc,PerrTgt);//~v77hI~
+    c2j_notified_copyDocResult(PerrSrc,PerrTgt);                   //~v77hI~
+}                                                                  //~v77hI~
+//******************************************************************//~v77mI~
+JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniNotifystatDocResult//~v77mI~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath,jint Pfd) //~v77mI~
+{                                                                  //~v77mI~
+	void jniNotifystatDocResult(JNIEnv *Penv, jclass Pthis, jint Popt,jstring Pfpath,jint Pfd);//~v77mI~
+	NDK_TRY_CATCH(Penv,"jniNotifystatDocResult",                   //~v77mI~
+					jniNotifystatDocResult(Penv,Pthis,Popt,Pfpath,Pfd);//~v77mI~
+        		 );                                                //~v77mI~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~v77mI~
+}                                                                  //~v77mI~
+//************************************************************     //~v77mI~
+void jniNotifystatDocResult                                        //~v77mI~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath,jint Pfd) //~v77mI~
+{                                                                  //~v77mI~
+    char *pfpath;                                                  //~v77mI~
+    char fpath[_MAX_PATH];                                         //~v77mI~
+//********************                                             //~v77mI~
+	UTRACEP("%s:entry opt=0x%x,fd=%d\n",UTT,Popt,Pfd);             //~v77mI~
+	pfpath=fpath;                                                  //~v77mI~
+    jstr2UTFcharCopy(Penv,Pfpath,&pfpath);   //copy to fpath       //~v77mI~
+	UTRACEP("%s:fpath=%s\n",UTT,fpath);                            //~v77mI~
+    c2j_notified_statDocResult(Pfd);                               //~v77mI~
+}                                                                  //~v77mI~
+//******************************************************************//~v77mI~
+JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniNotifygetDocPathResult//~v77mI~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath)          //~v77mI~
+{                                                                  //~v77mI~
+	void jniNotifygetDocPathResult(JNIEnv *Penv, jclass Pthis, jint Popt,jstring Pfpath);//~v77mI~
+	NDK_TRY_CATCH(Penv,"jniNotifygetDocPathResult",                //~v77mI~
+					jniNotifygetDocPathResult(Penv,Pthis,Popt,Pfpath);//~v77mR~
+        		 );                                                //~v77mI~
+	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~v77mI~
+}                                                                  //~v77mI~
+//************************************************************     //~v77mI~
+void jniNotifygetDocPathResult                                     //~v77mR~
+  (JNIEnv *Penv, jclass Pthis, jint Popt, jstring Pfpath)          //~v77mI~
+{                                                                  //~v77mI~
+    char *pfpath;                                                  //~v77mI~
+    char fpath[_MAX_PATH];                                         //~v77mI~
+//********************                                             //~v77mI~
+	UTRACEP("%s:entry opt=0x%x\n",UTT,Popt);                       //~v77mI~
+	pfpath=fpath;                                                  //~v77mI~
+    jstr2UTFcharCopy(Penv,Pfpath,&pfpath);   //copy to fpath       //~v77mI~
+	UTRACEP("%s:fpath=%s\n",UTT,fpath);                            //~v77mI~
+//  c2j_notified_getDocPathResult(fpath);                          //~v77mI~//+v5crR~
+    c2j_notified_getDocPathResult(Popt,fpath);                     //+v5crI~
+}                                                                  //~v77mI~

@@ -1,5 +1,6 @@
-//*CID://+vc2SR~: update#=  235;                                   //~vc2SR~
+//*CID://+vc43R~: update#=  243;                                   //~vc43R~
 //*****************************************************************//~vaatI~
+//vc43 2023/03/25 api33 support;android.support.v7.widget.AppCompatImageView is not descendant of View(remove() fails)//~vc43I~
 //vc2S 2020/09/12 add ruler width option                           //~vc2SI~
 //vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//~vc26I~
 //vc1r 2020/06/26 avoid ime popup implicitly                       //~vc1rI~
@@ -38,6 +39,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
+import android.widget.ImageView;
+import androidx.appcompat.widget.AppCompatImageView;               //~vc43I~
 //import android.widget.ImageView;
                                                                    //~1716I~
 import com.ForDeprecated.Funcs; //~1606I~
@@ -50,7 +53,8 @@ import static com.xe.Axe.Utils.showToast;
 //*****************************************************************//~1606I~
                                                                    //~1606I~
 //public class AxeScreen extends ImageView                         //~vc15R~
-public class AxeScreen extends android.support.v7.widget.AppCompatImageView//~vc15I~
+//public class AxeScreen extends android.support.v7.widget.AppCompatImageView//~vc15I~//~vc43R~
+public class AxeScreen extends androidx.appcompat.widget.AppCompatImageView//~vc43R~
 {                                                                  //~1606I~
 	public Bitmap   bitmap;         //offscreen bitmap              //~1620R~//~1719R~
 	public Canvas   bitmapCanvas;   //offscreen canvas             //~1620R~//~1719R~
@@ -121,9 +125,11 @@ public class AxeScreen extends android.support.v7.widget.AppCompatImageView//~vc
         getFocus(this);                                            //~vc1rR~
       }                                                            //~vc1rI~
         setupPaint();                                               //~1608I~
+        if (Dump.Y) Dump.println("AxeScreen.constructor exit");    //~vc43I~
     }                                                              //~1606I~
     private void setupPaint()                                           //~1608I~
     {                                                              //~1608I~
+        if (Dump.Y) Dump.println("AxeScreen.setupPaint");          //+vc43I~
         paintText=new Paint(Paint.ANTI_ALIAS_FLAG);                //~1620R~
         paintFill=new Paint();                                     //~1620R~
         paintLine=new Paint();                                     //~1620I~
@@ -134,6 +140,7 @@ public class AxeScreen extends android.support.v7.widget.AppCompatImageView//~vc
 //  	listPL=new ArrayList<PendingLine>();                       //~1809I~//~1826R~
         paintCursor=new Paint();                                   //~vabbI~
 //      paintCursor.setXfermode(new PixelXorXfermode(0xffffff));//inverse mode//~vabbR~
+        if (Dump.Y) Dump.println("AxeScreen.setupPaint exit");     //+vc43I~
     }                                                              //~1608I~
 ///////////////////////////////////////////////////////////////////////////////~1606I~
 //***************************                                      //~va15I~//~1826I~
@@ -528,19 +535,21 @@ public class AxeScreen extends android.support.v7.widget.AppCompatImageView//~vc
             	if (Py1==Py2)                                      //~1826I~
                 {                                                  //~1826I~
 //  				PLruler1.setPendingLine(Pwidth,Px1,Py1,Px2,Py2,Pfg);//~1826I~//~vc2SR~
-    				PLruler1.setPendingLine(AxeG.RulerWidth,Px1,Py1,Px2,Py2,Pfg);//+vc2SR~
+    				PLruler1.setPendingLine(AxeG.RulerWidth,Px1,Py1,Px2,Py2,Pfg);//~vc2SR~
                     drawRuler1=true;                               //~1826I~
                 }                                                  //~1826I~
                 else                                               //~1826I~
                 {                                                  //~1826I~
 //  				PLruler2.setPendingLine(Pwidth,Px1,Py1,Px2,Py2,Pfg);//~1826I~//~vc2SR~
-    				PLruler2.setPendingLine(AxeG.RulerWidth,Px1,Py1,Px2,Py2,Pfg);//+vc2SR~
+    				PLruler2.setPendingLine(AxeG.RulerWidth,Px1,Py1,Px2,Py2,Pfg);//~vc2SR~
                     drawRuler2=true;                               //~1826I~
                 }                                                  //~1826I~
             }                                                      //~1826I~
+    		if (Dump.Y) Dump.println("Axescreen:drawLine return1");//~vc43I~
             return;         //draw at onDraw                       //~1809I~
         }                                                          //~1809I~
     	drawLine(bitmapCanvas,Pwidth,Px1,Py1,Px2,Py2,Pfg);//draw on offscreen//~1809I~
+    	if (Dump.Y) Dump.println("Axescreen:drawLine return2");    //~vc43I~
     }                                                              //~1620I~
 //*******************                                              //~1809I~
     public void drawLine(Canvas Pcanvas,int Pwidth,int Px1,int Py1,int Px2,int Py2,int Pfg)//~1809I~
@@ -666,15 +675,16 @@ public class AxeScreen extends android.support.v7.widget.AppCompatImageView//~vc
         String str;//~1718I~
         int widthctr,ucsctr;                                       //~vabaI~
     //******************************                               //~1718I~
-        if (Dump.Y) Dump.dumpucs("AxeScreen.gettextwidths ucstb=",Ppdata);   //~1718I~//~vc1rR~
+//      if (Dump.Y) Dump.dumpucs("AxeScreen.gettextwidths ucstb=",Ppdata);   //~1718I~//~vc1rR~//~vc43R~
+        if (Dump.Y) Dump.println("AxeScreen.gettextwidths");       //~vc43I~
         paint=AxeG.axeScreen.paintText;
         ucsctr=Ppdata.length;                                      //~vabaI~
 //      str=new String(Ppdata,0,Ppdata.length);//~1718I~           //~vabaR~
         str=new String(Ppdata,0,ucsctr);                           //~vabaI~
       widthctr=                                                    //~vabaI~
         paint.getTextWidths(str,Ppfwidthtb);                    //~1718R~
-        if (Dump.Y) Dump.println("AxeScreen.gettextwidths fwidthtb ucsctr="+ucsctr+",outwidth ctr="+widthctr);//~vabaI~//~vc1rR~
-        if (Dump.Y) Dump.dump("AxeScreen.gettextwidths fwidthtb",Ppfwidthtb);//~1718R~//~vc1rR~
+//      if (Dump.Y) Dump.println("AxeScreen.gettextwidths fwidthtb ucsctr="+ucsctr+",outwidth ctr="+widthctr);//~vabaI~//~vc1rR~//~vc43R~
+//      if (Dump.Y) Dump.dump("AxeScreen.gettextwidths fwidthtb",Ppfwidthtb);//~1718R~//~vc1rR~//~vc43R~
         if (widthctr>ucsctr)    //contains ucs4,android4 output 2 entry for ucs4//~vabaI~
 			Ucs.getCodepointWidthTbl(Ppdata,ucsctr,Ppfwidthtb);    //~vabaI~
         return;                                                    //~1718I~

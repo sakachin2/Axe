@@ -1,6 +1,7 @@
-//*CID://+vc1xR~: update#= 289;                                    //+vc1xR~
-//**********************************************************************//+vc1xI~
-//vc1x 2020/07/08 member variable is initialized when defualt constructor defined(not non default constructor is define)//+vc1xI~
+//*CID://+vc53R~: update#= 290;                                    //~vc1xR~//+vc53R~
+//**********************************************************************//~vc1xI~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
+//vc1x 2020/07/08 member variable is initialized when defualt constructor defined(not non default constructor is define)//~vc1xI~
 //**********************************************************************//~1528I~
 //*ListView                                                        //~1530R~
 //**********************************************************************//~1528I~
@@ -12,29 +13,29 @@ public class AxeLstShift extends AxeList                              //~1612R~
 {                                                                  //~1528I~
 	private static final int ROWID_SHIFTKEY =R.layout.listrowshiftkey;//~1530M~
 //*****************                                                //~1612I~
-    public AxeLstShift()                                           //+vc1xI~
-    {                                                              //+vc1xI~
-        if (Dump.Y) Dump.println("AxeLstShift.defaultConstructor");//+vc1xI~
-    }                                                              //+vc1xI~
-//    public AxeLstShift(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~1817R~//+vc1xR~
-//    {                                                              //~1612I~//+vc1xR~
-////        super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/);//~1B02R~//+vc1xR~
-//        super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/);//~1B02I~//+vc1xR~
-//    }                                                              //~1612I~//+vc1xR~
-    public static AxeLstShift newInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//+vc1xI~
-    {                                                              //+vc1xI~
-        if (Dump.Y) Dump.println("AxeLstShift.newInstance");       //+vc1xI~
-        AxeLstShift al=new AxeLstShift();                          //+vc1xI~
-        al.initInstance(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/);//+vc1xI~
-        return al;                                                 //+vc1xI~
-    }                                                              //+vc1xI~
+    public AxeLstShift()                                           //~vc1xI~
+    {                                                              //~vc1xI~
+        if (Dump.Y) Dump.println("AxeLstShift.defaultConstructor");//~vc1xI~
+    }                                                              //~vc1xI~
+//    public AxeLstShift(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~1817R~//~vc1xR~
+//    {                                                              //~1612I~//~vc1xR~
+////        super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/);//~1B02R~//~vc1xR~
+//        super(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/);//~1B02I~//~vc1xR~
+//    }                                                              //~1612I~//~vc1xR~
+    public static AxeLstShift newInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~vc1xI~
+    {                                                              //~vc1xI~
+        if (Dump.Y) Dump.println("AxeLstShift.newInstance");       //~vc1xI~
+        AxeLstShift al=new AxeLstShift();                          //~vc1xI~
+        al.initInstance(PdialogId,PlayoutView,Pmenuid,Prowid,true/*editableRow*/,true/*clickable*/);//~vc1xI~
+        return al;                                                 //~vc1xI~
+    }                                                              //~vc1xI~
 //*****************                                                //~1612R~
 //  public static AxeLstShift setupListView(int PdialogId,ViewGroup PlayoutView,int Pmenuid)//~1817R~
     public static AxeLstShift setupListView(int PdialogId,ViewGroup PlayoutView)//~1817I~
     {                                                              //~1612R~
-        if (Dump.Y) Dump.println("AxeLstShift.setupListView");     //+vc1xI~
-//      AxeLstShift al=new AxeLstShift(PdialogId,PlayoutView,0/*Pmenuid*/,ROWID_SHIFTKEY);//~1817R~//+vc1xR~
-        AxeLstShift al=newInstance(PdialogId,PlayoutView,0/*Pmenuid*/,ROWID_SHIFTKEY);//+vc1xI~
+        if (Dump.Y) Dump.println("AxeLstShift.setupListView");     //~vc1xI~
+//      AxeLstShift al=new AxeLstShift(PdialogId,PlayoutView,0/*Pmenuid*/,ROWID_SHIFTKEY);//~1817R~//~vc1xR~
+        AxeLstShift al=newInstance(PdialogId,PlayoutView,0/*Pmenuid*/,ROWID_SHIFTKEY);//~vc1xI~
         return al;                                                 //~1612I~
     }                                                              //~1612R~
 //*****************                                                //~1612I~
@@ -56,16 +57,27 @@ public class AxeLstShift extends AxeList                              //~1612R~
     public void reset2Default(int PbuttonId)                       //~1818I~
     {                                                              //~1818I~
     	boolean isKbd106=false;                                    //~1818I~
-    	switch(PbuttonId)                                          //~1818I~
-        {                                                          //~1818I~
-        case R.id.KBD101:                                          //~1818I~
-        	break;                                                 //~1818I~
-        case R.id.KBD106:                                          //~1818I~
-        	isKbd106=true;                                        //~1818I~
-        	break;                                                 //~1818I~
-        default:                                                    //~1818I~
-        	return;                                                //~1818I~
-        }                                                          //~1818I~
+//        switch(PbuttonId)                                          //~1818I~//+vc53R~
+//        {                                                          //~1818I~//+vc53R~
+//        case R.id.KBD101:                                          //~1818I~//+vc53R~
+//            break;                                                 //~1818I~//+vc53R~
+//        case R.id.KBD106:                                          //~1818I~//+vc53R~
+//            isKbd106=true;                                        //~1818I~//+vc53R~
+//            break;                                                 //~1818I~//+vc53R~
+//        default:                                                    //~1818I~//+vc53R~
+//            return;                                                //~1818I~//+vc53R~
+//        }                                                          //~1818I~//+vc53R~
+//      switch(PbuttonId)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (PbuttonId== R.id.KBD101)                               //+vc53I~
+            ;                                                      //+vc53I~
+        else //break;                                              //+vc53I~
+        if (PbuttonId== R.id.KBD106)                               //+vc53I~
+            isKbd106=true;                                         //+vc53I~
+        else //break;                                              //+vc53I~
+//      default:                                                   //+vc53I~
+            return;                                                //+vc53I~
+//      }                                                          //+vc53I~
 		int [] newtbl=AxeG.axeKey.getDefault_Shiftkey(isKbd106);         //~1818I~
         updateData(newtbl);                                //~1818I~
     }                                                              //~1818I~

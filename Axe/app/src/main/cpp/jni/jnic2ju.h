@@ -1,7 +1,18 @@
-//*CID://+v6dgR~:                                   update#=   72; //~v6dgR~
+//*CID://+vc5cR~:                                   update#=  110; //~vc5cR~
 //**************************************************************** //~1610I~
 //jnic2j2.h                                                         //~1621R~//~vac6R~
 //**************************************************************** //~1610I~
+//vc5c 2023/07/04 display directory set to access by ACTION_OPEN_DOCUMENT_TREE//~vc5cI~
+//v77w:230519 uri-->path is avalable from api30(android11:R) and readdir using fd gotten by openDescriptor returns null//~v77wI~
+//v77m:230429 ARM:try stat(fpath) by fstat(fd) for ufstat          //~v77mI~
+//v77h:230424 ARM;copy                                             //~v77hI~
+//v77g:230424 ARM;rename                                           //~v77gI~
+//v77f:230424 ARM;rmdir                                            //~v77fI~
+//v77e:230424 ARM;try fd for opendir/readdir                       //~v77eI~
+//v77d:230423 ARM;delete                                           //~v77dI~
+//v77c:230422 ARM;mkdir                                            //~v77cI~
+//vby8:230415 (ARM)open document file                              //~vby8I~
+//vby4:230402 (ARM)shared resource support by //shareName defined by SP(ShortPath) cmd.//~vby4I~
 //v6dg:120220 (Axe)ftp downloaded file attr is 075(sdcard is read only and FAT); change to private dir//~v6dgI~
 //vac6:120217 (Axe)samba share support using jcifs 3.17            //~vac6I~
 //**************************************************************** //~vac6I~
@@ -55,5 +66,30 @@ int jnismb_mkdir(int Popt,PUFTPHOST Ppuftph,char *Pfnm,ULONG Pattr,ULONG *Ppattr
 //**************************************************************** //~v6dgI~
 int jnismb_rmdir(int Popt,PUFTPHOST Ppuftph,char *Pfnm);           //~v6dgI~
 //**************************************************************** //~v6dgI~
-int jnismb_setattr(int Popt,PUFTPHOST Ppuftph,char *Pfnm,int Pattr,ULONG *Ppattr);//+v6dgR~
+int jnismb_setattr(int Popt,PUFTPHOST Ppuftph,char *Pfnm,int Pattr,ULONG *Ppattr);//~v6dgR~
+//**************************************************************** //~vby4I~
+int c2j_startPicker(int Popt,char *Palias);                        //~vby4R~
+//**************************************************************** //~vby4I~
+int c2j_getDirFD(int Popt,char *PstrUri);                          //~vby4I~
+//**************************************************************** //~vby4I~
+int c2j_udirlistDoc(int Popt,char *PnameDir,char *PstrUri,unsigned Pattr,UDIRLIST **Pppudirlist,int *Pperr);//~vby4R~
+//**************************************************************** //~vby4I~
+int c2j_ufstatDoc(int Popt,char *PnameDir,char *PstrUri,int Ppathlen,UDIRLIST **Pppudirlist);//~vby4R~
+#define C2JUFSO_UFSTAT     0x01                                    //~vby4I~
+#define C2JUFSO_WILDCARD   0x02                                    //~vby4I~
+//**************************************************************** //~vby8I~
+int c2j_openDoc(int Popt,char *Pfpath,char *PstrUri,char *PtempDir,char **Ppbuff,int *Pplen,int *PpoptRC);//~vby8R~
+int c2j_fgetsDoc(int Popt,char *Pfpath,char *Pbuff,int Plen);      //~vby8R~
+int c2j_freadDoc(int Popt,char *Pfpath,char *Pbuff,int Plen,int *PpreadLen);//~vby8R~
+int c2j_fwriteDoc(int Popt,char *Pfpath,char *Pbuff,int Plen,int *Ppwritelen);//~vby8R~
+int c2j_fcloseDoc(int Popt,char *Pfpath);                          //~vby8R~
+int c2j_mkdirDoc(int Popt,char* Pfpath,char *PstrUri);             //~v77cR~
+int c2j_rmdirDoc(int Popt,char* Pfpath,char *PstrUri);             //~v77fI~
+int c2j_unlinkDoc(int Popt,char* Pfpath,char *PstrUri);            //~v77dR~
+int c2j_opendirDoc(int Popt,char* Pfpath,char *PstrUri,int *Ppfd); //~v77eI~
+int c2j_renameDoc(int Popt,char *Pold,char *PstrUri,char *Pnew);   //~v77gR~
+int c2j_copyDoc(int Popt,char *Psrc,char *PstrUriSrc,char *Ptgt,char *PstrUriTgt,int *PerrSrc,int *PerrTgt);//~v77hI~
+int c2j_statDoc(int Popt,char* Pfpath,char *PstrUri,int *Ppfd);    //~v77mI~
+int c2j_getDocPath(int Popt,char* Pfpath,char *PstrUri,char *Ppath);//~v77wR~
+int c2j_notifyAllSP(char* Pallsp);                                 //+vc5cR~
 #endif //ARM                                                       //~1621I~
