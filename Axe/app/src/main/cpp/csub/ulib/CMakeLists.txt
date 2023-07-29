@@ -92,8 +92,9 @@ set(UDEF "-DLNX -DUNX -DARM -DNOMT -DNOMT_TRACE -DANDROID -DLNXLC2 -DLNXLC2TL6 -
 #set(CFLGS  "-march=armv7-a -fpic -msoft-float -fno-exceptions -fstack-protector -Wall -Wno-pointer-sign -Wuninitialized -O0 -funsigned-char")
  set(CFLGS  "               -fpic              -fno-exceptions -fstack-protector -Wall -Wno-pointer-sign -Wuninitialized -O0 -funsigned-char")
 #set(CFLGS2 "-finput-charset=cp932")
-set(CFLGS2 "-Wno-invalid-source-encoding")
-set(AXE_TOP x:/AndroidStudioProjects/Axe)
+#set(CFLGS2 "-Wno-invalid-source-encoding -Wno-misleading-indentation")
+set(CFLGS2 "-Wno-invalid-source-encoding -Wno-misleading-indentation")    #-v show search path 
+set(AXE_TOP w:/AndroidStudioProjects/Axe)
 #set(AXE_JNI ${AXE_TOP}/app/src/main/jni)
 set(AXE_JNI ${AXE_TOP}/app/src/main/cpp/jni)
 ##################
@@ -156,6 +157,7 @@ add_library(
             ${ULIB}/ufile3f.c
             ${ULIB}/ufile4.c
             ${ULIB}/ufile5.c
+            ${ULIB}/ufiledoc.c
             ${ULIB}/uftp.c
             ${ULIB}/uftp2.c
             ${ULIB}/uftp3.c
@@ -199,4 +201,5 @@ add_library(
 #        ${COPYPATH_LIB}
 #        )
 #debug and release exchanging deletes other side debug/release so save to DevConUp 
-add_custom_command (TARGET userxxe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libuserxxe.a ${DEVCONUP_LIBS})
+# 2023/06/15 libuserxxe.a is intermediate file
+#add_custom_command (TARGET userxxe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libuserxxe.a ${DEVCONUP_LIBS})

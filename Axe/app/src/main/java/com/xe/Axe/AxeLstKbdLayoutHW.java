@@ -1,6 +1,6 @@
-//*CID://+vc2GR~: update#= 687;                                    //+vc2GR~
+//*CID://+vc2GR~: update#= 689;                                    //~vc2GR~
 //**********************************************************************//~1528I~//~vc1xR~
-//vc2G 2020/08/23 chk validity of unicode value                    //+vc2GI~
+//vc2G 2020/08/23 chk validity of unicode value                    //~vc2GI~
 //vc2i 2020/07/26 restore default when Shift colomn deleted        //~vc2iI~
 //vc2g 2020/07/26 AltGr key option                                 //~vc2gI~
 //vc2e 2020/07/18 keycode d8(x5c-Yen) is reject                    //~vc29I~
@@ -255,11 +255,11 @@ public class AxeLstKbdLayoutHW extends AxeList                     //~vc1sR~
     public String getKeyname(int Pkey)                             //~vc1sI~
     {                                                              //~vc1sI~
     	String rc="";                                               //~vc1sI~
-        int key=Pkey & ~HWKEYID_GDK;                               //+vc2GI~
-//  	if ((Pkey & HWKEYID_GDK)!=0)                               //~vc1sR~//+vc2GR~
-    	if ((Pkey & HWKEYID_GDK)!=0 && key<AxeKbdKey.SspinnerData.length)//+vc2GI~
+        int key=Pkey & ~HWKEYID_GDK;                               //~vc2GI~
+//  	if ((Pkey & HWKEYID_GDK)!=0)                               //~vc1sR~//~vc2GR~
+    	if ((Pkey & HWKEYID_GDK)!=0 && key<AxeKbdKey.SspinnerData.length)//~vc2GI~
         {                                                          //~vc1sI~
-//      	int key=Pkey & ~HWKEYID_GDK;                           //~vc1sR~//+vc2GR~
+//      	int key=Pkey & ~HWKEYID_GDK;                           //~vc1sR~//~vc2GR~
 //          rc=findKeyGDK(key);                                    //~vc1sI~//~vc1zR~
             rc=AxeKbdKey.SspinnerData[key];                        //~vc1zI~
         }                                                          //~vc1sI~
@@ -333,8 +333,8 @@ public class AxeLstKbdLayoutHW extends AxeList                     //~vc1sR~
 ////      mapSize=defaultMap.length;                                 //~vc1sI~//~vc1tR~//~vc22R~
 //        loadPreference();                                          //~vc1sI~//~vc22R~
 		getCurrentMap();                                           //~vc22I~
-        if (Dump.Y) Dump.println("AxeLstKbdLayoutHW getKbdLayout defaultMap="+Utils.toHexString(defaultMap));//~vc1tI~
-        if (Dump.Y) Dump.println("AxeLstKbdLayoutHW getKbdLayout currentMap="+Utils.toHexString(currentMap));//~vc1tI~
+//      if (Dump.Y) Dump.println("AxeLstKbdLayoutHW getKbdLayout defaultMap="+Utils.toHexString(defaultMap));//~vc1tI~//+vc2GR~
+//      if (Dump.Y) Dump.println("AxeLstKbdLayoutHW getKbdLayout currentMap="+Utils.toHexString(currentMap));//~vc1tI~//+vc2GR~
 //      getListViewData();                                         //~vc1sI~//~vc1tR~
         getListViewData(currentMap);                               //~vc1tI~
         if (Dump.Y) Dump.println("AxeLstKbdLayoutHW getKbdLayout listViewData="+Utils.toHexString(listViewData));//~vc1sR~//~vc1wR~
@@ -473,7 +473,7 @@ public class AxeLstKbdLayoutHW extends AxeList                     //~vc1sR~
     //**************                                               //~vc1sI~
         if (Dump.Y) Dump.println("AxeLstKbdLayoutHW:loadPreference");//~vc1sI~
         sz=defaultMap.length;                                      //~vc1sI~
-        if (Dump.Y)Dump.println("AxeLstKbdLayoutHW:loadPreference before defaurtMap="+Utils.toHexString(defaultMap));//~vc1tI~
+//      if (Dump.Y)Dump.println("AxeLstKbdLayoutHW:loadPreference before defaurtMap="+Utils.toHexString(defaultMap));//~vc1tI~//~vc2GR~
 //      currentMap=defaultMap.clone();                             //~vc1sI~//~vc1tR~
 //      currentMap=new int[defaultMap.length][];                   //~vc1tI~//~vc1zR~
         value=AxeProp.getPreference(PREFKEY,null);                 //~vc1sI~
@@ -502,8 +502,9 @@ public class AxeLstKbdLayoutHW extends AxeList                     //~vc1sR~
                 if (Dump.Y)Dump.println("AxeLstKbdLayoutHW:loadPreference ii="+ii+",jj="+jj+",new="+Integer.toHexString(newkey));//~vc1sI~
             }                                                      //~vc1sI~
         }                                                          //~vc1sI~
-        if (Dump.Y)Dump.println("AxeLstKbdLayoutHW:loadPreference currentMap="+Utils.toHexString(currentMap));//~vc1sI~//~vc1tR~
-        if (Dump.Y)Dump.println("AxeLstKbdLayoutHW:loadPreference after defaurtMap="+Utils.toHexString(defaultMap));//~vc1tI~
+//      if (Dump.Y)Dump.println("AxeLstKbdLayoutHW:loadPreference currentMap="+Utils.toHexString(currentMap));//~vc1sI~//~vc1tR~//~vc2GR~
+//      if (Dump.Y)Dump.println("AxeLstKbdLayoutHW:loadPreference after defaurtMap="+Utils.toHexString(defaultMap));//~vc1tI~//~vc2GR~
+        if (Dump.Y)Dump.println("AxeLstKbdLayoutHW:loadPreference exit");//~vc2GI~
     }//loadPreference                                              //~vc1sR~
 //************************************************                 //~vc1sI~
 //  public void savePreference()                                   //~vc1sI~//~vc1wR~

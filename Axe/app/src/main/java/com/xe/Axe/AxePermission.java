@@ -1,4 +1,4 @@
-//*CID://+vc2WR~:                                   update#=  125; //~vc2WR~
+//*CID://+vc2WR~:                                   update#=  126; //~vc2WR~
 //**************************************************************** //~vaa8I~
 //vc2W 2020/09/19 at first install, uerrexit by ualloc size=0(Gscrbuffwidth); Because notifyOptionChangedOther is called before initscreen; notify trace option by another interface//~vc2WI~
 //vc1f 2020/06/20 ARM;chk sdcard writable                          //~vc1fI~
@@ -60,7 +60,7 @@ public class AxePermission                                         //~vc1bR~
 //***************************************************************************//~9930I~//~1AhdI~//~vc1bI~
     public void onRequestPermissionsResult(int PrequestID,String[] Ptypes,int[] Presults)//~9930I~//~1AhdI~//~vc1bI~
     {                                                              //~9930I~//~1AhdI~//~vc1bI~
-        if (Dump.Y) Dump.println("AxePermission.onRequestPermissionResult re/qid="+PrequestID+",type="+ com.ahsv.utils.Utils.toString(Ptypes)+",result="+ Arrays.toString(Presults));//~9930I~//~1AhdI~//~vc1bR~
+        if (Dump.Y) Dump.println("AxePermission.onRequestPermissionResult reqid="+PrequestID+",type="+ com.ahsv.utils.Utils.toString(Ptypes)+",result="+ Arrays.toString(Presults));//~9930I~//~1AhdI~//~vc1bR~//+vc2WR~
         boolean granted;                                           //~1AhdI~/~vc1bI~
         switch(PrequestID)                                         //~9930I~//~1AhdI~//~vc1bI~
         {                                                          //~9930I~//~1AhdI~//~vc1bI~
@@ -89,7 +89,7 @@ public class AxePermission                                         //~vc1bR~
     public static void showGranted(boolean PswGranted,String Ptype)  //~v@@@I~//~vc1bI~
     {                                                              //~v@@@I~//~vc1bI~
     	boolean rc;                                                //~v@@@I~//~vc1bI~
-        if (Dump.Y) Dump.println("AxePermission.showGranted PswGranted="+PswGranted);//~v@@@I~//~vc1bI~//+vc2WR~
+        if (Dump.Y) Dump.println("AxePermission.showGranted PswGranted="+PswGranted);//~v@@@I~//~vc1bI~//~vc2WR~
         if (!PswGranted)                                           //~v@@@I~//~vc1bI~
         {                                                          //~v@@@I~//~vc1bI~
           	UView.showToastLong(com.ahsv.utils.Utils.getStr(R.string.PermissionNotGranted,Ptype));//~vc1bI~

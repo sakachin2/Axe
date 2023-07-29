@@ -1,6 +1,7 @@
-//*CID://+vc2PR~: update#=151;                                     //~vc2ER~//+vc2PR~
+//*CID://+vc41R~: update#=153;                                     //~vc41R~
 //**********************************************************************//~vaagI~
-//vc2P 2020/09/07 on N7, kbdDialogHW is shown at middle of screen. //+vc2PI~
+//vc41 2023/03/25 api33 support;deprecated getDefaultDisplay       //~vc41I~
+//vc2P 2020/09/07 on N7, kbdDialogHW is shown at middle of screen. //~vc2PI~
 //vc2E 2020/08/21 (Bug)have to consider shift effect for ALt/Ctrl+Ascii symbol//~vc2EI~
 //vc2D 2020/08/19 (Bug)kbd send not to Dialog but to AxeScreen when KbdDialogHW opened after AxeDialog Open//~vc2DI~
 //vc2s 2020/08/08 (BUG)Back key did not close AxeKbd when HWkabd opedned after AxeKbd open//~vc2sI~
@@ -66,7 +67,7 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
 //        implements                              AxeTimerI        //~vc1rI~//~vc26R~
 {                                                                  //~1918R~
     private static final int MAX_KEYCODE=256;
-    private static final int DIALOG_HEIGHT=4;                      //+vc2PR~
+    private static final int DIALOG_HEIGHT=4;                      //~vc2PR~
     public static final int KEYCODE_BACKSPACE=0x08;                //~vc1rI~
     private static final int[] metaTbl=new int[]{0,                //~vc1rM~
 									META_SHIFT_ON,                 //~vc1rM~
@@ -102,7 +103,8 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
      	super(Pcontext,DIALOG_THEME);//style for fullscreen       //~1918R~
         context=Pcontext;                                          //~1918I~
                                                                    //~1902I~
-        Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~
+//        Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~//~vc41R~
+        Display display=AxeView.getDefaultDisplay();               //~vc41I~
 //      int displayW=display.getWidth();                           //~vaybR~
 //      int displayH=display.getHeight();                          //~vaybR~
         Point dsz=AxeView.getDisplayRegion();                      //~vaybR~
@@ -138,7 +140,8 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
         AxeG.axeKbdDialogHW=this;                                  //~vc1rI~
         defaultMap=getDefaultMap();                                           //~vc1rR~
         setOnShow();                                               //~vc2DM~
-        if (Dump.Y) Dump.println("AxeKbdDialogHW defaultMap="+ Utils.toString(defaultMap));//~vc1rI~
+//      if (Dump.Y) Dump.println("AxeKbdDialogHW defaultMap="+ Utils.toString(defaultMap));//~vc1rI~//+vc41R~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW constructor exit");//+vc41I~
     }                                                              //~1902R~
 //*****************************************                        //~vaihI~
 	public void setCancelByOutsideTouch(boolean Pcancel)           //~vaihI~
@@ -282,24 +285,24 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
    	  if (isConstructor)                                           //~vaygI~
         w.requestFeature(Window.FEATURE_NO_TITLE);                 //~1902M~
         if (Dump.Y) Dump.println("AxeKbdDialogHW.setFullWidth");   //~vc1rR~
-      if (false)	//TODO test                                    //+vc2PR~
-      {                                                            //+vc2PR~
-        WindowManager.LayoutParams wlp=w.getAttributes();          //+vc2PR~
-        wlp.gravity=Gravity.BOTTOM;                                //+vc2PR~
-        wlp.width=WindowManager.LayoutParams.MATCH_PARENT;         //+vc2PR~
-        wlp.height=4;                                              //+vc2PR~
-        w.setAttributes(wlp);                                      //+vc2PR~
-//      w.setGravity(Gravity.BOTTOM|Gravity.FILL_HORIZONTAL);      //+vc2PR~
-//      w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,4);        //+vc2PR~
-      }                                                            //+vc2PR~
-      else                                                         //+vc2PR~
-      {                                                            //+vc2PR~
+      if (false)	//TODO test                                    //~vc2PR~
+      {                                                            //~vc2PR~
+        WindowManager.LayoutParams wlp=w.getAttributes();          //~vc2PR~
+        wlp.gravity=Gravity.BOTTOM;                                //~vc2PR~
+        wlp.width=WindowManager.LayoutParams.MATCH_PARENT;         //~vc2PR~
+        wlp.height=4;                                              //~vc2PR~
+        w.setAttributes(wlp);                                      //~vc2PR~
+//      w.setGravity(Gravity.BOTTOM|Gravity.FILL_HORIZONTAL);      //~vc2PR~
+//      w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,4);        //~vc2PR~
+      }                                                            //~vc2PR~
+      else                                                         //~vc2PR~
+      {                                                            //~vc2PR~
         w.setGravity(Gravity.BOTTOM|Gravity.FILL_HORIZONTAL);      //~1902I~
-//      w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);//~vaycM~//+vc2PR~
-        float dip2pix=AxeG.resource.getDisplayMetrics().density;   //~1606M~//+vc2PI~
-		int pixh=(int)(dip2pix*DIALOG_HEIGHT);                     //+vc2PI~
-        if (Dump.Y) Dump.println("AxeKbdDialogHW.setFullWidth dpi2pix="+dip2pix+",height="+pixh);//+vc2PI~
-        w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,pixh);//~vc2EI~//+vc2PR~
+//      w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);//~vaycM~//~vc2PR~
+        float dip2pix=AxeG.resource.getDisplayMetrics().density;   //~1606M~//~vc2PI~
+		int pixh=(int)(dip2pix*DIALOG_HEIGHT);                     //~vc2PI~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW.setFullWidth dpi2pix="+dip2pix+",height="+pixh);//~vc2PI~
+        w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,pixh);//~vc2EI~//~vc2PR~
       }                                                            //~vc2EI~
     }                                                              //~1902I~
 //}//SoftInputWindow class                                         //~1902I~
@@ -726,7 +729,9 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
 	}                                                              //~vc2DI~
     private void onShowDlg()                                            //~vc2DI~
     {                                                              //~vc2DI~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW.onShowDlg");      //+vc41I~
     	if (swConfigChangedNew)                                    //~vc2DR~
     	    configChangedForDialogReopen();                        //~vc2DR~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW.onShowDlg exit"); //+vc41I~
     }                                                              //~vc2DI~
 }

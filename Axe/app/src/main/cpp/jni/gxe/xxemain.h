@@ -1,6 +1,7 @@
-//*CID://+v@@@R~:                             update#=  344;       //~va8aR~//~va80R~//~v@@@R~
+//*CID://+vby0R~:                             update#=  345;       //+vby0R~
 //================================================================================//~v510I~
-//vax3:140627 (130927:am3 for jni)point<-->mm acurate value 1 mm = 360.0/127 point//+v@@@I~
+//vby0:230322 for Axe Api33; ld duplicate symbole                  //+vby0I~
+//vax3:140627 (130927:am3 for jni)point<-->mm acurate value 1 mm = 360.0/127 point//~v@@@I~
 //v@@@:110610 Android(-DARM)                                       //~v@@@I~
 //va8a:100926 (WXE)end wxp work at end print                       //~va8aI~
 //va7D:100830 (XXE:BUG)cap menu update err(it should not be based on Mcellcopy1 bur Gcsrposy)//~va7DI~
@@ -112,10 +113,10 @@ EXT    XXECOLOR DEF_RULERCOLOR INIT(RGB(0x2000,0x6000,0x2000));    //~v73tR~
 #define DEF_2PCOL        4                                         //~2B04I~
 #define PRTSCRID        "PrtScr"                                   //~2B09I~
                                                                    //~va6yI~
-//#define POINT2MM(pt)    ((float)(pt)*0.353)                      //+v@@@R~
-#define POINT2MM(pt)    ((float)(pt)*127.0f/360.0f)                //+v@@@I~
-//#define MM2POINT(mm)    ((float)(mm)*2.835)      // 72/25.4 //1inch=72point=25.4mm//+v@@@R~
-#define MM2POINT(mm)    ((float)(mm)*360.0f/127.0f)      // 72/25.4 //1inch=72point=25.4mm//+v@@@I~
+//#define POINT2MM(pt)    ((float)(pt)*0.353)                      //~v@@@R~
+#define POINT2MM(pt)    ((float)(pt)*127.0f/360.0f)                //~v@@@I~
+//#define MM2POINT(mm)    ((float)(mm)*2.835)      // 72/25.4 //1inch=72point=25.4mm//~v@@@R~
+#define MM2POINT(mm)    ((float)(mm)*360.0f/127.0f)      // 72/25.4 //1inch=72point=25.4mm//~v@@@I~
 #define INCH2MM(inch)    ((float)(inch)*25.4)                      //~va6yR~
 #define INCH2POINT(inch)    ((float)(inch)*72)                     //~va6yR~
                                                                    //~2B30I~
@@ -359,8 +360,10 @@ EXT  int  Mcellh0;       //row height by option dlg                //~vXXEI~
 EXT  int  Mcellw0;        //col width                              //~vXXEI~
 EXT  BOOL Mttfont;            //row count of displayed scr         //~vXXER~
 EXT  char Mfontstyle[80];                                          //~vXXER~
-EXT  int  Museact;   		//use accelerator tbl                  //~vXXER~
-EXT  int  Musemk ;   		//use menukey                          //~vXXER~
+//EXT  int  Museact;   		//use accelerator tbl                  //~vXXER~//+vby0R~
+extern int  Museact;   		//use accelerator tbl                  //+vby0I~
+//EXT  int  Musemk ;   		//use menukey                          //~vXXER~//+vby0R~
+extern int  Musemk ;   		//use menukey                          //+vby0I~
 EXT  BOOL Mligature; 		//use ligature                         //~va1MR~
 EXT  BOOL Mligaturereverse;  //temp toggle ligature                //~va3dR~
 EXT  BOOL Mrctl  ;   		//use r-ctrl key                       //~vXXER~

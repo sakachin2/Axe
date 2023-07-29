@@ -334,7 +334,7 @@ UTRACEP("call kbdproc\n");                                         //~2914I~
     	        	scrdisp();  //set dbcs tbl before csr move     //~v67GI~
   		            wxe_scrdraw();    //redraw wxe scr @@@@        //~v67GI~
 //                	if (uerrmsgboxokcan("Exit xe ? (File was saved)",0)!=0)	//cancelled//~v672R~
-                	if (uerrmsgboxokcan("Exit xe ?","xe I—¹Šm”F")!=0)	//cancelled//~v672I~
+                	if (uerrmsgboxokcan("Exit xe ?","xe ï¿½Iï¿½ï¿½ï¿½mï¿½F")!=0)	//cancelled//~v672I~
                     {                                              //~v66AI~
 //                  	panregist(PANTOPMENU);                     //~v67GR~
                     	rc=0;	//continue process                 //~v66AI~
@@ -555,7 +555,7 @@ int  wxe_funccall(int Pfuncid,char *Pcmdparm)                      //~2A20R~
 //  	if ((!sc && !ch)&& (!(pft->FTcmd)||!(*(pft->FTcmd)))) //parm exist or no key defined//~v672I~//~vb92R~
     	if ((!sc && !ch)&& (               !(*(pft->FTcmd)))) //pft->FTcmd is always !NULL//~vb92I~
         {                                                          //~v672I~
-			uerrmsgbox("No key nand cmd is defined for func %s","‹@\x94\\ %s ‚ÉƒL[AƒRƒ}ƒ“ƒh‚ªŠ„‚è“–‚Ä‚ç‚ê‚Ä‚¢‚Ü‚¹‚ñ",pft->FTnamee);//~v672R~
+			uerrmsgbox("No key nand cmd is defined for func %s","ï¿½@\x94\\ %s ï¿½ÉƒLï¿½[ï¿½Aï¿½Rï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½è“–ï¿½Ä‚ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½",pft->FTnamee);//~v672R~
         	rc=4;                                                  //~v672I~
         }                                                          //~v672I~
         else                                                       //~v672I~
@@ -1621,7 +1621,7 @@ int xxe_kbdwcinit(int Popt,int Pkbdstat,ULONG Pcodepage,UCHAR *Pcharset)//~v79zR
 #ifdef UTF8SUPPH                                                   //~va0UI~
     if (Pkbdstat & UDCWCIO_DBCSREAD)    //input lang is UTF8 but return byte by byte//~va1cR~
         Gxxestat|=GXXES_DBCSREAD;                                  //~va1cR~
-  	udbcschk_getbaseconverter(0,&pl2uconverters,&Gpxxedbcstbl);//converter is same as Pcodepage//~va0UR~
+      udbcschk_getbaseconverter(0,&pl2uconverters,&Gpxxedbcstbl);//converter is same as Pcodepage//~va0UR~
 #endif                                                             //~va0UM~
     if (Pcodepage)                                                 //~v79zI~
     	Gconverters=Pcodepage;      //iconv_t[2]                   //~v79zI~

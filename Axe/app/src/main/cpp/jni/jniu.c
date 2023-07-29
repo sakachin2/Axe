@@ -1,4 +1,4 @@
-//*CID://+vc1iR~:                                   update#=  318; //~vc1iR~
+//*CID://+vc1iR~:                                   update#=  319; //~vc1iR~
 //**************************************************************** //~1822R~
 //vc1i 2020/06/22 display not /emulated/.. but /sdcard to header CWD=//~vc1iI~
 //vc1f 2020/06/20 ARM;chk sdcard writable                          //~vc1fI~
@@ -94,6 +94,7 @@ int ufullpathAltSD(int Popt,char *Ppath,char *Pout)                //~vc1iR~
 {                                                                  //~vc1iI~
 	int rc;                                                       //~vc1iI~
 //**********************                                           //~vc1iI~
+    *Pout=0;                                                       //+vc1iI~
 	rc=isonsdpath(Ppath);                                          //~vc1iI~
     if (rc) //on sdpath 1:sdpath,2:not granted                     //~vc1iR~
     {                                                              //~vc1iI~
@@ -110,7 +111,7 @@ int ufullpathAltSD(int Popt,char *Ppath,char *Pout)                //~vc1iR~
     	strcpy(Pout,Ppath);                                        //~vc1iI~
     UTRACEP("%s:rc=%d,swAltSD=%d,in=%s,out=%s\n",UTT,rc,swAltSD,Ppath,Pout);//~vc1iR~
     return rc;                                                     //~vc1iI~
-}//ufullpathAltSD                                                  //+vc1iR~
+}//ufullpathAltSD                                                  //~vc1iR~
 //*******************************************************          //~1A23I~
 //*chk file path is on vfat  filesystem                            //~1A23I~
 //*******************************************************          //~1A23I~

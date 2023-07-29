@@ -1,6 +1,7 @@
-//*CID://+vai7R~:                             update#=  211;       //+vai7R~
+//*CID://+vby0R~:                             update#=  212;       //+vby0R~
 //***************************************************************************//~v59zI~
-//vai7:130526 (Axe)change cursor color(when cmderr,not visible on cmdline)//+vai7I~
+//vby0:230322 for Axe Api33; ld duplicate symbole                  //+vby0I~
+//vai7:130526 (Axe)change cursor color(when cmderr,not visible on cmdline)//~vai7I~
 //v@@@:110610 Android(-DARM)                                       //~v@@@I~
 //v780:080212 syntaxhighlight support (SYN cmd,C+s func key)       //~v780I~
 //v76c:070617 (XXE)paste from PRIMARY clipboard by middle button down//~v76cI~
@@ -42,6 +43,7 @@ typedef struct _FONTDATA {                                         //~v59zM~
                   } FONTDATA , *PFONTDATA;                         //~v59zM~
 #define FONTDATASZ sizeof(FONTDATA)                                //~v59zM~
 #define XXE_MAXFONTFACE 4                                          //~v780I~
+GXE_EXTERN                                                         //+vby0I~
 		PangoFontDescription  *Gsynfontdesc[XXE_MAXFONTFACE];      //~v780I~
 typedef struct _COLORDATA {                                        //~v59zM~
 					int                   CDstatus;                //~v59zR~
@@ -62,15 +64,15 @@ GXE_EXTERN  GdkGC     *Gpgcruler;   //ruler                        //~v73tI~
 GXE_EXTERN  GdkColormap *Gpcolormap;                               //~v59zI~
 GXE_EXTERN  GdkColor   Gxxepalette[MAX_PALETTE];                   //~v59zR~
 #define COLOR_GRAY    {0,0x8888,0x8888,0x8888}                     //~v59zR~
-#define COLOR_LBLUE   {0,0x8888,0xffff,0xffff}                     //+vai7I~
+#define COLOR_LBLUE   {0,0x8888,0xffff,0xffff}                     //~vai7I~
 #define COLOR_WHITE   {0,0xffff,0xffff,0xffff}                     //~v59zI~
 #define COLOR_BLACK   {0,0x0000,0x0000,0x0000}                     //~v59zR~
 GXE_EXTERN  GdkColor   Gxxesynpalette[16];                         //~v780R~
 GXE_EXTERN  GdkColor   Gprintbg  INITVAL(COLOR_WHITE);             //~v59zI~
 GXE_EXTERN  GdkColor   Gprintfg  INITVAL(COLOR_BLACK);             //~v59zI~
 GXE_EXTERN  GdkColor   Gpreviewbg  INITVAL(COLOR_GRAY);            //~v59zI~
-//GXE_EXTERN  GdkColor   Gcsrcolor INITVAL(COLOR_GRAY);            //+vai7R~
-GXE_EXTERN  GdkColor   Gcsrcolor INITVAL(COLOR_LBLUE);             //+vai7I~
+//GXE_EXTERN  GdkColor   Gcsrcolor INITVAL(COLOR_GRAY);            //~vai7R~
+GXE_EXTERN  GdkColor   Gcsrcolor INITVAL(COLOR_LBLUE);             //~vai7I~
 GXE_EXTERN  GdkColor   Gimbgcolor INITVAL(COLOR_WHITE);            //~v59zR~
 GXE_EXTERN  GdkColor   Gimfgcolor INITVAL(COLOR_BLACK);            //~v59zR~
 GXE_EXTERN  GdkColor   Grulerfg;                                   //~v73tI~

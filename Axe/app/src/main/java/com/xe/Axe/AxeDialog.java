@@ -1,6 +1,7 @@
-//*CID://+vc2DR~: update#= 187;                                    //+vc2DR~
+//*CID://+vc53R~: update#= 188;                                    //+vc53R~
 //**********************************************************************//~1107I~
-//vc2D 2020/08/19 (Bug)kbd send not to Dialog but to AxeScreen when KbdDialogHW opened after AxeDialog Open//+vc2DI~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
+//vc2D 2020/08/19 (Bug)kbd send not to Dialog but to AxeScreen when KbdDialogHW opened after AxeDialog Open//~vc2DI~
 //vc1u 2020/07/06 helpdialog for asset/helptexts                   //~vc1uI~
 //vay7:141122 (Axe)actionBar:save/saveas item                      //~vay7I~
 //vagF:120920 (Axe)local html viewer fail by permission err(uid of process of HtmlViewer was checked)//~vagFI~
@@ -42,7 +43,7 @@ public class AxeDialog extends Dialog                              //~1830R~
     {                                                              //~1211I~
         super(AxeG.context);
 		layoutId=Playoutid;                                        //~1601I~
-        AxeG.axeDialog=this;                                       //+vc2DR~
+        AxeG.axeDialog=this;                                       //~vc2DR~
     }                                                              //~1211I~
 //**********************************
 //    public static AxeDialog buttonLayout()                       //~1602R~
@@ -164,20 +165,34 @@ public class AxeDialog extends Dialog                              //~1830R~
     {                                                              //~1528I~
         boolean rc=true;                                           //~1528I~
     	if (Dump.Y) Dump.println("AxeDialog onClick layoutid="+Integer.toHexString(layoutId)+",buttonid="+Integer.toHexString(PbuttonId));//~1528I~
-    	switch(PbuttonId)                                          //~1821I~
-        {                                                          //~1821I~
-        case R.id.Help:                                            //~1821I~
-        	rc=onClickHelp();                                      //~1821I~
-        	break;                                                 //~1821I~
-        case R.id.Cancel:                                          //~1821I~
-        	rc=onClickCancel();                                    //~1821I~
-        	break;                                                 //~1821I~
-        case R.id.Close:                                           //~1821I~
-        	rc=onClickClose();                                     //~1821I~
-        	break;                                                 //~1821I~
-        default:                                                   //~1821I~
-        	rc=onClickOther(PbuttonId);                            //~1821I~
-        }                                                          //~1821I~
+//        switch(PbuttonId)                                          //~1821I~//+vc53R~
+//        {                                                          //~1821I~//+vc53R~
+//        case R.id.Help:                                            //~1821I~//+vc53R~
+//            rc=onClickHelp();                                      //~1821I~//+vc53R~
+//            break;                                                 //~1821I~//+vc53R~
+//        case R.id.Cancel:                                          //~1821I~//+vc53R~
+//            rc=onClickCancel();                                    //~1821I~//+vc53R~
+//            break;                                                 //~1821I~//+vc53R~
+//        case R.id.Close:                                           //~1821I~//+vc53R~
+//            rc=onClickClose();                                     //~1821I~//+vc53R~
+//            break;                                                 //~1821I~//+vc53R~
+//        default:                                                   //~1821I~//+vc53R~
+//            rc=onClickOther(PbuttonId);                            //~1821I~//+vc53R~
+//        }                                                          //~1821I~//+vc53R~
+//      switch(PbuttonId)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (PbuttonId== R.id.Help)                                 //+vc53I~
+            rc=onClickHelp();                                      //+vc53I~
+        else //break;                                              //+vc53I~
+        if (PbuttonId== R.id.Cancel)                               //+vc53I~
+            rc=onClickCancel();                                    //+vc53I~
+        else //break;                                              //+vc53I~
+        if (PbuttonId== R.id.Close)                                //+vc53I~
+            rc=onClickClose();                                     //+vc53I~
+        else //break;                                              //+vc53I~
+//      default:                                                   //+vc53I~
+            rc=onClickOther(PbuttonId);                            //+vc53I~
+//      }                                                          //+vc53I~
         if (rc)                                                    //~1528I~
 //        	androidDialog.dismiss();                               //~1830R~
           	dismiss();                                             //~1830I~

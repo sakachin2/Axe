@@ -1,5 +1,6 @@
-//*CID://+vc11R~:                             update#=   38;       //+vc1mR~
+//*CID://+vc4dR~:                             update#=   40;       //~vc4dR~
 //**********************************************************************//~vag0I~
+//vc4d 2023/03/25 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//~vc4dI~
 //vc11 2020/06/14 add indeterminate=false(having max value) type to ProgressDialog//~vc11I~
 //vag0:120719 (Axe)function to download asset from web             //~vag0I~
 //**********************************************************************//~vag0I~
@@ -7,7 +8,7 @@
 //**********************************************************************//~vag0I~
 package com.xe.Axe;
 //****************************************************************
-//*foloowings are copyed at April 17,2011 from http://www.hassanpur.com
+//*followings are copyed at April 17,2011 from http://www.hassanpur.com//+vc4dR~
 //****************************************************************
 /**
  * Copyright (c) 2011 Mujtaba Hassanpur.
@@ -39,6 +40,7 @@ import android.app.Dialog;
 //import android.app.ProgressDialog;
 //import android.os.Bundle;                                        //~vag0R~
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 //import android.view.View;                                        //~vag0R~
 //import android.view.View.OnClickListener;                        //~vag0R~
@@ -130,7 +132,8 @@ public class AndroidFileDownloader                                 //~vag0I~
 	 * This is the Handler for this activity. It will receive messages from the
 	 * DownloaderThread and make the necessary updates to the UI.
 	 */
-	public Handler activityHandler = new Handler()
+//	public Handler activityHandler = new Handler()                 //~vc4dR~
+	public Handler activityHandler = new Handler(Looper.getMainLooper())//~vc4dI~
 	{
 		public void handleMessage(Message msg)
 		{

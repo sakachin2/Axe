@@ -1,5 +1,6 @@
-//*CID://+vc30R~: update#= 62;                                     //~vc26R~//~vc30R~
+//*CID://+vc41R~: update#= 63;                                     //+vc41R~
 //**********************************************************************//~vaagI~
+//vc41 2023/03/25 api33 support;deprecated getDefaultDisplay       //+vc41I~
 //vc30 2020/09/20 return key could not close xeKbd                 //~vc30I~
 //vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//~vc25I~//~vc26R~
 //vc22 2020/07/10 send kbd msg from hardkbd                        //~vc20I~
@@ -67,7 +68,8 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
      	super(Pcontext,DIALOG_THEME);//style for fullscreen       //~1918R~
         context=Pcontext;                                          //~1918I~
                                                                    //~1902I~
-        Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~
+//      Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~//+vc41R~
+        Display display=AxeView.getDefaultDisplay();               //+vc41I~
 //      int displayW=display.getWidth();                           //~vaybR~
 //      int displayH=display.getHeight();                          //~vaybR~
         Point dsz=AxeView.getDisplayRegion();                      //~vaybR~
@@ -519,7 +521,7 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         if (Dump.Y) Dump.println("AxeKbdDialog.dismiss dlg="+dlg);          //~vc26I~//~vc30I~
         if (dlg==null)                                             //~vc30I~
         	return;                                                //~vc30I~
-        if (Dump.Y) Dump.println("AxeKbdDialog.dismiss dlg.isshowing="+dlg.isShowing());//+vc30I~
+        if (Dump.Y) Dump.println("AxeKbdDialog.dismiss dlg.isshowing="+dlg.isShowing());//~vc30I~
         if (dlg.isShowing())                                       //~vc26I~
         {                                                          //~vc26I~
             dlg.dismiss();

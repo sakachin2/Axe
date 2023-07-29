@@ -1,5 +1,7 @@
-//*CID://+dateR~: update#= 165;                                    //~1107R~
+//*CID://+vc53R~: update#= 166;                                    //+vc53R~
 //**********************************************************************//~1107I~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
+//**********************************************************************//+vc53I~
 //*AlerDialog                                                      //~1527R~
 //**********************************************************************//~1107I~
 package com.xe.Axe;                                         //~1107R~  //~1108R~//~1527R~
@@ -45,8 +47,8 @@ public class AxeDlgShiftList extends AxeDialog                                  
 	@Override                                                      //~1821I~
     protected boolean onClickClose()                               //~1821I~
     {                                                              //~1821I~
-    	boolean rc=false;	//dismiss                              //+1821I~
-    //**********                                                   //+1821I~
+    	boolean rc=false;	//dismiss                              //~1821I~
+    //**********                                                   //~1821I~
         rc=axeList.saveUpdate();	//if err exist                 //~1821I~
         return rc;                                                 //~1821I~
     }                                                              //~1821I~
@@ -56,9 +58,11 @@ public class AxeDlgShiftList extends AxeDialog                                  
     {                                                              //~1821I~
     	boolean rc=false;	//dismiss                              //~1821I~
     //**********                                                   //~1821I~
-    	switch(PbuttonId)                                          //~1821I~
-        {                                                          //~1821I~
-        case R.id.Reset:                                           //~1821I~
+//    	switch(PbuttonId)                                          //~1821I~//+vc53R~
+//      {                                                          //~1821I~//+vc53R~
+//      case R.id.Reset:                                           //~1821I~//+vc53R~
+      	if (PbuttonId==R.id.Reset)                                 //+vc53I~
+        {                                                          //+vc53I~
     		AxeDlgDefShift.show(this);                             //~1821I~
         }                                                          //~1821I~
         return rc;                                                 //~1821I~

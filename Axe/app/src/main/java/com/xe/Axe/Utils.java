@@ -1,6 +1,8 @@
-//*CID://+vc27R~: update#= 127;                                    //~vai3R~//+vc27R~
+//*CID://+vc4zR~: update#= 129;                                    //+vc4zR~
 //**********************************************************************
-//vc27 2020/07/11 repeatdelay for hardkbd                          //+vc27I~
+//vc4z 2023/05/24 use finishAndRemoveTask() for finish() from api21(A5-L)//+vc4zI~
+//vc49 2023/03/25 deprecated api33; PackageManager.getApplicationInfo//~vc49I~
+//vc27 2020/07/11 repeatdelay for hardkbd                          //~vc27I~
 //vai3:130525 (Axe)hide internal option when release version       //~vai3I~
 //vagH:130214 (Axe)System.exit()-->Process.KillProcess             //~vagHI~
 //vaa8:111111 (Axe)unzip by subthread                              //~1B11I~
@@ -10,6 +12,7 @@ package com.xe.Axe;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -49,13 +52,16 @@ public class Utils
     }
 	public static void finish()
     {
-    	if (Dump.Y) Dump.println("AjagoUtils finish requested "+finished);
+    	if (Dump.Y) Dump.println("AjagoUtils finish requested "+finished+",APILevel="+AxeG.osVersion);//+vc4zR~
     	if (finished)
         	return ;
+	  if (AxeG.osVersion>=21)  //>=android10(Q)=api-29             //+vc4zI~
+  		AxeG.main.finishAndRemoveTask();                           //+vc4zI~
+      else                                                         //+vc4zI~
 		AxeG.main.finish();
     	if (Dump.Y) Dump.println("AjagoUtils context finish request");
         sleep(1000);//wait subtread termination  1.0sec
-    	if (Dump.Y) Dump.println("AjagoUtils context finish request after sleep 1200");
+    	if (Dump.Y) Dump.println("AjagoUtils context finish request after sleep 1000");//+vc4zR~
         Dump.close();
         finished=true;
     }
@@ -263,12 +269,16 @@ public class Utils
         return to;                                                 //~vai3I~
     }                                                              //~vai3I~
 //***********************************************************************//~vai3I~
+	@SuppressWarnings("deprecation")                               //~vat2I~//~vc49I~
     public static boolean isDebuggable(Context ctx)                //~vai3I~
     {                                                              //~vai3I~
         PackageManager manager = ctx.getPackageManager();          //~vai3I~
         ApplicationInfo appInfo = null;                            //~vai3I~
         try                                                        //~vai3I~
         {                                                          //~vai3I~
+		  if (AxeG.osVersion>=33)                                    //~vat2I~//~vc49I~
+            appInfo = getApplicationInfo33(manager,ctx);               //~vat2I~//~vc49I~
+          else                                                     //~vat2I~//~vc49I~
             appInfo = manager.getApplicationInfo(ctx.getPackageName(), 0);//~vai3I~
         }                                                          //~vai3I~
         catch (NameNotFoundException e)                            //~vai3I~
@@ -279,4 +289,16 @@ public class Utils
             return true;                                           //~vai3I~
         return false;                                              //~vai3I~
     }                                                              //~vai3I~
+//***********************************************************************//~vat2I~//~vc49I~
+	@TargetApi(33)                                                 //~vat2I~//~vc49I~
+    public static ApplicationInfo getApplicationInfo33(PackageManager Pmgr,Context Pcontext)//~vat2I~//~vc49I~
+    	throws NameNotFoundException                               //~vat2I~//~vc49I~
+    {                                                              //~vat2I~//~vc49I~
+    	if (Dump.Y) Dump.println("Utils.getApplicationInfo33");    //~vat2I~//~vc49I~
+    	int flagMgr=0;	//TODO  ?                                  //~vat2R~//~vc49I~
+    	PackageManager.ApplicationInfoFlags flags=PackageManager.ApplicationInfoFlags.of(flagMgr);//~vat2I~//~vc49I~
+    	ApplicationInfo appInfo = Pmgr.getApplicationInfo(Pcontext.getPackageName(),flags);//~vat2I~//~vc49I~
+    	if (Dump.Y) Dump.println("Utils.getApplicationInfo33 appinfo="+appInfo);//~vat2I~//~vc49I~
+        return appInfo;                                            //~vat2I~//~vc49I~
+    }                                                              //~vat2I~//~vc49I~
 }//class AjagoUtils

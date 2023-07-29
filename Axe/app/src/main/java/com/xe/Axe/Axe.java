@@ -1,5 +1,8 @@
-//*CID://+vc2UR~:                             update#=  104;       //~vc2UR~
+//*CID://+vc5fR~:                             update#=  109;       //+vc5fR~
 //*****************************************************************************************//~vabeR~
+//vc5f 2023/07/10 Dump at onWindowFocusChanged by AxeG.axeScreen==null because not yet getScreenSize return W=H=0//+vc5fI~
+//vc4y 2023/05/22 >=android11(Api30),access all file option setting by setting-android related dialog//~vc4yI~
+//vc4q 2023/04/01 support shared storage using SAF(StorageAccessFramework)//~vc4qI~
 //vc2U 2020/09/18 initialize progress dialog not dismiss automatically//~vc2KI~
 //vc2K 2020/08/28 receive intent(View/Edit)                        //~vc2KI~
 //vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//~vc26I~
@@ -48,6 +51,7 @@ import android.view.WindowManager;
 import com.ahsv.AG;
 import com.ahsv.utils.URunnable;
 import com.ahsv.utils.URunnableI;
+import com.ahsv.utils.USAF;
 import com.ahsv.utils.Utils;
 import com.xe.Axe.kbd.AxeKbdDialogHW;
 
@@ -60,6 +64,7 @@ public class Axe extends Activity                                  //~vaiqR~
     public static final int PERMISSION_LOCATION=1;                 //~vc10I~
     public static final int PERMISSION_EXTERNAL_STORAGE=2;         //~vc1bI~
     public static final int PERMISSION_EXTERNAL_STORAGE_READ=3;         //~vc10I~//~vc1bI~
+    public static final int REQID_SAF=0x10;                        //~vc4qI~
                                                                    //~vc10I~
     private boolean scrinitialized;                                //~1606R~
     private static boolean destroying=false;                       //~1607I~
@@ -243,7 +248,10 @@ public class Axe extends Activity                                  //~vaiqR~
                   }                                                //~1715I~
 //          View v=getCurrentFocus();      	                       //~vaiqR~
             if (v==AxeG.axeScreen)                                 //~1827I~
+            {                                                      //+vc5fI~
+              if (AxeG.axeScreen!=null)                            //+vc5fI~
             	AxeG.axeScreen.windowFocusChanged(Phasfocus);      //~1827I~
+            }                                                      //+vc5fI~
             if (Phasfocus && contextMenuShowing)  //disabled menuitem is so far clickable and menu is closed when clicked and oncontextmenuclosed is not calle//~1930R~
             {                                                      //~1930I~
             	AxeG.axeMenu.onContextMenuClosed(menuCreated);           //~1930I~
@@ -257,6 +265,7 @@ public class Axe extends Activity                                  //~vaiqR~
         if (Dump.Y) Dump.println("Axe.onWindowFocusChanged "+Phasfocus); //~1530I~//~vc2UR~
         if (Dump.Y) Dump.println("forcus view="+getCurrentFocus());//~1530I~
         Configuration cfg=AxeG.resource.getConfiguration();        //~vaiqI~
+        AG.aUSAF.chkPermissionAllFiles();                          //~vc4yR~
         if (Dump.Y) Dump.println("Axe.onWindowFocusChanged keyboard="+Integer.toHexString(cfg.keyboard));//~vaiqI~//~vc1bR~//~vc2UR~
         if (Dump.Y) Dump.println("Axe.onWindowFocusChanged keyboardHidden="+Integer.toHexString(cfg.keyboardHidden));//~vaiqI~//~vc1bR~//~vc2UR~
         if (Dump.Y) Dump.println("Axe.onWindowFocusChanged hardKeyboardHidden="+Integer.toHexString(cfg.hardKeyboardHidden));//~vaiqI~//~vc1bR~//~vc2UR~
@@ -430,11 +439,11 @@ public class Axe extends Activity                                  //~vaiqR~
     //******************************************                   //~vaiqI~
     public int alertOnShow(AxeAlert Paxealert,boolean Pdismiss)                     //~vaiqI~
     {                                                              //~vaiqI~
-        if (Dump.Y) Dump.println("Axe.alertOnShow dismiss="+Pdismiss+",initsw="+initFirsttime+",initComp="+AxeProp.initCompleted); //~vaiqR~//+vc2UR~
+        if (Dump.Y) Dump.println("Axe.alertOnShow dismiss="+Pdismiss+",initsw="+initFirsttime+",initComp="+AxeProp.initCompleted); //~vaiqR~//~vc2UR~
 	    if (initFirsttime==1)	//shown "start firsttime init"     //~vaiqR~
         {                                                          //~vaiqI~
-        	if (Dump.Y) Dump.println("Axe.alertOnShow req dismiss 1"); //~vaiqR~//+vc2UR~
-          if (!Pdismiss)                                           //+vc2UI~
+        	if (Dump.Y) Dump.println("Axe.alertOnShow req dismiss 1"); //~vaiqR~//~vc2UR~
+          if (!Pdismiss)                                           //~vc2UI~
 	        Paxealert.pdlg.dismiss();  //onece lose focus to schedule onfocuschanged//~vaiqR~
         }                                                          //~vaiqI~
         else                                                       //~vaiqI~
@@ -451,31 +460,31 @@ public class Axe extends Activity                                  //~vaiqR~
             if (Pdismiss)                                          //~vaiqI~
     	    	initAlertDialog2=null;	//user pushed "close" button//~vaiqI~
             else                                                   //~vaiqI~
-            {                                                      //+vc2UI~
+            {                                                      //~vc2UI~
     	    	initAlertDialog2=Paxealert;                        //~vaiqR~
-        		if (AxeProp.initCompleted)                         //+vc2UI~
-			    	initComp();	//didmiss alert dialog to onwindowfocuschanged//+vc2UI~
-            }                                                      //+vc2UI~
-                                                                   //+vc2UI~
+        		if (AxeProp.initCompleted)                         //~vc2UI~
+			    	initComp();	//didmiss alert dialog to onwindowfocuschanged//~vc2UI~
+            }                                                      //~vc2UI~
+                                                                   //~vc2UI~
         }                                                          //~vaiqI~
         return 0;                                                  //~vaiqI~
     }                                                              //~vaiqI~
     //******************************************                   //~vc2UI~
     public static void initComp()                                  //~vc2UI~
     {                                                              //~vc2UM~
-        if (Dump.Y) Dump.println("Axe.initComp initsw="+AxeG.main.initFirsttime);//+vc2UR~
+        if (Dump.Y) Dump.println("Axe.initComp initsw="+AxeG.main.initFirsttime);//~vc2UR~
         AxeG.main.dismissInitAlertDialog();                         //~vc2UI~
     }                                                              //~vc2UM~
     //******************************************                   //~vaiqI~
     private void dismissInitAlertDialog()                          //~vaiqR~
     {                                                              //~vaiqI~
-        if (Dump.Y) Dump.println("Axe.dismissInitAlertDialog dislog2="+(initAlertDialog2==null?"null":"not null")+",initcomp="+AxeProp.initCompleted+",initsw="+initFirsttime);//~vaiqR~//+vc2UR~
+        if (Dump.Y) Dump.println("Axe.dismissInitAlertDialog dislog2="+(initAlertDialog2==null?"null":"not null")+",initcomp="+AxeProp.initCompleted+",initsw="+initFirsttime);//~vaiqR~//~vc2UR~
         if (initAlertDialog2!=null)                                //~vaiqI~
         {                                                          //~vaiqI~
             if (AxeProp.initCompleted                              //~vaiqR~
             &&  initFirsttime==3)                                  //~vaiqI~
             {                                                      //~vaiqI~
-    	    	if (Dump.Y) Dump.println("Axe.dismissInitAlertDialog dismiss dislog2");//~vaiqR~//+vc2UR~
+    	    	if (Dump.Y) Dump.println("Axe.dismissInitAlertDialog dismiss dislog2");//~vaiqR~//~vc2UR~
 	        	initAlertDialog2.pdlg.dismiss();  //dismiss waiting//~vaiqR~
 	        	initAlertDialog2=null;                             //~vaiqR~
             }                                                      //~vaiqI~
@@ -554,4 +563,19 @@ public class Axe extends Activity                                  //~vaiqR~
 	    if (Dump.Y) Dump.println("Axe.hideSoftKbd"); //~vc1rI~     //~vc2UR~
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);//~vc1rI~
     }                                                              //~vc1rI~
+//***************************************************************************//~vc4qI~
+	@Override                                                      //~vc4qI~
+    public void onActivityResult(int PrequestID,int Presult,Intent Pintent)//~vc4qI~
+    {                                                              //~vc4qI~
+    	try                                                        //~vc4qI~
+        {                                                          //~vc4qI~
+        	if (Dump.Y) Dump.println("Axe.onActivityResult reqid="+PrequestID+",result="+Presult+",intent="+Pintent);//~vc4qI~
+            if ((PrequestID & REQID_SAF)!=0)                       //~vc4qI~
+	        	USAF.onActivityResult(PrequestID,Presult,Pintent);//~vc4qI~
+        }                                                          //~vc4qI~
+        catch(Exception e)                                         //~vc4qI~
+        {                                                          //~vc4qI~
+        	Dump.println(e,"Axe.onActivityResult reqID="+PrequestID);//~vc4qI~
+        }                                                          //~vc4qI~
+    }                                                              //~vc4qI~
 }//class                                                           //~1621R~

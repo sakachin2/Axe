@@ -1,7 +1,10 @@
-//*CID://+vaxfR~: update#= 126;                                    //~vaxfR~
+//*CID://+vc51R~: update#= 141;                                    //~vc51R~
 //**********************************************************************//~1107I~
 //*AlerDialog                                                      //~1527R~
 //**********************************************************************//~1107I~
+//vc51 2023/05/30 avoid dismiss by button(need to set listener after show)//~vc51I~
+//vc50 2023/05/30 support help button for AxeAlert                 //~vc50I~
+//vc4y 2023/05/22 >=android11(Api30),access all file option setting by setting-android related dialog//~vc4yI~
 //vaxf:140707 (Axe)change font for help dislog                     //~vaxfI~
 //vaiq:130606 Axe:issue initial setup Alert(Be paitient)           //~vaiqI~
 //**********************************************************************//~vaiqI~
@@ -34,6 +37,8 @@ public class AxeAlert                                            //~1107R~//~152
 	public static final int NO_TITLE        =0x0100;               //~1212I~
 	public static final int CB_ONSHOW       =0x0400;               //~vaiqR~
 	public static final int CB_DISMISS      =0x0800;               //~vaiqI~
+	public static final int CB_CUSTOM       =0x1000; //do no call show and return instance//~vc4yI~
+	public static final int BUTTON_HELP     =0x2000;               //~vc50I~
 	public static final String PREF_HELPTEXTSZ="HelpTextSize";     //~vaxfI~
 	
 	private AxeAlertI callback;                                    //~1527R~
@@ -43,6 +48,7 @@ public class AxeAlert                                            //~1107R~//~152
                                                                    //~1211I~
   public                                                           //~vaiqI~
 	AlertDialog pdlg;                                              //~1425R~
+  public AlertDialog.Builder pbuilder;                             //~vc4yI~
                                           //~1211R~
 //******************                                               //~1121I~
 //**********************************                               //~1211I~
@@ -87,6 +93,7 @@ public class AxeAlert                                            //~1107R~//~152
 	private void createAlertDialog(String Ptitle,String Ptext,int Pflag)//~1211R~//~1212R~
     {                                                              //~1211I~
 		AlertDialog.Builder builder=new AlertDialog.Builder(AxeG.context);//~1211I~
+        pbuilder=builder; 	//access by setOnShow                  //~vc4yI~
     	builder.setMessage(Ptext);                                         //~v@@@I~//~1211I~
         setButton(builder,Pflag);                                  //~1212I~
     	pdlg=builder.create();                                                  //~v@@@I~//~1211I~
@@ -100,12 +107,14 @@ public class AxeAlert                                            //~1107R~//~152
         if ((Pflag & CB_ONSHOW)!=0)                                //~vaiqI~
         	setOnShow(this);                                       //~vaiqR~
         pdlg.setOnDismissListener(new AxeAlertDismissListener(this));   //~vaiqI~
-        if (Dump.Y) Dump.println("AxeAlert.createAlertDialog text="+Ptext);//+vaxfI~
+        if (Dump.Y) Dump.println("AxeAlert.createAlertDialog text="+Ptext);//~vaxfI~
+      if ((Pflag & CB_CUSTOM)==0)                                   //~vc4yI~
     	pdlg.show();                                                    //~v@@@I~//~1211I~//~1212R~
     }                                                              //~1211I~
 //**********************************                               //~1212I~
 	private void setButton(AlertDialog.Builder Pbuilder,int Pflag) //~1212I~
     {                                                              //~1212I~
+        if (Dump.Y) Dump.println("AxeAlert.setButton flag="+Integer.toHexString(Pflag));//~vc50I~
     	flag=Pflag;                                                //~1212I~
         if ((Pflag & BUTTON_POSITIVE)!=0)                          //~1212I~
         {                                                          //~1212I~
@@ -169,13 +178,51 @@ public class AxeAlert                                            //~1107R~//~152
                                         }                          //~1622I~
                                      );                            //~1622I~
         }                                                          //~1622I~
+        if ((Pflag & BUTTON_HELP)!=0)                              //~vc50I~
+        {                                                          //~vc50I~
+            Pbuilder.setNegativeButton("Help",new DialogInterface.OnClickListener()	//negative is 3rd button//~vc50I~//~vc51R~
+                                        {                          //~vc50I~
+                                                                   //~vc50I~
+                                            public void onClick(DialogInterface Pdlg,int buttonID)//~vc50I~
+                                            {                      //~vc50I~
+										        callback(pdlg,callback,BUTTON_HELP);//~vc50R~
+                                            }                      //~vc50I~
+                                        }                          //~vc50I~
+                                     );                            //~vc50I~
+        }                                                          //~vc50I~
    }//setButton                                                   //~1212I~
+//**********************************                               //~vc51I~
+	public void setButtonHelpNoDismiss()                          //~vc51I~
+    {                                                              //~vc51I~
+        if (Dump.Y) Dump.println("AxeAlert.setButtonNoDismissHelp");//~vc51I~
+        Button btn=pdlg.getButton(DialogInterface.BUTTON_NEGATIVE);//+vc51R~
+        btn.setOnClickListener(new View.OnClickListener()	       //~vc51R~
+                                        {                          //~vc51I~
+                                                                   //~vc51I~
+                                            public void onClick(View v)//~vc51R~
+                                            {                      //~vc51I~
+										        callback(pdlg,callback,BUTTON_HELP);//~vc51I~
+                                            }                      //~vc51I~
+                                        }                          //~vc51I~
+                                     );                            //~vc51I~
+
+   }//setButton                                                    //~vc51I~
+//**********************************                               //~vc50I~
     private static void callback(AlertDialog Pdlg,AxeAlertI Pcallback,int Pbuttonid)//~1622I~
     {                                                          //~1622I~
-        if (Dump.Y) Dump.println("AxeAlert callback");             //+vaxfI~
+        if (Dump.Y) Dump.println("AxeAlert callback Pdlg="+Pdlg);             //~vaxfI~//~vc4yR~
+      if (Pdlg==null)                                              //~vc4yI~
+      {                                                            //~vc4yI~
+        if (Pcallback!=null)                                       //~vc4yI~
+        	Pcallback.alertButtonAction(Pbuttonid/*-1*/,0);        //~vc4yI~
+      }                                                            //~vc4yI~
+      else                                                         //~vc4yI~
+      {                                                            //~vc4yI~
+       if (Pbuttonid!=BUTTON_HELP)                                 //~vc50I~
     	Pdlg.dismiss();                                        //~1622I~
         if (Pcallback!=null)                                   //~1622I~
         	Pcallback.alertButtonAction(Pbuttonid,0);     //~1622I~
+      }                                                            //~vc4yI~
     }                                                          //~1622I~
 //**********************************************************************//~1211I~
 	public void show()                                             //~1211I~

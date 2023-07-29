@@ -1,8 +1,12 @@
-//*CID://+vc2LR~:                                   update#=  195; //+vc2LR~
+//*CID://+vc4xR~:                                   update#=  207; //~vc4xR~
 //**************************************************************** //~1610I~
 //jnia.h                                                           //~vay0R~
 //**************************************************************** //~1610I~
-//vc2L 2020/09/02 display TMPDIR                                   //+vc2LI~
+//vc4x 2023/05/16 Try to get path for shared storage               //~vc4xI~
+//vby8:230415 (ARM)open document file                              //~vby8I~
+//vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
+//vby0:230322 for Axe Api33; ld duplicate symbole                  //~vby0I~
+//vc2L 2020/09/02 display TMPDIR                                   //~vc2LI~
 //vc2g 2020/07/26 AltGr key option                                 //~vc2gI~
 //vc1p 2020/06/24 display path env                                 //~vc1iI~
 //vc1i 2020/06/22 display not /emulated/.. but /sdcard to header CWD=//~vc1iI~
@@ -39,7 +43,8 @@
 //L:objectname prefix end with ";"                                 //~vac6I~
 //[:array prefix                                                   //~vac6I~
 //*************************************************                //~1714I~
-JavaVM  *Gvm;                                                      //~1714I~
+//JavaVM  *Gvm;                                                      //~1714I~//~vby0R~
+JNIEXT JavaVM  *Gvm;                                               //~vby0I~
 //JNIEXT JNIEnv *Gpjnienv;                                         //~1714R~
 //JNIEXT jobject Gthis;                                            //~1714R~
 JNIEXT jclass  Gclass;                                             //~1713I~
@@ -52,9 +57,11 @@ JNIEXT int     GaxeStatus;                                         //~vc1dI~
 #define AXES_ALTGR_RIGHTALT                       0x08  // use Left-Alt as AltGr//~vc2gR~
 #define AXES_ALTGR_LEFTALT                        0x10  // use Left-Alt as AltGr//~vc2gI~
 #define AXES_ALTGR_RIGHTSHIFT                     0x20  // use RightShift as AltGr//~vc2gR~
+#define AXES_GRANT_ALLFILES                       0x40  // permit access allfiles for API>=30//+vc4xR~
 JNIEXT char   *Gjnisdpath;                                         //~1A06I~
 JNIEXT char   *GjnisdRoot;                                         //~vc1fI~
 JNIEXT char   *GjnisdRootPath;                                     //~vc1iI~
+JNIEXT char   *GjniNativeLibraryDir;                               //~vc4pI~
 JNIEXT char   *GenvVarPATH;                                        //~vc1iI~
 JNIEXT char   *Gjniprivatepath;                                    //~v6dgI~
 JNIEXT char   *Gdndselection;                                      //~1A19I~
@@ -82,11 +89,12 @@ JNIEXT jfieldID staticFID_Mstyle;                                  //~1803I~
 JNIEXT jfieldID staticFID_Mfontheight;                             //~1809I~
 JNIEXT jfieldID staticFID_Mfontwidth;                              //~1809I~
 JNIEXT jfieldID staticFID_homeDir;                                 //~1A12I~
-JNIEXT jfieldID staticFID_envVarTMPDIR;                            //+vc2LI~
+JNIEXT jfieldID staticFID_envVarTMPDIR;                            //~vc2LI~
 JNIEXT jfieldID staticFID_privateTop;                              //~vabcI~
 JNIEXT jfieldID staticFID_addPath;                                 //~1A25I~
 JNIEXT jfieldID staticFID_initCmd;                                 //~1A17I~
 JNIEXT jfieldID staticFID_sdRootPath;                              //~vc1iI~
+JNIEXT jfieldID staticFID_nativeLibraryDir;                        //~vc4pR~
 JNIEXT jfieldID staticFID_initFile;                                //~1A17I~
 JNIEXT jfieldID staticFID_envPath;                                 //~1A26I~
 JNIEXT jfieldID staticFID_envVarPATH;                              //~vc1iI~
@@ -275,3 +283,10 @@ void *getvoidtb(int Ptbid,int Psize);                              //~1718I~
 #define GETTB_POSTB         2                                      //~1718R~//~1719R~
 #define GETTB_GEOM          3                                      //~1719I~
 #define GETTB_MAXTB         4                                      //~1718R~
+//*****************                                                //~vby8I~
+int getArrayLength(JNIEnv *Penv,jarray Pjarray);                   //~vby8I~
+void jstr2char(JNIEnv *Penv,jobjectArray Parray,int Ppos,int Plen,char **Ppout);//~vby8I~
+jintArray newjintArray(JNIEnv *Penv,int Plen);                     //~vby8R~
+jobjectArray newjstrArray(JNIEnv *Penv,int Plen);                  //~vby8R~
+int jbyte2byteCopy(JNIEnv *Penv,jbyteArray Pjba,char **Ppout/*ptr to copy to*/);//~vby8I~
+int jstr2UTFcharCopy(JNIEnv *Penv,jstring Pjstr,char **Ppout);     //~vby8I~

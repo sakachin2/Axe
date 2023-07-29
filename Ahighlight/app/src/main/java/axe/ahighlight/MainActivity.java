@@ -1,8 +1,11 @@
 package axe.ahighlight;
 
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;                 //+3325R~
+import androidx.appcompat.app.AppCompatActivity;                   //~3324I~//+3325I~
 import android.os.Bundle;
 import android.widget.TextView;
+
+import axe.Ahighlight.R;
 
 public class MainActivity extends AppCompatActivity {
 

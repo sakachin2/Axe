@@ -1,5 +1,6 @@
-//CID://+vaaiR~:       update#=2                                   //~vaaiI~
+//CID://+vcadR~:       update#=4                                   //~vcadR~
 //*************************************************************    //~vaaiI~
+//vc4d 2023/03/25 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//~vcadI~
 //vaai:111227 (Axe:BUG)flick operation generate primekey+flickkey  //~vaaiI~
 //*************************************************************    //~vaaiI~
 package com.xe.Axe;                                                //~1808I~
@@ -9,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.os.Handler;                                         //~1808I~
+import android.os.Looper;
 import android.os.Message;                                         //~1808I~
                                                                    //~1808I~
 public class AxeTimer extends Handler                              //~0915R~//~1808I~
@@ -23,8 +25,14 @@ public class AxeTimer extends Handler                              //~0915R~//~1
 	public int userTimerId;                                             //~0915I~//~1808I~//~1A18R~
 	private boolean swActive,swRepeat/*,swCoalesce*/;                           //~0915I~//~1808I~
     private int timerId;                                           //~1808I~
+    public AxeTimer(Looper Plooper)                                //~vcadI~
+    {                                                              //~vcadI~
+    	super(Plooper);                                            //~vcadI~
+        if (Dump.Y) Dump.println("AxeTimer.constructor");          //~vcadI~
+    }                                                              //~vcadI~
     public AxeTimer(int PuserTimerId,int Pinterval,long Pcallback)           //~0915I~//~1808I~
     {                                                              //~0915I~//~1808I~
+    	this(Looper.getMainLooper());                              //~vcadI~
     	swActive=false;                                                //~0915I~//~1808I~
     	swRepeat=false;                                            //~0915I~//~1808I~
         userTimerId=PuserTimerId;                                          //~0915I~//~1808I~
@@ -35,6 +43,7 @@ public class AxeTimer extends Handler                              //~0915R~//~1
     }                                                              //~0915I~//~1808I~
     public AxeTimer(AxeTimerI Plistener,int Pinterval,boolean Prepeat,Object Pparm)//~1827R~
     {                                                              //~1827I~
+    	this(Looper.getMainLooper());                              //+vcadI~
     	swActive=false;                                            //~1827I~
     	swRepeat=false;                                            //~1827I~
         userTimerId=0;                             //~1827I~
@@ -50,9 +59,9 @@ public class AxeTimer extends Handler                              //~0915R~//~1
 	    this(Plistener,Pinterval,Prepeat,Pparm);                    //~1A18I~
     	userTimerId=Ptimerid;                                      //~1A18I~
     }                                                              //~1A18I~
-//**************************************************************   //+vaaiI~
-//*handleMessage:exceuted on UI thread                             //+vaaiI~
-//**************************************************************   //+vaaiI~
+//**************************************************************   //~vaaiI~
+//*handleMessage:exceuted on UI thread                             //~vaaiI~
+//**************************************************************   //~vaaiI~
 	@Override                                                      //~0915I~//~1808I~
 	public void handleMessage(Message msg)                         //~0915I~//~1808I~
     {                                                              //~0915I~//~1808I~

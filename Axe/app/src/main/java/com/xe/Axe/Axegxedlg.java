@@ -1,5 +1,6 @@
-//*CID://+vc2SR~: update#=  202;                                   //~vc2SR~
+//*CID://+vc53R~: update#=  204;                                   //+vc53R~
 //*****************************************************************//~vai6I~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
 //vc2S 2020/09/12 add ruler width option                           //~vc2SI~
 //vc2Q 2020/09/08 change font size by pinch action                 //~vc2QI~
 //vc2B 2020/08/12 Help  by file                                    //~vc2BI~
@@ -61,8 +62,8 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
 	private static final int DIALOG_FONTNAME=LAYOUT_SETUPFONT;
 	private static final int[] FONT_SAMPLE=//"AaGgPpWw-xc0-XF0-x100"//~1731R~
     			{'A','a','G','g','P','p','W','w',' ',              //~1822R~
-    			'u','-','c','0','(',0xc0,')',' ',                      //~1803R~//+vc2SR~
-    			'u','-','f','0','(',0xf0,')',' ',                      //~1803R~//+vc2SR~
+    			'u','-','c','0','(',0xc0,')',' ',                      //~1803R~//~vc2SR~
+    			'u','-','f','0','(',0xf0,')',' ',                      //~1803R~//~vc2SR~
     			'u','-','3','0','4','2','(',0x3042,')',            //~vc2SI~
                 };                                                  //~1822I~
 	private static final int[] FONT_SAMPLE2=                       //~1822I~
@@ -147,18 +148,30 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
 	protected void setupDialogExtend(ViewGroup PlayoutView)        //~1725I~
     {                                                              //~1725I~
     //********************                                         //~1726I~
-    	switch (layoutid)                                          //~1726I~
-        {                                                          //~1726I~
-    	case LAYOUT_SETUPOTHER:                                    //~1726I~
-        	setupDialogExtendOther(PlayoutView);                   //~1726I~
-        	break;                                                 //~1726I~
-    	case LAYOUT_SETUPCOLOR:                                    //~1726I~
-        	setupDialogExtendColor(PlayoutView);                   //~1726I~
-        	break;                                                 //~1726I~
-    	case LAYOUT_SETUPFONT:                                     //~1727I~
-        	setupDialogExtendFont(PlayoutView);                    //~1727I~
-        	break;                                                 //~1727I~
-        }                                                          //~1726I~
+//        switch (layoutid)                                          //~1726I~//+vc53R~
+//        {                                                          //~1726I~//+vc53R~
+//        case LAYOUT_SETUPOTHER:                                    //~1726I~//+vc53R~
+//            setupDialogExtendOther(PlayoutView);                   //~1726I~//+vc53R~
+//            break;                                                 //~1726I~//+vc53R~
+//        case LAYOUT_SETUPCOLOR:                                    //~1726I~//+vc53R~
+//            setupDialogExtendColor(PlayoutView);                   //~1726I~//+vc53R~
+//            break;                                                 //~1726I~//+vc53R~
+//        case LAYOUT_SETUPFONT:                                     //~1727I~//+vc53R~
+//            setupDialogExtendFont(PlayoutView);                    //~1727I~//+vc53R~
+//            break;                                                 //~1727I~//+vc53R~
+//        }                                                          //~1726I~//+vc53R~
+//      switch (layoutid)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (layoutid== LAYOUT_SETUPOTHER)                          //+vc53I~
+            setupDialogExtendOther(PlayoutView);                   //+vc53I~
+        else //break;                                              //+vc53I~
+        if (layoutid== LAYOUT_SETUPCOLOR)                          //+vc53I~
+            setupDialogExtendColor(PlayoutView);                   //+vc53I~
+        else //break;                                              //+vc53I~
+        if (layoutid== LAYOUT_SETUPFONT)                           //+vc53I~
+            setupDialogExtendFont(PlayoutView);                    //+vc53I~
+//          break;                                                 //+vc53I~
+//      }                                                          //+vc53I~
     }                                                              //~1725I~
 //************************                                         //~1929I~
 //*Help                                                            //~1929I~
@@ -169,21 +182,42 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
 //  	int id=0,title=0;                                          //~1929I~//~vc2BR~
     	int title=0;                                               //~vc2BI~
     	String id=null;                                            //~vc2BI~
-    	switch (layoutid)                                          //~1929I~
-        {                                                          //~1929I~
-    	case LAYOUT_SETUPOTHER:                                    //~1929I~
-        	title=HELPTITLE_SETUPOTHER;                            //~1A11R~
-        	id=HELP_SETUPOTHER;                                    //~1929I~
-        	break;                                                 //~1929I~
-    	case LAYOUT_SETUPCOLOR:                                    //~1929I~
-        	title=HELPTITLE_SETUPCOLOR;                            //~1A11R~
-        	id=HELP_SETUPCOLOR;                                    //~1929I~
-        	break;                                                 //~1929I~
-    	case LAYOUT_SETUPFONT:                                     //~1929I~
-        	title=HELPTITLE_SETUPFONT;                             //~1A11R~
-        	id=HELP_SETUPFONT;                                     //~1929I~
-        	break;                                                 //~1929I~
-        }                                                          //~1929I~
+//        switch (layoutid)                                          //~1929I~//+vc53R~
+//        {                                                          //~1929I~//+vc53R~
+//        case LAYOUT_SETUPOTHER:                                    //~1929I~//+vc53R~
+//            title=HELPTITLE_SETUPOTHER;                            //~1A11R~//+vc53R~
+//            id=HELP_SETUPOTHER;                                    //~1929I~//+vc53R~
+//            break;                                                 //~1929I~//+vc53R~
+//        case LAYOUT_SETUPCOLOR:                                    //~1929I~//+vc53R~
+//            title=HELPTITLE_SETUPCOLOR;                            //~1A11R~//+vc53R~
+//            id=HELP_SETUPCOLOR;                                    //~1929I~//+vc53R~
+//            break;                                                 //~1929I~//+vc53R~
+//        case LAYOUT_SETUPFONT:                                     //~1929I~//+vc53R~
+//            title=HELPTITLE_SETUPFONT;                             //~1A11R~//+vc53R~
+//            id=HELP_SETUPFONT;                                     //~1929I~//+vc53R~
+//            break;                                                 //~1929I~//+vc53R~
+//        }                                                          //~1929I~//+vc53R~
+//      switch (layoutid)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (layoutid== LAYOUT_SETUPOTHER)                          //+vc53I~
+        {                                                          //+vc53I~
+            title=HELPTITLE_SETUPOTHER;                            //+vc53I~
+            id=HELP_SETUPOTHER;                                    //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (layoutid== LAYOUT_SETUPCOLOR)                          //+vc53I~
+        {                                                          //+vc53I~
+            title=HELPTITLE_SETUPCOLOR;                            //+vc53I~
+            id=HELP_SETUPCOLOR;                                    //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (layoutid== LAYOUT_SETUPFONT)                           //+vc53I~
+        {                                                          //+vc53I~
+            title=HELPTITLE_SETUPFONT;                             //+vc53I~
+            id=HELP_SETUPFONT;                                     //+vc53I~
+        }                                                          //+vc53I~
+//             break;                                              //+vc53I~
+//      }                                                          //+vc53I~
 //      if (id!=0)                                                 //~1929I~//~vc2BR~
         if (title!=0)                                              //~vc2BI~
 			showDialogHelp(title,id);//~1821R~                     //~1929I~
@@ -197,18 +231,30 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
     {                                                              //~1730M~
     	boolean rc=true;	//dismiss                              //~1730M~
     //****************                                             //~1730M~
-    	switch (layoutid)                                          //~1730M~
-        {                                                          //~1730M~
-    	case LAYOUT_SETUPOTHER:                                    //~1730M~
-        	onCloseSetupOther();                                   //~1730M~
-        	break;                                                 //~1730M~
-    	case LAYOUT_SETUPCOLOR:                                    //~1730M~
-        	onCloseSetupColor();                                   //~1730M~
-        	break;                                                 //~1730M~
-    	case LAYOUT_SETUPFONT:                                     //~1730M~
-        	onCloseSetupFont();                                    //~1730M~
-        	break;                                                 //~1730M~
-        }                                                          //~1730M~
+//        switch (layoutid)                                          //~1730M~//+vc53R~
+//        {                                                          //~1730M~//+vc53R~
+//        case LAYOUT_SETUPOTHER:                                    //~1730M~//+vc53R~
+//            onCloseSetupOther();                                   //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case LAYOUT_SETUPCOLOR:                                    //~1730M~//+vc53R~
+//            onCloseSetupColor();                                   //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case LAYOUT_SETUPFONT:                                     //~1730M~//+vc53R~
+//            onCloseSetupFont();                                    //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        }                                                          //~1730M~//+vc53R~
+//      switch (layoutid)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (layoutid== LAYOUT_SETUPOTHER)                          //+vc53I~
+            onCloseSetupOther();                                   //+vc53I~
+        else //break;                                              //+vc53I~
+        if (layoutid== LAYOUT_SETUPCOLOR)                          //+vc53I~
+            onCloseSetupColor();                                   //+vc53I~
+        else //break;                                              //+vc53I~
+        if (layoutid== LAYOUT_SETUPFONT)                           //+vc53I~
+            onCloseSetupFont();                                    //+vc53I~
+//           //break;                                              //+vc53I~
+//      }                                                          //+vc53I~
         return rc;                                                 //~1730M~
     }                                                              //~1730M~
 //***************************************************************************//~1730I~
@@ -279,6 +325,7 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
         if (Dump.Y) Dump.println("after createfont h="+Gxeh.Mcellh0+"-->"+Gxeh.Mcellh+",w="+Gxeh.Mcellw0+"-->"+Gxeh.Mcellw);//~1716R~
         gxedlg_setcolor(Gxeh.Mbgcolor);                            //~1804R~
         gxedlg_setrulercolor(Gxeh.Mrulercolor);    //Grulerfg->Srulergdkcolor     //~1715I~//~1804R~
+    	if (Dump.Y) Dump.println("Axegxedlg:gxedlg_init exit");    //~vc2SI~
         return;                                                    //~1715I~
     }//gxedlg_init                                                 //~1715I~
     //***************************************************************************//~1927I~
@@ -349,20 +396,34 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
         int buttonid;                                              //~1730M~
     //********************                                         //~1730M~
         int ruler=Gxeh.Mrulermode;                                 //~1730M~//~1803R~
-        switch(ruler)                                              //~1730M~
-        {                                                          //~1730M~
-        case Gxeh.WXERULER_V:                                                    //~1730M~//~1803R~
-        	buttonid=R.id.RULER_V;                                 //~1730M~
-            break;                                                 //~1730M~
-        case Gxeh.WXERULER_H:                                                    //~1730M~//~1803R~
-        	buttonid=R.id.RULER_H;                                 //~1730M~
-            break;                                                 //~1730M~
-        case Gxeh.WXERULER_VH:                                                    //~1730M~//~1803R~
-        	buttonid=R.id.RULER_CROSS;                             //~1730M~
-            break;                                                 //~1730M~
-        default:                                                   //~1730M~
-        	buttonid=R.id.RULER_NONE;                              //~1730M~
-        }                                                          //~1730M~
+//        switch(ruler)                                              //~1730M~//+vc53R~
+//        {                                                          //~1730M~//+vc53R~
+//        case Gxeh.WXERULER_V:                                                    //~1730M~//~1803R~//+vc53R~
+//            buttonid=R.id.RULER_V;                                 //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case Gxeh.WXERULER_H:                                                    //~1730M~//~1803R~//+vc53R~
+//            buttonid=R.id.RULER_H;                                 //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case Gxeh.WXERULER_VH:                                                    //~1730M~//~1803R~//+vc53R~
+//            buttonid=R.id.RULER_CROSS;                             //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        default:                                                   //~1730M~//+vc53R~
+//            buttonid=R.id.RULER_NONE;                              //~1730M~//+vc53R~
+//        }                                                          //~1730M~//+vc53R~
+//      switch(ruler)                                              //+vc53I~
+//      {                                                          //+vc53I~
+        if (ruler== Gxeh.WXERULER_V)                               //+vc53I~
+            buttonid=R.id.RULER_V;                                 //+vc53I~
+        else //break;                                              //+vc53I~
+        if (ruler== Gxeh.WXERULER_H)                               //+vc53I~
+            buttonid=R.id.RULER_H;                                 //+vc53I~
+        else //break;                                              //+vc53I~
+        if (ruler== Gxeh.WXERULER_VH)                              //+vc53I~
+            buttonid=R.id.RULER_CROSS;                             //+vc53I~
+        else //break;                                              //+vc53I~
+//      default:                                                   //+vc53I~
+            buttonid=R.id.RULER_NONE;                              //+vc53I~
+//      }                                                          //+vc53I~
         rg=(RadioGroup)layoutView.findViewById(R.id.RULER);        //~1730M~
         rg.check(buttonid);                                        //~1730M~
                                                                    //~1730M~
@@ -387,20 +448,34 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
     //****************                                             //~1730M~
         rg=(RadioGroup)layoutView.findViewById(R.id.RULER);        //~1730M~
         buttonid=rg.getCheckedRadioButtonId();                     //~1730M~
-        switch(buttonid)                                           //~1730M~
-        {                                                          //~1730M~
-        case R.id.RULER_V:                                         //~1730M~
-        	ruler=1;                                               //~1730M~
-            break;                                                 //~1730M~
-        case R.id.RULER_H:                                         //~1730M~
-        	ruler=2;                                               //~1730M~
-            break;                                                 //~1730M~
-        case R.id.RULER_CROSS:                                     //~1730M~
-        	ruler=3;                                               //~1730M~
-            break;                                                 //~1730M~
-        default:                                                   //~1730M~
-        	ruler=0;                                               //~1730M~
-        }                                                          //~1730M~
+//        switch(buttonid)                                           //~1730M~//+vc53R~
+//        {                                                          //~1730M~//+vc53R~
+//        case R.id.RULER_V:                                         //~1730M~//+vc53R~
+//            ruler=1;                                               //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.RULER_H:                                         //~1730M~//+vc53R~
+//            ruler=2;                                               //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.RULER_CROSS:                                     //~1730M~//+vc53R~
+//            ruler=3;                                               //~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        default:                                                   //~1730M~//+vc53R~
+//            ruler=0;                                               //~1730M~//+vc53R~
+//        }                                                          //~1730M~//+vc53R~
+//      switch(buttonid)                                           //+vc53I~
+//      {                                                          //+vc53I~
+        if (buttonid== R.id.RULER_V)                               //+vc53I~
+            ruler=1;                                               //+vc53I~
+        else //break;                                              //+vc53I~
+        if (buttonid== R.id.RULER_H)                               //+vc53I~
+            ruler=2;                                               //+vc53I~
+        else //break;                                              //+vc53I~
+        if (buttonid== R.id.RULER_CROSS)                           //+vc53I~
+            ruler=3;                                               //+vc53I~
+        else //break;                                              //+vc53I~
+//      default:                                                   //+vc53I~
+            ruler=0;                                               //+vc53I~
+//      }                                                          //+vc53I~
         int ww=Utils.strToNum(etRulerWidth.getText().toString(),0);//~vc2SI~
         if (ww>0 && ww<AxeG.MAX_RULER_WIDTH)                       //~vc2SR~
         {                                                          //~vc2SI~
@@ -473,27 +548,48 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
     public void onSliderChanged(int Psliderid,int Pvalue)          //~1730M~
     {                                                              //~1730M~
         if (Dump.Y) Dump.println("OnSliderChanged id="+Integer.toHexString(Psliderid)+",value="+Integer.toHexString(Pvalue));//~1730M~
-    	switch(Psliderid)                                          //~1730M~
-        {                                                          //~1730M~
-    	case R.id.SEEKBAR_BG_RED:                                  //~1730M~
-        	bgcolor=Color.rgb(Pvalue,Color.green(bgcolor),Color.blue(bgcolor));//~1730M~
-        	break;                                                 //~1730M~
-    	case R.id.SEEKBAR_BG_GREEN:                                //~1730M~
-        	bgcolor=Color.rgb(Color.red(bgcolor),Pvalue,Color.blue(bgcolor));//~1730M~
-        	break;                                                 //~1730M~
-    	case R.id.SEEKBAR_BG_BLUE:                                 //~1730M~
-        	bgcolor=Color.rgb(Color.red(bgcolor),Color.green(bgcolor),Pvalue);//~1730M~
-        	break;                                                 //~1730M~
-    	case R.id.SEEKBAR_RULER_RED:                               //~1730M~
-        	rulercolor=Color.rgb(Pvalue,Color.green(rulercolor),Color.blue(rulercolor));//~1730M~
-        	break;                                                 //~1730M~
-    	case R.id.SEEKBAR_RULER_GREEN:                             //~1730M~
-        	rulercolor=Color.rgb(Color.red(rulercolor),Pvalue,Color.blue(rulercolor));//~1730M~
-        	break;                                                 //~1730M~
-    	case R.id.SEEKBAR_RULER_BLUE:                              //~1730M~
-        	rulercolor=Color.rgb(Color.red(rulercolor),Color.green(rulercolor),Pvalue);//~1730M~
-        	break;                                                 //~1730M~
-        }                                                          //~1730M~
+//        switch(Psliderid)                                          //~1730M~//+vc53R~
+//        {                                                          //~1730M~//+vc53R~
+//        case R.id.SEEKBAR_BG_RED:                                  //~1730M~//+vc53R~
+//            bgcolor=Color.rgb(Pvalue,Color.green(bgcolor),Color.blue(bgcolor));//~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.SEEKBAR_BG_GREEN:                                //~1730M~//+vc53R~
+//            bgcolor=Color.rgb(Color.red(bgcolor),Pvalue,Color.blue(bgcolor));//~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.SEEKBAR_BG_BLUE:                                 //~1730M~//+vc53R~
+//            bgcolor=Color.rgb(Color.red(bgcolor),Color.green(bgcolor),Pvalue);//~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.SEEKBAR_RULER_RED:                               //~1730M~//+vc53R~
+//            rulercolor=Color.rgb(Pvalue,Color.green(rulercolor),Color.blue(rulercolor));//~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.SEEKBAR_RULER_GREEN:                             //~1730M~//+vc53R~
+//            rulercolor=Color.rgb(Color.red(rulercolor),Pvalue,Color.blue(rulercolor));//~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.SEEKBAR_RULER_BLUE:                              //~1730M~//+vc53R~
+//            rulercolor=Color.rgb(Color.red(rulercolor),Color.green(rulercolor),Pvalue);//~1730M~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        }                                                          //~1730M~//+vc53R~
+//  	switch(Psliderid)                                          //+vc53I~
+//      {                                                          //+vc53I~
+    	if (Psliderid== R.id.SEEKBAR_BG_RED)                       //+vc53I~
+        	bgcolor=Color.rgb(Pvalue,Color.green(bgcolor),Color.blue(bgcolor));//+vc53I~
+        else //break;                                              //+vc53I~
+    	if (Psliderid== R.id.SEEKBAR_BG_GREEN)                     //+vc53I~
+        	bgcolor=Color.rgb(Color.red(bgcolor),Pvalue,Color.blue(bgcolor));//+vc53I~
+        else //break;                                              //+vc53I~
+    	if (Psliderid== R.id.SEEKBAR_BG_BLUE)                      //+vc53I~
+        	bgcolor=Color.rgb(Color.red(bgcolor),Color.green(bgcolor),Pvalue);//+vc53I~
+        else //break;                                              //+vc53I~
+    	if (Psliderid== R.id.SEEKBAR_RULER_RED)                    //+vc53I~
+        	rulercolor=Color.rgb(Pvalue,Color.green(rulercolor),Color.blue(rulercolor));//+vc53I~
+        else //break;                                              //+vc53I~
+    	if (Psliderid== R.id.SEEKBAR_RULER_GREEN)                  //+vc53I~
+        	rulercolor=Color.rgb(Color.red(rulercolor),Pvalue,Color.blue(rulercolor));//+vc53I~
+        else //break;                                              //+vc53I~
+    	if (Psliderid== R.id.SEEKBAR_RULER_BLUE)                   //+vc53I~
+        	rulercolor=Color.rgb(Color.red(rulercolor),Color.green(rulercolor),Pvalue);//+vc53I~
+//          break;                                                 //+vc53I~
+//      }                                                          //+vc53I~
 	    drawSamplePanel(bgcolor,rulercolor);                       //~1730R~
     }                                                              //~1730M~
 //*********                                                        //~1731M~
@@ -702,48 +798,96 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
     	int hh,ww;                                              //~1927R~
     //************                                                 //~1730M~
     	if (Dump.Y) Dump.println("Axegxedlg:edittextChanged viewid="+Integer.toHexString(Pviewid)+",value="+Pvalue);//~1730M~
-        switch(Pviewid)                                            //~1730M~
-        {                                                          //~1730M~
-        case R.id.FONT_FONTSIZE:                                   //~1730M~
-        	if (valuefontsize==Pvalue)                             //~1927R~
-            	return;
-        	valuefontsize=tempfontsize=Pvalue;                     //~1927I~//~1A02R~
-            if (tempfontsize==0)                                   //~1927I~
-				tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//~1927R~
-	        tempfont=new Font(tempfontname,tempfontstyle,tempfontsize);//~1731R~//~1803R~//~1927R~
-            FontMetrics fm=FontMetrics.getFontMetrics(tempfont);           //~1731I~//~1803R~//~1804I~
-            hh=fm.getHeight();                                         //~1731I~//~1804I~
-            ww=fm.getAvWidth();                                        //~1731I~//~1804I~
-            tvFontH.setText(Integer.toString(hh));                     //~1731I~//~1804I~
-            tvFontW.setText(Integer.toString(ww));                     //~1731I~//~1804I~
-            if (valuecellh==0)                                     //~1A02I~
-            	tempcellh=calcCellH(tempfontsize);                 //~1A02I~
-            if (valuecellw==0)                                     //~1A02I~
-            	tempcellw=calcCellW(tempfontsize,valuecellh);      //~1A02I~
-        	break;                                                 //~1730M~
-        case R.id.FONT_CELLH:                                      //~1730M~
-        	if (valuecellh==Pvalue)                                //~1927R~
-            	return;                                            //~1804I~
-            valuecellh=tempcellh=Pvalue;                                      //~1731R~//~1927M~
-            if (valuefontsize==0)                                  //~1927I~
-				tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//~1927I~
-            if (valuecellh==0)                                      //~1927R~//~1A02R~
-            	tempcellh=calcCellH(tempfontsize);                 //~1927R~
-            if (valuecellw==0)                                     //~1A02I~
-            	tempcellw=calcCellW(tempfontsize,valuecellh);      //~1A02I~
-        	break;                                                 //~1730M~
-        case R.id.FONT_CELLW:                                      //~1730M~
-        	if (valuecellw==Pvalue)                                //~1927R~
-            	return;                                            //~1804I~
-            valuecellw=tempcellw=Pvalue;                                      //~1731R~//~1927R~
-            if (valuefontsize==0)                                  //~1927I~
-				tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//~1927I~
-            if (valuecellh==0)                                     //~1A02I~
-            	tempcellh=calcCellH(tempfontsize);                 //~1A02I~
-            if (valuecellw==0)                                      //~1927R~//~1A02R~
-            	tempcellw=calcCellW(tempfontsize,valuecellh);      //~1927R~
-        	break;                                                 //~1730M~
-        }                                                          //~1730M~
+//        switch(Pviewid)                                            //~1730M~//+vc53R~
+//        {                                                          //~1730M~//+vc53R~
+//        case R.id.FONT_FONTSIZE:                                   //~1730M~//+vc53R~
+//            if (valuefontsize==Pvalue)                             //~1927R~//+vc53R~
+//                return;                                          //+vc53R~
+//            valuefontsize=tempfontsize=Pvalue;                     //~1927I~//~1A02R~//+vc53R~
+//            if (tempfontsize==0)                                   //~1927I~//+vc53R~
+//                tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//~1927R~//+vc53R~
+//            tempfont=new Font(tempfontname,tempfontstyle,tempfontsize);//~1731R~//~1803R~//~1927R~//+vc53R~
+//            FontMetrics fm=FontMetrics.getFontMetrics(tempfont);           //~1731I~//~1803R~//~1804I~//+vc53R~
+//            hh=fm.getHeight();                                         //~1731I~//~1804I~//+vc53R~
+//            ww=fm.getAvWidth();                                        //~1731I~//~1804I~//+vc53R~
+//            tvFontH.setText(Integer.toString(hh));                     //~1731I~//~1804I~//+vc53R~
+//            tvFontW.setText(Integer.toString(ww));                     //~1731I~//~1804I~//+vc53R~
+//            if (valuecellh==0)                                     //~1A02I~//+vc53R~
+//                tempcellh=calcCellH(tempfontsize);                 //~1A02I~//+vc53R~
+//            if (valuecellw==0)                                     //~1A02I~//+vc53R~
+//                tempcellw=calcCellW(tempfontsize,valuecellh);      //~1A02I~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.FONT_CELLH:                                      //~1730M~//+vc53R~
+//            if (valuecellh==Pvalue)                                //~1927R~//+vc53R~
+//                return;                                            //~1804I~//+vc53R~
+//            valuecellh=tempcellh=Pvalue;                                      //~1731R~//~1927M~//+vc53R~
+//            if (valuefontsize==0)                                  //~1927I~//+vc53R~
+//                tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//~1927I~//+vc53R~
+//            if (valuecellh==0)                                      //~1927R~//~1A02R~//+vc53R~
+//                tempcellh=calcCellH(tempfontsize);                 //~1927R~//+vc53R~
+//            if (valuecellw==0)                                     //~1A02I~//+vc53R~
+//                tempcellw=calcCellW(tempfontsize,valuecellh);      //~1A02I~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.FONT_CELLW:                                      //~1730M~//+vc53R~
+//            if (valuecellw==Pvalue)                                //~1927R~//+vc53R~
+//                return;                                            //~1804I~//+vc53R~
+//            valuecellw=tempcellw=Pvalue;                                      //~1731R~//~1927R~//+vc53R~
+//            if (valuefontsize==0)                                  //~1927I~//+vc53R~
+//                tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//~1927I~//+vc53R~
+//            if (valuecellh==0)                                     //~1A02I~//+vc53R~
+//                tempcellh=calcCellH(tempfontsize);                 //~1A02I~//+vc53R~
+//            if (valuecellw==0)                                      //~1927R~//~1A02R~//+vc53R~
+//                tempcellw=calcCellW(tempfontsize,valuecellh);      //~1927R~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        }                                                          //~1730M~//+vc53R~
+//      switch(Pviewid)                                            //+vc53I~
+//      {                                                          //+vc53I~
+        if (Pviewid== R.id.FONT_FONTSIZE)                          //+vc53I~
+        {                                                          //+vc53I~
+            if (valuefontsize==Pvalue)                             //+vc53I~
+                return;                                            //+vc53I~
+            valuefontsize=tempfontsize=Pvalue;                     //+vc53I~
+            if (tempfontsize==0)                                   //+vc53I~
+                tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//+vc53I~
+            tempfont=new Font(tempfontname,tempfontstyle,tempfontsize);//+vc53I~
+            FontMetrics fm=FontMetrics.getFontMetrics(tempfont);   //+vc53I~
+            hh=fm.getHeight();                                     //+vc53I~
+            ww=fm.getAvWidth();                                    //+vc53I~
+            tvFontH.setText(Integer.toString(hh));                 //+vc53I~
+            tvFontW.setText(Integer.toString(ww));                 //+vc53I~
+            if (valuecellh==0)                                     //+vc53I~
+                tempcellh=calcCellH(tempfontsize);                 //+vc53I~
+            if (valuecellw==0)                                     //+vc53I~
+                tempcellw=calcCellW(tempfontsize,valuecellh);      //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pviewid== R.id.FONT_CELLH)                             //+vc53I~
+        {                                                          //+vc53I~
+            if (valuecellh==Pvalue)                                //+vc53I~
+                return;                                            //+vc53I~
+            valuecellh=tempcellh=Pvalue;                           //+vc53I~
+            if (valuefontsize==0)                                  //+vc53I~
+                tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//+vc53I~
+            if (valuecellh==0)                                     //+vc53I~
+                tempcellh=calcCellH(tempfontsize);                 //+vc53I~
+            if (valuecellw==0)                                     //+vc53I~
+                tempcellw=calcCellW(tempfontsize,valuecellh);      //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pviewid== R.id.FONT_CELLW)                             //+vc53I~
+        {                                                          //+vc53I~
+            if (valuecellw==Pvalue)                                //+vc53I~
+                return;                                            //+vc53I~
+            valuecellw=tempcellw=Pvalue;                           //+vc53I~
+            if (valuefontsize==0)                                  //+vc53I~
+                tempfontsize=calcFontSize(valuecellh,valuecellw);     //re-evaluate by parm value//+vc53I~
+            if (valuecellh==0)                                     //+vc53I~
+                tempcellh=calcCellH(tempfontsize);                 //+vc53I~
+            if (valuecellw==0)                                     //+vc53I~
+                tempcellw=calcCellW(tempfontsize,valuecellh);      //+vc53I~
+        }                                                          //+vc53I~
+//          break;                                                 //+vc53I~
+//      }                                                          //+vc53I~
         drawSamplePanel(tempfont,tempcellw,tempcellh,templigature);                 //~1731R~//~1803R~
     }                                                              //~1730M~
 //***************                                                  //~1730M~
@@ -776,24 +920,50 @@ public class Axegxedlg extends AxeDialog                           //~1725I~
 	@Override                                                      //~1731I~
     public void onRadioButtonsChanged(int Pviewid)                 //~1731I~
     {                                                              //~1730M~
-        switch (Pviewid)                                           //~1731R~
-        {                                                          //~1730M~
-        case R.id.FONT_STYLE_BOLD:                                 //~1730M~
-            tempfontstyle=Font.BOLD;                                   //~1730M~
-            tempstylename=Font.Bold;                               //~1730I~
-        	break;                                                 //~1730M~
-        case R.id.FONT_STYLE_ITALIC:                               //~1730M~
-            tempfontstyle=Font.ITALIC;                                 //~1730M~
-            tempstylename=Font.Italic;                             //~1730I~
-        	break;                                                 //~1730M~
-        case R.id.FONT_STYLE_BOLDITALIC:                           //~1730M~
-            tempfontstyle=Font.BOLD_ITALIC;                             //~1730M~
-            tempstylename=Font.BoldItalic;                         //~1730I~
-        	break;                                                 //~1730M~
-        default:                                                   //~1730M~
-            tempfontstyle=Font.PLAIN;                                  //~1730M~
-            tempstylename=Font.Normal;                             //~1730I~
-        }                                                          //~1730M~
+//        switch (Pviewid)                                           //~1731R~//+vc53R~
+//        {                                                          //~1730M~//+vc53R~
+//        case R.id.FONT_STYLE_BOLD:                                 //~1730M~//+vc53R~
+//            tempfontstyle=Font.BOLD;                                   //~1730M~//+vc53R~
+//            tempstylename=Font.Bold;                               //~1730I~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.FONT_STYLE_ITALIC:                               //~1730M~//+vc53R~
+//            tempfontstyle=Font.ITALIC;                                 //~1730M~//+vc53R~
+//            tempstylename=Font.Italic;                             //~1730I~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        case R.id.FONT_STYLE_BOLDITALIC:                           //~1730M~//+vc53R~
+//            tempfontstyle=Font.BOLD_ITALIC;                             //~1730M~//+vc53R~
+//            tempstylename=Font.BoldItalic;                         //~1730I~//+vc53R~
+//            break;                                                 //~1730M~//+vc53R~
+//        default:                                                   //~1730M~//+vc53R~
+//            tempfontstyle=Font.PLAIN;                                  //~1730M~//+vc53R~
+//            tempstylename=Font.Normal;                             //~1730I~//+vc53R~
+//        }                                                          //~1730M~//+vc53R~
+//      switch (Pviewid)                                           //+vc53I~
+//      {                                                          //+vc53I~
+        if (Pviewid== R.id.FONT_STYLE_BOLD)                        //+vc53I~
+        {                                                          //+vc53I~
+            tempfontstyle=Font.BOLD;                               //+vc53I~
+            tempstylename=Font.Bold;                               //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pviewid== R.id.FONT_STYLE_ITALIC)                      //+vc53I~
+        {                                                          //+vc53I~
+            tempfontstyle=Font.ITALIC;                             //+vc53I~
+            tempstylename=Font.Italic;                             //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pviewid== R.id.FONT_STYLE_BOLDITALIC)                  //+vc53I~
+        {                                                          //+vc53I~
+            tempfontstyle=Font.BOLD_ITALIC;                        //+vc53I~
+            tempstylename=Font.BoldItalic;                         //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+//      default:                                                   //+vc53I~
+        {                                                          //+vc53I~
+            tempfontstyle=Font.PLAIN;                              //+vc53I~
+            tempstylename=Font.Normal;                             //+vc53I~
+        }                                                          //+vc53I~
+//      }                                                          //+vc53I~
     	if (samplePanel!=null)	//not initial check                //~1731I~
         {                                                          //~1731I~
         	tempfont=new Font(tempfontname,tempfontstyle,tempfontsize);//~1731R~//~1803R~

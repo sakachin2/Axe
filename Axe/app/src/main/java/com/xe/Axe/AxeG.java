@@ -1,5 +1,12 @@
-//CID://+vc2XR~:     update#=    63                                //~vc2SR~//~vc2XR~
+//CID://+vc54R~:     update#=    89
 //*************************************************************    //~va15I~
+//vc54 2023/06/20 toolbin.zipfile update chk to unzip not by size but new asset file toolibin.zipfile.ts(dir output:timestamp and size)//~vc54I~
+//vc4y 2023/05/22 >=android11(Api30),access all file option setting by setting-android related dialog//~vc4yI~
+//vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
+//vc4i 2023/03/28 delayed appName setting cause null value return for getpreference because sharedpreference file name use it//~vc4iI~
+//vc4h 2023/03/28 Dump control by dialog                           //~vc4hI~
+//vc4g 2023/03/26 Dump to private storage                          //~vc4gI~
+//vc42 2023/03/25 api33 support;deprecated display.getSize()       //~vc42I~
 //vc2X 2020/09/19 return sdpath even no write permission for utrace//~vc2XI~
 //vc2S 2020/09/12 add ruler width option                           //~vc2SI~
 //vc2R 2020/09/11 Debug option:reverse HelpLang                    //~vc2LI~
@@ -106,9 +113,12 @@ public class AxeG                                                  //~va15R~
                                                                    //~1A06I~
 	public static String PREFKEY_HELPSZ="HelpSize";                //~1A06I~
 	public static String PREFKEY_TOOLBINSZ="ToolBinSize";          //~1A25I~
+	public static String PREFKEY_TOOLBINTS="ToolBinTS";            //~vc54I~
 	public static String PREFKEY_HTMLHELPSZ="HtmlHelpSize";        //~vc1hI~
 	public static String PREFKEY_HIGHLIGHTSZ="HighlightSize";      //~vaaDI~
                                                                    //~1A03I~
+	public static String PREFKEY_NO_ALLFILE="NoAllFile";           //~vc4yI~
+                                                                   //~vc4yI~
     public static final String PKEY_STARTUPCTR="startupctr";       //~vaiqI~
     public static int startupCtr;                                  //~vaiqI~
                                                                    //~vc2gI~
@@ -121,7 +131,7 @@ public class AxeG                                                  //~va15R~
     public static int keyOpenIM;                                   //~vc2jI~
                                                                    //~vaiqI~
 	public static Activity activity;                                      //~va15I~
-	public static SharedPreferences pref;
+//	public static SharedPreferences pref;                          //~vc4hR~
 	public static Context context;
 	public static Axe main;
 	public static AxeView axeView;
@@ -147,7 +157,7 @@ public class AxeG                                                  //~va15R~
     public static final int TRACEO_LOGCAT=0x08;                    //~1926I~
     public static final int TRACEO_REMAP=0x0100;  //sbcsmap tbl recreate//~v6k1I~
 //  public static final int TRACEO_NOTREMAP=0x0100;  //sbcsmap tbl recreate//~vc2XI~
-    public static final int TRACEO_NOTREMAP=0x0200;  //sbcsmap tbl recreate//+vc2XI~
+    public static final int TRACEO_NOTREMAP=0x0200;  //sbcsmap tbl recreate//~vc2XI~
     public static int optDump;                                     //~1922I~
     public static int optDebug;                                    //~vay0I~
     public static final int DEBUGO_ABEND=0x01;  //ndk sigsegv by double Esc//~vay0R~
@@ -172,7 +182,7 @@ public class AxeG                                                  //~va15R~
                                                                    //~1821I~
     public static float screenDip2Pix;
     public static AxeScreen axeScreen; 
-    public static int titleBarTop,titleBarBottom;//~1606I~
+    public static int titleBarTop,titleBarBottom;//~1606I~   
                                                                    //~vab0I~
     public static int bottomSpaceHeight;                           //~vab0I~
     public static final int SYSTEMBAR_HEIGHT=48;                   //~vab0I~
@@ -184,6 +194,7 @@ public class AxeG                                                  //~va15R~
     public static final int HONEYCOMB=11; //android3.0 (GINGERBREAD=9)//~vab0I~
     public static final int HONEYCOMB_MR2=13; //android3.2         //~vaybI~
     public static final int ICE_CREAM_SANDWICH=14; //android4.0    //~vab0I~
+    public static final int API29=29;                              //~vc4pI~
                                                                    //~vab0I~
 //  public static int maxKeyCode;                                  //~1815R~
     public static String Glocale;                                  //~1820I~
@@ -201,6 +212,11 @@ public class AxeG                                                  //~va15R~
 	public static AxeDlgKbdLayout axeDlgKbdLayout;                 //~vc1wI~
 	public static AxeDialog axeDialog;                             //~vc2DI~
 	public static AxeBCR axeBCR;                                   //~vc2KI~
+    public static boolean   swNavigationbarGestureMode;                  //~vaefR~//~vc42I~
+    public static int       scrNavigationbarBottomHeightA11;             //~vaefR~//~vc42I~
+    public static int       scrNavigationbarRightWidthA11;               //~vaefI~//~vc42I~
+    public static int       scrStatusBarHeight;	//API30, by insets     //~vaj0I~//~vc42I~
+    public static int       scrNavigationbarLeftWidthA11;                //~vaefI~//~vc42I~
 //*********************************************                    //~va15I~
 	public static void init(Axe Paxe)                    //~va15I~
     {                                                              //~va15I~
@@ -211,10 +227,21 @@ public class AxeG                                                  //~va15R~
     	main=Paxe;
 		activity=(Activity)Paxe;                                   //~1527R~
     	context=(Context)Paxe;                                     //~1527R~
+                                                                   //~vc4iI~
+        resource=main.getResources();	//getResourceString use this//~vc4iI~
+        appName=Utils.getResourceString(R.string.app_name);        //~vc4iM~
                                                                    //~1A17I~
         isDebuggable=Utils.isDebuggable(context);             //~v107I~//~vai3I~
-        if (isDebuggable)                                          //~vc10I~
-        	Dump.open("");	//write all to Terminal log,not exception only//~vc10I~
+  		int dump=getParameter(PREFKEY_DEBUG_DUMP,0);               //~vc4hI~
+        if (isDebuggable)                                          //~vc4yR~
+        {                                                          //~vc4gI~//~vc4yR~
+//          Dump.open("");  //write all to Terminal log,not exception only//~vc10I~//~vc4gR~//~vc4yR~
+//          Dump.open("Dump.txt",false/*swSD*/);    //write all to Terminal log,not exception only//~vc4gR~//~vc4hR~//~vc4yR~
+            Dump.open(dump,false/*swSD*/);  //write all to Terminal log,not exception only//~vc4hR~//~vc4yR~//~vc54R~
+//          Dump.open(1,false/*swSD*/); //TODO test //write all to Terminal log,not exception only//~vc54R~
+        }                                                          //~vc4gI~//~vc4yR~
+//      else  //TODO test                                          //~vc4yR~//~vc54R~
+//        	Dump.open("");	//write all to Terminal log,not exception only//~vc4yI~//~vc54R~
         startupCtr=AxeProp.getPreference(PKEY_STARTUPCTR,0);     //~vaiqI~
         AxeProp.putPreference(PKEY_STARTUPCTR,startupCtr+1);     //~vaiqI~
                                                                    //~vai3I~
@@ -226,10 +253,10 @@ public class AxeG                                                  //~va15R~
             if (uri!=null)                                         //~1A17I~
             	intentData=uri.toString();                         //~1A17I~
         }                                                          //~1A16I~//~1A17I~
-		pref=context.getSharedPreferences("PreferencesEx",Context.MODE_PRIVATE);//~va15I~
-        resource=main.getResources();                              //~1527I~
+//		pref=context.getSharedPreferences("PreferencesEx",Context.MODE_PRIVATE);//~va15I~//~vc4hR~
+//      resource=main.getResources();                              //~1527I~//~vc4iR~
         inflater=main.getLayoutInflater();                         //~1527I~
-        appName=Utils.getResourceString(R.string.app_name);       //~1527I~
+//      appName=Utils.getResourceString(R.string.app_name);       //~1527I~//~vc4iR~
 		Gxeh.localeCharset=getParameter(PREFKEY_CHARSET);          //~vad2I~
 		Gxeh.envPath=getParameter(PREFKEY_ENV_PATH);               //~1A26R~
 		Gxeh.envPath=AxeDlgArmOption.chkEnvPath(true/*axeG*/,Gxeh.envPath);//~1A26R~
@@ -239,7 +266,7 @@ public class AxeG                                                  //~va15R~
 //  	int trace=getParameter(PREFKEY_DEBUG_TRACE,TRACEO_LOGCAT); //~vc1hI~//~vc2SR~
 //  	int trace=getParameter(PREFKEY_DEBUG_TRACE,TRACEO_ON|TRACEO_LOGCAT);//~vc2SR~
     	int trace=getParameter(PREFKEY_DEBUG_TRACE,TRACEO_ON);   //TODO test//~vc2SI~
-  		int dump=getParameter(PREFKEY_DEBUG_DUMP,0);               //~vay9I~
+// 		int dump=getParameter(PREFKEY_DEBUG_DUMP,0);               //~vay9I~//~vc4hR~
 	  	int debug=getParameter(PREFKEY_DEBUG_DEBUG,0);             //~vay9I~
     	AxeDlgArmOption.chkInternalOptions(true/*axeG*/,trace,dump,debug);//~vay9I~
 		int homebuttonkey=AxeG.getParameter(PREFKEY_HOMEBUTTONKEY,R.id.HOMEBUTTON_NONE);//~vayaI~
@@ -318,9 +345,11 @@ public class AxeG                                                  //~va15R~
 	public static int getParameter(String Pkey,int Pdefault)   //~1826I~
     {                                                              //~1826I~
     	String value=AxeProp.getPreference(Pkey);                  //~1826I~
+//      System.out.println("AxeG.getParameter key="+Pkey+",defualt="+Pdefault+",value="+value); //TODO test//~vc4hI~//~vc4iR~
         if (value.equals(""))                                      //~1826I~
         	return Pdefault;                                       //~1826I~
         int rc=Utils.strToNum(value,0/*default*/);                 //~1826I~
+//      System.out.println("AxeG.getParameter key="+Pkey+",defualt="+Pdefault+",rc="+rc); //TODO test//~vc4hI~//~vc4iR~
         return rc;                                                 //~1826I~
     }                                                              //~1826I~
 	public static String getParameter(String Pkey)           //~1824I~//~1826R~
@@ -339,6 +368,7 @@ public class AxeG                                                  //~va15R~
     {                                                              //~1826I~
     	String v=Integer.toString(Pvalue);                         //~1826I~
         AxeProp.putPreference(Pkey,v);                             //~1826I~
+//      System.out.println("AxeG.setParameter key="+Pkey+",Pvalue="+Pvalue+",v="+v); //TODO test//~vc4hI~//~vc4iR~
     }                                                              //~1826I~
 //*********************                                            //~1824I~
 	public static void setParameter(String Pkey,String Pvalue)//~1824I~//~1826R~
@@ -363,4 +393,17 @@ public class AxeG                                                  //~va15R~
         if (Dump.Y) Dump.println("AxeG.isHardKeyboardActive hardKeyboard="+hardKeyboard+",rc="+rc);//~vc1rI~
         return rc;                                                 //~vc1rI~
     }                                                              //~vc1rI~
+//*********************                                            //~vc4yI~
+	public static boolean isNoAllFile()                            //~vc4yI~
+    {                                                              //~vc4yI~
+		boolean rc=getParameter(PREFKEY_NO_ALLFILE,false);         //~vc4yI~
+        if (Dump.Y) Dump.println("AxeG.isNoAllFile rc="+rc);       //~vc4yI~
+        return rc;                                                 //~vc4yI~
+    }                                                              //~vc4yI~
+//*********************************************                    //~vc4yI~
+	public static void setNoAllFile(boolean PnoAllFile)            //~vc4yI~
+    {                                                              //~vc4yI~
+		setParameter(PREFKEY_NO_ALLFILE,PnoAllFile);               //~vc4yI~
+        if (Dump.Y) Dump.println("AxeG.setNoAllFile PnoAllFile="+PnoAllFile);//~vc4yI~
+	}                                                              //~vc4yI~
 }//class                                                           //~va15R~

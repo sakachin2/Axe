@@ -1,4 +1,4 @@
-//*CID://+@@@@R~:                             update#=    5;       //~@@@@I~
+//*CID://+@@@@R~:                             update#=    6;       //~@@@@I~
 //**********************************************************************//~@@@@I~
 //*20200613 update for android CMake                               //~@@@@R~
 //*			nl_langinfo,getprogname,ENABLE_NLS for gettext         //~@@@@R~
@@ -155,7 +155,7 @@
 
 /* Define to 1 if you have the declaration of `fflush_unlocked', and to 0 if
    you don't. */
-//#define HAVE_DECL_FFLUSH_UNLOCKED 1                              //+@@@@R~
+//#define HAVE_DECL_FFLUSH_UNLOCKED 1                              //~@@@@R~
 
 /* Define to 1 if you have the declaration of `fgets_unlocked', and to 0 if
    you don't. */
@@ -241,7 +241,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
-//#define HAVE_LANGINFO_CODESET 1             //undef for android to avoid reference to nl_langinfo//~@@@@R~
+#define HAVE_LANGINFO_CODESET 1             //undef for android to avoid reference to nl_langinfo//~@@@@R~  vc57//+@@@@R~
 
 /* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1

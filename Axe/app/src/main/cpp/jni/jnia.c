@@ -1,5 +1,6 @@
-//*CID://+vay0R~:                                   update#=  284; //~vay0R~
+//*CID://+vby8R~:                                   update#=  303; //~vby8R~
 //**************************************************************** //~1610I~
+//vby8:230415 (ARM)open document file                              //~vby8I~
 //vay0:140710 (Axe)jni exception handling                          //~vay0I~
 //vac6:120217 (Axe)samba share support using jcifs 3.17            //~vac6I~
 //vab3:120119 (Axe)Warning:DeleteGlobalRef on non-global type=1(android4 changed jobjct from direct pointer to opaque handle)//~vab3I~
@@ -35,6 +36,25 @@ JNIEnv *getThreadEnv(void)                                         //~1714I~
     	env=NULL;                                                  //~1714R~
     return env;                                                    //~1714R~
 }//getVM                                                           //~1714I~
+//*************************************************                //~vby8I~
+int getArrayLength(JNIEnv *Penv,jarray Pjarray)                    //~vby8I~
+{                                                                  //~vby8I~
+ 	jsize jsz;                                                     //~vby8R~
+    int sz;                                                        //~vby8I~
+    jsz=(*Penv)->GetArrayLength(Penv,Pjarray);                     //~vby8R~
+    sz=(int)jsz;                                                   //~vby8I~
+    UTRACEP("%s:sz=%d\n",UTT,sz);                                  //~vby8I~
+    return sz;                                                     //~vby8R~
+}                                                                  //~vby8I~
+//*************************************************                //~vby8M~
+jclass findClass(JNIEnv *Penv,char *Ptype)                         //~vby8M~
+{                                                                  //~vby8M~
+    jclass       class;                                            //~vby8M~
+//*****************                                                //~vby8M~
+	UTRACEP("%s:type=%s\n",UTT,Ptype);                             //~vby8M~
+    class=(*Penv)->FindClass(Penv,Ptype);                         //~vby8M~
+    return class;                                                  //~vby8M~
+}                                                                  //~vby8M~
 //*************************************************                //~1716I~
 int getStaticJint(JNIEnv *Penv,jfieldID *Ppfid,char *Pfname)       //~1716R~
 {                                                                  //~1716I~
@@ -283,7 +303,7 @@ char *getStaticJstring(int Popt,JNIEnv *Penv,jfieldID *Ppfid,char *Pfname)//~vac
     }                                                              //~vac6I~
     else                                                           //~1A17I~
     	pc=0;                                                      //~1A17I~
-    UTRACEP("getStaticString fld=%s,fldid=%p,value=%s\n",Pfname,fid,pc);//~1A12I~//~1B05R~//+vay0R~
+    UTRACEP("getStaticString fld=%s,fldid=%p,value=%s\n",Pfname,fid,pc);//~1A12I~//~1B05R~//~vay0R~
     return pc;                                                     //~1A12I~
 }//getStatcJstring                                                 //~1A12I~
 //*************************************************                //~1803I~
@@ -311,7 +331,7 @@ int setStaticJstring(JNIEnv *Penv,jfieldID *Ppfid,char *Pfname,char *Pvalue)//~1
     else                                                           //~vac6I~
     	jstr=NULL;                                                 //~vac6R~
 	(*Penv)->SetStaticObjectField(Penv,GclassGxeh,fid,jstr);       //~1803R~
-    UTRACEP("setStaticString rc=%d,fld=%s,fldid=%p,value=%s\n",rc,Pfname,fid,Pvalue);//~1803I~//+vay0R~
+    UTRACEP("setStaticString rc=%d,fld=%s,fldid=%p,value=%s\n",rc,Pfname,fid,Pvalue);//~1803I~//~vay0R~
     return rc;                                                     //~1803R~
 }//setStatcJstring                                                 //~1A12R~
 //*************************************************                //~vac6I~
@@ -464,14 +484,94 @@ void jbyte2byte(JNIEnv *Penv,jbyteArray Pjba,int Ppos,int Plen,char *Pout)//~171
     (*Penv)->GetByteArrayRegion(Penv,Pjba,Ppos,Plen,(jbyte*)Pout); //~1714R~
     CHK_ARRAY_EXCEPTION(Penv,"jbyte2byte:GetByteArrayRegion")      //~1715I~
 }                                                                  //~1703I~
+//*************************************************                //~vby8I~
+int jbyte2byteCopy(JNIEnv *Penv,jbyteArray Pjba,char **Ppout/*ptr to copy to*/)//~vby8I~
+{                                                                  //~vby8I~
+	int sz;                                                        //~vby8I~
+    char *pc;                                                      //~vby8I~
+//*****************                                                //~vby8I~
+	sz=getArrayLength(Penv,Pjba);                                  //~vby8I~
+	UTRACEP("%s:Pout=%p\n",UTT,Ppout);                              //~vby8I~
+    if (!*Ppout)                                                   //~vby8I~
+    {                                                              //~vby8I~
+        pc=umalloc(sz);                                            //~vby8I~
+        *Ppout=pc;                                                 //~vby8I~
+    }                                                              //~vby8I~
+    else                                                           //~vby8I~
+    	pc=*Ppout;                                                 //~vby8I~
+    (*Penv)->GetByteArrayRegion(Penv,Pjba,0,sz,pc);           //~vby8I~
+    CHK_ARRAY_EXCEPTION(Penv,"jbyte2byteCopy:GetByteArrayRegion")  //~vby8I~
+    UTRACED("out",pc,sz);                                          //+vby8I~
+    return sz;                                                     //~vby8I~
+}                                                                  //~vby8I~
 //*************************************************                //~1715I~
 void jint2int(JNIEnv *Penv,jintArray Pjia,int Ppos,int Plen,int *Pout)//~1715I~
 {                                                                  //~1715I~
+	int len;                                                       //~vby8I~
 //*****************                                                //~1715I~
-	UTRACEP("jint2int pos=%d,len=%d,jint=%p,out=%p\n",Ppos,Plen,Pjia,Pout);//~1716R~
+	UTRACEP("%s:entry pos=%d,len=%d,jint=%p,out=%p\n",UTT,Ppos,Plen,Pjia,Pout);//~1716R~//~vby8I~
+    len=Plen;                                                      //~vby8I~
+    if (len<0)                                                     //~vby8I~
+    	len=getArrayLength(Penv,Pjia);                             //~vby8I~
     (*Penv)->GetIntArrayRegion(Penv,Pjia,Ppos,Plen,(jint*)Pout);   //~1715I~
     CHK_ARRAY_EXCEPTION(Penv,"jint2int:GetIntArrayRegion")         //~1715I~
+	UTRACEP("%s:exit len=%d\n",UTT,len);                           //~vby8I~
 }                                                                  //~1715I~
+//*************************************************                //~vby8I~
+void jstr2char(JNIEnv *Penv,jobjectArray Parray,int Ppos,int Plen,char **Ppout)//~vby8I~
+{                                                                  //~vby8I~
+	int sz,ctr=0,len;                                              //~vby8I~
+    jstring jstr;
+    char *pc2;                                                     //~vby8R~
+    const char *pc;                                                //~vby8I~
+//*****************                                                //~vby8I~
+	sz=getArrayLength(Penv,Parray);                                //~vby8I~
+	UTRACEP("%s:pos=%d,len=%d,array=%p,out=%p\n",UTT,Ppos,Plen,Parray,Ppout);//~vby8I~
+    if (Plen<0)                                                    //~vby8I~
+    	len=sz;                                                     //~vby8I~
+    else                                                           //~vby8I~
+    	len=Plen;                                                  //~vby8I~
+    for (int ii=Ppos;ii<Ppos+len && ii<sz;ii++)                        //~vby8I~
+    {                                                              //~vby8I~
+	    jstr=(jstring)(*Penv)->GetObjectArrayElement(Penv,Parray,ii);      //~vby8I~
+	    UTRACEP("%s:ii=%d,jstr=%p\n",UTT,ii,jstr);                 //~vby8I~
+        if (jstr)                                                  //~vby8I~
+        {                                                          //~vby8I~
+            pc=(*Penv)->GetStringUTFChars(Penv,jstr,0);            //~vby8R~
+            pc2=umalloc(strlen(pc)+1);                             //~vby8R~
+            unrefLocal(Penv,jstr);                                 //~vby8R~
+            strcpy(pc2,pc);                                        //~vby8R~
+            (*Penv)->ReleaseStringUTFChars(Penv,jstr,pc);          //~vby8R~
+		    UTRACED("pc2",pc2,strlen(pc2));                        //~vby8I~
+        }                                                          //~vby8I~
+        else                                                       //~vby8I~
+        	pc2=0;                                                 //~vby8I~
+        Ppout[ctr++]=pc2;                                          //~vby8R~
+    }                                                              //~vby8I~
+}                                                                  //~vby8I~
+//*************************************************                //+vby8I~
+int jstr2UTFcharCopy(JNIEnv *Penv,jstring Pjstr,char **Ppout)      //+vby8I~
+{                                                                  //+vby8I~
+	int szUTF8;                                                    //+vby8I~
+    const char *pc;                                                //+vby8I~
+    char *pcout;                                                   //+vby8I~
+//*****************                                                //+vby8I~
+    szUTF8=(*Penv)->GetStringUTFLength(Penv,Pjstr);                //+vby8I~
+	UTRACEP("%s:*Ppout=%p,lenUTF8=%d\n",UTT,*Ppout,szUTF8);            //+vby8I~
+    pc=(*Penv)->GetStringUTFChars(Penv,Pjstr,0);                    //+vby8I~
+    if (*Ppout)                                                    //+vby8I~
+    	pcout=*Ppout;                                              //+vby8I~
+    else                                                           //+vby8I~
+    {                                                              //+vby8I~
+    	pcout=umalloc(szUTF8+1);                                   //+vby8I~
+        *Ppout=pcout;                                              //+vby8I~
+    }                                                              //+vby8I~
+    strcpy(pcout,pc);                                              //+vby8I~
+    (*Penv)->ReleaseStringUTFChars(Penv,Pjstr,pc);              //+vby8I~
+	UTRACED("pcoutUTF8",pcout,szUTF8);                                 //+vby8I~
+	UTRACEP("%s:exit rc=sz=%d\n",UTT,szUTF8);                          //+vby8I~
+    return szUTF8;                                                     //+vby8I~
+}                                                                  //+vby8I~
 //*************************************************                //~vac6I~
 jlong *getjlongarray(JNIEnv *Penv,jlongArray Pjia,int Ppos,int Plen)//~vac6R~
 {                                                                  //~vac6I~
@@ -511,6 +611,7 @@ jstring utf8z2jstring(JNIEnv *Penv,char *Putf8)                    //~1715R~
     utfstrvalidate(0,Putf8,0/*len*/,'.'/*errch*/,0/*okctr*/,0/*repctr*/);//~vac6I~
 	js=(*Penv)->NewStringUTF(Penv,Putf8);                          //~1715R~
 //	(*Penv)->NewGlobalRef(Penv,js);                                //~1715R~
+	UTRACEP("utf8z2jstring exit js=%p\n",js);                      //~vay0I~
     return js;                                                     //~1715I~
 }                                                                  //~1715I~
 //*************************************************                //~1715I~
@@ -529,16 +630,35 @@ jstring utf82jstring(JNIEnv *Penv,char *Putf8,int Plen)            //~1715I~
     return js;                                                     //~1715I~
 }                                                                  //~1715I~
 //*************************************************                //~1715I~
-jintArray newjint(JNIEnv *Penv,int Plen)                           //~1715I~
+//jintArray newjint(JNIEnv *Penv,int Plen)                           //~1715I~//~vby8R~
+jintArray newjintArray(JNIEnv *Penv,int Plen)                      //~vby8I~
 {                                                                  //~1715I~
-	jbyteArray jia;                                                //~1715I~
+//	jbyteArray jia;                                                //~1715I~//~vby8R~
+  	jintArray  jia;                                                //~vby8I~
 //*****************                                                //~1715I~
-	UTRACEP("newjint len=%d\n",Plen);                              //~1715I~
+	UTRACEP("%s:len=%d\n",UTT,Plen);                              //~1715I~//~vby8R~
 	jia=(*Penv)->NewIntArray(Penv,Plen);                           //~1715I~
     CHK_ARRAY_EXCEPTION(Penv,"newjint:NewIntArray")                //~1715I~
 //	(*Penv)->NewGlobalRef(Penv,jia);                               //~1715R~
+	UTRACEP("%s:rc=%p\n",UTT,jia);                                 //~vby8I~
     return jia;                                                    //~1715I~
 }                                                                  //~1715I~
+//*************************************************                //~vby8I~
+jobjectArray newjstrArray(JNIEnv *Penv,int Plen)                   //~vby8R~
+{                                                                  //~vby8I~
+	jobjectArray joa;                                              //~vby8I~
+    jclass       class;                                            //~vby8I~
+    jstring      initvalue;                                        //~vby8I~
+//*****************                                                //~vby8I~
+	UTRACEP("%s:len=%d\n",UTT,Plen);                               //~vby8I~
+    class=findClass(Penv,"java/lang/String");                      //~vby8I~
+    initvalue=(*Penv)->NewStringUTF(Penv,"");                      //~vby8R~
+	joa=(*Penv)->NewObjectArray(Penv,Plen,class,initvalue);        //~vby8R~
+    CHK_ARRAY_EXCEPTION(Penv,"newjstr:NewObjectArray")             //~vby8I~
+	UTRACEP("%s:sz=%d\n",UTT,getArrayLength(Penv,joa));            //~vby8R~
+	UTRACEP("%s:rc=%p\n",UTT,joa);                                 //~vby8I~
+    return joa;                                                    //~vby8I~
+}                                                                  //~vby8I~
 //*************************************************                //~1623I~
 void unrefGlobal(JNIEnv *Penv,jobject Pobject)                     //~1715R~
 {                                                                  //~1623I~
@@ -634,7 +754,8 @@ static int Ssize;                                                  //~1A14I~
 //            fprintf(Sfh,"unrefGbl\n");                             //~2120I~//~vab3R~
 			unrefGlobal(Penv,Sobj);                                //~1A14R~
         }                                                          //~2120I~
-    	Sobj=newjint(Penv,Psize);                                  //~1A14I~
+//    	Sobj=newjint(Penv,Psize);                                  //~1A14I~//~vby8R~
+      	Sobj=newjintArray(Penv,Psize);                             //~vby8I~
         Sobj=                                                      //~vab3I~
 		(*Penv)->NewGlobalRef(Penv,Sobj);                          //~1A14I~
     	Ssize=Psize;                                               //~1A14I~

@@ -1,1 +1,17 @@
+plugins
+{
+//    id 'com.gradle.enterprise' version '3.12.6'
+//  id 'com.gradle.enterprise' version '3.11'
+//  2023/05/25 latest      2023/06/12
+    id 'com.gradle.enterprise' version '3.13.3'       
+}
+
+gradleEnterprise
+{
+	buildScan
+	{
+		termsOfServiceUrl='https://gradle.com/terms-of-service'
+		termsOfServiceAgree='yes'
+	}
+}
 include ':app'

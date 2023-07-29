@@ -1,5 +1,6 @@
-//*CID://+vay0R~:                             update#=    9;       //~vay0R~
+//*CID://+vc53R~:                             update#=   11;       //~vc53R~
 //*****************************************************************************************//~vabeR~//~vaipI~
+//vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
 //vay0:140710 (Axe)jni exception handling                          //~vay0I~
 //vaip:130603 Axe:add ACRA function                                //~vaipI~
 //*****************************************************************************************//~vabeR~//~vaipI~
@@ -9,7 +10,6 @@ import org.acra.*;                                                 //+vaipI~    
 import static org.acra.ReportField.*;
 import org.acra.annotation.ReportsCrashes;
 import android.app.Application;
-                                                                   //~vaipI~
 @ReportsCrashes(formKey="",                                        //~vaipR~
                 mailTo="sak21997jp@gmail.com",                     //~vaipI~
                 customReportContent={                              //~vaipI~
@@ -18,9 +18,10 @@ import android.app.Application;
 //REPORT_ID, APP_VERSION_CODE, APP_VERSION_NAME, PACKAGE_NAME, FILE_PATH, PHONE_MODEL, BRAND, PRODUCT, ANDROID_VERSION, BUILD, TOTAL_MEM_SIZE, AVAILABLE_MEM_SIZE,              IS_SILENT, STACK_TRACE, INITIAL_CONFIGURATION, CRASH_CONFIGURATION, DISPLAY,                           USER_APP_START_DATE, USER_CRASH_DATE,                  LOGCAT,                                   ENVIRONMENT, SHARED_PREFERENCES, SETTINGS_SYSTEM, SETTINGS_SECURE, SETTINGS_GLOBAL//~vay0R~
   REPORT_ID, APP_VERSION_CODE, APP_VERSION_NAME, PACKAGE_NAME, FILE_PATH, PHONE_MODEL, BRAND, PRODUCT, ANDROID_VERSION, BUILD, TOTAL_MEM_SIZE, AVAILABLE_MEM_SIZE, CUSTOM_DATA, IS_SILENT, STACK_TRACE, INITIAL_CONFIGURATION, CRASH_CONFIGURATION, DISPLAY,                           USER_APP_START_DATE, USER_CRASH_DATE,                  LOGCAT,                                   ENVIRONMENT, SHARED_PREFERENCES, SETTINGS_SYSTEM, SETTINGS_SECURE, SETTINGS_GLOBAL//~vay0I~
                 },                                                 //~vaipI~
-                forceCloseDialogAfterToast=false,                  //+vay0I~
-                mode=ReportingInteractionMode.TOAST,               //~vaipI~
-                resToastText=R.string.Err_ACRA                      //~vaipI~
+//              forceCloseDialogAfterToast=false,                  //~vay0I~//+vc53R~
+//              mode=ReportingInteractionMode.TOAST,               //~vaipI~//~vc53R~
+                mode=ReportingInteractionMode.SILENT               //~vc53I~
+//              resToastText=R.string.Err_ACRA                      //~vaipI~//~vc53R~
                )                                                   //~vaipI~
 public class AxeACRA extends Application                           //~vaipI~
 {                                                                  //~vaipI~

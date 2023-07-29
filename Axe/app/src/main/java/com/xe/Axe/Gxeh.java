@@ -1,5 +1,8 @@
-//*CID://+vc2LR~: update#=  137;                                   //+vc2LR~
+//*CID://+vc52R~: update#=  140;                                   //+vc52R~
 //*****************************************************************//~vaafI~
+//vc52 2023/06/06 show shared storage path                         //+vc52I~
+//vc4x 2023/05/16 Try to get path for shared storage               //~vc4xI~
+//vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
 //vc2L 2020/09/02 display TMPDIR                                   //~vc2LI~
 //vc2g 2020/07/26 AltGr key option                                 //~vc2gI~
 //vc1p 2020/06/24 display path env                                 //~vc1pI~
@@ -522,8 +525,11 @@ public static final  int AXES_ALTG_RIGHTALT                       =0x08; // ALT_
 public static final  int AXES_ALTG_LEFTALT                        =0x10; // ALT_KEFY as AltGr key//~vc2gI~
 public static final  int AXES_ALTG_RIGHTSHIFT                     =0x20; // ALT_KEFY as AltGr key//~vc2gR~
 public static final  int AXES_ALTG_MASK=(AXES_ALTG_RIGHTALT | AXES_ALTG_LEFTALT | AXES_ALTG_RIGHTSHIFT);//~vc2gI~
+public static final  int AXES_GRANT_ALLFILES                      =0x40; // for >=api30 access allfiles//~vc4xI~
 public static String sdRoot="/sdcard";    //update at getSDCardDirectory//~vc1fI~
 public static String sdRootPath=""; //update at getSDCardDirectory, such as /strorage.emulated.0//~vc1fR~
+public static String SharedStorageVolume;                          //+vc52I~
+public static String SharedStorageAbsPath;                         //+vc52I~
 //*smb                                                             //~vac6I~
 public static int      SMB_fileno;                                 //~vac6I~
 public static String[] SMB_namelist;                               //~vac6I~
@@ -538,4 +544,5 @@ public static String   SMB_errmsg;                                 //~vac6I~
 //*filedialog                                                      //~vay7I~
 public static String   mCurrentFilename;                           //~vay7I~
 public static int      mCurrentFilenameType;                       //~vay7I~
+public static String   nativeLibraryDir;                           //~vc4pI~
 }                                                                  //~1528R~

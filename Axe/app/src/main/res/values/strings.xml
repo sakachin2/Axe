@@ -2,8 +2,8 @@
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <resources>
     <string name="app_name">Axe</string>
-    <string name="Version">Axe V1.29.1\n			By Mizumaki-machi</string>
-    <string name="VerDate">2020/09/17</string>
+    <string name="Version">Axe V1.29.2\n			By Mizumaki-machi</string>
+    <string name="VerDate">2023/07/26</string>
 
     <string name="OptionMenu_Stop">Exit</string>
     <string name="OptionMenu_Menu">Menu</string>
@@ -780,4 +780,34 @@
     <string name="Label_HelpLang">Debug:Help Opposite Lang</string>
     <string name="Setup_RulerWidth">Ruler line width (pixel)</string>
     <string name="Setup_RulerWidthMax">Max:%1$d</string>
+    <string name="Err_ManageAllFiles">failed to set option \"manage All Files\" for acces Shared-Storage.</string>
+    <string name="labelAllFile">Permission:Files and media</string>
+    <string name="tvAllFileAll">All Files</string>
+    <string name="tvAllFileMedia">Media</string>
+    <string name="btnAllFile">Change</string>
+    <string name="cbStopPopup">Not notify again.</string>
+    <string name="descAllFiles">
+				\"Permission:Files and media\" is not set to \"All Files\".\n
+				From android-11, the permission is required to access\n
+				Shared-Storage such as \"Download\", \"Music\"...\n
+				and also your own folder created by \"sp add //\" command.\n\n
+				Do you set permission ?\n\n
+                If \"Not notify again\" is On, permission is NOT set.\n
+				You can set it later through \"Menu\", \"Settings\", \"Android Related Options\",\n
+				\"Permission:Files and media\".
+				</string>
+    <string name="descAllFilesAlert">
+				\"Permission:Files and media\" is not set to \"All Files\".\n
+				From android-11, the permission is required to access\n
+				Shared-Storage such as \"Download\", \"Music\"...\n
+				Do you set permission ?\n\n
+				You can set it later through \"Menu\", \"Settings\", \"Android Related Options\",\n
+				</string>
+    <string name="DialogTitle_AllFiles">Request permission:Files and media</string>
+    <string name="Info_ChangedAllFiles">\"Permission:All Files\" is now %1$s.</string>
+    <string name="tvAllFileVolume">Volume:</string>
+    <string name="tvAllFileAbsPath">Path:</string>
+    <string name="DescYourSharedFolder">Directory you granted to access.</string>
+    <string name="NoYourSharedFolder">None. (You can set by \"SP  add //\" command.)</string>
+    <string name="NotSupportedOpenWith">\"OpenWith\" is not supported from Android7.</string>
 </resources>

@@ -1,5 +1,6 @@
-//*CID://+vay0R~: update#=11;                                      //~vay0I~
+//*CID://+vc4eR~: update#=15;                                      //~vc4eR~
 //**********************************************************************//~vay0I~
+//vc4e 2023/03/25 api33 deprecated getSerializableExtra            //~vc4eI~
 //vay0:140710 (Axe)jni exception handling                          //~vay0I~
 //**********************************************************************//~vay0I~
 //*NDKCrash Activity                                               //~vay0I~
@@ -8,13 +9,17 @@ package com.xe.Axe;                                                //~vay0I~
 
 import org.acra.ACRA;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import java.io.Serializable;
 
 public class AxeNDKCrash extends Activity {                        //~vay0R~
 
@@ -29,7 +34,8 @@ public class AxeNDKCrash extends Activity {                        //~vay0R~
         contextNDKCrash=(Context)this;                             //~vay0I~
         try                                                        //~vay0I~
         {                                                          //~vay0I~
-			String msg=(String)getIntent().getSerializableExtra("error"); //~vay0R~
+//			String msg=(String)getIntent().getSerializableExtra("error"); //~vay0R~//~vc4eR~
+  			String msg=getIntentMsg();                             //~vc4eI~
         	System.out.println("AxeNDKCrash:"+msg);                //~vay0R~
 	    	umsgboxCrashReport(msg,0);                             //~vay0R~
         }                                                          //~vay0I~
@@ -55,7 +61,7 @@ public class AxeNDKCrash extends Activity {                        //~vay0R~
 //      Toast.makeText(this, "umsgbox", Toast.LENGTH_LONG).show(); //~vay0R~
 		Resources  resource=getResources();                        //~vay0I~
 //  	System.out.println("AxeNDKCrash umsgboxCrashReport resource:"+resource.toString());//~vay0R~
-        msgText=resource.getString(R.string.NDKCrash_alertHeader)+"\n"+Pmsg;//+vay0R~
+        msgText=resource.getString(R.string.NDKCrash_alertHeader)+"\n"+Pmsg;//~vay0R~
 //      System.out.println("AxeNDKCrash umsgboxCrashReport msgText="+msgText);//~vay0R~
         String title=resource.getString(R.string.app_name);        //~vay0R~
 //      System.out.println("AxeNDKCrash umsgboxCrashReport title="+title);//~vay0R~
@@ -110,4 +116,29 @@ public class AxeNDKCrash extends Activity {                        //~vay0R~
         ACRA.getErrorReporter().putCustomData("error",msgText);    //~vay0I~
         ACRA.getErrorReporter().handleException(e);                //~vay0I~
     }                                                              //~vay0I~
+//**********************************                               //~vc4eI~
+	private String getIntentMsg()                                  //~vc4eI~
+    {                                                              //~vc4eI~
+    	if (Dump.Y) Dump.println("AxeNDKCrash.getIntentMsg");      //~vc4eI~
+		if (Build.VERSION.SDK_INT>=33)   //android-13(T)           //~vc4eI~
+			return getIntentMsgFrom33();                            //~vc4eI~
+        else                                                       //~vc4eI~
+			return getIntentMsgUnder33();                           //~vc4eI~
+    }                                                              //~vc4eI~
+    @SuppressWarnings("deprecation")                               //~vc4eI~
+	private String getIntentMsgUnder33()                           //~vc4eI~
+    {                                                              //~vc4eI~
+		String msg=(String)getIntent().getSerializableExtra("error");//~vc4eI~
+    	if (Dump.Y) Dump.println("AxeNDKCrash.getIntentMsgUnder33 msg="+msg);//~vc4eI~
+        return msg;                                                //~vc4eI~
+    }                                                              //~vc4eI~
+    @TargetApi(33)   //>=33 Android13                              //~vc4eI~
+	private String getIntentMsgFrom33()                            //~vc4eI~
+    {                                                              //~vc4eI~
+		Class clazz=String.class;                                  //~vc4eR~
+		String msg;//~vc4eR~
+        msg = (String) getIntent().getSerializableExtra("error",String.class);//+vc4eR~
+        if (Dump.Y) Dump.println("AxeNDKCrash.getIntentMsgFrom33 msg="+msg);//~vc4eI~
+        return msg;                                                //~vc4eI~
+    }                                                              //~vc4eI~
 }

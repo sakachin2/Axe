@@ -1,5 +1,8 @@
-//*CID://+vc2QR~: update#= 126;                                    //~vc2QR~
+//*CID://+vc5bR~: update#= 135;                                    //+vc5bR~
 //**********************************************************************//~1107I~
+//vc5b 2023/06/29 (Bug)titlebar bottome sometime invalid when rotated. use 1st time value//+vc5bI~
+//vc4r 2023/04/14 rename using SAF                                 //~vc4rI~
+//vc4q 2023/04/01 support shared storage using SAF(StorageAccessFramework)//~vc4qI~
 //vc2Q 2020/09/08 change font size by pinch action                 //~vc2QI~
 //vc10 2020/06/14 update Dump to write to terminal(copy from Ahsv) //~vc10I~
 //**********************************************************************//~1107I~
@@ -7,6 +10,8 @@ package com.ahsv;                                         //~1107R~  //~1108R~//
 
 import java.util.Properties;                                       //~vc10I~
 
+import com.ahsv.utils.USAF;
+import com.ahsv.utils.USAF2;                                       //~vc4rI~
 import com.xe.Axe.Axe;
 import com.xe.Axe.AxeG;                                            //~vc10R~
 import com.xe.Axe.R;                                               //~vc10I~
@@ -33,6 +38,9 @@ public class AG	extends AxeG                                       //~vc10R~
     public static final int STATUS_MAINFRAME_OPEN=1;               //~vc10I~
     public static final int STATUS_STOPFINISH=9;                   //~vc10I~
     public static CommonListener.CommonListenerI aCommonListenerI; //~vc10I~
+    public static USAF aUSAF;                                      //~vc4qR~
+    public static USAF2 aUSAF2;                                    //~vc4rI~
+    public static int titleBarTop,titleBarBottom;                  //+vc5bI~
 //**********************************                               //~1211I~
 	public AG(Axe Paxe)                                           //~1211I~//~@@@@R~//~vc10R~
     {                                                              //~1211I~
@@ -40,8 +48,9 @@ public class AG	extends AxeG                                       //~vc10R~
 		Properties p=System.getProperties();                       //~vc10I~
 		dirSep=p.getProperty("file.separator");                    //~vc10I~
 		appName=context.getText(R.string.app_name).toString();     //~vc10I~
-//      helpFileSuffix=isLangJP ? "_ja" : "";                      //~vc10I~//+vc2QR~
+//      helpFileSuffix=isLangJP ? "_ja" : "";                      //~vc10I~//~vc2QR~
         setDebugHelpLang();                                        //~vc2QI~
+        aUSAF=new USAF();                                          //~vc4qI~
     }                                                              //~1211I~
     //*********************************                            //~vc2QI~
     public static void setDebugHelpLang()                          //~vc2QI~

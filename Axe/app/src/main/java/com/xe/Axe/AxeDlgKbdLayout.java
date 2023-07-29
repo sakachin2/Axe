@@ -1,5 +1,6 @@
-//*CID://+vc2DR~: update#= 186;                                    //~vc2DR~
+//*CID://+vc53R~: update#= 187;                                    //+vc53R~
 //**********************************************************************//~1107I~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
 //vc2D 2020/08/19 (Bug)kbd send not to Dialog but to AxeScreen when KbdDialogHW opened after AxeDialog Open//~vc2DI~
 //vc1w 2020/07/06 AxeKbd updatelog extends KbdLayoutHW             //~vc1wI~
 //**********************************************************************//~vc1wI~
@@ -134,21 +135,42 @@ public class AxeDlgKbdLayout extends AxeDlgKbdLayoutHW             //~vc1wI~
     protected boolean onClickOther(int Pbuttonid)                  //~vc1wI~
     {                                                              //~vc1wI~
     	//**********                                               //~vc1wI~
-    	switch(Pbuttonid)                                          //~vc1wI~
-        {                                                          //~vc1wI~
-        case R.id.Reset:                                           //~vc1wR~
-            if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther reset");//~vc1wR~
-            axeList.resetToDefault();                              //~vc1wR~
-            break;                                                 //~vc1wR~
-        case R.id.Delete:                                          //~vc1wI~
-	    	if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther Delete");//~vc1wR~
-        	axeList.onClickDelete();                               //~vc1wI~
-        	break;                                                 //~vc1wI~
-        case R.id.SoftKbd:                                         //~vc1wI~
-	    	if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther SoftKbd");//~vc1wR~
-        	useSoftKbd();                                          //~vc1wI~
-        	break;                                                 //~vc1wI~
-        }                                                          //~vc1wI~
+//        switch(Pbuttonid)                                          //~vc1wI~//+vc53R~
+//        {                                                          //~vc1wI~//+vc53R~
+//        case R.id.Reset:                                           //~vc1wR~//+vc53R~
+//            if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther reset");//~vc1wR~//+vc53R~
+//            axeList.resetToDefault();                              //~vc1wR~//+vc53R~
+//            break;                                                 //~vc1wR~//+vc53R~
+//        case R.id.Delete:                                          //~vc1wI~//+vc53R~
+//            if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther Delete");//~vc1wR~//+vc53R~
+//            axeList.onClickDelete();                               //~vc1wI~//+vc53R~
+//            break;                                                 //~vc1wI~//+vc53R~
+//        case R.id.SoftKbd:                                         //~vc1wI~//+vc53R~
+//            if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther SoftKbd");//~vc1wR~//+vc53R~
+//            useSoftKbd();                                          //~vc1wI~//+vc53R~
+//            break;                                                 //~vc1wI~//+vc53R~
+//        }                                                          //~vc1wI~//+vc53R~
+//      switch(Pbuttonid)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (Pbuttonid== R.id.Reset)                                //+vc53I~
+        {                                                          //+vc53I~
+            if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther reset");//+vc53I~
+            axeList.resetToDefault();                              //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pbuttonid== R.id.Delete)                               //+vc53I~
+        {                                                          //+vc53I~
+            if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther Delete");//+vc53I~
+            axeList.onClickDelete();                               //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (Pbuttonid== R.id.SoftKbd)                              //+vc53I~
+        {                                                          //+vc53I~
+            if (Dump.Y) Dump.println("AxeDlgKbdLayout.onClickOther SoftKbd");//+vc53I~
+            useSoftKbd();                                          //+vc53I~
+        }                                                          //+vc53I~
+//          break;                                                 //+vc53I~
+//      }                                                          //+vc53I~
         return false;                                              //~vc1wI~
     }                                                              //~vc1wI~
 //    //*******************************                              //~1809I~//~vc1wR~
@@ -193,5 +215,5 @@ public class AxeDlgKbdLayout extends AxeDlgKbdLayoutHW             //~vc1wI~
     	AxeG.axeDlgKbdLayout=null;                                 //~vc2DI~
         if (swReopen)                                              //~vc2DI~
         	AxeDlgKbdLayout.showDialog();                          //~vc2DI~
-    }                                                              //+vc2DI~
+    }                                                              //~vc2DI~
 }//class                                                           //~1612R~

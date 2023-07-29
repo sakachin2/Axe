@@ -1,6 +1,7 @@
 
 #cmake_minimum_required(VERSION 3.4.1)
-cmake_minimum_required(VERSION 3.10.2)
+#cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.22.1)
 
 
 ##############################
@@ -87,3 +88,15 @@ add_library(
 #   ${SRCLIB}/strerror.c
 #   ${SRCLIB}/strerror-override.c
              )
+#set_target_properties(icrt
+#    PROPERTIES
+##    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/libs/${OUT_SUBDIR}
+#     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/libs/${OUT_SUBDIR}
+#    )
+add_custom_command (TARGET icrt POST_BUILD
+#	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libicrt.a  ${WORK_LIBS}
+#	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libicrt.a  ${DEVCONUP_LIBS}
+#  	 COMMAND ${CMAKE_COMMAND} -E copy ${ARCHIVE_OUTPUT_DIRECTORY}/libicrt.a  ${DEVCONUP_LIBS}
+   	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libicrt.a  ${DEVCONUP_LIBS}
+	)
+

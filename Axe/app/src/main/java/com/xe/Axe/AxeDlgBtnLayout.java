@@ -1,5 +1,6 @@
-//*CID://+vc2kR~: update#= 169;                                    //~vc2kR~
+//*CID://+vc53R~: update#= 170;                                    //+vc53R~
 //**********************************************************************//~1107I~
+//vc53 2023/06/12 java error;switch-case requres constant          //+vc53I~
 //vc2k 2020/07/28 Button layout with hardware keyboard             //~vc2kI~
 //**********************************************************************//~vc2kI~
 //*AlerDialog                                                      //~1527R~
@@ -19,7 +20,7 @@ public class AxeDlgBtnLayout extends AxeDialog                     //~1602R~
 {                                                                  //~0914I~
 	private static final int DIALOG_BUTTON_LAYOUT =R.layout.dialogbuttonlayout;//~1528I~
 	private static final int TITLE_BUTTON_LAYOUT  =R.string.DialogTitle_ButtonLayout;//~1528I~
-	private static final String HELP_FILE  ="AxeBtnLayout";        //+vc2kI~
+	private static final String HELP_FILE  ="AxeBtnLayout";        //~vc2kI~
                                                                    //~1602I~
 	private EditText editText1,editText2;                                  //~1602I~//~vc2kR~
 //  CheckBox stickyView,useLandView;                               //~1822R~
@@ -70,8 +71,8 @@ public class AxeDlgBtnLayout extends AxeDialog                     //~1602R~
 	@Override                                                      //~1602I~
     protected boolean onClickHelp()                                //~1821R~
     {                                                              //~1528I~
-//  	showDialogHelp(R.string.HelpTitle_ButtonLayout,R.string.Help_ButtonLayout);//~1821R~//+vc2kR~
-    	showDialogHelp(R.string.HelpTitle_ButtonLayout,HELP_FILE); //+vc2kI~
+//  	showDialogHelp(R.string.HelpTitle_ButtonLayout,R.string.Help_ButtonLayout);//~1821R~//~vc2kR~
+    	showDialogHelp(R.string.HelpTitle_ButtonLayout,HELP_FILE); //~vc2kI~
         return false;	//no dismiss                               //~1821R~
     }                                                              //~1528I~
 //************************                                         //~1821I~
@@ -130,19 +131,36 @@ public class AxeDlgBtnLayout extends AxeDialog                     //~1602R~
     	boolean rc=false;   //not dismiss at return                //~vc2kI~
     //****************                                             //~vc2kI~
         if (Dump.Y) Dump.println("AxeDlgBtnLayout onClickOther buttonid="+Integer.toHexString(PbuttonId));//~vc2kI~
-        switch(PbuttonId)                                          //~vc2kI~
-        {                                                          //~vc2kI~
-        case R.id.ResetToDefault:                                  //~vc2kI~
-	        editText1.setText(""+AxeButtonLayout.DEFAULT_BUTTONS); //~vc2kI~
-	        editText2.setText(""+AxeButtonLayout.DEFAULT_BUTTONS); //~vc2kI~
-		    layoutID=LAYOUTID_DEFAULT;                             //~vc2kM~
-            break;                                                 //~vc2kI~
-        case R.id.ForHardKbd:                                      //~vc2kI~
-	        editText1.setText(""+AxeButtonLayout.HWKBD_BUTTONS1);  //~vc2kR~
-	        editText2.setText(""+AxeButtonLayout.HWKBD_BUTTONS2);  //~vc2kI~
-		    layoutID=LAYOUTID_HWKBD;                               //~vc2kM~
-            break;                                                 //~vc2kI~
-        }                                                          //~vc2kI~
+//        switch(PbuttonId)                                          //~vc2kI~//+vc53R~
+//        {                                                          //~vc2kI~//+vc53R~
+//        case R.id.ResetToDefault:                                  //~vc2kI~//+vc53R~
+//            editText1.setText(""+AxeButtonLayout.DEFAULT_BUTTONS); //~vc2kI~//+vc53R~
+//            editText2.setText(""+AxeButtonLayout.DEFAULT_BUTTONS); //~vc2kI~//+vc53R~
+//            layoutID=LAYOUTID_DEFAULT;                             //~vc2kM~//+vc53R~
+//            break;                                                 //~vc2kI~//+vc53R~
+//        case R.id.ForHardKbd:                                      //~vc2kI~//+vc53R~
+//            editText1.setText(""+AxeButtonLayout.HWKBD_BUTTONS1);  //~vc2kR~//+vc53R~
+//            editText2.setText(""+AxeButtonLayout.HWKBD_BUTTONS2);  //~vc2kI~//+vc53R~
+//            layoutID=LAYOUTID_HWKBD;                               //~vc2kM~//+vc53R~
+//            break;                                                 //~vc2kI~//+vc53R~
+//        }                                                          //~vc2kI~//+vc53R~
+//      switch(PbuttonId)                                          //+vc53I~
+//      {                                                          //+vc53I~
+        if (PbuttonId== R.id.ResetToDefault)                       //+vc53I~
+        {                                                          //+vc53I~
+            editText1.setText(""+AxeButtonLayout.DEFAULT_BUTTONS); //+vc53I~
+            editText2.setText(""+AxeButtonLayout.DEFAULT_BUTTONS); //+vc53I~
+            layoutID=LAYOUTID_DEFAULT;                             //+vc53I~
+        }                                                          //+vc53I~
+        else //break;                                              //+vc53I~
+        if (PbuttonId== R.id.ForHardKbd)                           //+vc53I~
+        {                                                          //+vc53I~
+            editText1.setText(""+AxeButtonLayout.HWKBD_BUTTONS1);  //+vc53I~
+            editText2.setText(""+AxeButtonLayout.HWKBD_BUTTONS2);  //+vc53I~
+            layoutID=LAYOUTID_HWKBD;                               //+vc53I~
+        }                                                          //+vc53I~
+//          break;                                                 //+vc53I~
+//      }                                                          //+vc53I~
         return rc;                                                 //~vc2kI~
     }                                                              //~vc2kI~
     //*************************************************************//~vc2kI~

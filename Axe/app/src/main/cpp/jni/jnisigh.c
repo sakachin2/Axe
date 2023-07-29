@@ -1,6 +1,6 @@
-//*CID://+vc08R~:                                   update#=  416  //+vc08R~
+//*CID://+vc08R~:                                   update#=  419  //~vc08R~
 //**************************************************************** //~1610I~
-//vc08:2020/06/13 Axe:architecture __arm__ is 32 bit, arm64 is __aarch64__//+vc08I~
+//vc08:2020/06/13 Axe:architecture __arm__ is 32 bit, arm64 is __aarch64__//~vc08I~
 //vb95:170228 _URC_OK(=0) is not defined in uwind.h of llvm(used without /I)//~vb95I~
 //vb90:170220 (Axe) BIONIC_HAVE_UCONTEXT_T was changed from undef to defined at r13b//~vb90I~
 //vay2:140726 (Axe)backtrace using "corkscrew" if lib prepared(>=android4.1.1)//~vay2I~
@@ -143,16 +143,16 @@ typedef struct ucontext {
   unsigned long uc_sigmask;
 } ucontext_t;
 
-#elif (defined(__aarch64__))                                       //+vc08R~
-                                                                   //+vc08R~
-typedef struct ucontext {                                          //+vc08R~
-  unsigned long uc_flags;                                          //+vc08R~
-  struct ucontext *uc_link;                                        //+vc08R~
-  stack_t uc_stack;                                                //+vc08R~
-  struct sigcontext uc_mcontext;                                   //+vc08R~
-  unsigned long uc_sigmask;                                        //+vc08R~
-} ucontext_t;                                                      //+vc08R~
-                                                                   //+vc08R~
+#elif (defined(__aarch64__))                                       //~vc08R~
+                                                                   //~vc08R~
+typedef struct ucontext {                                          //~vc08R~
+  unsigned long uc_flags;                                          //~vc08R~
+  struct ucontext *uc_link;                                        //~vc08R~
+  stack_t uc_stack;                                                //~vc08R~
+  struct sigcontext uc_mcontext;                                   //~vc08R~
+  unsigned long uc_sigmask;                                        //~vc08R~
+} ucontext_t;                                                      //~vc08R~
+                                                                   //~vc08R~
 #elif defined(__i386__)
 
 /* Taken from Google Breakpad. */
@@ -470,7 +470,8 @@ static void coffeecatch_call_old_signal_handler(const int code, siginfo_t *const
       native_code_g.sa_old[code].sa_handler(code);
     }
   }
-    UTRACEP("@@@@ call_old_signal_handler return code=%d\n",code); //~vay0R~
+    UTRACEP("@@@@ call_old_signal_handler return code=%d\n",code); //~vay0R~//+vc08R~
+    UTRACE_FLUSH("call_old_signal_handler exit");
 }
 #ifdef BBB                                                         //~vay0I~
 //***********************************************************************************//~vay0I~
@@ -1138,8 +1139,8 @@ uintptr_t coffeecatch_get_backtrace(ssize_t index) {
 static uintptr_t coffeecatch_get_pc_from_ucontext(const ucontext_t *uc) {
 #ifdef __arm__
   return uc->uc_mcontext.arm_pc;
-#elif (defined(__aarch64__))                                       //+vc08R~
-  return uc->uc_mcontext.pc;                                       //+vc08R~
+#elif (defined(__aarch64__))                                       //~vc08R~
+  return uc->uc_mcontext.pc;                                       //~vc08R~
 #elif (defined(__x86_64__))
   return uc->uc_mcontext.gregs[REG_RIP];
 #elif (defined(__i386))
@@ -1476,6 +1477,7 @@ JNIEnv *getthreadenv()                                             //~4719R~
 //***************************************************************************//~vay0I~
 void jnisigh_catch(JNIEnv *env)                                    //~vay0R~
 {                                                                  //~vay0I~
+    UTRACE_FLUSH("jnisigh_catch");                                  //~vc08I~
 //	native_code_handler_struct *const t = coffeecatch_get();       //~vay2R~
 //  const char*const message = coffeecatch_get_message();          //~vay2R~
 //  UTRACEP("** NDK exception setup failed for func:%s by %s\n",t->funcid,message);//~vay2R~

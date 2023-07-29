@@ -1,4 +1,4 @@
-//*CID://+vc2KR~:                             update#=  106;       //~vc2KR~
+//*CID://+vc2KR~:                             update#=  107;       //~vc2KR~
 //*****************************************************************************************//~vabeR~
 //vc2K 2020/08/28 receive intent(View/Edit)                        //~vc2KI~
 //*****************************************************************************************//~vabeR~
@@ -75,7 +75,7 @@ public class AxeBCR extends BroadcastReceiver                      //~vc2KR~
     	}                                                          //~vc2KR~
     	catch (IntentFilter.MalformedMimeTypeException e)          //~vc2KR~
     	{                                                          //~vc2KR~
-			Utils.showToast("mimetyoe err"+e);                     //~vc2KR~
+			Utils.showToast("mimetype err"+e);                     //~vc2KR~
         	return;                                                //~vc2KR~
     	}                                                          //~vc2KR~
                                                                    //~vc2KI~

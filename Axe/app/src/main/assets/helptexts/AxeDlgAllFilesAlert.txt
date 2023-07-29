@@ -1,0 +1,11 @@
+Set permission to access all files
+----------------------------------------------------------------------------
+OK: open Android-Setting and you can set permission.
+    This enable commandline tool such as grep, xfg, ... works on shared storage folder.
+No: NOT set permmision.
+    You can grant permission later thru Menu (Settings, Android Related Options, Permission:Files and media).
+
+Note) You can create your own folder on shared storage.
+      Use "SP add //" command. It offers also shortcut name of the shared storage folder.
+----------------------------------------------------------------------------
+2023/05/30 AxeDlgAllFilesAlert

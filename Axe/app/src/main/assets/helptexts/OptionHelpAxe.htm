@@ -1,6 +1,10 @@
 This is Android porting of Hybrid Editor "xe"(WindowsVersion:wxe, LinuxVersion:gxe)
 <BR>	Currently following functions are not supported.
 <BR>		Printing, Remote file access
+<BR>	From Android-10(Q) external binary/shell execution is limited and cause permission-error.
+<BR>	Submit command will fail also.
+<BR>	We recommend using a wireless keyboard, such as a Bluetooth keyboard.
+<BR>		(If not, press the "Kbd" button to open the soft keyboard.)
 <BR>--------------------------------------------------------------------
 <BR><B><BIG>Menu</BIG></B>
 <BR>	<B>File</B>:
@@ -76,6 +80,13 @@ This is Android porting of Hybrid Editor "xe"(WindowsVersion:wxe, LinuxVersion:g
 <BR>	<B>$TMPDIR</B>
 <BR>		"/$tmp" is available as folder name if the path is show on the dialog.
 <BR>
+<BR>	<B>Shared Storage</B>
+<BR>		You can create a unique folder in the shared storage (/sdcard is often the case) by the SP command.
+<BR>		"SP add //" will open a system dialog, so for example if you create a new "Axe",
+<BR>		you can refer to it by folder name://Axe" like "e //Axe/file1".
+<BR>		On Android 11 or later it requires permission settings.
+<BR>		Follow the instructions in the dialog that opens to set permissions.
+<BR>
 <BR><BIG><B>Environment Variable:</B></BIG>
 <BR>	Add additional shell-script or utility PGM to <B>PATH1</B> folder if required.
 <BR>	iconv1.16 is included in PATH1.
@@ -101,11 +112,13 @@ This is Android porting of Hybrid Editor "xe"(WindowsVersion:wxe, LinuxVersion:g
 <BR>	If you have trouble, modify ::xesyna.cfg.
 <BR>
 -->
+<!--
 <BR><BIG><B>Download:</B></BIG>
 <BR>	You can download from specified URL,
 <BR>	and unzip into the specified local folder.
 <BR>	Unzip is functional without downloading.
 <BR>
+-->
 <BR><BIG><B>Intent:</B></BIG>
 <BR>	-xe accepts following intent from other application.
 <BR>			Action:ACTION_VIEW and ACTION_EDIT
@@ -118,10 +131,12 @@ This is Android porting of Hybrid Editor "xe"(WindowsVersion:wxe, LinuxVersion:g
 <BR>		with MIME determined by file extension name.
 <BR>		The application declared to receive the MIME type will be kicked.
 <BR>
+<!--
 <BR><BIG><B>Crash Report</B></BIG>
 <BR>   It is configured to send mail of crash report to developer,
 <BR>   send it after checked contents of mail text.
+-->
 <BR>----------------------------------------------------------------------------
 <BR>	Source code:github:sakachin2/Axe
 <BR>									By Mizumaki-machi
-<BR>2020/09/09 OptionHelpAxe
+<BR>2023/06/22 OptionHelpAxe

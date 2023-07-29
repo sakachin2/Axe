@@ -1,6 +1,10 @@
-//*CID://+vc2BR~: update#=    277;                                 //+vc2BR~
+//*CID://+vc5sR~: update#=    281;                                 //+vc5sR~
 //**********************************************************************//~1107I~
-//vc2B 2020/08/12 Help  by file                                    //+vc2BI~
+//vc5s 2023/07/25 drop pause option on stop                        //+vc5sI~
+//vc5q 2023/07/23 reject the function transfer file to mime app because//~vc5qI~
+//                From android7:android.os.FileUriExposedException: file:///data/user/0/com.xe.AxeA9.debug/files/myhome/x1.c exposed beyond app through Intent.getData()//~vc5qI~
+//vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
+//vc2B 2020/08/12 Help  by file                                    //~vc2BI~
 //vc1k 2020/06/23 help html from not web but assets                //~vc1kI~
 //vaya:141125 (Axe)utilize actionbar:home button click event(customizable by settion,default is home)//~vayaI~
 //vay7:141122 (Axe)actionBar:save/saveas item                      //~vay7R~
@@ -15,7 +19,9 @@
 //vag0:120719 (Axe)function to download asset from web             //~vag0I~
 //**********************************************************************//~1107I~
 package com.xe.Axe;                                                //~1527I~
-
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -23,11 +29,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-//import android.widget.PopupMenu;
-import android.annotation.TargetApi;                               //~vayaR~
-import android.app.ActionBar;
-                                                                   //+vc2BI~
-import com.ahsv.dialog.HelpDialog;                                 //+vc2BI~
+
+import com.ahsv.dialog.HelpDialog;
 
 //**********************************************************************//~1107I~
 public class AxeMenu implements AxeAlertI                           //~1527R~
@@ -124,36 +127,67 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
         inf.inflate(R.menu.actionbar,Pmenu);                       //~vay5I~
     }                                                              //~vay5I~
 //**************                                                   //~1527M~
- 	public  int onOptionMenuSelected(MenuItem Pitem)               //~1527R~
+ 	@SuppressLint("NonConstantResourceId")
+    public  int onOptionMenuSelected(MenuItem Pitem)               //~1527R~
 	{                                                              //~1527M~
         int itemid=Pitem.getItemId();                              //~1527R~
         if (Dump.Y) Dump.println("AxeMenu:OptionMenuSelected="+Integer.toHexString(itemid));//~1314I~ //~1326R~//~1607R~
-        switch(itemid)                                             //~1527M~
-        {                                                          //~1527M~
-        case    R.id.OM_STOP:                                       //~1314R~//~1527R~
-        case    R.id.ACTIONBAR_STOP:                               //~vay5R~
-            optionStop();                                          //~1527R~
-            break;                                                 //~1527M~
-        case    R.id.OM_MENU:                                      //~1527R~
-            optionMenu();                                          //~1527R~
-            break;                                                 //~1527M~
-        case    R.id.OM_HELP:                                      //~1820R~
-//          optionOption();                                        //~1820R~
-            optionHelp();                                          //~1820I~
-            break;                                                 //~1527M~
-        case    R.id.ACTIONBAR_FILE:                               //~vay5I~
-            actionbarFile();                                       //~vay5I~
-            break;                                                 //~vay5I~
-        case    R.id.ACTIONBAR_EDIT:                               //~vay5I~
-            actionbarEdit();                                       //~vay5I~
-            break;                                                 //~vay5I~
-        case    R.id.ACTIONBAR_SETUP:                              //~vay5I~
-            actionbarSetup();                                      //~vay5I~
-            break;                                                 //~vay5I~
-        case    R.id.ACTIONBAR_HELP:                               //~vay5I~
-            actionbarHelp();                                       //~vay5I~
-            break;                                                 //~vay5I~
-        }                                                          //~1527M~
+//        switch(itemid)                                             //~1527M~//~vc53R~
+//        {                                                          //~1527M~//~vc53R~
+//        case    R.id.OM_STOP:                                       //~1314R~//~1527R~//~vc53R~
+//        case    R.id.ACTIONBAR_STOP:                               //~vay5R~//~vc53R~
+//            optionStop();                                          //~1527R~//~vc53R~
+//            break;                                                 //~1527M~//~vc53R~
+//        case    R.id.OM_MENU:                                      //~1527R~//~vc53R~
+//            optionMenu();                                          //~1527R~//~vc53R~
+//            break;                                                 //~1527M~//~vc53R~
+//        case    R.id.OM_HELP:                                      //~1820R~//~vc53R~
+////          optionOption();                                        //~1820R~//~vc53R~
+//            optionHelp();                                          //~1820I~//~vc53R~
+//            break;                                                 //~1527M~//~vc53R~
+//        case    R.id.ACTIONBAR_FILE:                               //~vay5I~//~vc53R~
+//            actionbarFile();                                       //~vay5I~//~vc53R~
+//            break;                                                 //~vay5I~//~vc53R~
+//        case    R.id.ACTIONBAR_EDIT:                               //~vay5I~//~vc53R~
+//            actionbarEdit();                                       //~vay5I~//~vc53R~
+//            break;                                                 //~vay5I~//~vc53R~
+//        case    R.id.ACTIONBAR_SETUP:                              //~vay5I~//~vc53R~
+//            actionbarSetup();                                      //~vay5I~//~vc53R~
+//            break;                                                 //~vay5I~//~vc53R~
+//        case    R.id.ACTIONBAR_HELP:                               //~vay5I~//~vc53R~
+//            actionbarHelp();                                       //~vay5I~//~vc53R~
+//            break;                                                 //~vay5I~//~vc53R~
+//        }                                                          //~1527M~//~vc53R~
+     if (                                                          //~vc53I~
+        itemid==    R.id.OM_STOP ||                                //~vc53I~
+        itemid==    R.id.ACTIONBAR_STOP)                           //~vc53I~
+            optionStop();                                          //~vc53I~
+     else// break;                                                 //~vc53I~
+     if (                                                          //~vc53I~
+        itemid==    R.id.OM_MENU)                                  //~vc53I~
+            optionMenu();                                          //~vc53I~
+     else// break;                                                 //~vc53I~
+     if (                                                          //~vc53I~
+        itemid==    R.id.OM_HELP)                                  //~vc53I~
+            optionHelp();                                          //~vc53I~
+     else// break;                                                 //~vc53I~
+     if (                                                          //~vc53I~
+        itemid==    R.id.ACTIONBAR_FILE)                           //~vc53I~
+            actionbarFile();                                       //~vc53I~
+     else// break;                                                 //~vc53I~
+     if (                                                          //~vc53I~
+        itemid==    R.id.ACTIONBAR_EDIT)                           //~vc53I~
+            actionbarEdit();                                       //~vc53I~
+     else// break;                                                 //~vc53I~
+     if (                                                          //~vc53I~
+        itemid==    R.id.ACTIONBAR_SETUP)                          //~vc53I~
+            actionbarSetup();                                      //~vc53I~
+     else// break;                                                 //~vc53I~
+     if (                                                          //~vc53I~
+        itemid==    R.id.ACTIONBAR_HELP)                           //~vc53I~
+            actionbarHelp();                                       //~vc53I~
+     //     break;                                                 //~vc53I~
+     // }                                                          //~vc53I~
         return 0;                                                  //~1527M~
     }//selected                                                    //~1527M~
 //**************                                                   //~1527M~
@@ -166,7 +200,8 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
 //******************                                               //~1A02I~
     public void optionMenuConfirmStop()                                      //~1527M~//~1802R~//~1A02R~
     {                                                              //~1527M~
-    	int flag=AxeAlert.BUTTON_POSITIVE/*OK*/|AxeAlert.BUTTON_PAUSE/*pause*/|AxeAlert.BUTTON_NUTRAL/*Cancel*/|AxeAlert.EXIT;//~1527I~//~1A02R~//~1A22R~
+//    	int flag=AxeAlert.BUTTON_POSITIVE/*OK*/|AxeAlert.BUTTON_PAUSE/*pause*/|AxeAlert.BUTTON_NUTRAL/*Cancel*/|AxeAlert.EXIT;//~1527I~//~1A02R~//~1A22R~//+vc5sR~
+      	int flag=AxeAlert.BUTTON_POSITIVE/*OK*/|AxeAlert.BUTTON_NUTRAL/*Cancel*/|AxeAlert.EXIT;//+vc5sI~
         callbackId=CBID_CONFIRMSTOP;                               //~1802I~
         AxeAlert.simpleAlertDialog(this/*callback*/,0/*title*/,R.string.Qstop,flag);//CB:alertButtonAction//~1929R~//~1A02R~
     }                                                              //~1527M~
@@ -225,20 +260,34 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     {                                                                  //~1107I~//~1121R~
 		if (Dump.Y) Dump.println("AxeMenu:onCreateContextMenu menuType="+menuType+",View="+Pview.toString());                                       //~1306I~//~1528R~
         int rid;                                                   //~1528I~
-        switch(menuType)                                           //~1528I~
-        {                                                          //~1528I~
-        case MT_OPTOPT:                                            //~1528I~
-	        rid=R.menu.axeoption;                                  //~1528I~
-        	break;                                                 //~1528I~
-        case MT_POPUP:  //titlebar click:rbutton down              //~1927I~
-	        rid=R.menu.popupmenu;                                  //~1927I~
-        	break;                                                 //~1927I~
-        case MT_ACTIONBAR:  //titlebar click:rbutton down          //~vay5I~
-	        rid=menuresidActionbar;                                //~vay5I~
-        	break;                                                 //~vay5I~
-        default:                                                   //~1528I~
-	        rid=R.menu.contextmenu;                                //~1528I~
-        }                                                          //~1528I~
+//        switch(menuType)                                           //~1528I~//~vc53R~
+//        {                                                          //~1528I~//~vc53R~
+//        case MT_OPTOPT:                                            //~1528I~//~vc53R~
+//            rid=R.menu.axeoption;                                  //~1528I~//~vc53R~
+//            break;                                                 //~1528I~//~vc53R~
+//        case MT_POPUP:  //titlebar click:rbutton down              //~1927I~//~vc53R~
+//            rid=R.menu.popupmenu;                                  //~1927I~//~vc53R~
+//            break;                                                 //~1927I~//~vc53R~
+//        case MT_ACTIONBAR:  //titlebar click:rbutton down          //~vay5I~//~vc53R~
+//            rid=menuresidActionbar;                                //~vay5I~//~vc53R~
+//            break;                                                 //~vay5I~//~vc53R~
+//        default:                                                   //~1528I~//~vc53R~
+//            rid=R.menu.contextmenu;                                //~1528I~//~vc53R~
+//        }                                                          //~1528I~//~vc53R~
+//      switch(menuType)                                           //~vc53I~
+//      {                                                          //~vc53I~
+        if (menuType== MT_OPTOPT)                                  //~vc53I~
+            rid=R.menu.axeoption;                                  //~vc53I~
+        else//  break;                                             //~vc53I~
+        if (menuType== MT_POPUP)  //titlebar click:rbutton down    //~vc53I~
+            rid=R.menu.popupmenu;                                  //~vc53I~
+        else//    break;                                           //~vc53I~
+        if (menuType== MT_ACTIONBAR)  //titlebar click:rbutton down//~vc53I~
+            rid=menuresidActionbar;                                //~vc53I~
+        else//    break;                                           //~vc53I~
+//      default:                                                   //~vc53I~
+            rid=R.menu.contextmenu;                                //~vc53I~
+//      }                                                          //~vc53I~
         inflater.inflate(rid,Pmenu);                               //~1927I~
         if (menuType==MT_POPUP)                                    //~1927I~
         	createPopupMenu(Pmenu);                                //~1927I~
@@ -250,113 +299,200 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
 		//************************                                     //~1124I~
     	int itemid=Pitem.getItemId();
     	if (Dump.Y) Dump.println("AxeMenu:ContextItemSelected itemid="+Integer.toHexString(itemid));//~1121R~     //~1123R~//~1124I~//~1527R~//~vc1kR~
-        switch(itemid)                                             //~1527I~
-        {                                                          //~1527I~
-//        case    R.id.CM_NEW:                                     //~vaxcR~
-//            onFileNew();                                         //~vaxcR~
-//            break;                                               //~vaxcR~
-        case    R.id.CM_OPEN:                                      //~1725I~
-            onFileOpen();                                          //~1725I~
-            break;                                                 //~1725I~
-//        case    R.id.CM_SAVE:                                    //~vaxcR~
-//            onFileSave();                                        //~vaxcR~
-//            break;                                               //~vaxcR~
-        case    R.id.CM_SAVE:                                      //~vay7R~
-            onFileSave("");                                        //~vay7R~
-            break;                                                 //~vay7R~
-//        case    R.id.CM_SAVEAS:                                  //~vaxcR~
-//            onFileSaveAs();                                      //~vaxcR~
-//            break;                                               //~vaxcR~
-        case    R.id.CM_SAVEAS:                                    //~vay7R~
-            onFileSaveAs();                                        //~vay7R~
-            break;                                                 //~vay7R~
-        case    R.id.CM_CUT:                                       //~1725R~
-            onEditCut();                                           //~1725R~
-            break;                                                 //~1527I~
-        case    R.id.CM_COPY:                                      //~1725I~
-            onEditCopy();                                          //~1725I~
-            break;                                                 //~1725I~
-        case    R.id.CM_CLEAR:                                     //~1725I~
-            onEditClear();                                         //~1725I~
-            break;                                                 //~1725I~
-        case    R.id.CM_PASTEV:                                     //~1725I~//~1A02R~
-            onEditPasteV();                                         //~1725I~//~1A02R~
-            break;                                                 //~1725I~
-        case    R.id.CM_PASTEINS:                                  //~1725I~
-            onEditPasteIns();                                       //~1725I~
-            break;                                                 //~1725I~
-        case    R.id.CM_PASTEREP:                                  //~1725I~
-            onEditPasteRep();                                           //~1725I~
-            break;                                                 //~1725I~
-        case    R.id.CM_FONT:                                      //~1725R~
-            onSetupFont();                                         //~1725R~
-            break;                                                 //~1527I~
-        case    R.id.CM_COLOR:                                     //~1725I~
-            onSetupColor();                                        //~1725I~
-            break;                                                 //~1725I~
-        case    R.id.CM_BUTTON_CONFIG:                             //~1820I~
-    		onButtonConfig();                                       //~1820I~
-            break;                                                 //~1820I~
-        case    R.id.CM_KBD_CONFIG:                                //~1920I~
-    		onKbdConfig();                                         //~1920I~
-            break;                                                 //~1920I~
-        case    R.id.CM_KBD_CONFIG_HW:                             //~vc1kI~
-    		onKbdConfigHW();                                       //~vc1kI~
-            break;                                                 //~vc1kI~
-        case    R.id.CM_OTHER:                                     //~1725I~
-            onSetupOther();                                        //~1725I~
-            break;                                                 //~1725I~
-        case    R.id.CM_OTHER_ARM:                                  //~1821I~
-            onSetupOtherArm();                                     //~1821I~
-            break;                                                 //~1821I~
-//        case    R.id.CM_DL_ASSET:                                  //~vag0I~//~vc1kR~
-//            onSetupDLAsset();                                      //~vag0I~//~vc1kR~
-//            break;                                                 //~vag0I~//~vc1kR~
-        case    R.id.CM_DOWNLOAD:                                  //~vag0I~
-            onSetupDownload();                                     //~vag0I~
-            break;                                                 //~vag0I~
-        case    R.id.CM_HELPVERSION:                               //~1527I~
-            onVersion();                                            //~1527I~
-            break;                                                 //~1527I~
-        case    R.id.CM_HELPAXE:                                   //~1527I~
-            onHelpAxe();                                           //~1A07R~
-            break;                                                 //~1527I~
-        case    R.id.CM_HELPXE:                                    //~1527I~
-            onHelpXe();                                            //~1A07R~
-            break;                                                 //~1527I~
-        case    R.id.CM_BUTTON_LAYOUT:                             //~1820I~
-            onButtonLayout();                                      //~1820I~
-            break;                                                 //~1820I~
-        case    R.id.CM_SHORTCUT_KEY:                              //~1528I~
-            onShortcutkeyMap();                                    //~1528R~
-            break;                                                 //~1528M~
-        case    R.id.CM_SHIFT_KEY:                                 //~1529I~
-//          onShiftkeyMap(AxeKey.SHIFT_UPDATE);                    //~1817R~
-            onShiftkeyMap();                                       //~1817I~
-            break;                                                 //~1529I~
-//        case    R.id.CM_SHIFT_KEY_RESET101:                      //~1817R~
-//            onShiftkeyMap(AxeKey.SHIFT_RESET101);                //~1817R~
-//            break;                                               //~1817R~
-//        case    R.id.CM_SHIFT_KEY_RESET106:                      //~1817R~
-//            onShiftkeyMap(AxeKey.SHIFT_RESET106);                //~1817R~
-//            break;                                               //~1817R~
-        case    R.id.CM_ALTGR_KEY:                                 //~1611I~
-            onAltGrMap();                                          //~1611I~
-            break;                                                 //~1611I~
-        case    R.id.CM_TERMINAL_BUTTON:                           //~1809I~
-            onTerminalButtonUsage();                               //~1809I~
-            break;                                                 //~1809I~
-//*popupmenu                                                       //~vainI~
-        case    R.id.CM_END:                                       //~vainI~
-            onFileEnd();                                           //~vainI~
-            break;                                                 //~vainI~
-        case    R.id.CM_DISCARD:                                   //~vainI~
-            onFileCancel();                                        //~vainI~
-            break;                                                 //~vainI~
-        case    R.id.CM_OPENWITH:                                 //~vainI~
-            onFileOpenWith();                                      //~vainI~
-            break;                                                 //~vainI~
-        }                                                          //~1527I~
+//        switch(itemid)                                             //~1527I~//~vc53R~
+//        {                                                          //~1527I~//~vc53R~
+////        case    R.id.CM_NEW:                                     //~vaxcR~//~vc53R~
+////            onFileNew();                                         //~vaxcR~//~vc53R~
+////            break;                                               //~vaxcR~//~vc53R~
+//        case    R.id.CM_OPEN:                                      //~1725I~//~vc53R~
+//            onFileOpen();                                          //~1725I~//~vc53R~
+//            break;                                                 //~1725I~//~vc53R~
+////        case    R.id.CM_SAVE:                                    //~vaxcR~//~vc53R~
+////            onFileSave();                                        //~vaxcR~//~vc53R~
+////            break;                                               //~vaxcR~//~vc53R~
+//        case    R.id.CM_SAVE:                                      //~vay7R~//~vc53R~
+//            onFileSave("");                                        //~vay7R~//~vc53R~
+//            break;                                                 //~vay7R~//~vc53R~
+////        case    R.id.CM_SAVEAS:                                  //~vaxcR~//~vc53R~
+////            onFileSaveAs();                                      //~vaxcR~//~vc53R~
+////            break;                                               //~vaxcR~//~vc53R~
+//        case    R.id.CM_SAVEAS:                                    //~vay7R~//~vc53R~
+//            onFileSaveAs();                                        //~vay7R~//~vc53R~
+//            break;                                                 //~vay7R~//~vc53R~
+//        case    R.id.CM_CUT:                                       //~1725R~//~vc53R~
+//            onEditCut();                                           //~1725R~//~vc53R~
+//            break;                                                 //~1527I~//~vc53R~
+//        case    R.id.CM_COPY:                                      //~1725I~//~vc53R~
+//            onEditCopy();                                          //~1725I~//~vc53R~
+//            break;                                                 //~1725I~//~vc53R~
+//        case    R.id.CM_CLEAR:                                     //~1725I~//~vc53R~
+//            onEditClear();                                         //~1725I~//~vc53R~
+//            break;                                                 //~1725I~//~vc53R~
+//        case    R.id.CM_PASTEV:                                     //~1725I~//~1A02R~//~vc53R~
+//            onEditPasteV();                                         //~1725I~//~1A02R~//~vc53R~
+//            break;                                                 //~1725I~//~vc53R~
+//        case    R.id.CM_PASTEINS:                                  //~1725I~//~vc53R~
+//            onEditPasteIns();                                       //~1725I~//~vc53R~
+//            break;                                                 //~1725I~//~vc53R~
+//        case    R.id.CM_PASTEREP:                                  //~1725I~//~vc53R~
+//            onEditPasteRep();                                           //~1725I~//~vc53R~
+//            break;                                                 //~1725I~//~vc53R~
+//        case    R.id.CM_FONT:                                      //~1725R~//~vc53R~
+//            onSetupFont();                                         //~1725R~//~vc53R~
+//            break;                                                 //~1527I~//~vc53R~
+//        case    R.id.CM_COLOR:                                     //~1725I~//~vc53R~
+//            onSetupColor();                                        //~1725I~//~vc53R~
+//            break;                                                 //~1725I~//~vc53R~
+//        case    R.id.CM_BUTTON_CONFIG:                             //~1820I~//~vc53R~
+//            onButtonConfig();                                       //~1820I~//~vc53R~
+//            break;                                                 //~1820I~//~vc53R~
+//        case    R.id.CM_KBD_CONFIG:                                //~1920I~//~vc53R~
+//            onKbdConfig();                                         //~1920I~//~vc53R~
+//            break;                                                 //~1920I~//~vc53R~
+//        case    R.id.CM_KBD_CONFIG_HW:                             //~vc1kI~//~vc53R~
+//            onKbdConfigHW();                                       //~vc1kI~//~vc53R~
+//            break;                                                 //~vc1kI~//~vc53R~
+//        case    R.id.CM_OTHER:                                     //~1725I~//~vc53R~
+//            onSetupOther();                                        //~1725I~//~vc53R~
+//            break;                                                 //~1725I~//~vc53R~
+//        case    R.id.CM_OTHER_ARM:                                  //~1821I~//~vc53R~
+//            onSetupOtherArm();                                     //~1821I~//~vc53R~
+//            break;                                                 //~1821I~//~vc53R~
+////        case    R.id.CM_DL_ASSET:                                  //~vag0I~//~vc1kR~//~vc53R~
+////            onSetupDLAsset();                                      //~vag0I~//~vc1kR~//~vc53R~
+////            break;                                                 //~vag0I~//~vc1kR~//~vc53R~
+//        case    R.id.CM_DOWNLOAD:                                  //~vag0I~//~vc53R~
+//            onSetupDownload();                                     //~vag0I~//~vc53R~
+//            break;                                                 //~vag0I~//~vc53R~
+//        case    R.id.CM_HELPVERSION:                               //~1527I~//~vc53R~
+//            onVersion();                                            //~1527I~//~vc53R~
+//            break;                                                 //~1527I~//~vc53R~
+//        case    R.id.CM_HELPAXE:                                   //~1527I~//~vc53R~
+//            onHelpAxe();                                           //~1A07R~//~vc53R~
+//            break;                                                 //~1527I~//~vc53R~
+//        case    R.id.CM_HELPXE:                                    //~1527I~//~vc53R~
+//            onHelpXe();                                            //~1A07R~//~vc53R~
+//            break;                                                 //~1527I~//~vc53R~
+//        case    R.id.CM_BUTTON_LAYOUT:                             //~1820I~//~vc53R~
+//            onButtonLayout();                                      //~1820I~//~vc53R~
+//            break;                                                 //~1820I~//~vc53R~
+//        case    R.id.CM_SHORTCUT_KEY:                              //~1528I~//~vc53R~
+//            onShortcutkeyMap();                                    //~1528R~//~vc53R~
+//            break;                                                 //~1528M~//~vc53R~
+//        case    R.id.CM_SHIFT_KEY:                                 //~1529I~//~vc53R~
+////          onShiftkeyMap(AxeKey.SHIFT_UPDATE);                    //~1817R~//~vc53R~
+//            onShiftkeyMap();                                       //~1817I~//~vc53R~
+//            break;                                                 //~1529I~//~vc53R~
+////        case    R.id.CM_SHIFT_KEY_RESET101:                      //~1817R~//~vc53R~
+////            onShiftkeyMap(AxeKey.SHIFT_RESET101);                //~1817R~//~vc53R~
+////            break;                                               //~1817R~//~vc53R~
+////        case    R.id.CM_SHIFT_KEY_RESET106:                      //~1817R~//~vc53R~
+////            onShiftkeyMap(AxeKey.SHIFT_RESET106);                //~1817R~//~vc53R~
+////            break;                                               //~1817R~//~vc53R~
+//        case    R.id.CM_ALTGR_KEY:                                 //~1611I~//~vc53R~
+//            onAltGrMap();                                          //~1611I~//~vc53R~
+//            break;                                                 //~1611I~//~vc53R~
+//        case    R.id.CM_TERMINAL_BUTTON:                           //~1809I~//~vc53R~
+//            onTerminalButtonUsage();                               //~1809I~//~vc53R~
+//            break;                                                 //~1809I~//~vc53R~
+////*popupmenu                                                       //~vainI~//~vc53R~
+//        case    R.id.CM_END:                                       //~vainI~//~vc53R~
+//            onFileEnd();                                           //~vainI~//~vc53R~
+//            break;                                                 //~vainI~//~vc53R~
+//        case    R.id.CM_DISCARD:                                   //~vainI~//~vc53R~
+//            onFileCancel();                                        //~vainI~//~vc53R~
+//            break;                                                 //~vainI~//~vc53R~
+//        case    R.id.CM_OPENWITH:                                 //~vainI~//~vc53R~
+//            onFileOpenWith();                                      //~vainI~//~vc53R~
+//            break;                                                 //~vainI~//~vc53R~
+//        }                                                          //~1527I~//~vc53R~
+//      switch(itemid)                                             //~vc53I~
+//      {                                                          //~vc53I~
+        if (itemid==    R.id.CM_OPEN)                              //~vc53I~
+            onFileOpen();                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_SAVE)                              //~vc53I~
+            onFileSave("");                                        //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_SAVEAS)                            //~vc53I~
+            onFileSaveAs();                                        //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_CUT)                               //~vc53I~
+            onEditCut();                                           //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_COPY)                              //~vc53I~
+            onEditCopy();                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_CLEAR)                             //~vc53I~
+            onEditClear();                                         //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_PASTEV)                            //~vc53I~
+            onEditPasteV();                                        //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_PASTEINS)                          //~vc53I~
+            onEditPasteIns();                                      //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_PASTEREP)                          //~vc53I~
+            onEditPasteRep();                                      //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_FONT)                              //~vc53I~
+            onSetupFont();                                         //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_COLOR)                             //~vc53I~
+            onSetupColor();                                        //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_BUTTON_CONFIG)                     //~vc53I~
+    		onButtonConfig();                                      //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_KBD_CONFIG)                        //~vc53I~
+    		onKbdConfig();                                         //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_KBD_CONFIG_HW)                     //~vc53I~
+    		onKbdConfigHW();                                       //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_OTHER)                             //~vc53I~
+            onSetupOther();                                        //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_OTHER_ARM)                         //~vc53I~
+            onSetupOtherArm();                                     //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_DOWNLOAD)                          //~vc53I~
+            onSetupDownload();                                     //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_HELPVERSION)                       //~vc53I~
+            onVersion();                                           //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_HELPAXE)                           //~vc53I~
+            onHelpAxe();                                           //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_HELPXE)                            //~vc53I~
+            onHelpXe();                                            //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_BUTTON_LAYOUT)                     //~vc53I~
+            onButtonLayout();                                      //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_SHORTCUT_KEY)                      //~vc53I~
+            onShortcutkeyMap();                                    //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_SHIFT_KEY)                         //~vc53I~
+            onShiftkeyMap();                                       //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_ALTGR_KEY)                         //~vc53I~
+            onAltGrMap();                                          //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_TERMINAL_BUTTON)                   //~vc53I~
+            onTerminalButtonUsage();                               //~vc53I~
+        else //break;                                              //~vc53I~
+//*popupmenu                                                       //~vc53I~
+        if (itemid==    R.id.CM_END)                               //~vc53I~
+            onFileEnd();                                           //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_DISCARD)                           //~vc53I~
+            onFileCancel();                                        //~vc53I~
+        else //break;                                              //~vc53I~
+        if (itemid==    R.id.CM_OPENWITH)                          //~vc53I~
+            onFileOpenWith();                                      //~vc53I~
+//      }                                                          //~vc53I~
     	return rc;                                                 //~1121R~
     }                                                              //~1121I~
 //****************************************************             //~1930I~
@@ -444,12 +580,12 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     }                                                              //~1A07I~
     private void  onHelpAxe()                                      //~1A07R~
     {                                                              //~1A07I~
-//        String title=Utils.getResourceString(R.string.DialogTitle_OptionHelpAxe);//~1A08I~//+vc2BR~
-//        String helpmsg=Utils.getResourceString(R.string.Help_OptionHelpAxe);//~1A08I~//+vc2BR~
-////        int flag=AxeAlert.BUTTON_CLOSE|AxeAlert.SHOW_DIALOG;       //~1A08I~//+vc2BR~
-////      AxeAlert.simpleAlertDialog(null,title,helpmsg,flag);       //~vaxfR~//+vc2BR~
-//        AxeAlert.helpDialog(title,helpmsg);                        //~vaxfI~//+vc2BR~
-    	HelpDialog.newInstance(R.string.DialogTitle_OptionHelpAxe,"OptionHelpAxe").showDlg();//+vc2BI~
+//        String title=Utils.getResourceString(R.string.DialogTitle_OptionHelpAxe);//~1A08I~//~vc2BR~
+//        String helpmsg=Utils.getResourceString(R.string.Help_OptionHelpAxe);//~1A08I~//~vc2BR~
+////        int flag=AxeAlert.BUTTON_CLOSE|AxeAlert.SHOW_DIALOG;       //~1A08I~//~vc2BR~
+////      AxeAlert.simpleAlertDialog(null,title,helpmsg,flag);       //~vaxfR~//~vc2BR~
+//        AxeAlert.helpDialog(title,helpmsg);                        //~vaxfI~//~vc2BR~
+    	HelpDialog.newInstance(R.string.DialogTitle_OptionHelpAxe,"OptionHelpAxe").showDlg();//~vc2BI~
     }                                                              //~1A07I~
 //*********************************                                //~vainI~
     private void onFileEnd()                                       //~vainI~
@@ -465,6 +601,11 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     private void onFileOpenWith()                                  //~vainI~
     {                                                              //~vainI~
     	if (Dump.Y) Dump.println("AxeMenu FileOpenWith");          //~vainI~
+        if (true)                                                  //~vc5qI~
+        {                                                          //~vc5qI~
+        	Utils.showToastLong(R.string.NotSupportedOpenWith);    //~vc5qR~
+            return;                                                //~vc5qI~
+        }                                                          //~vc5qI~
     	AxeJNI.onFileOpenWith();                                     //~vainI~
     }                                                              //~vainI~
 //*********************************                                //~1528I~

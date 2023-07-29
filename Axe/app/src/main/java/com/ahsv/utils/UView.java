@@ -1,6 +1,11 @@
-//*CID://+vc1uR~: update#= 320;                                    //+vc1uR~
+//*CID://+vc42R~: update#= 327;                                    //~vc42R~
 //**********************************************************************//~v101I~
-//vc1u 2020/07/06 helpdialog for asset/helptexts                   //+vc1uI~
+//vc4c 2023/03/25 deprecated api31; getMetrics                     //~vc4cI~
+//vc4b 2023/03/25 deprecated api31; getRealSize                    //~vc4bI~
+//vc44 2023/03/25 api33 support;use androidx by the reason of vc43 //~vc44I~
+//vc42 2023/03/25 api33 support;deprecated display.getSize()       //~vc42I~
+//vc41 2023/03/25 api33 support;deprecated getDefaultDisplay       //~vc41I~
+//vc1u 2020/07/06 helpdialog for asset/helptexts                   //~vc1uI~
 //vc1m 2020/06/23 Toast should be on MainThread                    //~vc1mI~
 //vc09 2020/06/14 (Ahsv:1Ah0)for Android9-api28(PlayStore requires),deprected. ProgressDialog at Android8-api26//~vc09I~
 //1Ah2 2020/05/31 for Android9(Pie)-api28(PlayStore requires),deprected. DialogFragment,Fragmentmanager//~1Ah2I~
@@ -11,6 +16,7 @@
 package com.ahsv.utils;                                            //~vc09R~
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;                                    //~0913I~
@@ -22,8 +28,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 //import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+//import android.support.v4.app.ActivityCompat;                    //~vc44R~
+//import android.support.v4.content.ContextCompat;                 //~vc44R~
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -33,13 +39,18 @@ import android.view.Window;
 import android.view.WindowManager;
 //import android.app.DialogFragment;                                 //~v@@@I~//~1Ah2R~
 //import android.support.v4.app.DialogFragment;                    //~1Ah2R~
+import android.view.WindowMetrics;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import java.util.EmptyStackException;
-import de.greenrobot.event.EventBus;
+//import de.greenrobot.event.EventBus;                             //+vc42R~
 
 import com.xe.Axe.AxeG;
+import com.xe.Axe.AxeView;
 import com.xe.Axe.Dump;                                            //~vc09R~
 
 import com.ahsv.Alert;                                             //~vc09R~
@@ -101,7 +112,8 @@ public class UView                                                 //~v@@@I~
 //*************************                                        //~1122M~
 	public static void getScreenSize()                                    //~1122M~//~v@@@R~
     {                                                              //~1122M~
-		Display display=((WindowManager)(AG.context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1122M~
+//  	Display display=((WindowManager)(AG.context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1122M~//~vc41R~
+    	Display display= AxeView.getDefaultDisplay();               //~vc41I~
         Point p=new Point();                                       //~1A6pI~
         getDisplaySize(display,p);                                         //~1A6pR~
         AG.scrWidth=p.x;	//by pixel                             //~1A6pI~
@@ -125,7 +137,8 @@ public class UView                                                 //~v@@@I~
         {                                                          //~v@@@I~
 	        Point p=new Point();                                   //~v@@@I~
 //        	Pdisplay.getSize(p);                                   //~v@@@I~
-        	Pdisplay.getRealSize(p); //api17:4.2.2 JELLY bean mr1  //~v@@@R~
+//        	Pdisplay.getRealSize(p); //api17:4.2.2 JELLY bean mr1  //~v@@@R~//~vc4bR~
+        	getRealSize(Pdisplay,p); //api17:4.2.2 JELLY bean mr1  //~vam6I~//~vc4bI~
         	AG.scrWidthReal=p.x;                                   //~v@@@I~
         	AG.scrHeightReal=p.y;                                  //~v@@@I~
 	        if (Dump.Y) Dump.println("UView:getScreemRealSize getRealSize() w="+AG.scrWidthReal+",h="+AG.scrHeightReal);//~v@@@I~
@@ -133,7 +146,8 @@ public class UView                                                 //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
 			DisplayMetrics m=new DisplayMetrics();                 //~v@@@R~
-			Pdisplay.getMetrics(m);                                //~v@@@R~
+//			Pdisplay.getMetrics(m);                                //~v@@@R~//~vc4cR~
+    		displayGetMetrics(Pdisplay,m);                         //~1aj0I~//~vc4cI~
         	AG.scrWidthReal=m.widthPixels;                         //~v@@@R~
         	AG.scrHeightReal=m.heightPixels;                       //~v@@@R~
 	        if (Dump.Y) Dump.println("UView:getScreenRealSize Displaymetrics w="+AG.scrWidthReal+",h="+AG.scrHeightReal);//~v@@@I~
@@ -222,7 +236,8 @@ public class UView                                                 //~v@@@I~
 //**********************************                               //~1A6pI~
     public static void getDisplaySize(Display Pdisplay,Point Ppoint)//~1A6pI~
     {                                                              //~1A6pI~
-        Pdisplay.getSize(Ppoint);                                    //~1A6pI~//~v@@@M~
+//      Pdisplay.getSize(Ppoint);                                    //~1A6pI~//~v@@@M~//~vc42R~
+        AxeView.getDisplaySize(Pdisplay,Ppoint);                   //~vc42I~
     }                                                              //~1A6pI~
 ////**********************************                               //~v@@@I~//~1Ah1R~
 //    public static void showSnackbar(View Pview,String Pmsg,int Pperiod)//~v@@@R~//~1Ah1R~
@@ -454,8 +469,8 @@ public class UView                                                 //~v@@@I~
         	int ww=Math.min(AG.scrWidthReal,AG.scrHeightReal);     //~9925I~
 	        if (Dump.Y) Dump.println("Uview.setDialogWidthMatchParentPortrait ww="+ww+",realW="+AG.scrWidthReal+",realH="+AG.scrHeightReal);//~9925I~
 //  		Pdlg.getWindow().setLayout(ww,LinearLayout.LayoutParams.WRAP_CONTENT);//~9925R~//~9927R~
-//  		Pdlg.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT); //TODO test//~9927I~//+vc1uR~
-    		Pdlg.getWindow().setLayout(ww,LinearLayout.LayoutParams.WRAP_CONTENT); //TODO test//+vc1uI~
+//  		Pdlg.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT); //TODO test//~9927I~//~vc1uR~
+    		Pdlg.getWindow().setLayout(ww,LinearLayout.LayoutParams.WRAP_CONTENT); //TODO test//~vc1uI~
         }                                                          //~9925I~
     }                                                              //~9925I~
     //******************************************************************************//~9812I~
@@ -542,7 +557,7 @@ public class UView                                                 //~v@@@I~
     //******************************************************************************//~9930I~
     public static boolean isPermissionDenied(String Ptype)         //~9930I~
     {                                                              //~9930I~
-        boolean rc=ActivityCompat.shouldShowRequestPermissionRationale(AG.activity,Ptype);//~9930I~
+        boolean rc= ActivityCompat.shouldShowRequestPermissionRationale(AG.activity,Ptype);//~9930I~
         if (Dump.Y) Dump.println("Uview.isPermissionDenied type="+Ptype+",rc="+rc);//~9930I~
         return rc;                                                 //~9930I~
     }                                                              //~9930I~
@@ -682,4 +697,59 @@ public class UView                                                 //~v@@@I~
         	id=v.getId();                                          //~vc1tI~//~vc1mM~
         return id;                                                 //~vc1tI~//~vc1mM~
     }                                                              //~vc1tI~//~vc1mM~
+    //*******************************************************************//~vam6I~//~vc4bI~
+    //*for APi>=19                                                 //~vam6I~//~vc4bI~
+    //*******************************************************************//~vam6I~//~vc4bI~
+    private static void getRealSize(Display Pdisplay,Point Ppoint) //~vam6I~//~vc4bI~
+    {                                                              //~vam6I~//~vc4bI~
+		if (Dump.Y) Dump.println("UView.getRealSize apiLevel="+Build.VERSION.SDK_INT);//~vam6I~//~vc4bI~
+		if (Build.VERSION.SDK_INT>=31)   //Navigationbar can be hidden//~vam6I~//~vc4bI~
+		    getRealSize_from31(Pdisplay,Ppoint);                   //~vam6I~//~vc4bI~
+        else                                                       //~vam6I~//~vc4bI~
+		    getRealSize_19To30(Pdisplay,Ppoint);                   //~vam6I~//~vc4bI~
+		if (Dump.Y) Dump.println("UView.getRealSize exit point="+Ppoint);//~vam6I~//~vc4bI~
+    }                                                              //~vam6I~//~vc4bI~
+    //*******************************************************************//~vam6I~//~vc4bI~
+    @SuppressWarnings("deprecation")                               //~vam6R~//~vc4bI~
+    @TargetApi(19)                                                 //~vam6I~//~vc4bI~
+    private static void getRealSize_19To30(Display Pdisplay,Point Ppoint)//~vam6I~//~vc4bI~
+    {                                                              //~vam6I~//~vc4bI~
+		if (Dump.Y) Dump.println("UView.getRealSize_upto30 display="+Pdisplay);//~vam6I~//~vc4bI~
+		Pdisplay.getRealSize(Ppoint);                              //~vam6I~//~vc4bI~
+		if (Dump.Y) Dump.println("UView.getRealSize_upto30 exit point="+Ppoint);//~vam6I~//~vc4bI~
+    }                                                              //~vam6I~//~vc4bI~
+    //*******************************************************************//~vam6I~//~vc4bI~
+    @TargetApi(31)                                                 //~vam6I~//~vc4bI~
+    private static void getRealSize_from31(Display Pdisplay,Point Ppoint)//~vam6I~//~vc4bI~
+    {                                                              //~vam6I~//~vc4bI~
+        WindowMetrics metrics=getRealMetrics_from31(Pdisplay);     //~vam6R~//~vc4bI~
+        Rect rect=metrics.getBounds();                             //~vam6R~//~vc4bI~
+		if (Dump.Y) Dump.println("UView.getRealSize_from31 display="+Pdisplay+",metrics="+metrics+",getBounds="+rect);//~vam6R~//~vc4bI~
+        Ppoint.x=rect.right-rect.left;                              //~vam6R~//~vc4bI~
+        Ppoint.y=rect.bottom-rect.top;                              //~vam6R~//~vc4bI~
+		if (Dump.Y) Dump.println("UView.getRealSize_from31 exit point="+Ppoint);//~vam6I~//~vc4bI~
+    }                                                              //~vam6I~//~vc4bI~
+    //*******************************************************************//~vam6I~//~vc4bI~
+    @TargetApi(31)                                                 //~vam6I~//~vc4bI~
+    public static WindowMetrics getRealMetrics_from31(Display Pdisplay)//~vam6I~//~vc4bI~
+    {                                                              //~vam6I~//~vc4bI~
+		WindowManager mgr=getWindowManager();                      //~vam6I~//~vc4bI~
+        WindowMetrics metrics=mgr.getCurrentWindowMetrics();       //~vam6I~//~vc4bI~
+		if (Dump.Y) Dump.println("UView.getRealMetrics_31 metrics="+metrics);//~vam6R~//~vc4bI~
+        return metrics;                                            //~vam6I~//~vc4bI~
+    }                                                              //~vam6I~//~vc4bI~
+    //*******************************************************      //~vam6I~//~vc4bI~
+	public static WindowManager getWindowManager()                 //~vam6I~//~vc4bI~
+    {                                                              //~vam6I~//~vc4bI~
+		WindowManager wm=(WindowManager)(AG.context.getSystemService(Context.WINDOW_SERVICE));//~vam6I~//~vc4bI~
+	    if (Dump.Y) Dump.println("UView:getWindowManager mgr="+wm);//~vam6I~//~vc4bI~
+        return wm;                                                 //~vc4bI~
+    }                                                              //~vam6I~//~vc4bI~
+    //*******************************************************      //~1aj0I~//~vc4cI~
+    @SuppressWarnings("deprecation")    //called if version<19                           //~1aj0I~//~vc4cI~
+    private static void displayGetMetrics(Display Pdisplay,DisplayMetrics Pmetrics)//~1aj0I~//~vc4cI~
+    {                                                              //~1aj0I~//~vc4cI~
+	    if (Dump.Y) Dump.println("UView:displayGetMetrics");       //~1aj0I~//~vc4cI~
+		Pdisplay.getMetrics(Pmetrics);                             //~1aj0I~//~vc4cI~
+    }                                                              //~1aj0I~//~vc4cI~
 }//class UView                                                     //~9410I~

@@ -1,5 +1,7 @@
-//*CID://+vc2CR~:                             update#=   78;       //~vc2CR~
+//*CID://+vc53R~:                             update#=   81;       //~vc4dR~//~vc53R~
 //******************************************************************//~@@@@I~
+//vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
+//vc4d 2023/03/25 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//~vc4dI~
 //vc2C 2020/08/19 Crash when touch on axe soft kbd upper border(index=-1,out of bound)//~vc2CI~
 //vc2n 2020/08/03 Dump.e when selected null on popup               //~vc2nI~
 //vc14 2020/06/14 invalidate(left,ttop,right,bottom) is deprecated at api21,recommended use simple invalidate()//~vc14I~
@@ -43,6 +45,7 @@ import android.graphics.drawable.Drawable;
 import com.ForDeprecated.Funcs;
 import com.xe.Axe.kbd.ims.Keyboard.Key;                           //~@@@@I~
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -261,7 +264,8 @@ public/*private*/ boolean mKeyboardChanged;                        //~vaagR~
     /** The canvas for the above mutable keyboard bitmap */
 protected/*private*/ Canvas mCanvas;                               //~vaagR~
     public                                                         //~@@@@R~
-    Handler mHandler = new Handler() {
+//  Handler mHandler = new Handler() {                             //~vc4dR~
+    Handler mHandler = new Handler(Looper.getMainLooper()) {       //~vc4dI~
         @Override
         public void handleMessage(Message msg) {
           try                                                      //~@@@@I~
@@ -317,41 +321,76 @@ protected/*private*/ Canvas mCanvas;                               //~vaagR~
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
 
-            switch (attr) {
-            case /*com.android.internal.*/R.styleable.KeyboardView_keyBackground://~@@@@R~
-                mKeyBackground = a.getDrawable(attr);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_verticalCorrection://~@@@@R~
-                mVerticalCorrection = a.getDimensionPixelOffset(attr, 0);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewLayout://~@@@@R~
-                previewLayout = a.getResourceId(attr, 0);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewOffset://~@@@@R~
-                mPreviewOffset = a.getDimensionPixelOffset(attr, 0);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewHeight://~@@@@R~
-                mPreviewHeight = a.getDimensionPixelSize(attr, 80);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_keyTextSize://~@@@@R~
-                mKeyTextSize = a.getDimensionPixelSize(attr, 18);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_keyTextColor://~@@@@R~
-                mKeyTextColor = a.getColor(attr, 0xFF000000);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_labelTextSize://~@@@@R~
-                mLabelTextSize = a.getDimensionPixelSize(attr, 14);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_popupLayout://~@@@@R~
-                mPopupLayout = a.getResourceId(attr, 0);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_shadowColor://~@@@@R~
-                mShadowColor = a.getColor(attr, 0);
-                break;
-            case /*com.android.internal.*/R.styleable.KeyboardView_shadowRadius://~@@@@R~
-                mShadowRadius = a.getFloat(attr, 0f);
-                break;
-            }
+//            switch (attr) {                                      //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_keyBackground://~@@@@R~//~vc53R~
+//                mKeyBackground = a.getDrawable(attr);            //~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_verticalCorrection://~@@@@R~//~vc53R~
+//                mVerticalCorrection = a.getDimensionPixelOffset(attr, 0);//~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewLayout://~@@@@R~//~vc53R~
+//                previewLayout = a.getResourceId(attr, 0);        //~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewOffset://~@@@@R~//~vc53R~
+//                mPreviewOffset = a.getDimensionPixelOffset(attr, 0);//~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewHeight://~@@@@R~//~vc53R~
+//                mPreviewHeight = a.getDimensionPixelSize(attr, 80);//~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_keyTextSize://~@@@@R~//~vc53R~
+//                mKeyTextSize = a.getDimensionPixelSize(attr, 18);//~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_keyTextColor://~@@@@R~//~vc53R~
+//                mKeyTextColor = a.getColor(attr, 0xFF000000);    //~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_labelTextSize://~@@@@R~//~vc53R~
+//                mLabelTextSize = a.getDimensionPixelSize(attr, 14);//~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_popupLayout://~@@@@R~//~vc53R~
+//                mPopupLayout = a.getResourceId(attr, 0);         //~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_shadowColor://~@@@@R~//~vc53R~
+//                mShadowColor = a.getColor(attr, 0);              //~vc53R~
+//                break;                                           //~vc53R~
+//            case /*com.android.internal.*/R.styleable.KeyboardView_shadowRadius://~@@@@R~//~vc53R~
+//                mShadowRadius = a.getFloat(attr, 0f);            //~vc53R~
+//                break;                                           //~vc53R~
+//            }                                                    //~vc53R~
+//          switch (attr) {                                        //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyBackground)//+vc53R~
+                mKeyBackground = a.getDrawable(attr);              //~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_verticalCorrection)//+vc53R~
+                mVerticalCorrection = a.getDimensionPixelOffset(attr, 0);//~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewLayout)//+vc53R~
+                previewLayout = a.getResourceId(attr, 0);          //~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewOffset)//+vc53R~
+                mPreviewOffset = a.getDimensionPixelOffset(attr, 0);//~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewHeight)//+vc53R~
+                mPreviewHeight = a.getDimensionPixelSize(attr, 80);//~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyTextSize)//+vc53R~
+                mKeyTextSize = a.getDimensionPixelSize(attr, 18);  //~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyTextColor)//+vc53R~
+                mKeyTextColor = a.getColor(attr, 0xFF000000);      //~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_labelTextSize)//+vc53R~
+                mLabelTextSize = a.getDimensionPixelSize(attr, 14);//~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_popupLayout)//+vc53R~
+                mPopupLayout = a.getResourceId(attr, 0);           //~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_shadowColor)//+vc53R~
+                mShadowColor = a.getColor(attr, 0);                //~vc53I~
+            else //break;                                          //~vc53I~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_shadowRadius)//+vc53R~
+                mShadowRadius = a.getFloat(attr, 0f);              //~vc53I~
+//              break;                                             //~vc53I~
+//          }                                                      //~vc53I~
         }
         
         a = /*mContext*/getContext().obtainStyledAttributes(       //~@@@@R~
@@ -1235,14 +1274,14 @@ public /*private*/ void showKey(final int keyIndex) {              //~@@@@R~
 			if (Dump.Y) Dump.println("KeyboardView.onModifiedTouchEvent LONGPRESS rc=true");//~@@@@I~//~vaagR~//~vc2CI~
             return true;
         }
-        if (keyIndex<0 || keyIndex >=mKeys.length)                 //+vc2CI~
-        {                                                          //+vc2CI~
-            if (Dump.Y) Dump.println("KeyboardView.onModifiedTouchEvent out of range keyIndex="+keyIndex);//+vc2CI~
-		    mHandler.removeMessages(MSG_REPEAT);                   //+vc2CI~
-    		mHandler.removeMessages(MSG_LONGPRESS);                //+vc2CI~
-            mRepeatKeyIndex = NOT_A_KEY;                           //+vc2CI~
-            return true;                                           //+vc2CI~
-        }                                                          //+vc2CI~
+        if (keyIndex<0 || keyIndex >=mKeys.length)                 //~vc2CI~
+        {                                                          //~vc2CI~
+            if (Dump.Y) Dump.println("KeyboardView.onModifiedTouchEvent out of range keyIndex="+keyIndex);//~vc2CI~
+		    mHandler.removeMessages(MSG_REPEAT);                   //~vc2CI~
+    		mHandler.removeMessages(MSG_LONGPRESS);                //~vc2CI~
+            mRepeatKeyIndex = NOT_A_KEY;                           //~vc2CI~
+            return true;                                           //~vc2CI~
+        }                                                          //~vc2CI~
                                                                    //~@@@@R~
 		if (Dump.Y) Dump.println("KeyboardView onModifiedTouchEvent gestureDetector rc=false action="+action+",X="+touchX+",Y="+touchY);//~@@@@R~//~vaagR~
         // Needs to be called after the gesture detector gets a turn, as it may have
