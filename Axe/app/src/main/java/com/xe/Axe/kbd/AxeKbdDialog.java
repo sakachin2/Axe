@@ -1,6 +1,7 @@
-//*CID://+vc41R~: update#= 63;                                     //+vc41R~
+//*CID://+vc66R~: update#= 67;                                     //~vc41R~//+vc66R~
 //**********************************************************************//~vaagI~
-//vc41 2023/03/25 api33 support;deprecated getDefaultDisplay       //+vc41I~
+//vc66 2023/08/10 SoftKbd is overrided by nabigation bar when landscape for Tec(android12:api31, emulator:13:api33)//+vc66I~
+//vc41 2023/03/25 api33 support;deprecated getDefaultDisplay       //~vc41I~
 //vc30 2020/09/20 return key could not close xeKbd                 //~vc30I~
 //vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//~vc25I~//~vc26R~
 //vc22 2020/07/10 send kbd msg from hardkbd                        //~vc20I~
@@ -68,8 +69,8 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
      	super(Pcontext,DIALOG_THEME);//style for fullscreen       //~1918R~
         context=Pcontext;                                          //~1918I~
                                                                    //~1902I~
-//      Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~//+vc41R~
-        Display display=AxeView.getDefaultDisplay();               //+vc41I~
+//      Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~//~vc41R~
+        Display display=AxeView.getDefaultDisplay();               //~vc41I~
 //      int displayW=display.getWidth();                           //~vaybR~
 //      int displayH=display.getHeight();                          //~vaybR~
         Point dsz=AxeView.getDisplayRegion();                      //~vaybR~
@@ -402,8 +403,9 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         lp.gravity = Gravity.BOTTOM;                               //~vaycI~
         lp.width = -1;                                             //~vaycI~
         lp.height=hh+2;//2:paddingTop                              //~vaycR~
+        lp.height+=AxeG.scrNavigationbarBottomHeightA11;           //+vc66R~
         w.setAttributes(lp);                                       //~vaycR~
-        if (Dump.Y) Dump.println("AxeKbdDilaog.setFullEidth hh="+lp.height);//~vaycI~//~vaygR~
+        if (Dump.Y) Dump.println("AxeKbdDialog.setFullEidth hh="+lp.height+",bottomHeightA11="+AxeG.scrNavigationbarBottomHeightA11);//~vaycI~//~vaygR~//~vc41R~
       }                                                            //~vaycI~
       else                                                         //~vaycI~
       {                                                            //~vaycI~

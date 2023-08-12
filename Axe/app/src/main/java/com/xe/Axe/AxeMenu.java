@@ -1,6 +1,7 @@
-//*CID://+vc5sR~: update#=    281;                                 //+vc5sR~
+//*CID://+vc60R~: update#=    282;                                 //+vc60R~
 //**********************************************************************//~1107I~
-//vc5s 2023/07/25 drop pause option on stop                        //+vc5sI~
+//vc60 2023/08/03 mediaview as openWith                            //+vc60I~
+//vc5s 2023/07/25 drop pause option on stop                        //~vc5sI~
 //vc5q 2023/07/23 reject the function transfer file to mime app because//~vc5qI~
 //                From android7:android.os.FileUriExposedException: file:///data/user/0/com.xe.AxeA9.debug/files/myhome/x1.c exposed beyond app through Intent.getData()//~vc5qI~
 //vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
@@ -200,8 +201,8 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
 //******************                                               //~1A02I~
     public void optionMenuConfirmStop()                                      //~1527M~//~1802R~//~1A02R~
     {                                                              //~1527M~
-//    	int flag=AxeAlert.BUTTON_POSITIVE/*OK*/|AxeAlert.BUTTON_PAUSE/*pause*/|AxeAlert.BUTTON_NUTRAL/*Cancel*/|AxeAlert.EXIT;//~1527I~//~1A02R~//~1A22R~//+vc5sR~
-      	int flag=AxeAlert.BUTTON_POSITIVE/*OK*/|AxeAlert.BUTTON_NUTRAL/*Cancel*/|AxeAlert.EXIT;//+vc5sI~
+//    	int flag=AxeAlert.BUTTON_POSITIVE/*OK*/|AxeAlert.BUTTON_PAUSE/*pause*/|AxeAlert.BUTTON_NUTRAL/*Cancel*/|AxeAlert.EXIT;//~1527I~//~1A02R~//~1A22R~//~vc5sR~
+      	int flag=AxeAlert.BUTTON_POSITIVE/*OK*/|AxeAlert.BUTTON_NUTRAL/*Cancel*/|AxeAlert.EXIT;//~vc5sI~
         callbackId=CBID_CONFIRMSTOP;                               //~1802I~
         AxeAlert.simpleAlertDialog(this/*callback*/,0/*title*/,R.string.Qstop,flag);//CB:alertButtonAction//~1929R~//~1A02R~
     }                                                              //~1527M~
@@ -601,7 +602,8 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     private void onFileOpenWith()                                  //~vainI~
     {                                                              //~vainI~
     	if (Dump.Y) Dump.println("AxeMenu FileOpenWith");          //~vainI~
-        if (true)                                                  //~vc5qI~
+//      if (true)                                                  //~vc5qI~//+vc60R~
+        if (false)                                                 //+vc60I~
         {                                                          //~vc5qI~
         	Utils.showToastLong(R.string.NotSupportedOpenWith);    //~vc5qR~
             return;                                                //~vc5qI~

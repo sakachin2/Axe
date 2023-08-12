@@ -1,6 +1,7 @@
-//*CID://+vc5fR~:                             update#=  109;       //+vc5fR~
+//*CID://+vc60R~:                             update#=  112;       //~vc60R~
 //*****************************************************************************************//~vabeR~
-//vc5f 2023/07/10 Dump at onWindowFocusChanged by AxeG.axeScreen==null because not yet getScreenSize return W=H=0//+vc5fI~
+//vc60 2023/08/03 mediaview as openWith                            //~vc60I~
+//vc5f 2023/07/10 Dump at onWindowFocusChanged by AxeG.axeScreen==null because not yet getScreenSize return W=H=0//~vc5fI~
 //vc4y 2023/05/22 >=android11(Api30),access all file option setting by setting-android related dialog//~vc4yI~
 //vc4q 2023/04/01 support shared storage using SAF(StorageAccessFramework)//~vc4qI~
 //vc2U 2020/09/18 initialize progress dialog not dismiss automatically//~vc2KI~
@@ -248,10 +249,10 @@ public class Axe extends Activity                                  //~vaiqR~
                   }                                                //~1715I~
 //          View v=getCurrentFocus();      	                       //~vaiqR~
             if (v==AxeG.axeScreen)                                 //~1827I~
-            {                                                      //+vc5fI~
-              if (AxeG.axeScreen!=null)                            //+vc5fI~
+            {                                                      //~vc5fI~
+              if (AxeG.axeScreen!=null)                            //~vc5fI~
             	AxeG.axeScreen.windowFocusChanged(Phasfocus);      //~1827I~
-            }                                                      //+vc5fI~
+            }                                                      //~vc5fI~
             if (Phasfocus && contextMenuShowing)  //disabled menuitem is so far clickable and menu is closed when clicked and oncontextmenuclosed is not calle//~1930R~
             {                                                      //~1930I~
             	AxeG.axeMenu.onContextMenuClosed(menuCreated);           //~1930I~
@@ -297,6 +298,7 @@ public class Axe extends Activity                                  //~vaiqR~
               try                                                  //~vayeI~
               {                                                    //~vayeI~
 	        	AxeG.axeView.orientationChanged();                 //~1821R~
+	        	AxeDlgMediaView.orientationChanged();              //~vc60I~
               }                                                    //~vayeI~
         	  catch(Exception e)                                   //~vayeI~
               {                                                    //~vayeI~
@@ -316,6 +318,13 @@ public class Axe extends Activity                                  //~vaiqR~
 //     	AxeG.mainView.requestFocus();                              //~vaiqM~
     	AxeG.axeBCR.onStart();                                     //~vc2KI~
 	}                                                              //~vaiqM~
+    @Override                                                      //~vc60I~
+    public void onStop()                                            //~vc60I~
+	{                                                              //~vc60I~
+    	super.onStop();                                           //~vc60I~
+        if (Dump.Y) Dump.println("onStop");                        //~vc60I~
+    	AxeDlgMediaView.onStopMain();                              //+vc60R~
+	}                                                              //~vc60I~
     @Override                                                      //~1A02I~
     public void onPause()                                          //~1A02I~
     {                                                              //~1A02I~

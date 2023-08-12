@@ -24,4 +24,8 @@
     <dimen name="candidate_font_height">16sp</dimen>
     <dimen name="candidate_vertical_padding">6sp</dimen>
     <dimen name="popup_key_height">0.32500005in</dimen>
+    <dimen name="media_title_height">16dp</dimen>
+    <dimen name="media_button_height">40dp</dimen>
+    <dimen name="media_mc_init_height">90dp</dimen>
+    <dimen name="media_mc_init_height_audio">190dp</dimen>
 </resources>

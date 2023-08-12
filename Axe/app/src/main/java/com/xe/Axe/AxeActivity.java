@@ -1,7 +1,10 @@
-//CID://+vc5qR~: update#=     21                                   //+vc5qR~
+//CID://+vc64R~: update#=     28                                   //~vc64R~
 //*************************************************************    //~va15I~
-//vc5q 2023/07/23 reject the function transfer file to mime app because//+vc5qI~
-//                From android7:android.os.FileUriExposedException: file:///data/user/0/com.xe.AxeA9.debug/files/myhome/x1.c exposed beyond app through Intent.getData()//+vc5qI~
+//vc64 2023/08/08 support html display for other than xehelp by webView//~vc64I~
+//vc63 2023/08/08 (Bug)html display err for other than xehelp(invalid use of indexOf)//~vc63I~
+//vc60 2023/08/03 mediaview as openWith                            //~vc60I~
+//vc5q 2023/07/23 reject the function transfer file to mime app because//~vc5qI~
+//                From android7:android.os.FileUriExposedException: file:///data/user/0/com.xe.AxeA9.debug/files/myhome/x1.c exposed beyond app through Intent.getData()//~vc5qI~
 //vc5p 2023/07/22 Dump open with for //Axe/x1.(mime type=text/x-csrc for ////Axe/x1.c. normal file is file:///sdcard/...)//~vc5pI~
 //vc48 2022/03/25 deprecated;Api33, packageManager.queryIntentActivities//~vc48I~
 //vagF:120920 (Axe)local html viewer fail by permission err(uid of process of HtmlViewer was checked)//~vagFI~
@@ -36,6 +39,7 @@ public class AxeActivity                                           //~1713R~//~1
 	private static final String CN="AxeActivity:";                 //~vc5pI~
 	private static final String APP_INTENT_ACTION=Intent.ACTION_SEND; //~vc5pI~
 	private static final String APP_INTENT_ACTION_VIEW=Intent.ACTION_VIEW;//~vc5pI~
+    private static int sizeOpenWith;                                          //~vc60I~
     //**************************************                       //~1A06I~//~1A15R~
     //*OpenWith                                                    //~1A06I~//~1A15R~
     //**************************************                       //~1A06I~//~1A15R~
@@ -99,6 +103,15 @@ public class AxeActivity                                           //~1713R~//~1
 //		ResolveInfo info=pm.resolveActivity(intent,PackageManager.MATCH_DEFAULT_ONLY);//~1A19I~
         return sz;                                                 //~1A19I~
     }                                                              //~1A19I~
+//***************************************************************************//~vc60I~
+    public static int openWith(String Purl,String Pmimetype,int Psize)//~vc60I~
+    {                                                              //~vc60I~
+    	if (Dump.Y) Dump.println("AxeJNI openWith strUrl="+Purl+",mime="+Pmimetype+",size="+Psize);//~vc60I~
+        sizeOpenWith=Psize;                                        //~vc60I~
+    	int rc=openWith(Purl,Pmimetype);                               //~vc60I~
+        sizeOpenWith=0;                                            //~vc60I~
+        return rc;                                                 //~vc60I~
+    }                                                              //~vc60I~
 //***************************************************************************//~vc5pI~
     public static int openWith(String Purl,String Pmimetype)       //~1A06I~
     {                                                              //~1A06I~
@@ -113,18 +126,33 @@ public class AxeActivity                                           //~1713R~//~1
 //            File f=new File(Purl);                               //~1A06R~
 //            uri=Uri.fromFile(f);                                 //~1A06R~
 		  if (Purl.startsWith("file:")                             //~vagFM~
-		  &&  Purl.indexOf("/xehelp/")!=0                          //~vagFM~
+//		  &&  Purl.indexOf("/xehelp/")!=0                          //~vagFM~//~vc63R~
+// 		  &&  Purl.indexOf("/xehelp/")>0                           //~vc63I~//~vc64R~
           &&  Pmimetype.endsWith("html")                           //~vagFM~
           )                                                        //~vagFM~
+          {                                                        //~vc64I~
+  		   if (Purl.indexOf("/xehelp/")>0)                         //~vc64I~
 			showXeHelp(Purl);                                      //~vagFI~
+           else                                                    //~vc64I~
+			showLocalHtml(Purl);                                   //+vc64R~
+          }                                                        //~vc64I~
           else                                                     //~vagFM~
           {                                                        //~vagFM~
-        if (true)                                                  //+vc5qI~
-        {                                                          //+vc5qI~
-	    	if (Dump.Y) Dump.println(CN+"openWith not xeHelp,reject");//+vc5qI~
-        	Utils.showToastLong(R.string.NotSupportedOpenWith);    //+vc5qI~
-            return 4;                                              //+vc5qI~
-        }                                                          //+vc5qI~
+//      if (true)                                                  //~vc5qI~//~vc60R~
+        if (false)                                                 //~vc60I~
+        {                                                          //~vc5qI~
+	    	if (Dump.Y) Dump.println(CN+"openWith not xeHelp,reject");//~vc5qI~
+        	Utils.showToastLong(R.string.NotSupportedOpenWith);    //~vc5qI~
+            return 4;                                              //~vc5qI~
+        }                                                          //~vc5qI~
+        	int mediaType=AxeDlgMediaView.getMediaType(Pmimetype); //~vc60I~
+        	if (mediaType>0)                                       //~vc60I~
+        	{                                                      //~vc60I~
+		    	if (Dump.Y) Dump.println(CN+"openWith call AxeDlgMediaView.showDialog mimeType="+Pmimetype+",file="+Purl);//~vc60I~
+//          	AxeDlgMediaView.newInstanceUri(mediaType,Purl).showDialog(AxeDialog.NO_TITLE);//~vc60R~
+            	AxeDlgMediaView.newInstanceUri(mediaType,Purl,sizeOpenWith).showDialog(AxeDialog.NO_TITLE);//~vc60I~
+        	    return 0;
+            }                                                      //~vc60I~
             uri=Uri.parse(Purl);           //file:///mnt/sdcard/Axe/xehelp/..//~1A06R~
             intent=new Intent();                                   //~1A06R~
         if (false)//TODO test                                      //~vc5pR~
@@ -560,6 +588,12 @@ public class AxeActivity                                           //~1713R~//~1
     	if (Dump.Y) Dump.println("AxeActivity showXeHelp="+Purl);  //~vagFI~
     	AxeDlgWebView.showHelp(Purl);                            //~vagFR~
     }                                                              //~vagFI~
+//********************************************************         //~vc64I~
+	private static void showLocalHtml(String Purl)                 //+vc64R~
+    {                                                              //~vc64I~
+    	if (Dump.Y) Dump.println("AxeActivity showLocalHtml="+Purl);//+vc64R~
+    	AxeDlgWebView.showLocalHtml(Purl);                         //+vc64R~
+    }                                                              //~vc64I~
 //*****************************************                        //~vc48I~
 private static List<ResolveInfo> queryActivities(PackageManager Ppm,Intent Pintent)//~vc48I~
 {                                                                  //~vc48I~
@@ -594,13 +628,15 @@ private static List<ResolveInfo> queryActivitiesUnder33(PackageManager Ppm, Inte
     flags=PackageManager.MATCH_DEFAULT_ONLY;                       //~vc5pI~
   	list=Ppm.queryIntentActivities(Pintent,flags);                 //~vc5pI~
     if (Dump.Y) listDump("DefaultOnly",list);                      //~vc5pI~
-                                                                   //~vc5pI~
+  if (false)                                                                 //~vc5pI~//~vc60R~
+  {                                                                //~vc60I~
     flags=PackageManager.MATCH_SYSTEM_ONLY;                        //~vc5pI~
   	list=Ppm.queryIntentActivities(Pintent,flags);                 //~vc5pI~
     if (Dump.Y) listDump("SystemOnly",list);                       //~vc5pI~
                                                                    //~vc5pI~
     flags=PackageManager.MATCH_ALL;                                //~vc5pI~
   	list=Ppm.queryIntentActivities(Pintent,flags);                 //~vc5pI~
+  }                                                                //~vc60I~
     if (Dump.Y) listDump("All",list);                              //~vc5pI~
     return list;                                                   //~vc5pI~
 }                                                                  //~vc48I~//~vc5pR~

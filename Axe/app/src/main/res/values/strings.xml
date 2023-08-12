@@ -2,8 +2,8 @@
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <resources>
     <string name="app_name">Axe</string>
-    <string name="Version">Axe V1.29.2\n			By Mizumaki-machi</string>
-    <string name="VerDate">2023/07/26</string>
+    <string name="Version">Axe V1.29.3\n			By Mizumaki-machi</string>
+    <string name="VerDate">2023/08/11</string>
 
     <string name="OptionMenu_Stop">Exit</string>
     <string name="OptionMenu_Menu">Menu</string>
@@ -810,4 +810,10 @@
     <string name="DescYourSharedFolder">Directory you granted to access.</string>
     <string name="NoYourSharedFolder">None. (You can set by \"SP  add //\" command.)</string>
     <string name="NotSupportedOpenWith">\"OpenWith\" is not supported from Android7.</string>
+    <string name="Label_Start">Repeat</string>
+    <string name="Label_Expand">Expand</string>
+    <string name="Label_Shrink">Shrink</string>
+    <string name="ErrNotMusic">%s is not a music file.</string>
+    <string name="ErrNotFoundMedia">%s was not found.</string>
+    <string name="Unknown">Unkown</string>
 </resources>

@@ -1,6 +1,7 @@
-//*CID://+vc5bR~: update#= 135;                                    //+vc5bR~
+//*CID://+vc5bR~: update#= 139;                                    //~vc5bR~
 //**********************************************************************//~1107I~
-//vc5b 2023/06/29 (Bug)titlebar bottome sometime invalid when rotated. use 1st time value//+vc5bI~
+//vc60 2023/08/03 mediaview as openWith                            //~vc5bI~
+//vc5b 2023/06/29 (Bug)titlebar bottome sometime invalid when rotated. use 1st time value//~vc5bI~
 //vc4r 2023/04/14 rename using SAF                                 //~vc4rI~
 //vc4q 2023/04/01 support shared storage using SAF(StorageAccessFramework)//~vc4qI~
 //vc2Q 2020/09/08 change font size by pinch action                 //~vc2QI~
@@ -16,9 +17,16 @@ import com.xe.Axe.Axe;
 import com.xe.Axe.AxeG;                                            //~vc10R~
 import com.xe.Axe.R;                                               //~vc10I~
 import com.ahsv.gui.CommonListener;                                //~vc10I~
+import com.ahsv.utils.UMediaStore;                                 //+vc5bI~
+                                                                   //+vc5bI~
+import android.os.Build;                                           //+vc5bI~
 //**********************************************************************//~1107I~
 public class AG	extends AxeG                                       //~vc10R~
 {                                                                  //~0914I~
+    public static final int ACTIVITY_REQUEST_PICKUP_AUDIO   = 10;  //~vc5bI~
+    public static final int ACTIVITY_REQUEST_PICKUP_IMAGE   = 11;  //~vc5bI~
+    public static final int ACTIVITY_REQUEST_PICKUP_ACTION  = 12;  //~vc5bI~
+                                                                   //~vc5bI~
     public static final int       listViewRowId=R.layout.textrowlist;//~vc10R~
     public static com.ForDeprecated.ProgDlg progDlg26;             //~vc10I~
     public static String dirSep;                                   //~vc10I~
@@ -40,10 +48,13 @@ public class AG	extends AxeG                                       //~vc10R~
     public static CommonListener.CommonListenerI aCommonListenerI; //~vc10I~
     public static USAF aUSAF;                                      //~vc4qR~
     public static USAF2 aUSAF2;                                    //~vc4rI~
-    public static int titleBarTop,titleBarBottom;                  //+vc5bI~
+    public static int titleBarTop,titleBarBottom;                  //~vc5bI~
+    public static int osVersion;                                   //~vc5bI~
+	public static UMediaStore aUMediaStore;                        //+vc5bR~
 //**********************************                               //~1211I~
 	public AG(Axe Paxe)                                           //~1211I~//~@@@@R~//~vc10R~
     {                                                              //~1211I~
+    	osVersion=Build.VERSION.SDK_INT;                           //~vc5bI~
         init(Paxe); //AxeG                                             //~vc10I~
 		Properties p=System.getProperties();                       //~vc10I~
 		dirSep=p.getProperty("file.separator");                    //~vc10I~

@@ -1,5 +1,6 @@
-//CID://+vc54R~:     update#=    89
+//CID://+vc60R~:     update#=    90                                //+vc60R~
 //*************************************************************    //~va15I~
+//vc60 2023/08/03 mediaview as openWith                            //+vc60I~
 //vc54 2023/06/20 toolbin.zipfile update chk to unzip not by size but new asset file toolibin.zipfile.ts(dir output:timestamp and size)//~vc54I~
 //vc4y 2023/05/22 >=android11(Api30),access all file option setting by setting-android related dialog//~vc4yI~
 //vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
@@ -211,6 +212,7 @@ public class AxeG                                                  //~va15R~
 	public static AxeDlgKbdLayoutHW axeDlgKbdLayoutHW;             //~vc1rR~
 	public static AxeDlgKbdLayout axeDlgKbdLayout;                 //~vc1wI~
 	public static AxeDialog axeDialog;                             //~vc2DI~
+	public static AxeDlgMediaView axeDlgMediaView;                 //+vc60I~
 	public static AxeBCR axeBCR;                                   //~vc2KI~
     public static boolean   swNavigationbarGestureMode;                  //~vaefR~//~vc42I~
     public static int       scrNavigationbarBottomHeightA11;             //~vaefR~//~vc42I~
