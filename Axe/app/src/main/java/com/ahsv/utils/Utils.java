@@ -1,5 +1,6 @@
-//*CID://+vc49R~: update#= 190;                                    //~vc49R~
+//*CID://+vc60R~: update#= 191;                                    //+vc60R~
 //**********************************************************************//~1107I~
+//vc60 2023/08/03 mediaview as openWith                            //+vc60I~
 //vc49 2023/03/25 deprecated api33; PackageManager.getApplicationInfo//~vc49I~
 //vc2G 2020/08/23 chk validity of unicode value                    //~vc2GI~
 //vc28 2020/07/11 (Bug)getElapsedTime                              //~vc28I~
@@ -532,7 +533,7 @@ public class Utils                                            //~1309R~//~@@@@R~
 	        s="null";                                              //~1Ah1I~
         else                                                       //~1Ah1I~
             s=Arrays.toString(Psa);                                //~1Ah1I~
-//      if (Dump.Y) Dump.println("Utils.toString(String[]) out="+s);//~1Ah1I~//+vc49R~
+//      if (Dump.Y) Dump.println("Utils.toString(String[]) out="+s);//~1Ah1I~//~vc49R~
         return s;                                                  //~1Ah1I~
     }                                                              //~1Ah1I~
     //*************************************************            //~1Ah1I~
@@ -764,4 +765,35 @@ public class Utils                                            //~1309R~//~@@@@R~
     	if (Dump.Y) Dump.println("Utils.getApplicationInfo33 appinfo="+appInfo);//~vc49I~
         return appInfo;                                            //~vc49I~
     }                                                              //~vc49I~
+    //*************************************************            //+vc60I~
+    public static int parseInt(String Pstr,int Pdefault)           //+vc60I~
+    {                                                              //+vc60I~
+    	int ii;                                                    //+vc60I~
+        try                                                        //+vc60I~
+        {                                                          //+vc60I~
+    		ii=Integer.parseInt(Pstr);                             //+vc60I~
+        }                                                          //+vc60I~
+        catch(Exception e)                                         //+vc60I~
+        {                                                          //+vc60I~
+//      	Dump.println(e,"parseInt str="+Pstr);                  //+vc60I~
+        	if (Dump.Y) Dump.println("Utils.parseInt str="+Pstr+",e="+e.toString());//+vc60I~
+        	ii=Pdefault;                                           //+vc60I~
+        }                                                          //+vc60I~
+        return ii;                                                 //+vc60I~
+    }                                                              //+vc60I~
+    //*************************************************            //+vc60I~
+    public static long parseLong(String Pstr,long Pdefault)        //+vc60I~
+    {                                                              //+vc60I~
+    	long ii;                                                   //+vc60I~
+        try                                                        //+vc60I~
+        {                                                          //+vc60I~
+    		ii=Long.parseLong(Pstr);                               //+vc60I~
+        }                                                          //+vc60I~
+        catch(Exception e)                                         //+vc60I~
+        {                                                          //+vc60I~
+        	if (Dump.Y) Dump.println("Utils.parseLong str="+Pstr+",e="+e.toString());//+vc60I~
+        	ii=Pdefault;                                           //+vc60I~
+        }                                                          //+vc60I~
+        return ii;                                                 //+vc60I~
+    }                                                              //+vc60I~
 }//class                                                           //~vc2GR~

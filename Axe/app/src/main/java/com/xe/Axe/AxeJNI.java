@@ -1,5 +1,7 @@
-//CID://+vc5pR~:   update#=  149                                   //~vc5pR~
+//CID://+vc60R~:   update#=  153                                   //+vc60R~
 //*************************************************************
+//vc60 2023/08/03 mediaview as openWith                            //+vc60I~
+//vc61 2023/08/04 (Bug) Uri to file path failes when space embedding//~vc61I~
 //vc5p 2023/07/22 Dump open with for //Axe/x1.(mime type=text/x-csrc for ////Axe/x1.c)//~vc5pI~
 //vc5c 2023/07/04 display directory set to access by ACTION_OPEN_DOCUMENT_TREE//~vc5cI~
 //v77w:230519 uri-->path is avalable from api30(android11:R) and readdir using fd gotten by openDescriptor returns null//~v77wI~
@@ -968,18 +970,48 @@ public class AxeJNI
         if (Dump.Y) Dump.println(CN+"openWith rc="+rc);            //~vc5pI~
         return rc;
     }
+    public static int openWith(String Purl,String Pmimetype,int Psize)//~vc61I~
+    {                                                              //~vc61I~
+        int rc=4;                                                  //~vc61I~
+    //***********************                                      //~vc61I~
+    	if (Dump.Y) Dump.println(CN+"openWith url="+Purl+",mime="+Pmimetype+",size="+Psize);//~vc61I~
+        try                                                        //~vc61I~
+        {                                                          //~vc61I~
+            if (!isExistsFile(Purl))                               //~vc61I~
+            	return AxeJNIdef.ENOENT;                           //~vc61I~
+            rc=AxeActivity.openWith(Purl,Pmimetype,Psize);         //~vc61I~
+        }                                                          //~vc61I~
+        catch(Exception e)                                         //~vc61I~
+        {                                                          //~vc61I~
+            Dump.println(e,CN+"openWidth:"+Purl+","+Pmimetype);    //~vc61I~
+        }                                                          //~vc61I~
+        if (Dump.Y) Dump.println(CN+"openWith rc="+rc);            //~vc61I~
+        return rc;                                                 //~vc61I~
+    }                                                              //~vc61I~
     //***********************************************************
     public static boolean isExistsFile(String Purl)                //~vc5pI~
     {                                                              //~vc5pI~
-        boolean rc=false;                                          //+vc5pR~
+        boolean rc=false;                                          //~vc5pR~
     //***********************                                      //~vc5pI~
 //        try                                                      //~vc5pI~
 //        {                                                        //~vc5pI~
-          if (Purl.startsWith("file:"))                            //+vc5pR~
-          {                                                        //+vc5pR~
-        	File f=new File(Purl.substring(7/* file:// */));                    //+vc5pR~
+          if (Purl.startsWith("file:"))                            //~vc5pR~
+          {                                                        //~vc5pR~
+//      	File f=new File(Purl.substring(7/* file:// */));                    //~vc5pR~//~vc61R~
+	    	Uri uri=Uri.parse(Purl);                               //~vc61I~
+        	File f=new File(uri.getPath());                        //~vc61R~
+    		if (Dump.Y) Dump.println(CN+"isExistsFile uri="+uri+",uri.getPath()="+uri.getPath()+",AbsPath="+f.getAbsolutePath());//~vc61R~
+//        try                                                      //~vc61I~
+//        {                                                        //~vc61I~
+//            if (Dump.Y) Dump.println(CN+"isExistsFile canonicalpath="+f.getCanonicalPath());//~vc61I~
+//        }                                                        //~vc61I~
+//        catch(IOException e)                                     //~vc61I~
+//        {                                                        //~vc61I~
+//            Dump.println(e,CN+"notifyRulerMode");                //~vc61I~
+//            return false;                                        //~vc61I~
+//        }                                                        //~vc61I~
             rc=f.exists();                                         //~vc5pI~
-          }                                                        //+vc5pR~
+          }                                                        //~vc5pR~
 //        else                                                     //~vc5pI~
 //        {                                                        //~vc5pI~
 //            rc=f.exists();                                       //~vc5pI~

@@ -1,5 +1,6 @@
-//*CID://+vc5rR~:                                   update#=  341; //~vc5rR~
+//*CID://+vc60R~:                                   update#=  347; //~vc60R~
 //**************************************************************** //~1610I~
+//vc60 2023/08/03 mediaview as openWith                            //~vc60I~
 //vc5r 2023/07/25 try /sdcard for realpath for api<30              //~vc5rI~
 //vc5p 2023/07/22 Dump open with for //Axe/x1.(mime type=text/x-csrc for ////Axe/x1.c. normal file is file:///sdcard/...)//~vc5pI~
 //vc5c 2023/07/04 display directory set to access by ACTION_OPEN_DOCUMENT_TREE//~vc5cI~
@@ -56,7 +57,7 @@ static char *SopenDocParmBuffer;                                   //~vby8I~
 static char *SfgetsDocParmBuffer;                                  //~vby8I~
 static char *SfreadDocParmBuffer;                                  //~vby8R~
 static char *SgetDocPath;                                          //~v77wI~
-static int   SgetDocPathOpt;                                       //+vc5rI~
+static int   SgetDocPathOpt;                                       //~vc5rI~
 static int   SopenDocOptRC;                                        //~vby8I~
 static int   SfreadDocReadLen;                                     //~vby8I~
 static int   SfwriteDocWriteLen;                                   //~vby8I~
@@ -365,13 +366,16 @@ int c2j_msgboxACRA(char *Ppmsg)                                    //~vay0R~
     return BTN_OK;                                                 //~vay0I~
 }                                                                  //~vay0I~
 //****************************************************************
+//fromdlcmd6                                                       //~vc60I~
 //*kick app by mime type
 //* send file to associated application
 //* rc:1 requre terminal for chkonly option
 //****************************************************************
-int ushellexec(int Popt,char *Pfnm)
+//int ushellexec(int Popt,char *Pfnm)                              //~vc60R~
+int ushellexec(int Popt,char *Pfnm,int Psize)                      //~vc60R~
 {
-int ushellexecsub(char *Pfpath,char *Pcmd,int Ptermuse);           //~1A06R~
+//int ushellexecsub(char *Pfpath,char *Pcmd,int Ptermuse);           //~1A06R~//~vc60R~
+int ushellexecsub(char *Pfpath,char *Pcmd,int Ptermuse,int Psize); //~vc60R~
  // GnomeVFSMimeActionType actiontype;                             //~1A06R~
     GnomeVFSMimeApplication *papp;                                 //~1A06R~
 	char *pmimetype,*puri,*pparmname,*pdircmd=0,*pcmd=""/*,*pname*/;//~vay0R~
@@ -413,7 +417,7 @@ int ushellexecsub(char *Pfpath,char *Pcmd,int Ptermuse);           //~1A06R~
     {
 		if (!(Popt & USHEXE_NOMSG))
 	    	uerrmsg("MIME type not defined for %s",0,
-        				puri);
+        				fpath);                                    //+vc60R~
     	return -1;		//no mime type defined
     }
 //    papp=gnome_vfs_mime_get_default_application(pmimetype);      //~1A19R~
@@ -486,16 +490,18 @@ int ushellexecsub(char *Pfpath,char *Pcmd,int Ptermuse);           //~1A06R~
         }
         else
         	simid=0;	//no term required
-		rc=ushellexecsub(pparmname,pcmd,simid);
+//		rc=ushellexecsub(pparmname,pcmd,simid);                    //~vc60R~
+  		rc=ushellexecsub(pparmname,pcmd,simid,Psize);              //~vc60I~
 //        if (rc>0)   //pid                                        //~1A06R~
 //            if (!(Popt & USHEXE_NOMSG))                          //~1A06R~
 //                uerrmsg("sent \"%s\" to %s(pid=%d)",0,           //~1A06R~
 //                        Pfnm,pname,rc);                          //~1A06R~
         if (rc==0) //ok                                            //~1A06I~
         {                                                          //~1A06I~
-          if (!(Popt & USHEXE_NOMSG))                              //~1A06I~
-              uerrmsg("sent \"%s\" to %s",0,                       //~1A06I~
-                      Pfnm,pcmd,rc);                               //~1A06I~
+//        if (!(Popt & USHEXE_NOMSG))                              //~1A06I~//~vc60R~
+//            uerrmsg("sent \"%s\" to %s",0,                       //~1A06I~//~vc60R~
+//                    Pfnm,pcmd,rc);                               //~1A06I~//~vc60R~
+			UTRACEP("%s: usheeexecsub rc=0,fnm=%s\n",UTT,pparmname);//~vc60I~
         }                                                          //~1A06I~
         else                                                       //~1A06I~
         {                                                          //~1A06I~
@@ -515,7 +521,8 @@ int ushellexecsub(char *Pfpath,char *Pcmd,int Ptermuse);           //~1A06R~
 //*startIntent                                                     //~1A06I~
 //* rc:                                                            //~1A06I~
 //**************************************************************** //~1A06I~
-int ushellexecsub(char *Pfpath/*uri*/,char *Pcmd/*mimetype*/,int Ptermsimid)//~1A06R~
+//int ushellexecsub(char *Pfpath/*uri*/,char *Pcmd/*mimetype*/,int Ptermsimid)//~1A06R~//~vc60R~
+int ushellexecsub(char *Pfpath/*uri*/,char *Pcmd/*mimetype*/,int Ptermsimid,int Psize)//~vc60I~
 {                                                                  //~1A06I~
     static jmethodID staticMethod_openWith;                        //~1A06R~
     jstring juri,jmime;                                            //~1A06R~
@@ -523,13 +530,15 @@ int ushellexecsub(char *Pfpath/*uri*/,char *Pcmd/*mimetype*/,int Ptermsimid)//~1
     int rc;                                                        //~1A06I~
 //****************************                                     //~1A06I~
     penv=getThreadEnv();                                           //~1A06I~
-	UTRACEP("%s: env=%p,parm=%s,mimeType=%s\n",UTT,penv,Pfpath,Pcmd);          //~1A06I~//~vc5pR~
-    C2J_GETMETHODID_RETIFERR_WITHRC(penv,4/*rc*/,openWith,"(Ljava/lang/String;Ljava/lang/String;)I");//~1A06R~
+	UTRACEP("%s: env=%p,parm=%s,mimeType=%s,size=%d\n",UTT,penv,Pfpath,Pcmd,Psize);          //~1A06I~//~vc5pR~//~vc60R~
+//  C2J_GETMETHODID_RETIFERR_WITHRC(penv,4/*rc*/,openWith,"(Ljava/lang/String;Ljava/lang/String;)I");//~1A06R~//~vc60R~
+    C2J_GETMETHODID_RETIFERR_WITHRC(penv,4/*rc*/,openWith,"(Ljava/lang/String;Ljava/lang/String;I)I");//~vc60I~
     juri=utf8z2jstring(penv,(char *)Pfpath);                       //~1A06I~
     jmime=utf8z2jstring(penv,(char *)Pcmd);                        //~1A06I~
 //  rc=(int)C2J_INT(penv,openWith,juri,jmime);                     //~vay0R~
 	UTRACEP_FLUSH("%s:before call AxeJNI\n",UTT);                  //~vby4I~
-    C2J_INT(&rc,penv,openWith,juri,jmime);                         //~vay0I~
+//  C2J_INT(&rc,penv,openWith,juri,jmime);                         //~vay0I~//~vc60R~
+    C2J_INT(&rc,penv,openWith,juri,jmime,Psize);                   //~vc60I~
     unrefLocal(penv,juri);                                         //~1A06I~
     unrefLocal(penv,jmime);                                        //~1A06I~
     UTRACEP("openWith rc=%d\n",rc);                                //~1A06R~
@@ -1162,7 +1171,7 @@ int c2j_statDoc(int Popt,char *Pfpath,char *PstrUri,int *Ppfd)     //~v77mI~
 void c2j_notified_getDocPathResult(int Popt,char *Ppath)           //~vc5rI~
 {                                                                  //~v77wI~
     strcpy(SgetDocPath,Ppath);                                     //~v77wI~
-    SgetDocPathOpt=Popt;                                           //+vc5rI~
+    SgetDocPathOpt=Popt;                                           //~vc5rI~
     UTRACEP("%s:path=%s\n",UTT,Ppath);                             //~v77wR~
 }                                                                  //~v77wI~
 //**************************************************************** //~v77wI~
@@ -1175,7 +1184,7 @@ int c2j_getDocPath(int Popt,char *Pfpath,char *PstrUri,char *Ppath)//~v77wI~
 //****************************                                     //~v77wI~
 	UTRACEP_FLUSH("%s:opt=0x%x,fpath=%s,struri=%s\n",UTT,Popt,Pfpath,PstrUri);//~v77wI~
     SgetDocPath=Ppath;	//set at j2c notify                        //~v77wI~
-    SgetDocPathOpt=0;                                              //+vc5rI~
+    SgetDocPathOpt=0;                                              //~vc5rI~
     penv=getThreadEnv();                                           //~v77wI~
     jstrPath = utf8z2jstring(penv, Pfpath);                        //~v77wI~
     jstrUri = utf8z2jstring(penv, PstrUri);                        //~v77wI~
@@ -1185,9 +1194,9 @@ int c2j_getDocPath(int Popt,char *Pfpath,char *PstrUri,char *Ppath)//~v77wI~
     UTRACEP_FLUSH("%s:after call AxeJNI\n", UTT);                  //~v77wI~
     unrefLocal(penv,jstrPath);                                     //~v77wI~
     unrefLocal(penv,jstrUri);                                      //~v77wI~
-    if (SgetDocPathOpt & ROPT_REALPATH29)                             //+vc5rI~
-    	rc=ROPT_REALPATH29;                                        //+vc5rI~
-	UTRACEP("%s:exit rc=%d,SgetDocPathOpt=0x%x\n",UTT,rc,SgetDocPathOpt);                             //~v77wI~//+vc5rR~
+    if (SgetDocPathOpt & ROPT_REALPATH29)                             //~vc5rI~
+    	rc=ROPT_REALPATH29;                                        //~vc5rI~
+	UTRACEP("%s:exit rc=%d,SgetDocPathOpt=0x%x\n",UTT,rc,SgetDocPathOpt);                             //~v77wI~//~vc5rR~
     return rc;                                                     //~v77wI~
 }                                                                  //~v77wI~
 //**************************************************************** //~vc5cI~

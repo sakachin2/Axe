@@ -1,6 +1,7 @@
-//*CID://+v5crR~:                                   update#=  482; //+v5crR~
+//*CID://+vc67R~:                                   update#=  483; //+vc67R~
 //**************************************************************** //~1822R~
-//vc5r 2023/07/25 try /sdcard for realpath for api<30              //+v5crI~
+//vc67 2023/08/11 warning struct timeval will not be visible outside of this function//+vc67I~
+//vc5r 2023/07/25 try /sdcard for realpath for api<30              //~v5crI~
 //v77T:230708 ARM;locale was not set for xsub tool(pass Gjnilocale by putenv)//~v77TI~
 //v77Q:230630 (BUG)utempnam returns /sdcard, it cause permission err. use private for also XSUB; /data/local/tmp is also permission err//~v77QI~
 //vc59 2023/06/26 (Bug)clush at initial install for traceopen of sdcard if TRACE OFF//~vc59I~
@@ -49,6 +50,7 @@
 //v6bq:111221 icu additional directory name should be icudtxxl     //~v6bqI~
 //v6bp:111214 putenv/setenv is not effective for ICU dll;use u_setDataDirectory()//~v6bpI~
 //**************************************************************** //~1610I~
+#include <time.h>                                                  //+vc67I~
 #include <stdlib.h>                                                //~1A12R~
 #include <stdio.h>                                                 //~1A12I~
 #include <string.h>                                                //~1614I~
@@ -1741,6 +1743,6 @@ void jniNotifygetDocPathResult                                     //~v77mR~
 	pfpath=fpath;                                                  //~v77mI~
     jstr2UTFcharCopy(Penv,Pfpath,&pfpath);   //copy to fpath       //~v77mI~
 	UTRACEP("%s:fpath=%s\n",UTT,fpath);                            //~v77mI~
-//  c2j_notified_getDocPathResult(fpath);                          //~v77mI~//+v5crR~
-    c2j_notified_getDocPathResult(Popt,fpath);                     //+v5crI~
+//  c2j_notified_getDocPathResult(fpath);                          //~v77mI~//~v5crR~
+    c2j_notified_getDocPathResult(Popt,fpath);                     //~v5crI~
 }                                                                  //~v77mI~

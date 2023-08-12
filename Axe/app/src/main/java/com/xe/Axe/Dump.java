@@ -1,5 +1,6 @@
-//*CID://+vc4hR~:                                   update#=   62; //~vc4hR~
+//*CID://+vc60R~:                                   update#=   63; //+vc60R~
 //***********************************************                  //~@@@1I~
+//vc60 2023/08/03 mediaview as openWith                            //+vc60I~
 //vc4h 2023/03/28 Dump control by dialog                           //~vc4hI~
 //vc4g 2023/03/26 Dump to private storage                          //~vc4gI~
 //vc1m 2020/06/23 Toast should be on MainThread                    //~vc1mI~
@@ -82,14 +83,14 @@ public class Dump
     //**************************************************************//~vc4hI~
 	public static void open(int PoptDump/*1:now,2:later,0:no dump*/,boolean PswSD)//~vc4hI~
 	{                                                              //~vc4hI~
-//      System.out.println("Dump.open optDump="+PoptDump+",swSD="+PswSD);//TODO test//+vc4hR~
+//      System.out.println("Dump.open optDump="+PoptDump+",swSD="+PswSD);//TODO test//~vc4hR~
         if (PoptDump!=0)                                           //~vc4hI~
         {                                                          //~vc4hI~
 			open(fnmDump,PswSD);                                   //~vc4hI~
             if (PoptDump==2)	//start by dialog                  //~vc4hI~
             	Y=false;                                           //~vc4hI~
         }                                                          //~vc4hI~
-//      System.out.println("Dump.open Y="+Y+",Terminal="+Terminal+",exceptionOnly="+exceptionOnly);//TODO test//+vc4hR~
+//      System.out.println("Dump.open Y="+Y+",Terminal="+Terminal+",exceptionOnly="+exceptionOnly);//TODO test//~vc4hR~
     }                                                              //~vc4hI~
     //**************************************************************//~1Ad8I~
 	public static void open(String file)                           //~1Ad8R~
@@ -314,6 +315,29 @@ public class Dump
 			pw.close();                                            //~1B0gI~//~1Ad8I~
         }                                                          //~1B0gI~//~1Ad8I~
 	}                                                              //~1B0gI~//~1Ad8I~
+    //**************************************************************//+vc60I~
+	public synchronized static void println(NoClassDefFoundError e,String s)//+vc60I~
+	{                                                              //+vc60I~
+	    String tidts=Utils.getThreadTimeStamp();                   //+vc60I~
+        if (Terminal)                                              //+vc60I~
+        {                                                          //+vc60I~
+            StringWriter sw=new StringWriter();                    //+vc60I~
+            PrintWriter pw= new PrintWriter(sw);                   //+vc60I~
+            e.printStackTrace(pw);                                 //+vc60I~
+			System.out.println(tidts+"Dump.Exception:"+s+"\n"+sw.toString());//+vc60I~
+			pw.close();                                            //+vc60I~
+        }                                                          //+vc60I~
+        else                                                       //+vc60I~
+  		if (Out!=null)                                             //+vc60I~
+        {                                                          //+vc60I~
+            StringWriter sw=new StringWriter();                    //+vc60I~
+            PrintWriter pw= new PrintWriter(sw);                   //+vc60I~
+            e.printStackTrace(pw);                                 //+vc60I~
+			Out.println(tidts+"Dump.Exception:"+s+"\n"+sw.toString());//+vc60I~
+			Out.flush();                                           //+vc60I~
+			pw.close();                                            //+vc60I~
+        }                                                          //+vc60I~
+	}                                                              //+vc60I~
     //**************************************************************//~1Ad8I~
 	/** dump a string without linefeed */
 	public static void print (String s)

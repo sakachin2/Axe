@@ -3,8 +3,9 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-             android:background="#ff802020"
+             android:background="#ff202020"
         >
+       <!--  android:background="#ff802020"-->
     	<LinearLayout
         	android:orientation="vertical"
         	android:layout_width="fill_parent"

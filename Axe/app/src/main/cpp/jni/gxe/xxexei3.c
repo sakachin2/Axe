@@ -1,9 +1,10 @@
-//*CID://+vak2R~:                               update#=  554;     //+vak2R~
+//*CID://+vc60R~:                               update#=  559;     //~vc60R~
 //*********************************************************************//~v55cI~
 //* wxe interface definition-3                                     //~v55cI~
 //* rctl; menu enability;openwith;at cmd                           //~v55WR~
 //*********************************************************************//~v55cI~
-//vak2:130822 Axe:ndk-r9 warning                                   //+vak2I~
+//vc60 2023/08/03 mediaview as openWith                            //~vc60I~
+//vak2:130822 Axe:ndk-r9 warning                                   //~vak2I~
 //v@@@:110610 Android(-DARM)                                       //~v@@@I~
 //v780:080212 syntaxhighlight support (SYN cmd,C+s func key)       //~v780I~
 //v76j:070626 (WXEXXE)dnd by paste to utility panel                //~v76jI~
@@ -276,6 +277,7 @@ int wxe_onfileopenwith(void)                                       //~v55uR~
     int rc;                                                        //~v63iR~
     int pcid;                                                      //~v56bR~
 //***********************                                          //~v55uI~
+	UTRACEP("%s\n",UTT);                                           //+vc60I~
     pcw=scrgetcw(0); 	//get active                               //~v55uI~
 	pcid=((PUPANELC)pcw->UCWppc)->UPCid;                           //~v56bI~
 	if (pcid==PANFNAME)		//filename                             //~v56bR~
@@ -295,7 +297,8 @@ int wxe_onfileopenwith(void)                                       //~v55uR~
     }//not filename list screen                                    //~v56bI~
 //  showcmd=SW_SHOW;                                               //~vXXER~
 //  rc=ushellexec(fpath); 	//0:no return HINSTANCE                //~vXXER~
-    ushellexec(0,fpath);	//not no-errmsg                        //~vXXEI~
+//  ushellexec(0,fpath);	//not no-errmsg                        //~vXXEI~//~vc60R~
+    ushellexec(0,fpath,(int)(pdh->UDHsize));	//not no-errmsg    //~vc60R~
 //  if (rc)                                                        //~vXXER~
         scrdisp();          //draw errmsg                          //~v55uI~
     return 0;                                                      //~v55uI~
@@ -670,9 +673,9 @@ int wxe_killsleeptime(void)                                        //~v560I~
 int  wxe_assoclcmd(PUCLIENTWE Ppcw,int Pshiftsw)                   //~v56gM~
 {                                                                  //~v56gM~
 	int stat;                                                      //~v63iR~
-//  PUFILEC pfc;                                                   //+vak2R~
+//  PUFILEC pfc;                                                   //~vak2R~
 //****************************                                     //~v56gM~
-//  pfc=Ppcw->UCWpfc;                                              //+vak2R~
+//  pfc=Ppcw->UCWpfc;                                              //~vak2R~
     stat=WXEKBDMSG_ONCHAR;                                         //~v56gM~
     return wxe_kbdmsg(stat,'!',"!",1);		//1:repeat,0:flag      //~v63iR~
 }//wxe_assoclcmd                                                   //~v56gM~
