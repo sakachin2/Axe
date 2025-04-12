@@ -1,5 +1,6 @@
-//*CID://+vc5hR~: update#=  251;                                   //~vc5hR~
+//*CID://+vc8mR~: update#=  252;                                   //+vc8mR~
 //**********************************************************************//~vaagI~
+//vc8m 2025/03/30 AllFileAccess is from A11(api30). show option by disabled(not gone)//+vc8mI~
 //vc5h 2023/07/10 at after first install,env path is not set       //~vc5hI~
 //vc5c 2023/07/04 display directory set to access by ACTION_OPEN_DOCUMENT_TREE//~vc53I~
 //vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
@@ -220,10 +221,14 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
 //************************                                         //~vc4yI~
     private void showOptionAllFiles(ViewGroup PlayoutView)         //~vc4yI~
     {                                                              //~vc4yI~
-    	if (Dump.Y) Dump.println("AxeDlgArmOption showOptionAllFiles");//~vc4yI~
+    	if (Dump.Y) Dump.println("AxeDlgArmOption showOptionAllFiles osversion="+AxeG.osVersion);//~vc4yI~//+vc8mR~
         LinearLayout ll=(LinearLayout)PlayoutView.findViewById(R.id.llAllFile);//~vc4yI~
 		if (AxeG.osVersion<30)  //>=android11(Q)=api-30            //~vc4yI~
-        	ll.setVisibility(View.GONE);                           //~vc4yI~
+        {                                                          //+vc8mI~
+//        	ll.setVisibility(View.GONE);                           //~vc4yI~//+vc8mR~
+	        Button btnAllFile=(Button)PlayoutView.findViewById(R.id.btnAllFile);//+vc8mI~
+          	btnAllFile.setEnabled(false);                          //+vc8mI~
+        }                                                          //+vc8mI~
         else                                                       //~vc4yI~
         {                                                          //~vc4yI~
 	        TextView tvAll=(TextView)PlayoutView.findViewById(R.id.tvAllFileAll);//~vc4yI~
@@ -769,8 +774,8 @@ public class AxeDlgArmOption extends AxeDialog                     //~1821R~
       else                                                         //~vc5hI~
       if (!Gxeh.envPath.contains(Gxeh.addPath))                    //~vc5hI~
         ev=Gxeh.addPath+(nativePath==null ? "" : ":"+nativePath);   //myhome/bin+/sbin//~vc5hI~
-      else                                                         //+vc5hI~
-        ev=Gxeh.envVarPATH;                                        //+vc5hI~
+      else                                                         //~vc5hI~
+        ev=Gxeh.envVarPATH;                                        //~vc5hI~
         Gxeh.envVarPATH=ev;                                        //~vc1pI~
         if (PswJNICall)                                            //~vc1pI~
 	        AxeJNI.updateEnvPath();                                   //~vc1pI~

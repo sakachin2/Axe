@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/FILE01" android:visible="true" android:enabled="true">
 		    <item android:id="@+id/CM_OPEN"
         		android:title="@string/ContextMenu_FileOpen"
     		/>
+    </group>
+    <group android:id="@+id/FILE02" android:visible="true" android:enabled="true">
 		    <item android:id="@+id/CM_END"
         		android:title="@string/ContextMenu_FileEnd"
     		/>
@@ -21,4 +24,5 @@
 		    <item android:id="@+id/CM_DOWNLOAD"
         		android:title="@string/ContextMenu_FileDownload"
     		/>
+    </group>
 </menu>

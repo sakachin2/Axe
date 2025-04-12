@@ -1,4 +1,6 @@
 
+#//vc8C 2025/04/11 Build bundle failes by "libiconv.a is reserved name".(toybox prepares iconv, but do not accep cp932 etc)
+
 #cmake_minimum_required(VERSION 3.4.1)
 #cmake_minimum_required(VERSION 3.10.2)
 #cmake_minimum_required(VERSION 3.22.1) #vc57
@@ -43,7 +45,8 @@ add_executable(iconvbin
 #set(CMAKE_EXE_LINKER_FLAGS -Wl,-v,--verbose)	# for link err test only 
 target_link_libraries( # Specifies the target library.
                        iconvbin
-                       iconv
+#                      iconv
+                       ${LIBICONV_L}
                        icrt
                        ${OPT_STRIP}
                        )

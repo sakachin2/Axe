@@ -1,5 +1,6 @@
 ####################################################################################
 #!!! ndk includes uconv.h; and from api28(android9=P) iconv_open/... is defined.
+#//vc8C 2025/04/11 Build bundle failes by "libiconv.a is reserved name".(toybox prepares iconv, but do not accep cp932 etc)
 ####################################################################################
 
 #cmake_minimum_required(VERSION 3.4.1)
@@ -44,7 +45,8 @@ add_definitions(
                  ${OPT_G}
              )
 add_library(
-             iconv
+#            iconv
+            ${LIBICONV_L}
              STATIC
   			${srcdir}/iconv.c
   			${srcdir}/../libcharset/lib/localcharset.c
@@ -55,8 +57,10 @@ add_library(
 ##   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin/${OUT_SUBDIR}
 #    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/libs/${OUT_SUBDIR}
 #    )
-add_custom_command (TARGET iconv POST_BUILD
+#add_custom_command (TARGET iconv POST_BUILD      vc8C
+add_custom_command (TARGET ${LIBICONV_L} POST_BUILD
 #	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libiconv.a  ${DEVCONUP_LIBS}
 #  	 COMMAND ${CMAKE_COMMAND} -E copy ${ARCHIVE_OUTPUT_DIRECTORY}/libiconv.a  ${DEVCONUP_LIBS}
-   	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libiconv.a  ${DEVCONUP_LIBS}
+#	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libiconv.a  ${DEVCONUP_LIBS}   #vc8C
+	 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/${LIBICONV_A}  ${DEVCONUP_LIBS} #vc8C
 	)

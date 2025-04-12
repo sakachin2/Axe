@@ -1,6 +1,12 @@
-//CID://+vc60R~:     update#=    90                                //+vc60R~
+//CID://+vc8uR~:     update#=   100                                //~vc8uR~
 //*************************************************************    //~va15I~
-//vc60 2023/08/03 mediaview as openWith                            //+vc60I~
+//vc8u 2025/04/06 close softKbd for closed foldable at layoutChange. befause No orientationChange ocuurs when rotated.//~vc8uI~
+//vc8t 2025/04/02 Api35 is edgeToEdgeMode as default               //~vc8tI~
+//vc8i 2025/03/29 change Dump default to true                      //~vc8iI~
+//vc8c 2025/03/19 api21 actionbar(icon+title+menu) for alternative of Holo theme(AppCompatActivity requres those theme)//~vc8cR~
+//2023/02/28 vay4 API30 deprecated startActivityForResult; use registerForActivityResult//~vay4I~
+//vc72 2023/08/21 vc71 did not work, jni call at on destry will be ignored; clear it on java//~vc72I~
+//vc60 2023/08/03 mediaview as openWith                            //~vc60I~
 //vc54 2023/06/20 toolbin.zipfile update chk to unzip not by size but new asset file toolibin.zipfile.ts(dir output:timestamp and size)//~vc54I~
 //vc4y 2023/05/22 >=android11(Api30),access all file option setting by setting-android related dialog//~vc4yI~
 //vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
@@ -58,10 +64,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.os.Build;                                           //~vab0R~
 
+import androidx.appcompat.app.ActionBar;
+import android.content.pm.PackageManager;                          //~v107R~//~5127I~//~vay1I~//~vc8uI~
+
 import com.xe.Axe.kbd.AxeKbdDialogHW;
 import com.xe.Axe.kbd.ims.KeyboardView;
 public class AxeG                                                  //~va15R~
 {                                                                  //~va15I~
+//*startActivityForResult request code                             //~vay4I~
+    public static final int ACTIVITY_REQUEST_SCOPED    = 100;      //~1Ak0I~//~1ak0I~//~vay4I~
+    public static final int ACTIVITY_REQUEST_SCOPED_OPEN_TREE = (ACTIVITY_REQUEST_SCOPED+1);//~1Ak0I~//~1ak0I~//~vay4I~
+                                                                   //~vay4I~
 //  public static String PREFKEY_INTERNAL_OPTIONS="InternalOption";//~vay9R~
     public static final String PREFKEY_DEBUG_TRACE="DebugTrace";   //~vay9I~
     public static final String PREFKEY_DEBUG_DUMP="DebugDump";     //~vay9I~
@@ -176,6 +189,8 @@ public class AxeG                                                  //~va15R~
  	public static boolean isDebuggable;                            //~vai3I~
     public static int screenW,screenH;                             //~1606R~
     public static int displayW,displayH;                           //~1821R~
+    public static int actionBarHeight;                             //~vc8cR~
+    public static ActionBar supportActionBar;//~vc8cI~
                                                                    //~1821I~
     public static int displayPL; //0:Portrait,1:landscape          //~1821I~
     public static final int PORTRAIT=0;                            //~1821I~
@@ -212,13 +227,21 @@ public class AxeG                                                  //~va15R~
 	public static AxeDlgKbdLayoutHW axeDlgKbdLayoutHW;             //~vc1rR~
 	public static AxeDlgKbdLayout axeDlgKbdLayout;                 //~vc1wI~
 	public static AxeDialog axeDialog;                             //~vc2DI~
-	public static AxeDlgMediaView axeDlgMediaView;                 //+vc60I~
+	public static AxeDlgMediaView axeDlgMediaView;                 //~vc60I~
 	public static AxeBCR axeBCR;                                   //~vc2KI~
     public static boolean   swNavigationbarGestureMode;                  //~vaefR~//~vc42I~
     public static int       scrNavigationbarBottomHeightA11;             //~vaefR~//~vc42I~
     public static int       scrNavigationbarRightWidthA11;               //~vaefI~//~vc42I~
     public static int       scrStatusBarHeight;	//API30, by insets     //~vaj0I~//~vc42I~
     public static int       scrNavigationbarLeftWidthA11;                //~vaefI~//~vc42I~
+    public static String    dcmdLockfile;                          //~vc72I~
+    public static boolean swEdgeMode;                              //~vc8tI~
+    public static boolean swNavigationbarLeft;                     //~vc8tI~
+    public static boolean foldingFeature;                                 //~vay1I~//~vc8uI~
+    public static final int FOLDING_STATE_OPEN=1;                  //~vayKI~//~vc8uI~
+    public static final int FOLDING_STATE_CLOSE=0;                 //~vayKI~//~vc8uI~
+    public static final int FOLDING_STATE_UNKNOWN=-1;              //~vayKI~//~vc8uI~
+    public static int     foldingFeatureOpened=FOLDING_STATE_UNKNOWN;     //~vayKR~//~vc8uI~
 //*********************************************                    //~va15I~
 	public static void init(Axe Paxe)                    //~va15I~
     {                                                              //~va15I~
@@ -234,9 +257,11 @@ public class AxeG                                                  //~va15R~
         appName=Utils.getResourceString(R.string.app_name);        //~vc4iM~
                                                                    //~1A17I~
         isDebuggable=Utils.isDebuggable(context);             //~v107I~//~vai3I~
-  		int dump=getParameter(PREFKEY_DEBUG_DUMP,0);               //~vc4hI~
+// 		int dump=getParameter(PREFKEY_DEBUG_DUMP,0);               //~vc4hI~//~vc8iR~
+   		int dump=0;                                                //~vc8iI~
         if (isDebuggable)                                          //~vc4yR~
         {                                                          //~vc4gI~//~vc4yR~
+	   		dump=getParameter(PREFKEY_DEBUG_DUMP,1);               //~vc8iI~
 //          Dump.open("");  //write all to Terminal log,not exception only//~vc10I~//~vc4gR~//~vc4yR~
 //          Dump.open("Dump.txt",false/*swSD*/);    //write all to Terminal log,not exception only//~vc4gR~//~vc4hR~//~vc4yR~
             Dump.open(dump,false/*swSD*/);  //write all to Terminal log,not exception only//~vc4hR~//~vc4yR~//~vc54R~
@@ -288,6 +313,7 @@ public class AxeG                                                  //~va15R~
                                                                    //~vaagI~
         if (osVersion>=HONEYCOMB && osVersion<ICE_CREAM_SANDWICH)  //android3 api11-13//~vab0R~
         	bottomSpaceHeight=SYSTEMBAR_HEIGHT;                    //~vab0I~
+        swEdgeMode=(osVersion>=35);                                //~vc8tI~
 		int sbh=getParameter(PREFKEY_BOTTOMSPACE_HIGHT,-1);        //~vab0I~
         if (sbh>=0)                                                //~vab0I~
         	bottomSpaceHeight=sbh;                                 //~vab0I~
@@ -314,6 +340,7 @@ public class AxeG                                                  //~va15R~
 		getAltGrKey();                                             //~vc2gR~
 		keyOpenIM=getParameter(PREFKEY_OPENIMKEY,DEFAULT_OPENIMKEY);//~vc2jI~
 		axeBCR=new AxeBCR();                                       //~vc2KI~
+        foldingFeature=isFoldableDevice();                         //~vay1I~//~vc8uI~
     }                                                              //~va15I~
 //*********************************************                    //~vc2gI~
 	private static void getAltGrKey()                              //~vc2gR~
@@ -408,4 +435,13 @@ public class AxeG                                                  //~va15R~
 		setParameter(PREFKEY_NO_ALLFILE,PnoAllFile);               //~vc4yI~
         if (Dump.Y) Dump.println("AxeG.setNoAllFile PnoAllFile="+PnoAllFile);//~vc4yI~
 	}                                                              //~vc4yI~
+    //*******************************************************      //~5127I~//~vay1I~//~vc8uI~
+    public static boolean isFoldableDevice()                       //~5127R~//~vay1I~//~vc8uI~
+    {                                                              //~5127I~//~vay1I~//~vc8uI~
+    	if (Dump.Y) Dump.println("isFoldableDevice");            //~vat2I~//~5127I~//~vay1I~//~vc8uI~
+        PackageManager pm=context.getPackageManager();          //~v107R~//~5127R~//~vay1I~//+vc8uR~
+        boolean rc=pm.hasSystemFeature(PackageManager.FEATURE_SENSOR_HINGE_ANGLE);//~5127R~//~vay1I~//~vc8uI~
+    	if (Dump.Y) Dump.println("isFoldableDevice rc="+rc);       //~5127I~//~vay1I~//~vc8uI~
+        return rc;                                                 //~5127I~//~vay1I~//~vc8uI~
+    }                                                              //~v107R~//~5127I~//~vay1I~//~vc8uI~
 }//class                                                           //~va15R~

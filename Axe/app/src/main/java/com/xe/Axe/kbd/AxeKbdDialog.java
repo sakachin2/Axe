@@ -1,6 +1,10 @@
-//*CID://+vc66R~: update#= 67;                                     //~vc41R~//+vc66R~
+//*CID://+vc8yR~: update#=110;                                     //~vc8xR~//~vc8yR~
 //**********************************************************************//~vaagI~
-//vc66 2023/08/10 SoftKbd is overrided by nabigation bar when landscape for Tec(android12:api31, emulator:13:api33)//+vc66I~
+//vc8y 2025/04/07 for vc8u, use SCREEN_ORIENTATION_FULL_SENSOR(onConfiguration changed occrs always) and dismiss softkbd//~vc8yI~
+//vc8x 2025/04/06 for vc8u, try onShow                             //~vc8xI~
+//vc8v 2025/04/06 for vc8u, try windoManager Option                //~vc8vI~
+//vc8t 2025/04/02 Api35 is edgeToEdgeMode as default               //~vc8tI~
+//vc66 2023/08/10 SoftKbd is overrided by nabigation bar when landscape for Tec(android12:api31, emulator:13:api33)//~vc66I~
 //vc41 2023/03/25 api33 support;deprecated getDefaultDisplay       //~vc41I~
 //vc30 2020/09/20 return key could not close xeKbd                 //~vc30I~
 //vc26 2020/07/11 mix AxeKbdDialog and AxeKbdDialogFix(apply map of AxeLstKbdLayout)//~vc25I~//~vc26R~
@@ -22,6 +26,7 @@ package com.xe.Axe.kbd;                                            //~1918R~
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.Gravity;
@@ -31,6 +36,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.view.WindowManager;                                 //~1902I~
+import android.widget.LinearLayout;
 //~1918I~
 import com.xe.Axe.AxeDlgKbdLayoutHW;
 import com.xe.Axe.AxeKeyValue;
@@ -54,6 +60,9 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 	private static final int DIALOG_THEME=R.style.ExtKeyKbdTheme;//style for fullscreen//~1918I~
 	private static final int DIALOG_LAYOUT=R.layout.dialogkbd;     //~1918I~
 	private static final int DIALOG_FRAMELAYOUT=R.id.KBDFRAME;     //~1918I~
+    private static final int LL_NAVIGATIONBAR=R.id.SpaceNavi;      //~vc8tR~
+	private static final int LL_MARGINL=R.id.kbd_MarginL;          //~vc8tI~
+	private static final int LL_MARGINR=R.id.kbd_MarginR;          //~vc8tI~
 	private ViewGroup layoutView;                                  //~1902I~
 	private FrameLayout frameLayout;                                   //~1902I~
 	private View kbdView; 
@@ -63,10 +72,12 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
     private boolean isShown;//~1918I~
     private boolean isConstructor;                                 //~vaygI~
     private boolean swRestart;                                     //~vc20I~
+    private int displayWidth;                                          //~vc8tI~
 //************************************************                 //~1918I~
     public AxeKbdDialog(Context Pcontext)                          //~1918R~
     {                                                              //~1902R~
      	super(Pcontext,DIALOG_THEME);//style for fullscreen       //~1918R~
+        if (Dump.Y) Dump.println("AxeKbdDialog.constructor");      //~vc8yI~
         context=Pcontext;                                          //~1918I~
                                                                    //~1902I~
 //      Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~//~vc41R~
@@ -76,12 +87,14 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         Point dsz=AxeView.getDisplayRegion();                      //~vaybR~
         int displayW=dsz.x;                                        //~vaybI~
         int displayH=dsz.y;                                        //~vaybI~
+        displayWidth=displayW;                                     //~vc8tI~
         if (Dump.Y) Dump.println("AxeKbdDialog.constructor display W="+displayW+",H="+displayH);//~1902I~//~vaygR~
+        if (Dump.Y) Dump.println("AxeKbdDialog.layoutID="+Integer.toHexString(DIALOG_LAYOUT));//~vc8tI~
 		layoutView=(ViewGroup)(AxeG.inflater.inflate(DIALOG_LAYOUT,null));//~1918R~
 //      FrameLayout frameLayout=(FrameLayout)(layoutView.findViewById(DIALOG_FRAMELAYOUT));//~1918R~//~vaagR~
         frameLayout=(FrameLayout)(layoutView.findViewById(DIALOG_FRAMELAYOUT));//~vaagI~
         kbdView=initKbd();                                         //~1902I~
-        if (Dump.Y) Dump.println("AxeKbdDialog.constructot kbdview W="+kbdView.getWidth()+",H="+kbdView.getHeight());//~vaybI~//~vaygR~
+        if (Dump.Y) Dump.println("AxeKbdDialog.constructor kbdview W="+kbdView.getWidth()+",H="+kbdView.getHeight()+",layoutView="+layoutView+",id="+Integer.toHexString(layoutView.getId()));//~vaybI~//~vaygR~//~vc8tR~
                                                                    //~vaybI~
         frameLayout.addView(kbdView);                                //~1902I~
 //      dialogKbd.requestWindowFeature(Window.FEATURE_NO_TITLE);   //~1902R~
@@ -89,7 +102,9 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
    		isConstructor=true;                                        //~vaygI~
         setFullWidth();                                            //~1902R~
    		isConstructor=false;                                       //~vaygI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.constructor setContentView");//~vc8tI~
         setContentView(layoutView);                                //~1902R~
+//		setOnShow();                                               //~vc8xI~//~vc8yR~
 	    setOnKeyListener(new OnKeyListener()                       //~1A08I~
         						{                                  //~1A08I~
                                 @Override	                       //~1A08I~
@@ -115,6 +130,8 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
     public void orientationChanged()                               //~vaatR~
     {                                                              //~vaatR~
         if (Dump.Y) Dump.println("AxeKbdDialog:orientationChanged");//~vaatR~
+        if (!isShowing())                                      //~vc8yI~
+        	return;                                                //~vc8yI~
         View v=reinitKbd();                                        //~vaatR~
         if (v!=null)                                               //~vaatI~
         {                                                          //~vaatI~
@@ -127,6 +144,7 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 //*****************************************                        //~vaatR~
 	private View initKbd()                                         //~1902I~
     {                                                              //~1902I~
+        if (Dump.Y) Dump.println("AxeKbdDialog:initKbd");          //~vc8tI~
     	axeSoftKbd=new AxeSoftKbd(this);                           //~1919R~
     	axeSoftKbd.setSoftKbdListener(this);	//callback sendkey //~1919R~
         axeSoftKbd.onInitializeInterface();                        //~1919R~
@@ -137,6 +155,7 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 //*****************************************                        //~vaatR~
 	private View reinitKbd()                                       //~vaatR~
     {                                                              //~vaatR~
+        if (Dump.Y) Dump.println("AxeKbdDialog:reinitKbd");        //~vc8tI~
         if (!axeSoftKbd.onInitializeInterface())                   //~vaatR~
         	return null;                                          //~vaatI~
         View v=axeSoftKbd.onCreateInputView();                     //~vaatR~
@@ -161,9 +180,10 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 //        lp.copyFrom(dialogKbd.getWindow().getAttributes());      //~1902R~
 //        lp.width=WindowManager.LayoutParams.FILL_PARENT;         //~1902R~
         setOnDismissListener((OnDismissListener) new dismissListener());//~1917I~
+//      chkOrientationChanged();	//api35 no config change may detected if closed foldable//~vc8tI~//~vc8vR~//+vc8yR~
         show();                                                    //~1902R~
         isShown=true;                                              //~1919I~
-    	if (Dump.Y) Dump.println("AxeKbdDialog.showKbd requestForce to AxeScreen");//~vaygI~
+    	if (Dump.Y) Dump.println("AxeKbdDialog.showKbd requestFocus to AxeScreen");//~vaygI~//~vc8vR~
 //      AxeG.axeScreen.requestFocus();  //lose kbd focus once      //~vaifI~//~vaygR~
         AxeScreen.getFocus();  //lose kbd focus once               //~vaygI~
 //      dialogKbd.getWindow().setLayout(MATCH_PARENT, WRAP_CONTENT);//~1902R~
@@ -375,7 +395,8 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 //      lp.setTitle("InputMethod");                                //~1902R~
                                                                    //~1902I~
         lp.gravity = Gravity.BOTTOM;                               //~1902I~
-        lp.width = -1;                                             //~1902I~
+//      lp.width = -1;                                             //~1902I~//~vc8vR~
+        lp.width = 0;                                              //~vc8vR~
         // Let the input method window's orientation follow sensor based rotation//~1902I~
         // Turn this off for now, it is very problematic.          //~1902I~
         //lp.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_USER;//~1902I~
@@ -384,8 +405,9 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         getWindow().setFlags(                                      //~1902R~
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | //~1902I~
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,     //~1902I~
-                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | //~1902I~
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |    //~1902I~
+//              WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | //~1902I~//~vc8vR~
+//              WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |    //~1902I~//~vc8vR~
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER |//~vc8vI~
                 WindowManager.LayoutParams.FLAG_DIM_BEHIND);       //~1902I~
     }                                                              //~1902I~
     private void setFullWidth()                                    //~1902R~
@@ -403,7 +425,7 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
         lp.gravity = Gravity.BOTTOM;                               //~vaycI~
         lp.width = -1;                                             //~vaycI~
         lp.height=hh+2;//2:paddingTop                              //~vaycR~
-        lp.height+=AxeG.scrNavigationbarBottomHeightA11;           //+vc66R~
+        lp.height+=AxeG.scrNavigationbarBottomHeightA11;           //~vc66R~
         w.setAttributes(lp);                                       //~vaycR~
         if (Dump.Y) Dump.println("AxeKbdDialog.setFullEidth hh="+lp.height+",bottomHeightA11="+AxeG.scrNavigationbarBottomHeightA11);//~vaycI~//~vaygR~//~vc41R~
       }                                                            //~vaycI~
@@ -415,6 +437,8 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
 //      w.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);    //~1902R~
 //        w.requestWindowFeature(Window.FEATURE_NO_TITLE);           //~1902I~
 	  }                                                            //~vaycI~
+        if (AxeG.swEdgeMode)                                       //~vc8tM~
+        	adjustEdgeMode();                                      //~vc8tM~
     }                                                              //~1902I~
 //}//SoftInputWindow class                                         //~1902I~
                                                 //~1917I~
@@ -509,16 +533,23 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
     	axeSoftKbd.invalidateAllKeys();                            //~vaagI~
     }                                                              //~vaagI~
 //***********************************************                  //~vc26R~
-	public boolean isShowingDlg()                                  //~vc26R~
-    {                                                              //~vc26R~
-    	AxeKbdDialog dlg=AxeG.axeIME.getXeKbd();                   //~vc26R~
-    	boolean rc=dlg!=null && dlg.isShowing();                   //~vc26R~
-        return rc;                                                 //~vc26R~
-    }                                                              //~vc26R~
+//*no User                                                         //~vc8yI~
+//***********************************************                  //~vc8yI~
+//    public boolean isShowingDlg()                                  //~vc26R~//~vc8yR~
+//    {                                                              //~vc26R~//~vc8yR~
+//        AxeKbdDialog dlg=AxeG.axeIME.getXeKbd();                   //~vc26R~//~vc8yR~
+//        boolean rc=dlg!=null && dlg.isShowing();                   //~vc26R~//~vc8yR~
+//        return rc;                                                 //~vc26R~//~vc8yR~
+//    }                                                              //~vc26R~//~vc8yR~
 //***********************************************                  //~vc26I~
 	public static void dismissDlg()                                     //~vc26I~
     {                                                              //~vc26I~
 //      AxeKbdDialog dlg = AxeG.axeIME.getXeKbd();                   //~vc26I~//~vc30R~
+        if (Dump.Y) Dump.println("AxeKbdDialog.dismiss axeIME="+AxeG.axeIME);//~vc8yI~
+        if (AxeG.axeIME==null)	//initial rotation case            //~vc8yI~
+        {                                                          //~vc8yI~
+        	return;                                                //~vc8yI~
+        }                                                          //~vc8yI~
         AxeKbdDialog dlg = AxeG.axeIME.getXeKbd(false/*no create even if null*/);//~vc30I~
         if (Dump.Y) Dump.println("AxeKbdDialog.dismiss dlg="+dlg);          //~vc26I~//~vc30I~
         if (dlg==null)                                             //~vc30I~
@@ -529,4 +560,130 @@ public class AxeKbdDialog extends Dialog                           //~1918R~
             dlg.dismiss();
         }
     }//~vc26I~
+//**********************************************************************//~vc8tR~
+	private void adjustEdgeMode()                                  //~vc8tR~
+    {                                                              //~vc8tR~
+        int ww,hh;                                                 //~vc8tI~
+		ViewGroup.LayoutParams lp;                                 //~vc8tI~
+    //***************************                                  //~vc8tI~
+		Window w=getWindow();                                      //~vc8tR~
+        if (Dump.Y) Dump.println("AxeKbdDialog.adjustEdgeMode window="+w);//~vc8tR~
+        if (Dump.Y) Dump.println("AxeKbdDialog.adjustEdgeMode layoutView="+layoutView);//~vc8tI~
+        LinearLayout llSpaceNavi=(LinearLayout)layoutView.findViewById(LL_NAVIGATIONBAR);//~vc8tR~
+	    if (Dump.Y) Dump.println("AxeKbdDialog.adjustEdgeMode layoutViewId="+Integer.toHexString(layoutView.getId())+",layoutView="+layoutView);//~vc8tR~
+	    if (Dump.Y) Dump.println("AxeKbdDialog.adjustEdgeMode id="+Integer.toHexString(LL_NAVIGATIONBAR)+",llSpaceNavi="+llSpaceNavi);//~vc8tI~
+        if (llSpaceNavi!=null)                                     //~vc8tR~
+        {                                                          //~vc8tR~
+		    if (Dump.Y) Dump.println("AxeKbdDialog.adjustEdgeMode llSpaceNavi height="+llSpaceNavi.getHeight());//~vc8tI~
+			ww=ViewGroup.LayoutParams.MATCH_PARENT;                //~vc8tR~
+			hh=AxeG.scrNavigationbarBottomHeightA11;               //~vc8tR~
+			lp=llSpaceNavi.getLayoutParams();                      //~vc8tR~
+        	lp.width=ww; lp.height=hh;                             //~vc8tR~
+			llSpaceNavi.setLayoutParams(lp);                       //~vc8tR~
+	        if (Dump.Y) Dump.println("AxeKbdDialog.adjustEdgeMode setLayoutParams spaceNavi hh="+hh+",params="+lp);//~vc8tR~
+        }                                                          //~vc8tR~
+	    if (Dump.Y) Dump.println("AxeKbdDialog.adjustEdgeMode displayPL="+AxeG.displayPL);//~vc8tR~
+        if (AxeG.displayPL==AxeG.LANDSCAPE)                        //~vc8tI~
+        {                                                          //~vc8tI~
+			adjustEdgeModeLandscape(w);                                      //~vc8tI~
+        }                                                          //~vc8tI~
+    }                                                              //~vc8tR~
+//**********************************************************************//~vc8tI~
+	private void adjustEdgeModeLandscape(Window Pwindow)           //~vc8tI~
+    {                                                              //~vc8tI~
+        int ww,hh;                                                 //~vc8tR~
+        ViewGroup.LayoutParams lp;                                 //~vc8tI~
+        //***************************                                  //~vc8tI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.adjustEdgeModeLandscape naviLeft=" + AxeG.swNavigationbarLeft);//~vc8tR~
+        hh=ViewGroup.LayoutParams.MATCH_PARENT;                    //~vc8tI~
+        if (false)  //TODO TEST                                       //~vc8tI~//~vc8vR~
+        {                                                              //~vc8tI~
+            WindowManager.LayoutParams wmlp = Pwindow.getAttributes();          //~vc8tI~
+            wmlp.x = AxeG.scrNavigationbarLeftWidthA11;                   //~vc8tI~
+            if (AxeG.swNavigationbarLeft)                               //~vc8tI~
+                wmlp.x = displayWidth - AxeG.scrNavigationbarLeftWidthA11;  //~vc8tI~
+            if (Dump.Y)
+                Dump.println("AxeKbdDialog.adjustEdgeMode WindowManager.LayoutParams x=" + wmlp.x + ",wmlp=" + wmlp);//~vc8tI~
+            Pwindow.setAttributes(wmlp);                                      //~vc8tI~
+        }                                                              //~vc8tI~
+        if (true)  //TODO TEST                                         //~vc8tI~//~vc8vR~
+        {                                                              //~vc8tI~
+            if (Dump.Y) Dump.println("AxeKbdDialog swNavigationbarLeft=" + AxeG.swNavigationbarLeft);//~vc8tR~
+            if (AxeG.swNavigationbarLeft)                          //~vc8tR~
+                ww=AxeG.scrNavigationbarLeftWidthA11;              //~vc8tR~
+            else                                                   //~vc8tI~
+                ww=0;                                              //~vc8tI~
+            LinearLayout llMarginL = (LinearLayout) layoutView.findViewById(LL_MARGINL);//~vc8tR~
+            lp = llMarginL.getLayoutParams();                      //~vc8tR~
+            lp.width = ww;                                         //~vc8tR~
+            lp.height = hh;                                        //~vc8tR~
+            llMarginL.setLayoutParams(lp);                         //~vc8tR~
+            if (Dump.Y) Dump.println("AxeKbdDialog marginLeft ww=" + ww + ",layoutParam=" + lp);//~vc8tR~
+            if (false)                                                 //~vc8tI~
+            {                                                          //~vc8tI~
+                ww = AxeG.scrNavigationbarRightWidthA11;                 //~vc8tI~
+                if (ww > 0)                                              //~vc8tI~
+                {                                                      //~vc8tI~
+                    LinearLayout llMarginR = (LinearLayout) layoutView.findViewById(LL_MARGINR);//~vc8tI~
+                    hh = ViewGroup.LayoutParams.MATCH_PARENT;            //~vc8tI~
+                    lp = llMarginR.getLayoutParams();                    //~vc8tI~
+                    lp.width = ww;
+                    lp.height = hh;                         //~vc8tI~
+                    llMarginR.setLayoutParams(lp);                     //~vc8tI~
+                    if (Dump.Y) Dump.println("AxeKbdDialog marginRight ww=" + ww + ",layoutParam=" + lp);//~vc8tR~
+                }                                                      //~vc8tI~
+            }                                                          //~vc8tI~
+        }
+    }//~vc8tI~
+//**********************************************************************//~vc8tI~
+//*no user                                                         //+vc8yI~
+//**********************************************************************//+vc8yI~
+	private boolean chkOrientationChanged()                        //~vc8tI~
+    {                                                              //~vc8tI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.chkorientationChanged entry");//~vc8vI~
+        int oldPL=AxeG.displayPL;                                  //~vc8tI~
+    	boolean oldLeftNavi=AxeG.swNavigationbarLeft;              //~vc8tI~
+        AxeView.getDisplayRegion(); //re-evaluate                  //~vc8tI~
+        boolean rc=oldPL!=AxeG.displayPL || oldLeftNavi!=AxeG.swNavigationbarLeft;//~vc8tI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.chkorientationChanged rc="+rc+",oldPL="+oldPL+",newPL="+AxeG.displayPL+",oldLeftNavi="+oldLeftNavi+",new="+AxeG.swNavigationbarLeft);//~vc8tR~
+//      if (rc)                                                    //~vc8tI~//~vc8yR~
+			adjustEdgeMode();
+//      chkRotation();                                             //~vc8vI~//~vc8yR~
+        return rc;//~vc8tI~
+    }                                                              //~vc8tI~
+//**********************************************************************//~vc8vI~
+//*Surface ORIENTATION_0(0), _90(1), _180(2), 270(3)               //~vc8vI~
+//*no user                                                         //~vc8yI~
+//**********************************************************************//~vc8vI~
+	int oldRot=-1;                                                 //~vc8vI~
+	private boolean chkRotation()                                  //~vc8vI~
+    {                                                              //~vc8vI~
+		Configuration cfg=AxeG.resource.getConfiguration();        //~vaiqI~//~vc8vI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.chkRotation cfg="+cfg);//~vc8vI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.chkRotation orientation="+cfg.orientation);//~vc8vI~
+//  	WindowManager wm=((WindowManager)(getSystemService(Context.WINDOW_SERVICE)));//~vc8vR~
+//      Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~//~vc41R~//~vc8vR~
+        Display display=AxeView.getDefaultDisplay();               //~vc8vI~
+        int rot=display.getRotation();                                  //~vc8vR~
+        boolean rc=rot!=oldRot;                                   //~vc8vI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.chkRotation old="+oldRot+",new="+rot);//~vc8vI~
+        oldRot=rot;                                                //~vc8xI~
+        return rc;                                                 //~vc8vI~
+    }                                                              //~vc8vI~
+//**********************************************************************//~vc8xI~
+//*no user                                                         //~vc8yI~
+//**********************************************************************//~vc8yI~
+    private void setOnShow()                                       //~vc8xI~
+    {                                                              //~vc8xI~
+        if (Dump.Y) Dump.println("AxeKbdDialog.setOnShow");        //~vc8xI~
+		setOnShowListener(new DialogInterface.OnShowListener()     //~vc8xI~
+		{                                                          //~vc8xI~
+    		@Override                                              //~vc8xI~
+    		public void onShow(DialogInterface arg0)               //~vc8xI~
+			{                                                      //~vc8xI~
+		        if (Dump.Y) Dump.println("AxeKbdDialog.onShow");   //~vc8xI~
+				chkRotation();                                     //~vc8xI~
+            }                                                      //~vc8xI~
+		});                                                        //~vc8xI~
+    }                                                              //~vc8xI~
 }

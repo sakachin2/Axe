@@ -1,26 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--//vc8t 2025/04/02 Api35 is edgeToEdgeMode as default-->
+<!--vc8b 2025/03/19 FATAL java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.-->
 <resources>
 <!-- minsdk=15 this is applied -->
-    <style name="ThemeV10" parent="@android:style/Theme.Holo">
-        <item name="android:windowActionBar">true</item>
-        <item name="android:windowNoTitle">false</item>
+<!--
+    parent="@android:style/Theme.Holo"          vc8b
+    parent="Theme.AppCompat.NoActionBar"
+    parent="Theme.Material"
+        item name="android:windowActionBar">true</item>
+-->
+    <style name="ThemeV10"
+    parent="Theme.AppCompat.DayNight.NoActionBar"
+    >
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
         <!--item name="android:buttonStyle">@android:style/Widget.Holo.Button</item-->
         <item name="android:buttonStyle">@android:style/Widget.Button</item> <!-- black on white(Holo is white on black-->
         <item name="android:actionBarStyle">@style/NoActionBarIcon</item>
         <item name="android:dropDownListViewStyle">@style/myDropDownListView</item>
-        <item name="android:itemTextAppearance">@style/myDropDownItemText</item>
+        <!--item name="android:listMenuViewStyle">@style/myListMenuView</item-->
+        <!--item name="android:spinnerDropDownItemStyle">@style/myDropDownListView</item-->
+        <!--item name="android:listViewStyle">@style/myListView</item-->
+        <!--item name="android:listPopupWindowStyle">@style/myPopupListView</item-->
+        <item name="android:dialogTheme">@style/myDialog</item>
+        <item name="android:alertDialogTheme">@style/myAlertDialog</item>
+        <!--item name="popupMenuStyle">@style/myPopupMenu</item-->
+        <!--item name="android:statusBarColor">@color/main_primary_dark</item-->          <!--vc8t-->
+        <!--item name="android:navigationBarColor">@color/main_primary_dark</item-->      <!--vc8t-->
     </style>  
+<!--
+        <item name="android:statusBarColor">#ffff00ff</item>
+        <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
+        <item name="android:windowNoTitle">true</item>
+    parent="Theme.AppCompat.DayNight.NoActionBar"
+        <item name="android:itemTextAppearance">@style/myDropDownItemText</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:textColor">@color/menu_fg</item>
+        <item name="android:background">@color/menu_bg</item>
+        <item name="android:listView">@style/myListView</item>
+        <item name="android:divider">@color/menu_divider</item>
+        <item name="android:divider">#ff00ff00</item>
+        <item name="android:alertDialogStyle">@style/myAlertDialog</item>
+        <item name="android:alertDialogStyle">@style/myAlertDialogTheme</item>
+-->
     <style name="NoActionBarIcon" parent="@android:style/Widget.Holo.ActionBar">
         <!--item name="android:displayOptions">showTitle</item-->
         <item name="android:height">30dp</item>
     </style>  
-    <style name="myDropDownListView" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
-        <!--item name="android:textColor">@color/menu_fg</item-->
-        <item name="android:divider">@color/menu_divider</item>
+    <!--style name="myDropDownListView" parent="@android:style/Widget.Holo.Light.ListView.DropDown"-->
+    <style name="myDropDownListView" parent="@android:style/Widget.ListView">   <!--for overflow menu dropdown-->
+        <item name="android:divider">@color/menu_divider</item>    <!--808080-->
         <item name="android:dividerHeight">1dp</item>
-        <item name="android:background">@color/menu_bg</item>
+    </style>
+    <style name="myPopupListView" parent="Widget.AppCompat.ListPopupWindow">
+        <item name="android:divider">#ff000000</item>    <!--808080-->
+        <item name="android:dividerHeight">100dp</item>
     </style>
     <style name="myDropDownItemText">
         <item name="android:textColor">@color/menu_fg</item>
+    </style>
+    <style name="myListView" parent="@android:style/Widget.ListView">
+        <!--item name="android:textColor">@color/menu_fg</item-->
+        <item name="android:dividerHeight">200dp</item>
+        <!--item name="android:itemTextAppearance">@style/myDropDownItemText</item-->
+    </style>
+    <style name="myAlertDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowTitleStyle">@style/myAlertDialogTitle</item>
+        <item name="android:background">#ffffffff</item>
+    </style> 
+    <style name="myDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:background">#ffffffff</item>
+        <item name="android:windowTitleStyle">@style/myDialogTitle</item>
+        <item name="android:windowMinWidthMinor">@dimen/dialog_minwidth_port</item>     <!--minimum when portrait-->
+        <item name="android:windowMinWidthMajor">@dimen/dialog_minwidth_land</item>     <!--minimum when landscape-->
+    </style>
+<!--
+    <style name="myAlertDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowTitleBackgroundStyle">@style/myDialogTitle</item>
+        <item name="android:layout_height">80dp</item>
+-->
+    <style name="myAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowTitleBackgroundStyle">@style/myDialogTitle</item>
+        <item name="android:layout_height">80dp</item>
+    </style>
+    <style name="myDialogTitle">
+        <item name="android:textColor">#ff0000ff</item>
+        <item name="android:background">#ffc0ff40</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="myAlertDialogTitle">
+        <item name="android:textColor">#ffff00ff</item>
+        <item name="android:background">#ff40ffc0</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <!--style name="myPopupMenu" parent="@style/Widget.AppCompat.ListView.DropDown"-->
+    <style name="myPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:divider">@color/menu_divider</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:colorBackground">#ff00ff00</item>
+        <item name="android:popupBackground">#ffffff00</item>
+        <item name="android:textColor">#ff0000ff</item>
+    </style>
+    <style name="myListMenuView" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/menu_divider</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:colorBackground">#ff00ff00</item>
+        <item name="android:popupBackground">#ffffff00</item>
+        <item name="android:textColor">#ff0000ff</item>
     </style>
 </resources>

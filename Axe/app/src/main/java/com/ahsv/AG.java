@@ -1,5 +1,6 @@
-//*CID://+vc5bR~: update#= 139;                                    //~vc5bR~
+//*CID://+vc87R~: update#= 142;                                    //+vc87R~
 //**********************************************************************//~1107I~
+//vc87 2025/03/18 DisplayMetrics.scaledDensity was deprecated at api34//~vc87I~
 //vc60 2023/08/03 mediaview as openWith                            //~vc5bI~
 //vc5b 2023/06/29 (Bug)titlebar bottome sometime invalid when rotated. use 1st time value//~vc5bI~
 //vc4r 2023/04/14 rename using SAF                                 //~vc4rI~
@@ -17,9 +18,9 @@ import com.xe.Axe.Axe;
 import com.xe.Axe.AxeG;                                            //~vc10R~
 import com.xe.Axe.R;                                               //~vc10I~
 import com.ahsv.gui.CommonListener;                                //~vc10I~
-import com.ahsv.utils.UMediaStore;                                 //+vc5bI~
-                                                                   //+vc5bI~
-import android.os.Build;                                           //+vc5bI~
+import com.ahsv.utils.UMediaStore;                                 //~vc5bI~
+                                                                   //~vc5bI~
+import android.os.Build;                                           //~vc5bI~
 //**********************************************************************//~1107I~
 public class AG	extends AxeG                                       //~vc10R~
 {                                                                  //~0914I~
@@ -37,7 +38,7 @@ public class AG	extends AxeG                                       //~vc10R~
     public static int       scrWidth,scrHeight;                    //~vc10I~
     public static int       scrWidthReal,scrHeightReal;            //~vc10I~
 	public static float dip2pix;                                   //~vc10I~
-	public static float sp2pix;                                    //~vc10I~
+//  public static float sp2pix;                                    //~vc10I~//~vc87R~
     public static boolean   portrait;                              //~vc10I~
     public static int       scrNavigationbarRightWidth;            //~vc10I~
     public static boolean   swSmallDevice;      //portrait screen width<800pixel//~vc10I~
@@ -50,7 +51,7 @@ public class AG	extends AxeG                                       //~vc10R~
     public static USAF2 aUSAF2;                                    //~vc4rI~
     public static int titleBarTop,titleBarBottom;                  //~vc5bI~
     public static int osVersion;                                   //~vc5bI~
-	public static UMediaStore aUMediaStore;                        //+vc5bR~
+	public static UMediaStore aUMediaStore;                        //~vc5bR~
 //**********************************                               //~1211I~
 	public AG(Axe Paxe)                                           //~1211I~//~@@@@R~//~vc10R~
     {                                                              //~1211I~

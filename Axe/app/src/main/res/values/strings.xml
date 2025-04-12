@@ -2,8 +2,8 @@
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <resources>
     <string name="app_name">Axe</string>
-    <string name="Version">Axe V1.29.3\n			By Mizumaki-machi</string>
-    <string name="VerDate">2023/08/11</string>
+    <string name="Version">Axe V1.30.2\n			By Mizumaki-machi</string>
+    <string name="VerDate">2025/04/12</string>
 
     <string name="OptionMenu_Stop">Exit</string>
     <string name="OptionMenu_Menu">Menu</string>
@@ -781,7 +781,10 @@
     <string name="Setup_RulerWidth">Ruler line width (pixel)</string>
     <string name="Setup_RulerWidthMax">Max:%1$d</string>
     <string name="Err_ManageAllFiles">failed to set option \"manage All Files\" for acces Shared-Storage.</string>
+<!--
     <string name="labelAllFile">Permission:Files and media</string>
+-->
+    <string name="labelAllFile">Permission:Files and media (from Android-11)</string> <!--vc8m-->
     <string name="tvAllFileAll">All Files</string>
     <string name="tvAllFileMedia">Media</string>
     <string name="btnAllFile">Change</string>
@@ -816,4 +819,5 @@
     <string name="ErrNotMusic">%s is not a music file.</string>
     <string name="ErrNotFoundMedia">%s was not found.</string>
     <string name="Unknown">Unkown</string>
+    <string name="tvAllFileNone">---</string> <!--vc8m-->
 </resources>

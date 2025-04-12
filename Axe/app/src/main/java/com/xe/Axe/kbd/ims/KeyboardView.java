@@ -1,4 +1,4 @@
-//*CID://+vc53R~:                             update#=   81;       //~vc4dR~//~vc53R~
+//*CID://+vc53R~:                             update#=   83;       //~vc4dR~//~vc53R~
 //******************************************************************//~@@@@I~
 //vc53 2023/06/12 java error;switch-case requres constant          //~vc53I~
 //vc4d 2023/03/25 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//~vc4dI~
@@ -357,37 +357,37 @@ protected/*private*/ Canvas mCanvas;                               //~vaagR~
 //                break;                                           //~vc53R~
 //            }                                                    //~vc53R~
 //          switch (attr) {                                        //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyBackground)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyBackground)//~vc53R~
                 mKeyBackground = a.getDrawable(attr);              //~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_verticalCorrection)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_verticalCorrection)//~vc53R~
                 mVerticalCorrection = a.getDimensionPixelOffset(attr, 0);//~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewLayout)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewLayout)//~vc53R~
                 previewLayout = a.getResourceId(attr, 0);          //~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewOffset)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewOffset)//~vc53R~
                 mPreviewOffset = a.getDimensionPixelOffset(attr, 0);//~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewHeight)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyPreviewHeight)//~vc53R~
                 mPreviewHeight = a.getDimensionPixelSize(attr, 80);//~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyTextSize)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyTextSize)//~vc53R~
                 mKeyTextSize = a.getDimensionPixelSize(attr, 18);  //~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyTextColor)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_keyTextColor)//~vc53R~
                 mKeyTextColor = a.getColor(attr, 0xFF000000);      //~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_labelTextSize)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_labelTextSize)//~vc53R~
                 mLabelTextSize = a.getDimensionPixelSize(attr, 14);//~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_popupLayout)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_popupLayout)//~vc53R~
                 mPopupLayout = a.getResourceId(attr, 0);           //~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_shadowColor)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_shadowColor)//~vc53R~
                 mShadowColor = a.getColor(attr, 0);                //~vc53I~
             else //break;                                          //~vc53I~
-            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_shadowRadius)//+vc53R~
+            if (attr== /*com.android.internal.*/R.styleable.KeyboardView_shadowRadius)//~vc53R~
                 mShadowRadius = a.getFloat(attr, 0f);              //~vc53I~
 //              break;                                             //~vc53I~
 //          }                                                      //~vc53I~
@@ -839,6 +839,8 @@ public /*private*/ int getKeyIndices(int x, int y, int[] allKeys) {//~@@@@R~
         int closestKeyDist = mProximityThreshold + 1;
         java.util.Arrays.fill(mDistances, Integer.MAX_VALUE);
         int [] nearestKeyIndices = mKeyboard.getNearestKeys(x, y);
+        if (Dump.Y) Dump.println("KeyboardView.getKeyIndicies nearestKeyIndices="+Arrays.toString(nearestKeyIndices));//+vc53R~
+                                                                   //~vc53I~
         final int keyCount = nearestKeyIndices.length;
         for (int i = 0; i < keyCount; i++) {
             final Key key = keys[nearestKeyIndices[i]];
@@ -847,6 +849,7 @@ public /*private*/ int getKeyIndices(int x, int y, int[] allKeys) {//~@@@@R~
             if (isInside) {
                 primaryIndex = nearestKeyIndices[i];
             }
+	        if (Dump.Y) Dump.println("KeyboardView.getKeyIndicies isInside="+isInside+",primaryIndex="+primaryIndex+",mProximtyCorrectOn="+mProximityCorrectOn+",allKeys="+allKeys);//+vc53R~
 
             if (((mProximityCorrectOn 
                     && (dist = key.squaredDistanceFrom(x, y)) < mProximityThreshold) 
@@ -875,6 +878,7 @@ public /*private*/ int getKeyIndices(int x, int y, int[] allKeys) {//~@@@@R~
                         break;
                     }
                 }
+	        	if (Dump.Y) Dump.println("KeyboardView.getKeyIndicies allKeys="+Arrays.toString(allKeys));//+vc53R~
             }
         }
 		if (Dump.Y) Dump.println("KeyboardView.getKeyIndices primaryIndex="+primaryIndex+",cosestKey="+closestKey);//~vc2CI~
@@ -1244,7 +1248,7 @@ public /*private*/ void showKey(final int keyIndex) {              //~@@@@R~
 		if (Dump.Y) Dump.println("KeyboardView.onTouchEvent action="+action+",rc="+result);//~vc2CI~
         return result;
     }
-
+//0:Down, 1:Up, 2:Move ************************                    //~vc53R~
     private boolean onModifiedTouchEvent(MotionEvent me, boolean possiblePoly) {
         int touchX = (int) me.getX() - /*mPaddingLeft*/getPaddingLeft();//~@@@@R~
         int touchY = (int) me.getY() + mVerticalCorrection - /*mPaddingTop*/getPaddingTop();//~@@@@R~

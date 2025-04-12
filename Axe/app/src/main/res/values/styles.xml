@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="ActionBar_TitleText" parent="@style/Widget.AppCompat.Toolbar"> <!--vac8-->
+    	<item name="titleTextAppearance">@style/ActionBar_TextAppearance</item>
+    </style>
+    <style name="ActionBar_TextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title"> <!--vac8-->
+    	<item name="android:textSize">@dimen/actionbar_textsize</item>
+    </style>
     <style name="ExtKeyKbdThemeHW">
     	<item name="android:windowFrame">@null</item>
     	<item name="android:windowIsFloating">false</item>

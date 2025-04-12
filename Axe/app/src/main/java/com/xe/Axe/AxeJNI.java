@@ -1,6 +1,8 @@
-//CID://+vc60R~:   update#=  153                                   //+vc60R~
+//CID://+vc72R~:   update#=  170                                   //+vc72R~
 //*************************************************************
-//vc60 2023/08/03 mediaview as openWith                            //+vc60I~
+//vc72 2023/08/21 vc71 did not work, jni call at on destry will be ignored; clear it on java//+vc72I~
+//vc70 2023/08/14 try tool with attr of 110(executable only) to avoid M^X vioration//~vc70I~
+//vc60 2023/08/03 mediaview as openWith                            //~vc60I~
 //vc61 2023/08/04 (Bug) Uri to file path failes when space embedding//~vc61I~
 //vc5p 2023/07/22 Dump open with for //Axe/x1.(mime type=text/x-csrc for ////Axe/x1.c)//~vc5pI~
 //vc5c 2023/07/04 display directory set to access by ACTION_OPEN_DOCUMENT_TREE//~vc5cI~
@@ -49,14 +51,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 import com.ahsv.AG;
 import com.ahsv.utils.UFile;
@@ -74,7 +80,8 @@ public class AxeJNI
     public static native void j2cOnActivityResult(int PreqID,int Prc,String Pparm,String PstrUri,String Ppath);//~vc4qR~
     public static native int jniMouseMsg(int Paction,int Pbutton,int Pflag,int Px,int Py);//~vc4qI~
     public static native void jniSetScreenSize(int Pw,int Ph);
-    public static native void jniTerminateXe();
+//  public static native void jniTerminateXe();                    //~vc70R~
+    public static native void jniTerminateXe(int Popt);            //~vc70I~
     public static native void jniFullDraw(int Presize);
 //  public static native void jniOptionChangedOther(int Prulermode,int Puseact,boolean Pfreecsr,boolean Pbeep,boolean Pqexit);//~vc1fR~
     public static native void jniOptionChangedOther(int Prulermode,int Puseact,boolean Pfreecsr,boolean Pbeep,boolean Pqexit,int PaxeStatus);//~vc1fI~
@@ -489,12 +496,13 @@ public class AxeJNI
         }                                                          //~vay0I~
     }                                                              //~vay0I~
     //===============================================================================
-    public static void terminatexe()
+//  public static void terminatexe()                               //~vc70R~
+    public static void terminatexe(int Popt)                       //~vc70I~
     {
-        if (Dump.Y) Dump.println(CN+"terminatexe");                //~vc4qR~
+        if (Dump.Y) Dump.println(CN+"terminatexe opt="+Popt);                //~vc4qR~//~vc70R~
         try
         {
-            jniTerminateXe();
+            jniTerminateXe(Popt);                                  //~vc70R~
             if (Dump.Y) Dump.println("jni call terminateXe");
         }
         catch(Exception e)
@@ -2037,4 +2045,183 @@ public class AxeJNI
         AG.aUSAF.yourSharedFolder=PallSP;                          //~vc5cI~
         return 0;                                                  //~vc5cI~
     }                                                              //~vc5cI~
+//**************************************************               //+vc72I~
+  	public static int notifyLockfile(String Pfnm)                  //+vc72I~
+    {                                                              //+vc72I~
+        if (Dump.Y) Dump.println(CN+"notifyLockfile fnm=="+Pfnm);  //+vc72I~
+        AG.dcmdLockfile=new String(Pfnm);                          //+vc72I~
+        return 0;                                                  //+vc72I~
+    }                                                              //+vc72I~
+//**************************************************               //~vc70I~
+  	@RequiresApi(api = Build.VERSION_CODES.O)
+    public static int runProcess(String Pfpath, String Pparm)       //~vc70I~
+    {                                                              //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcess fpath="+Pfpath+",parm="+Pparm);//~vc70I~
+        int rc=-1;                                                 //~vc70I~
+      	try                                                        //~vc70I~
+      	{                                                          //~vc70I~
+            if (true)   //TODO test                                //~vc70I~
+          	rc=runProcessSub3(Pfpath,Pparm);                       //~vc70I~
+            else                                                   //~vc70I~
+            if (false)  //TODO test                                //~vc70R~
+          	rc=runProcessSub2(Pfpath,Pparm);                       //~vc70I~
+            else                                                   //~vc70I~
+          	rc=runProcessSub(Pfpath,Pparm);                      //~vc70I~
+      	}                                                          //~vc70I~
+      	catch(Exception e)                                         //~vc70I~
+      	{                                                          //~vc70I~
+        	 Dump.println(e,CN+"runProcess fpath="+Pfpath+",parm="+Pparm);//~vc70I~
+      	}                                                          //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcess exit rc="+rc+",fpath="+Pfpath+",parm="+Pparm);//~vc70I~
+        return rc;                                                 //~vc70I~
+    }                                                              //~vc70I~
+//**************************************************               //~vc70I~
+  	@RequiresApi(api = Build.VERSION_CODES.O)
+    public static int runProcessSub(String Pfpath, String Pparm)    //~vc70I~
+    {                                                              //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub fpath="+Pfpath+",parm="+Pparm);//~vc70I~
+        int rc=-1;                                                 //~vc70I~
+        ProcessBuilder pb=new ProcessBuilder(Pfpath,Pparm);        //~vc70I~
+        Process p=null;                                            //~vc70I~
+        try                                                        //~vc70I~
+        {                                                          //~vc70I~
+        	p=pb.start();                                          //~vc70I~
+        }                                                          //~vc70I~
+        catch(IOException e)                                       //~vc70I~
+        {                                                          //~vc70I~
+        	Dump.println(e,CN+"runProcessSub start"+Pfpath);       //~vc70I~
+        }                                                          //~vc70I~
+        if (p==null)                                               //~vc70I~
+        	return -1;                                             //~vc70I~
+        long limit=2L;                                             //~vc70I~
+        boolean exitInTheTime=false;                               //~vc70R~
+        try                                                        //~vc70I~
+        {                                                          //~vc70I~
+        	exitInTheTime=p.waitFor(limit, TimeUnit.SECONDS);      //~vc70I~
+        }                                                          //~vc70I~
+        catch(InterruptedException e)                              //~vc70I~
+        {                                                          //~vc70I~
+        	Dump.println(e,CN+"runProcessSub waitFor"+Pfpath);     //~vc70I~
+        }                                                          //~vc70I~
+        int exitCode=-1;                                               //~vc70I~
+        if (exitInTheTime)                                         //~vc70I~
+        	exitCode=p.exitValue();                                //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub exitCode="+exitCode+",exitInTheTime="+exitInTheTime);//~vc70R~
+        return exitCode;                                           //~vc70I~
+    }                                                              //~vc70I~
+//**************************************************               //~vc70I~
+  	@RequiresApi(api = Build.VERSION_CODES.O)                      //~vc70I~
+    public static int runProcessSub2(String Pfpath, String Pparm)  //~vc70I~
+    {                                                              //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub2 fpath="+Pfpath+",parm="+Pparm);//~vc70I~
+        int rc=-1;                                                 //~vc70I~
+        Runtime rt=Runtime.getRuntime();                           //~vc70I~
+        String[] args=new String[]{Pfpath,""};                     //~vc70I~
+        Process p=null;                                                 //~vc70I~
+        try                                                        //~vc70I~
+        {                                                          //~vc70I~
+	        p=rt.exec(args);                                       //~vc70R~
+        }                                                          //~vc70I~
+    	catch(IOException e)                                       //~vc70I~
+        {                                                          //~vc70I~
+        	Dump.println(e,CN+"runProcessSub start"+Pfpath);       //~vc70I~
+        }                                                          //~vc70I~
+        if (p==null)                                               //~vc70I~
+        	return -1;                                             //~vc70I~
+        long limit=2L;                                             //~vc70I~
+        boolean exitInTheTime=false;                               //~vc70I~
+        try                                                        //~vc70I~
+        {                                                          //~vc70I~
+        	exitInTheTime=p.waitFor(limit, TimeUnit.SECONDS);      //~vc70I~
+        }                                                          //~vc70I~
+        catch(InterruptedException e)                              //~vc70I~
+        {                                                          //~vc70I~
+        	Dump.println(e,CN+"runProcessSub2 waitFor"+Pfpath);    //~vc70I~
+        }                                                          //~vc70I~
+        int exitCode=-1;                                           //~vc70I~
+        if (exitInTheTime)                                         //~vc70I~
+        	exitCode=p.exitValue();                                //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub2 exitCode="+exitCode+",exitInTheTime="+exitInTheTime);//~vc70I~
+        return exitCode;
+    }                                                              //~vc70I~
+//**************************************************               //~vc70I~
+  	@RequiresApi(api = Build.VERSION_CODES.O)                      //~vc70I~
+    public static int runProcessSub3(String Pfpath, String Pparm)  //~vc70I~
+    {                                                              //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub3 fpath="+Pfpath+",parm="+Pparm);//~vc70I~
+      try                                                          //~vc70I~
+      {                                                            //~vc70I~
+     if (true)                                                     //~vc70I~
+     {                                                             //~vc70I~
+      if (false)                                                   //~vc70R~
+      {                                                            //~vc70I~
+        String lib=Pfpath+"/"+Pparm;                                //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub3 loadLibrar lib="+lib);//~vc70I~
+        System.loadLibrary(lib);                                   //~vc70I~
+      }                                                            //~vc70I~
+      else                                                         //~vc70I~
+      {                                                            //~vc70I~
+        String lib2=Pparm+"_so";                                   //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub3 loadLibrar lib2="+lib2);//~vc70I~
+        System.loadLibrary(lib2);         //testenv                //~vc70R~
+      }                                                            //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub3 after loadLibrary");//~vc70I~
+     }                                                             //~vc70I~
+        File wd=new File(Pfpath);                                  //~vc70I~
+        String libpath=Pfpath+"/lib"+Pparm+"_so.so";               //~vc70I~
+        libpath="/storage/emulated/0/Axe/xbc";  //TODO test        //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub3 libpath="+libpath);//~vc70I~
+        Process p=null;                                                 //~vc70I~
+        try                                                        //~vc70I~
+        {                                                          //~vc70I~
+	        p=new ProcessBuilder(libpath,"").directory(wd).start();//~vc70I~
+	        if (Dump.Y) Dump.println(CN+"runProcessSub3 process="+p);//~vc70I~
+        }                                                          //~vc70I~
+        catch(IOException e)                                       //~vc70I~
+        {                                                          //~vc70I~
+        	Dump.println(e,CN+"runProcessSub3 start"+Pfpath);      //~vc70R~
+        }                                                          //~vc70I~
+        long limit=2L;                                             //~vc70I~
+        boolean exitInTheTime=false;                               //~vc70I~
+        try                                                        //~vc70I~
+        {                                                          //~vc70I~
+        	exitInTheTime=p.waitFor(limit, TimeUnit.SECONDS);      //~vc70I~
+	        if (Dump.Y) Dump.println(CN+"runProcessSub3 exitintheTime="+exitInTheTime);//~vc70I~
+        }                                                          //~vc70I~
+        catch(InterruptedException e)                              //~vc70I~
+        {                                                          //~vc70I~
+        	Dump.println(e,CN+"runProcessSub waitFor"+Pfpath);     //~vc70I~
+        }                                                          //~vc70I~
+        int exitCode=-1;                                           //~vc70I~
+        try {                                                      //~vc70I~
+        if (exitInTheTime)                                         //~vc70I~
+        	exitCode=p.exitValue();                                //~vc70R~
+        } catch (Exception e) {                                    //~vc70I~
+            Dump.println(e,CN+"runProcessSub3 exitValue");         //~vc70I~
+        }                                                          //~vc70I~
+        if (Dump.Y) Dump.println(CN+"runProcessSub exitCode="+exitCode);//~vc70I~
+        BufferedReader br=new BufferedReader(new InputStreamReader(p.getInputStream()));//~vc70I~
+	    if (Dump.Y) Dump.println(CN+"runProcessSub3 br="+br);      //~vc70I~
+        try {                                                      //~vc70R~
+            String l=br.readLine();                               //~vc70R~
+            if (Dump.Y) Dump.println(CN+"readline="+l);            //~vc70I~
+        } catch (IOException e) {                                  //~vc70R~
+            Dump.println(e,CN+"runProcessSub3");                   //~vc70R~
+        }                                                          //~vc70R~
+        BufferedReader br2=new BufferedReader(new InputStreamReader(p.getErrorStream()));//~vc70I~
+	    if (Dump.Y) Dump.println(CN+"runProcessSub3 br2="+br2);    //~vc70I~
+        try {                                                      //~vc70I~
+            String l2=br2.readLine();                              //~vc70I~
+            if (Dump.Y) Dump.println(CN+"err readline="+l2);       //~vc70I~
+        } catch (IOException e) {                                  //~vc70I~
+            Dump.println(e,CN+"runProcessSub3");                   //~vc70I~
+        }                                                          //~vc70I~
+        return exitCode;                                           //~vc70I~
+      }                                                            //~vc70I~
+      catch(Exception e)                                           //~vc70I~
+      {                                                            //~vc70I~
+            Dump.println(e,CN+"runProcessSub3");                   //~vc70I~
+      }
+      return 9;//~vc70I~
+    }                                                              //~vc70I~
 }//class

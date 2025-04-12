@@ -1,3 +1,4 @@
+##vc81 2025/03/17 ndk compile err(update by ulib/xe):vbz5:240120 try vbz3 to XXE(apichk by char extent)
 #==exec-compile==arm-linux-androideabi-gcc
 #-c
 #-o
@@ -185,6 +186,8 @@ add_library(
             ${ULIB}/uviolx.c
             ${ULIB}/ulibarm.c
             ${ULIB}/ugcclib.c
+            ./arm/uvio2.c       #vc81
+            ./arm/uvioml.c       #vc81
              )
 #file(COPY ${BUILD_OUT}/libuserxxe.a DESTINATION ${OUTPATH_LIB})
 ##find_file(

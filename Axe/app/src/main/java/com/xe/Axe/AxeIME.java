@@ -1,5 +1,6 @@
-//*CID://+vc47R~: update#= 214;                                    //~vc47R~
+//*CID://+vc8zR~: update#= 215;                                    //+vc8zR~
 //**********************************************************************//~1107I~
+//vc8z 2025/04/08 dialog layout is not loaded when rotation change //+vc8zI~
 //vc47 2022/03/25 deprecated;Api33, packageManager.queryIntentServices//~vc47I~
 //vc46 2022/03/25 deprecated;Api33, InputMethodManager.SHOW_FORCED //~vc46I~
 //vaat:120103 (Axe:Bug)xekbd should support orientaion change      //~vaatI~
@@ -136,8 +137,12 @@ public class AxeIME implements AxeTimerI                                        
     private void showXeKbd(View Pview)                              //~1919I~//~vaatR~
     {                                                              //~1919I~
     	if (Dump.Y) Dump.println("AxeIME showXeKbd");              //~1919I~
-        if (axeKbdDialog==null)                                    //~1919I~
+//      if (axeKbdDialog==null)                                    //~1919I~//+vc8zR~
+        if (axeKbdDialog==null || ! axeKbdDialog.isShowing())      //+vc8zI~
+        {                                                          //+vc8zI~
+    		if (Dump.Y) Dump.println("AxeIME getXeKbd axeKbdDialog="+axeKbdDialog+",or not isShowing");//+vc8zI~
 	    	axeKbdDialog=new AxeKbdDialog(AxeG.context);           //~1919I~
+        }                                                          //+vc8zI~
 		axeKbdDialog.showKbd();                                    //~1919I~
     }                                                              //~1919I~
 //*************************                                        //~1919I~
@@ -237,9 +242,9 @@ private static List<ResolveInfo> queryServices(PackageManager Ppm) //~vc47I~
 {                                                                  //~vc47I~
 	if (Dump.Y) Dump.println("AxeIME.queryServices");              //~vc47I~
 	if (AxeG.osVersion>=33)                                        //~vc47I~
-		return queryServicesFrom33(Ppm);                           //+vc47R~
+		return queryServicesFrom33(Ppm);                           //~vc47R~
     else                                                           //~vc47I~
-		return queryServicesUnder33(Ppm);                          //+vc47R~
+		return queryServicesUnder33(Ppm);                          //~vc47R~
 }                                                                  //~vc47I~
 //*****************************************                        //~vc47I~
 @SuppressWarnings("deprecation")                                   //~vc47I~

@@ -1,4 +1,5 @@
 ##############################
+#//vc8C 2025/04/11 Build bundle failes by "libiconv.a is reserved name".(toybox prepares iconv, but do not accep cp932 etc)
 set(JAVA_JVM_LIBRARY NotNeeded)
 #set(JAVA_INCLUDE_PATH2 ${JAVA_HOME}/include)
 #set(JAVA_INCLUDE_PATH2 "c:/Program Files/Android/Android Studio/jre/include") //2023/06/02 Androidstudio default jdk 11.0.13 has no include dir
@@ -89,19 +90,20 @@ add_library(
 target_link_libraries(axejni log
 				xxe
 #   			${LIBDIR_ICONV}/libiconv.a     #2023/06/23
-    			iconv                          #2023/06/23
+#    			iconv                          #2023/06/23
+     			${LIBICONV_L}                  #vc8C
                 )
 ####################
 #LIBRARY_OUTPUT_PATH :cpp/libs ###################
-add_custom_command (
-        TARGET axejni  POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${LIBRARY_OUTPUT_PATH}
-      COMMAND
-        ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${RESOURCE_LIBS}    #2023/06/15
-      COMMAND
-        ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${DEVCONUP_LIBS}
-        )
+#add_custom_command (
+#        TARGET axejni  POST_BUILD
+#      COMMAND
+#        ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${LIBRARY_OUTPUT_PATH}
+#      COMMAND
+#        ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${RESOURCE_LIBS}    #2023/06/15
+#      COMMAND
+#        ${CMAKE_COMMAND} -E copy  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libaxejni.so ${DEVCONUP_LIBS}
+#        )
 ##POST_BUILD for each dose not work
 #add_custom_command (
 #        TARGET axejni  PRE_BUILD

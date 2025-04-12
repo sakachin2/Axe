@@ -22,9 +22,9 @@ buildscript {
 //       classpath 'com.android.tools.build:gradle:7.4'    //2023/03/22
 //         classpath 'com.android.tools.build:gradle:7.6.1'    //2023/03/22 //TODO test delete
 //         classpath 'com.android.tools.build:gradle:7.4.2'    //2023/03/22 //TODO test delete
-        classpath 'com.android.tools.build:gradle:7.4.2'    //2023/06/12  <=7.6.1
+        classpath 'com.android.tools.build:gradle:8.8.0'    //2023/06/12  <=7.6.1
 //      classpath 'com.android.tools.build:gradle:6.1.1'
-        classpath 'com.gradle:gradle-enterprise-gradle-plugin:3.13.3'    //2023/06/12 <--3.11
+//      classpath 'com.gradle:gradle-enterprise-gradle-plugin:3.13.3'    //2023/06/12 <--3.11
     }
 }
 

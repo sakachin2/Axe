@@ -1,6 +1,7 @@
-//*CID://+vc5gR~:                                   update#=  173; //+vc5gR~
+//*CID://+vc70R~:                                   update#=  176; //~vc70R~
 //**************************************************************** //~vaa8I~
-//vc5g 2023/07/10 no more need setup additional ebc converter(libicuuc now contains those)//+vc5gI~
+//vc70 2023/08/14 try tool with attr of 110(executable only) to avoid M^X vioration//~vc70I~
+//vc5g 2023/07/10 no more need setup additional ebc converter(libicuuc now contains those)//~vc5gI~
 //vc54 2023/06/20 toolbin.zipfile update chk to unzip not by size but new asset file toolibin.zipfile.ts(dir output:timestamp and size)//~vc4pI~
 //vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
 //vc4n 2023/03/30 (Bug)coud not reset writable                     //~vc4nI~
@@ -460,7 +461,7 @@ public class AxeProp
         if (Dump.Y) Dump.println("AxeProp.initFiles addPath="+Gxeh.addPath);//~vc4pI~
 //  	Gxeh.addPath+=":"+Sbusybox_path;    ///system/bin or /system/xbin is set as native PATH//~vc1qR~
 //  	Gxeh.homeDir=getDataDir("myhome");	//avoid in home with xewd//~vavdR~//~vc1qR~
-//      initEbcMap();   //synchrounous,executed before mapinit     //~vaafI~//+vc5gR~
+//      initEbcMap();   //synchrounous,executed before mapinit     //~vaafI~//~vc5gR~
         if (Dump.Y) Dump.println("AxeProp.initFiles home="+Gxeh.homeDir+",addPath="+Gxeh.addPath);             //~vc1kI~//~vc1qR~
       new Thread(new Runnable()                                    //~vaa8I~
       {                                                            //~vaa8I~
@@ -474,6 +475,9 @@ public class AxeProp
 	    initHosts();
       if (AxeG.osVersion<AxeG.API29)  //                           //~vc4pI~
 	    unziptool();
+      else                                                         //~vc70I~
+      if ((Gxeh.axeStatus & Gxeh.AXES_MXTOOL)!=0)                       //~vc70I~
+	    unziptool();                                               //~vc70I~
 	    unziphtmlhelp();                                           //~vc1kI~
 	    initHighlight();                                           //~vaaDR~
         initCompleted=true;                                        //~vaa8I~
@@ -522,10 +526,15 @@ public class AxeProp
 //         oldsz=0;	//reload if bin dir was deleted                //~vc54R~
            swUnzip=true;                                           //~vc54R~
        }
+       else                                                        //+vc70I~
+    	chmod(file,0700);	//add W                                //+vc70I~
 
 //    	int newsz=(int)getAssetFileSize(toolbinZipfile);           //~vc54R~
 //  	int chmod=0755;                                            //~vc4mR~
     	int chmod=0555;       //except W                           //~vc4mI~
+      if ((Gxeh.axeStatus & Gxeh.AXES_MXTOOL)!=0)                  //~vc70I~
+    	chmod=0110;       //execute only                       //~vc70I~
+      	                                                           //~vc70I~
 //      if (Dump.Y) Dump.println("AxeProp.unziptool oldsz="+oldsz+",newsz="+newsz+",fnm="+toolbinZipfile);//~vc1kI~
         unzipfilepopup=Utils.getResourceString(R.string.Info_ToolInstalling);
 //      if (oldsz!=newsz && newsz>0)                               //~vc54R~
@@ -542,6 +551,7 @@ public class AxeProp
             Utils.showToast(R.string.Info_UnzipToolComp);          //~vaa8I~
         }
 	    unzipfilepopup=null;
+    	chmod(file,0500);      //drop W                            //+vc70I~
         if (Dump.Y) Dump.println("AxeProp.unziptool end fnm="+toolbinZipfile);//~vc1kI~
     }
     //**********************************************************************//~vc54R~

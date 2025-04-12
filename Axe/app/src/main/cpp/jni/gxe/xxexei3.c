@@ -1,8 +1,9 @@
-//*CID://+vc60R~:                               update#=  559;     //~vc60R~
+//*CID://+vbz5R~:                               update#=  564;     //~vbz5R~
 //*********************************************************************//~v55cI~
 //* wxe interface definition-3                                     //~v55cI~
 //* rctl; menu enability;openwith;at cmd                           //~v55WR~
 //*********************************************************************//~v55cI~
+//vc81 2025/03/17 ndk compile err(update by ulib/xe):vbz5:240120 try vbz3 to XXE(apichk by char extent)//~vc81I~
 //vc60 2023/08/03 mediaview as openWith                            //~vc60I~
 //vak2:130822 Axe:ndk-r9 warning                                   //~vak2I~
 //v@@@:110610 Android(-DARM)                                       //~v@@@I~
@@ -64,6 +65,8 @@
 #include <ustring.h>                                               //~v56bI~
 #include <uwinsub.h>                                               //~v56bI~
 #include <uftp.h>                                                  //~v68nI~
+#include <uvio.h>                                                  //+vbz5I~
+#include <uvio2.h>                                                 //~vbAnI~//~vbz5I~
                                                                    //~v55cI~
 #include "xe.h"                                                    //~v55cI~
 #include "xescr.h"                                                 //~v55cI~
@@ -277,7 +280,7 @@ int wxe_onfileopenwith(void)                                       //~v55uR~
     int rc;                                                        //~v63iR~
     int pcid;                                                      //~v56bR~
 //***********************                                          //~v55uI~
-	UTRACEP("%s\n",UTT);                                           //+vc60I~
+	UTRACEP("%s\n",UTT);                                           //~vc60I~
     pcw=scrgetcw(0); 	//get active                               //~v55uI~
 	pcid=((PUPANELC)pcw->UCWppc)->UPCid;                           //~v56bI~
 	if (pcid==PANFNAME)		//filename                             //~v56bR~
@@ -1132,3 +1135,19 @@ dprintf("syn font toring=%s\n",pango_font_description_to_string((const PangoFont
     }                                                              //~v780I~
     return;                                                        //~v780I~
 }//xxe_setsynfontface                                              //~v780R~
+//*****************************************************************//~vbz5I~//~vc81I~
+//*from utf22 apichkCursor                                         //~vbz5I~//~vc81I~
+//*****************************************************************//~vbz5I~//~vc81I~
+int xxe_GetCursorWidth(int Popt,ULONG Pucs)                        //~vbz5I~//~vc81I~
+{                                                                  //~vbz5I~//~vc81I~
+#ifndef TEST                                                        //~vc81I~//~vbz5R~
+    return -1;                                                     //~vc81I~
+#else                                                              //~vc81I~
+    if (Guvio2Stat & UVIO2S_NOGLYPHCHK)//     //test skip close, to getglyph width after mapinit//~vbAnI~//~vc81I~
+    {                                                              //~vbAnI~//~vc81I~
+		UTRACEP("%s:return -1 NOGLYPHCHK option\n",UTT);           //~vbAnI~//~vc81I~
+    	return -1;                                                 //~vbAnI~//~vc81I~
+    }                                                              //~vbAnI~//~vc81I~
+    return csubGetCursorPos(Popt,Pucs);                            //~vbz5I~//~vc81I~
+#endif                                                             //~vc81I~
+}                                                                  //~vbz5I~//~vc81I~

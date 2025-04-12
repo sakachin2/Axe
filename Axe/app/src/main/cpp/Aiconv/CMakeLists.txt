@@ -1,9 +1,12 @@
+#//vc8C 2025/04/11 Build bundle failes by "libiconv.a is reserved name".(toybox prepares iconv, but do not accep cp932 etc)
 #cmake_minimum_required(VERSION 3.4.1)
 #cmake_minimum_required(VERSION 3.10.2)
 #cmake_minimum_required(VERSION 3.22.1)      #vc57
 #project(Alibiconv116)                       #vc57
 
 ##############################
+set(LIBICONV_L iconv116)               #vc8C
+set(LIBICONV_A libiconv116.a)          #vc8C
 set(TOPDIR w:/AndroidStudioProjects/libiconv-1.16.madeOnUbuntu)
 set(OUT_SUBDIR ${CMAKE_BUILD_TYPE}/${ANDROID_ABI})
 #set(EXECUTABLE_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/bin/${OUT_SUBDIR})

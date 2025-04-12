@@ -1,5 +1,6 @@
-//*CID://+vc62R~:                             update#=  239;       //~vc62R~
+//*CID://+vay4R~:                             update#=  243;       //~vay4R~
 //************************************************************************
+//2023/02/28 vay4 API30 deprecated startActivityForResult; use registerForActivityResult//~vay4I~
 //vc62 2023/08/06 media search also download from api29            //~vc62I~
 //vc61 2023/08/04 (Bug) Uri to file path failes when space embedding//~vc51I~
 //************************************************************************
@@ -35,6 +36,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import androidx.activity.result.ActivityResultLauncher;            //~vay4I~
 
 import static android.app.Activity.*;
 
@@ -105,6 +107,7 @@ public class UMediaStore
     private String srchName;                                       //~vc51I~
 	private int srchSize;                                          //~vc51I~
     private AudioFile foundAudioFile;                              //~vc51I~
+	private ActivityResultLauncher<Intent> activityResultLauncher; //~vay4I~
 //**********************************                               //~v@@@I~//~1ak3I~//~vae2I~
 //    public interface UMediaStoreI                                   //~v@@@R~//~1ak3I~//~vae2R~//~vc51R~
 //    {                                                              //~v@@@I~//~1ak3I~//~vae2I~//~vc51R~
@@ -169,6 +172,7 @@ public class UMediaStore
         if (AG.osVersion>= 29) //Android10
 //  		uriDownloadMedia=MediaStore.Downloads.EXTERNAL_CONTENT_URI;//from api29//~var8R~
     		uriDownloadMedia=getUriDownloadMedia29();               //~var8I~
+//		registarActivityResult();	//currentry function is not used//~vay4I~
 	    CR=AG.context.getContentResolver();
         colsAudio=COLUMNS_AUDIO;
 //      String strUri= Prop.getPreference(AG.PKEY_BGM_STRURI,"");  //~1aK2R~
@@ -452,7 +456,7 @@ public class UMediaStore
 //********************************************************
     public void resetMP(MediaPlayer Pmp,boolean PswStop)           //~vc51R~
     {
-	    if (Dump.Y) Dump.println(CN+"resetMP MP="+Pmp+",swStop="+PswStop);            //~vc51R~//+vc62R~
+	    if (Dump.Y) Dump.println(CN+"resetMP MP="+Pmp+",swStop="+PswStop);            //~vc51R~//~vc62R~
         if (Pmp==null)
         {
 		    if (Dump.Y) Dump.println(CN+"resetMP return by MP=null");
@@ -537,104 +541,115 @@ public class UMediaStore
 //        AudioAttributes aa=ab.build();
 //        Pplayer.setAudioAttributes(aa);
     }
-//********************************************************
-	private void requestPickup(boolean PswUPicker)                 //~vae9R~
-    {
-	    if (Dump.Y) Dump.println(CN+"requestPickup osVersion="+AG.osVersion+",swUPicker="+PswUPicker);//~vae9R~
-//      if (AG.osVersion>= 30) Android-11(R)                       //~vae9R~
-//        if (PswUPicker)                                            //~vae9R~//~vc51R~
-//        {                                                        //~vc51R~
-//            UPicker.newInstance(uriAudioMedia,this).showDialog();//~vc51R~
-//            return;                                              //~vc51R~
-//        }                                                        //~vc51R~
-      if (false)//TODO test
-      {
-        Intent intent2=new Intent(Intent.ACTION_OPEN_DOCUMENT);   //can not play on picker,invalid cusrsor data for GetString()
-        intent2.addCategory(Intent.CATEGORY_OPENABLE);
-//      intent2.setType("*/*");
-        intent2.setType("audio/*");
-        AG.activity.startActivityForResult(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);
-      }
-      else
-      if (false)//TODO test
-      {
-        Intent intent2=new Intent(Intent.ACTION_GET_CONTENT);    //can not play on picker,invalid cusrsor data for GetString()
-        intent2.setType("*/*");
-        AG.activity.startActivityForResult(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);
-      }
-      else
-      if (false) //TODO test
-      {
-        Intent intent2=new Intent(Intent.ACTION_GET_CONTENT);    //can not play on picker,invalid cusrsor data
-        intent2.setType("audio/*");
-        AG.activity.startActivityForResult(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);
-      }
-      else
-      {
-        Intent intent=new Intent(Intent.ACTION_PICK,uriAudioMedia);// can play on picker to select music
-//      intent.setType("audio/*");
-        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);
-      }
-	    if (Dump.Y) Dump.println(CN+"requestPickup exit");
-    }
-//********************************************************         //~var8I~
-	private void requestPickupImage()                              //~var8I~
-    {                                                              //~var8I~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImage osVersion="+AG.osVersion+",uri="+uriImageMedia);//~var8R~
-     	String action=Intent.ACTION_PICK;                          //~var8I~
-     	uriImageBase=uriImageMedia;                                //~var8R~
-        if (AG.osVersion>= Build.VERSION_CODES.Q) //>=Android-10(Q)=api29//~var8I~
-        {                                                          //~var8I~
-		    if (Dump.Y) Dump.println(CN+"requestPickupImage API29 volume_EXTERNAL_PRIMARY="+MediaStore.VOLUME_EXTERNAL_PRIMARY);//~var8I~
-        	uriImageBase=MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);//~var8R~
-        }                                                          //~var8I~
-     	Intent intent=new Intent(action,uriImageBase);             //~var8R~
-        intent.setType("image/*");  //avoid video              //~@@@1R~//~var8I~
-        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~var8I~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit action="+action+",uriImageBase="+uriImageBase+",intent="+intent+",data="+intent.getData()+",component="+intent.getComponent());//~vavwR~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit strUri="+intent.getDataString());//~vavwI~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit type="+intent.getType());//~vavwI~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit package="+intent.getPackage());//~vavwI~
-    }                                                              //~var8I~
+////********************************************************       //~vay4R~
+//NoUser                                                           //~vay4I~
+//    private void requestPickup(boolean PswUPicker)                 //~vae9R~//~vay4R~
+//    {                                                            //~vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickup osVersion="+AG.osVersion+",swUPicker="+PswUPicker);//~vae9R~//~vay4R~
+////      if (AG.osVersion>= 30) Android-11(R)                       //~vae9R~//~vay4R~
+////        if (PswUPicker)                                            //~vae9R~//~vc51R~//~vay4R~
+////        {                                                        //~vc51R~//~vay4R~
+////            UPicker.newInstance(uriAudioMedia,this).showDialog();//~vc51R~//~vay4R~
+////            return;                                              //~vc51R~//~vay4R~
+////        }                                                        //~vc51R~//~vay4R~
+//      if (false)//TODO test                                      //~vay4R~
+//      {                                                          //~vay4R~
+//        Intent intent2=new Intent(Intent.ACTION_OPEN_DOCUMENT);   //can not play on picker,invalid cusrsor data for GetString()//~vay4R~
+//        intent2.addCategory(Intent.CATEGORY_OPENABLE);           //~vay4R~
+////      intent2.setType("*/*");                                  //~vay4R~
+//        intent2.setType("audio/*");                              //~vay4R~
+//        AG.activity.startActivityForResult(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);//~vay4R~
+//        launchActivity(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);//~vay4R~
+//      }                                                          //~vay4R~
+//      else                                                       //~vay4R~
+//      if (false)//TODO test                                      //~vay4R~
+//      {                                                          //~vay4R~
+//        Intent intent2=new Intent(Intent.ACTION_GET_CONTENT);    //can not play on picker,invalid cusrsor data for GetString()//~vay4R~
+//        intent2.setType("*/*");                                  //~vay4R~
+////      AG.activity.startActivityForResult(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);//~vay4R~
+//        launchActivity(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);//~vay4R~
+//      }                                                          //~vay4R~
+//      else                                                       //~vay4R~
+//      if (false) //TODO test                                     //~vay4R~
+//      {                                                          //~vay4R~
+//        Intent intent2=new Intent(Intent.ACTION_GET_CONTENT);    //can not play on picker,invalid cusrsor data//~vay4R~
+//        intent2.setType("audio/*");                              //~vay4R~
+////      AG.activity.startActivityForResult(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);//~vay4R~
+//        launchActivity(intent2,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);//~vay4R~
+//      }                                                          //~vay4R~
+//      else                                                       //~vay4R~
+//      {                                                          //~vay4R~
+//        Intent intent=new Intent(Intent.ACTION_PICK,uriAudioMedia);// can play on picker to select music//~vay4R~
+////      intent.setType("audio/*");                               //~vay4R~
+////      AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_AUDIO);//~vay4R~
+//        launchActivity(intent,AG.ACTIVITY_REQUEST_PICKUP_AUDIO); //~vay4R~
+//      }                                                          //~vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickup exit");       //~vay4R~
+//    }                                                            //~vay4R~
+////********************************************************         //~var8I~//~vay4R~
+//NoUser                                                           //~vay4I~
+//    private void requestPickupImage()                              //~var8I~//~vay4R~
+//    {                                                              //~var8I~//~vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImage osVersion="+AG.osVersion+",uri="+uriImageMedia);//~var8R~//~vay4R~
+//        String action=Intent.ACTION_PICK;                          //~var8I~//~vay4R~
+//        uriImageBase=uriImageMedia;                                //~var8R~//~vay4R~
+//        if (AG.osVersion>= Build.VERSION_CODES.Q) //>=Android-10(Q)=api29//~var8I~//~vay4R~
+//        {                                                          //~var8I~//~vay4R~
+//            if (Dump.Y) Dump.println(CN+"requestPickupImage API29 volume_EXTERNAL_PRIMARY="+MediaStore.VOLUME_EXTERNAL_PRIMARY);//~var8I~//~vay4R~
+//            uriImageBase=MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);//~var8R~//~vay4R~
+//        }                                                          //~var8I~//~vay4R~
+//        Intent intent=new Intent(action,uriImageBase);             //~var8R~//~vay4R~
+//        intent.setType("image/*");  //avoid video              //~@@@1R~//~var8I~//~vay4R~
+////      AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~var8I~//~vay4R~
+//        launchActivity(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE); //~vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImage exit action="+action+",uriImageBase="+uriImageBase+",intent="+intent+",data="+intent.getData()+",component="+intent.getComponent());//~vavwR~//~vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImage exit strUri="+intent.getDataString());//~vavwI~//~vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImage exit type="+intent.getType());//~vavwI~//~vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImage exit package="+intent.getPackage());//~vavwI~//~vay4R~
+//    }                                                              //~var8I~//~vay4R~
 //********************************************************         //~vavwI~
-	private void requestPickupImageBySelectedPicker(Intent Pintent)//~vavwI~
-    {                                                              //~vavwI~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker sVersion="+AG.osVersion+",uri="+uriImageMedia);//~vavwI~
-     	uriImageBase=uriImageMedia;                                //~vavwI~
-        if (AG.osVersion>= Build.VERSION_CODES.Q) //>=Android-10(Q)=api29//~vavwI~
-        {                                                          //~vavwI~
-		    if (Dump.Y) Dump.println(CN+"requestPickupImage API29 volume_EXTERNAL_PRIMARY="+MediaStore.VOLUME_EXTERNAL_PRIMARY);//~vavwI~
-        	uriImageBase=MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);//~vavwI~
-        }                                                          //~vavwI~
-      if (true)                                                    //~vavwI~
-      {                                                            //~vavwI~
-     	Intent intent=new Intent(Intent.ACTION_PICK);              //~vavwI~
-        intent.setType("image/*");  //avoid video                  //~vavwI~
-        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~
-        Pintent=intent;                                            //~vavwI~
-      }                                                            //~vavwI~
-      else                                                         //~vavwI~
-      if (true)                                                    //~vavwI~
-      {                                                            //~vavwI~
-     	Intent intent=new Intent(Intent.ACTION_PICK,uriImageBase);             //~vavwI~
-        intent.setType("image/*");  //avoid video                  //~vavwI~
-        ComponentName cmp=Pintent.getComponent();                  //~vavwI~
-        intent.setComponent(cmp);                                  //~vavwI~
-     	intent.setData(uriImageBase);                              //~vavwI~
-        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~
-        Pintent=intent;                                            //~vavwI~
-      }                                                            //~vavwI~
-      else                                                         //~vavwI~
-      {                                                            //~vavwI~
-     	Pintent.setData(uriImageBase);                             //~vavwI~
-        Pintent.setType("image/*");  //avoid video                 //~vavwI~
-        AG.activity.startActivityForResult(Pintent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~
-      }                                                            //~vavwI~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit uriImageBase="+uriImageBase+",intent="+Pintent+",data="+Pintent.getData()+",component-"+Pintent.getComponent());//~vavwR~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit strUri="+Pintent.getDataString());//~vavwI~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit type="+Pintent.getType());//~vavwI~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit package="+Pintent.getPackage());//~vavwI~
-    }                                                              //~vavwI~
+//NoUser                                                           //+vay4I~
+//    private void requestPickupImageBySelectedPicker(Intent Pintent)//~vavwI~//+vay4R~
+//    {                                                              //~vavwI~//+vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker sVersion="+AG.osVersion+",uri="+uriImageMedia);//~vavwI~//+vay4R~
+//        uriImageBase=uriImageMedia;                                //~vavwI~//+vay4R~
+//        if (AG.osVersion>= Build.VERSION_CODES.Q) //>=Android-10(Q)=api29//~vavwI~//+vay4R~
+//        {                                                          //~vavwI~//+vay4R~
+//            if (Dump.Y) Dump.println(CN+"requestPickupImage API29 volume_EXTERNAL_PRIMARY="+MediaStore.VOLUME_EXTERNAL_PRIMARY);//~vavwI~//+vay4R~
+//            uriImageBase=MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);//~vavwI~//+vay4R~
+//        }                                                          //~vavwI~//+vay4R~
+//      if (true)                                                    //~vavwI~//+vay4R~
+//      {                                                            //~vavwI~//+vay4R~
+//        Intent intent=new Intent(Intent.ACTION_PICK);              //~vavwI~//+vay4R~
+//        intent.setType("image/*");  //avoid video                  //~vavwI~//+vay4R~
+////      AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~//+vay4R~
+//        launchActivity(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE); //+vay4R~
+//        Pintent=intent;                                            //~vavwI~//+vay4R~
+//      }                                                            //~vavwI~//+vay4R~
+//      else                                                         //~vavwI~//+vay4R~
+//      if (true)                                                    //~vavwI~//+vay4R~
+//      {                                                            //~vavwI~//+vay4R~
+//        Intent intent=new Intent(Intent.ACTION_PICK,uriImageBase);             //~vavwI~//+vay4R~
+//        intent.setType("image/*");  //avoid video                  //~vavwI~//+vay4R~
+//        ComponentName cmp=Pintent.getComponent();                  //~vavwI~//+vay4R~
+//        intent.setComponent(cmp);                                  //~vavwI~//+vay4R~
+//        intent.setData(uriImageBase);                              //~vavwI~//+vay4R~
+////      AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~//+vay4R~
+//        launchActivity(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE); //+vay4R~
+//        Pintent=intent;                                            //~vavwI~//+vay4R~
+//      }                                                            //~vavwI~//+vay4R~
+//      else                                                         //~vavwI~//+vay4R~
+//      {                                                            //~vavwI~//+vay4R~
+//        Pintent.setData(uriImageBase);                             //~vavwI~//+vay4R~
+//        Pintent.setType("image/*");  //avoid video                 //~vavwI~//+vay4R~
+////      AG.activity.startActivityForResult(Pintent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~//+vay4R~
+//        launchActivity(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE); //+vay4R~
+//      }                                                            //~vavwI~//+vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit uriImageBase="+uriImageBase+",intent="+Pintent+",data="+Pintent.getData()+",component-"+Pintent.getComponent());//~vavwR~//+vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit strUri="+Pintent.getDataString());//~vavwI~//+vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit type="+Pintent.getType());//~vavwI~//+vay4R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit package="+Pintent.getPackage());//~vavwI~//+vay4R~
+//    }                                                              //~vavwI~//+vay4R~
 //********************************************************
 //*from AMain
 //********************************************************
@@ -1069,17 +1084,32 @@ public class UMediaStore
 //        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_ACTION);//~vavwR~//~vc51R~
 //        if (Dump.Y) Dump.println(CN+"requestSelectImagePickup exit");//~vavwR~//~vc51R~
 //    }                                                              //~vavwI~//~vc51R~
-//********************************************************         //~vavwI~
-//*from AMain                                                      //~vavwI~
-//********************************************************         //~vavwI~
-	public static void onActivityResultSelectImagePicker(int Presult,Intent Pintent)//~vavwI~
-    {                                                              //~vavwI~
-	    if (Dump.Y) Dump.println(CN+"onActivityResultSelectImagePicker result="+Presult+",intent="+Pintent+",data="+Pintent.getData()+",component="+Pintent.getComponent());//~vavwR~
-        if (Presult==RESULT_OK)   //-1                             //~vavwR~
-        {                                                          //~vavwI~
-		    if (Dump.Y) Dump.println(CN+"onActivityResultSelectImagePicker RESULT_OK");//~vavwI~
-	        UMediaStore ums=getInstance();                         //~vavwI~
-			ums.requestPickupImageBySelectedPicker(Pintent);       //~vavwR~
-        }                                                          //~vavwI~
-    }                                                              //~vavwI~
+////********************************************************         //~vavwI~//~vay4R~
+////*from AMain                                                      //~vavwI~//~vay4R~
+////********************************************************         //~vavwI~//~vay4R~
+//NoUser                                                           //~vay4I~
+//    public static void onActivityResultSelectImagePicker(int Presult,Intent Pintent)//~vavwI~//~vay4R~
+//    {                                                              //~vavwI~//~vay4R~
+//        if (Dump.Y) Dump.println(CN+"onActivityResultSelectImagePicker result="+Presult+",intent="+Pintent+",data="+Pintent.getData()+",component="+Pintent.getComponent());//~vavwR~//~vay4R~
+//        if (Presult==RESULT_OK)   //-1                             //~vavwR~//~vay4R~
+//        {                                                          //~vavwI~//~vay4R~
+//            if (Dump.Y) Dump.println(CN+"onActivityResultSelectImagePicker RESULT_OK");//~vavwI~//~vay4R~
+//            UMediaStore ums=getInstance();                         //~vavwI~//~vay4R~
+//            ums.requestPickupImageBySelectedPicker(Pintent);       //~vavwR~//~vay4R~
+//        }                                                          //~vavwI~//~vay4R~
+//    }                                                              //~vavwI~//~vay4R~
+////********************************************************       //~vay4I~
+//NoUSer                                                           //~vay4I~
+//    private void registarActivityResult()                        //~vay4I~
+//    {                                                            //~vay4I~
+//        if (Dump.Y) Dump.println(CN+"registerActivityResult");   //~vay4I~
+//        AxeG.main.startActivityForResult_30_register(AG.ACTIVITY_REQUEST_SCOPED_OPEN_TREE);//~vay4I~
+//    }                                                            //~vay4I~
+////********************************************************       //~vay4R~
+//NoUSer                                                           //~vay4I~
+//    private void launchActivity(Intent Pintent,int PreqID)       //~vay4R~
+//    {                                                            //~vay4R~
+//        if (Dump.Y) Dump.println(CN+"launchActivity rqeID="+PreqID+",intent="+Pintent);//~vay4R~
+//        AxeG.main.startActivityForResult_30_launch(activityResultLauncher,Pintent);//~vay4R~
+//    }                                                            //~vay4R~
 }//class

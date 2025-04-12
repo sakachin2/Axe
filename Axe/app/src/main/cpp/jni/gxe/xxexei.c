@@ -1,8 +1,9 @@
-//*CID://+vbreR~:                               update#=  668;     //+vbreR~
+//*CID://+vc71R~:                               update#=  672;     //~vc71R~
 //*********************************************************************//~v440I~
 //* wxe interface **                                               //~v69mR~
 //*********************************************************************//~v440I~
-//vbre:200821 (ARM)(Bug)set 2 byte "??" for f2lerr of width0 char  //+vbreI~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //~vc71I~
+//vbre:200821 (ARM)(Bug)set 2 byte "??" for f2lerr of width0 char  //~vbreI~
 //vbr7:200724 when conv err,f2lerr conv to ucs to utf because wcrtomb's locale is utf8//~vbr7I~
 //vbr6:200724 when conv err by icu under ICULOCAL iconv is called even Gconverter is of ICU//~vbr6I~
 //vb93:170228 wxe_uerrexitstdo is duplicated with jnic2j           //~vb92I~
@@ -303,17 +304,25 @@ int wxe_xecall(int Preqtype,void *Ppwxei)                          //~v62NR~
         scrdisp();          //ist screen                           //~v440I~
         break;                                                     //~v440I~
     case WXE_REQ_TERM:                                             //~v440R~
-        dprintf("xei term sw=%d\n",Spwxei->WXEIxetermsw);   	//xe malloc area is all freeed//~vXXER~
+        UTRACEP_FLUSH("%s:xei term sw=%d,Gwxestat=0x%x\n",UTT,Spwxei->WXEIxetermsw,Gwxestat);   	//xe malloc area is all freeed//~vXXER~//+vc71R~
 //  	if (Sargv)	//dup chk                                      //~v55UR~
 	    if (!Spwxei->WXEIxetermsw)		//xe malloc area is all freeed//~v55UI~
         {                                                          //~3125I~
+  		  if (Gwxestat & GWXES_ONDESTROY)                          //~vc71R~
+          {                                                        //+vc71I~
+			rc=xemainOnDestroy();                                  //~vc71R~
+	        UTRACEP_FLUSH("%s:xei term after xemainOnDestroy\n",UTT);   	//xe malloc area is all freeed//+vc71I~
+          }                                                        //+vc71I~
+          else                                                     //~vc71R~
+          {                                                        //~vc71R~
 //			usystem_cmdserverterm(0,0,0);                          //~v70zR~
 	    	Spwxei->WXEIxetermsw=1;		//xe malloc area is all freeed//~v55UI~
-	        dprintf("xei term lastpft=%p\n",Gproclastpft);   	//xe malloc area is all freeed//~vXXER~
+	        UTRACEP_FLUSH("xei term lastpft=%p\n",Gproclastpft);   	//xe malloc area is all freeed//~vXXER~//+vc71R~
         	if (Gproclastpft)	//avoid abend at xe.c              //~3125I~
 				rc=xemain(Preqtype,Sargc,Sargv);                   //~3125R~
         	free(Sargv);                                           //~3125R~
         	Sargv=0;                                               //~3125R~
+          }                                                        //~vc71R~
 //      }                                                          //~v55UR~
 //      usystem_cmdserverterm(0,0,0);                              //~v56xR~
         }                                                          //~v55UI~
@@ -1744,14 +1753,14 @@ int xxe_imef2lerr(int Popt,KBDKEYINFO *Pkeyinfo,char *Ppu8,int Pu8len)//~va3DI~
         Pkeyinfo->mbstr[1]=0;                                      //~va3DI~
     }                                                              //~va3DI~
     else                                                       //~v65cI~//~va3DI~
-    if (dbcssz==0)    //width0                                     //+vbreI~
-    {                                                              //+vbreI~
-		Pkeyinfo->bNlsShift=KBDNLS_F2L_ERR|KBDNLS_F2L_SBCS;        //+vbreI~
-        rc=1;                                                      //+vbreI~
-        Pkeyinfo->mbstr[0]=XEUTF_ERRREPCH_F2LFILE;                 //+vbreI~
-        Pkeyinfo->mbstr[1]=0;                                      //+vbreI~
-    }                                                              //+vbreI~
-    else                                                           //+vbreI~
+    if (dbcssz==0)    //width0                                     //~vbreI~
+    {                                                              //~vbreI~
+		Pkeyinfo->bNlsShift=KBDNLS_F2L_ERR|KBDNLS_F2L_SBCS;        //~vbreI~
+        rc=1;                                                      //~vbreI~
+        Pkeyinfo->mbstr[0]=XEUTF_ERRREPCH_F2LFILE;                 //~vbreI~
+        Pkeyinfo->mbstr[1]=0;                                      //~vbreI~
+    }                                                              //~vbreI~
+    else                                                           //~vbreI~
     {                                                              //~va3DI~
 		Pkeyinfo->bNlsShift=KBDNLS_F2L_ERR|KBDNLS_F2L_DBCS1ST|KBDNLS_F2L_DBCS2ND;//~v65cI~//~va3DI~
         Pkeyinfo->mbstr[0]=XEUTF_ERRREPCH_F2LFILE;                 //~va3DI~

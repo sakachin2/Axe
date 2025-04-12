@@ -28,4 +28,8 @@
     <dimen name="media_button_height">40dp</dimen>
     <dimen name="media_mc_init_height">90dp</dimen>
     <dimen name="media_mc_init_height_audio">190dp</dimen>
+    <dimen name="actionbar_height">30dp</dimen>
+    <dimen name="actionbar_textsize">16sp</dimen>
+    <dimen name="dialog_minwidth_port">95%</dimen>
+    <dimen name="dialog_minwidth_land">80%</dimen>
 </resources>

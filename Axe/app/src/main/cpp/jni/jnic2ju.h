@@ -1,7 +1,9 @@
-//*CID://+vc5cR~:                                   update#=  110; //~vc5cR~
+//*CID://+vc72R~:                                   update#=  113; //~vc72R~
 //**************************************************************** //~1610I~
 //jnic2j2.h                                                         //~1621R~//~vac6R~
 //**************************************************************** //~1610I~
+//vc72 2023/08/21 vc71 did not work, jni call at on destry will be ignored; clear it on java//~vc72I~
+//vc70 2023/08/14 try tool with attr of 110(executable only) to avoid M^X vioration//~v70cI~
 //vc5c 2023/07/04 display directory set to access by ACTION_OPEN_DOCUMENT_TREE//~vc5cI~
 //v77w:230519 uri-->path is avalable from api30(android11:R) and readdir using fd gotten by openDescriptor returns null//~v77wI~
 //v77m:230429 ARM:try stat(fpath) by fstat(fd) for ufstat          //~v77mI~
@@ -91,5 +93,7 @@ int c2j_renameDoc(int Popt,char *Pold,char *PstrUri,char *Pnew);   //~v77gR~
 int c2j_copyDoc(int Popt,char *Psrc,char *PstrUriSrc,char *Ptgt,char *PstrUriTgt,int *PerrSrc,int *PerrTgt);//~v77hI~
 int c2j_statDoc(int Popt,char* Pfpath,char *PstrUri,int *Ppfd);    //~v77mI~
 int c2j_getDocPath(int Popt,char* Pfpath,char *PstrUri,char *Ppath);//~v77wR~
-int c2j_notifyAllSP(char* Pallsp);                                 //+vc5cR~
+int c2j_notifyAllSP(char* Pallsp);                                 //~vc5cR~
+int c2j_runProcess(char* Pfnm,char *Pparm);                        //~v70cI~
+int c2j_notifyLockfile(char* Pfnm);                                //+vc72R~
 #endif //ARM                                                       //~1621I~

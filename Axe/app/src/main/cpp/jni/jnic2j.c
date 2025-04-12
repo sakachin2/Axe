@@ -1,5 +1,7 @@
-//*CID://+vc60R~:                                   update#=  347; //~vc60R~
+//*CID://+vc72R~:                                   update#=  353; //~vc72R~
 //**************************************************************** //~1610I~
+//vc72 2023/08/21 vc71 did not work, jni call at on destry will be ignored; clear it on java//~vc72I~
+//vc70 2023/08/14 try tool with attr of 110(executable only) to avoid M^X vioration//~vc70I~
 //vc60 2023/08/03 mediaview as openWith                            //~vc60I~
 //vc5r 2023/07/25 try /sdcard for realpath for api<30              //~vc5rI~
 //vc5p 2023/07/22 Dump open with for //Axe/x1.(mime type=text/x-csrc for ////Axe/x1.c. normal file is file:///sdcard/...)//~vc5pI~
@@ -417,7 +419,7 @@ int ushellexecsub(char *Pfpath,char *Pcmd,int Ptermuse,int Psize); //~vc60R~
     {
 		if (!(Popt & USHEXE_NOMSG))
 	    	uerrmsg("MIME type not defined for %s",0,
-        				fpath);                                    //+vc60R~
+        				fpath);                                    //~vc60R~
     	return -1;		//no mime type defined
     }
 //    papp=gnome_vfs_mime_get_default_application(pmimetype);      //~1A19R~
@@ -1218,3 +1220,43 @@ int c2j_notifyAllSP(char* PallSP)                                  //~vc5cR~
 	UTRACEP("%s:exit rc=%d\n",UTT,rc);                             //~vc5cI~
     return rc;                                                     //~vc5cI~
 }                                                                  //~vc5cI~
+//**************************************************************** //~vc72I~
+int c2j_notifyLockfile(char* Pfnm)                                 //~vc72R~
+{                                                                  //~vc72I~
+    static jmethodID staticMethod_notifyLockfile;                  //+vc72R~
+    jstring jstrLockfile;                                          //~vc72I~
+    JNIEnv *penv;                                                  //~vc72I~
+    int rc=0;                                                      //~vc72I~
+//****************************                                     //~vc72I~
+	UTRACEP_FLUSH("%s:fnm=%s\n",UTT,Pfnm);                         //~vc72I~
+    penv=getThreadEnv();                                           //~vc72I~
+    jstrLockfile=utf8z2jstring(penv,Pfnm);                         //~vc72I~
+    C2J_GETMETHODID_RETIFERR_WITHRC(penv,-1,notifyLockfile,"(Ljava/lang/String;)I");//~vc72I~
+	UTRACEP_FLUSH("%s:before call AxeJNI\n",UTT);                  //~vc72I~
+    C2J_INT(&rc,penv,notifyLockfile,jstrLockfile);                 //~vc72I~
+    UTRACEP_FLUSH("%s:after call AxeJNI\n", UTT);                  //~vc72I~
+    unrefLocal(penv,jstrLockfile);                                 //~vc72I~
+	UTRACEP("%s:exit rc=%d\n",UTT,rc);                             //~vc72I~
+    return rc;                                                     //~vc72I~
+}                                                                  //~vc72I~
+//**************************************************************** //~vc70I~
+int c2j_runProcess(char* Pfnm,char *Pparm)                         //~vc70I~
+{                                                                  //~vc70I~
+    static jmethodID staticMethod_runProcess;                      //~vc70R~
+    jstring jstrPath,jstrParm;                                      //~vc70I~
+    JNIEnv *penv;                                                  //~vc70I~
+    int rc=EINTR;                                                  //~vc70I~
+//****************************                                     //~vc70I~
+	UTRACEP_FLUSH("%s:path=%s,parm=%s\n",UTT,Pfnm,Pparm);          //~vc70I~
+    penv=getThreadEnv();                                           //~vc70I~
+    jstrPath = utf8z2jstring(penv, Pfnm);                          //~vc70I~
+    jstrParm = utf8z2jstring(penv, Pparm);                         //~vc70I~
+    C2J_GETMETHODID_RETIFERR_WITHRC(penv,-1,runProcess,"(Ljava/lang/String;Ljava/lang/String;)I");//~vc70I~
+	UTRACEP_FLUSH("%s:before call AxeJNI\n",UTT);                  //~vc70I~
+    C2J_INT(&rc,penv,runProcess,jstrPath,jstrParm);                //~vc70I~
+    UTRACEP_FLUSH("%s:after call AxeJNI\n", UTT);                  //~vc70I~
+    unrefLocal(penv,jstrPath);                                     //~vc70I~
+    unrefLocal(penv,jstrParm);                                     //~vc70I~
+	UTRACEP("%s:exit rc=%d\n",UTT,rc);                             //~vc70I~
+    return rc;                                                     //~vc70I~
+}                                                                  //~vc70I~

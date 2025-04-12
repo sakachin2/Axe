@@ -1,5 +1,7 @@
-//*CID://+vc2WR~:                                   update#=  126; //~vc2WR~
+//*CID://+vc8hR~:                                   update#=  135; //~vc8hR~
 //**************************************************************** //~vaa8I~
+//vc8h 2025/03/25 from Android10(API29), WRITE_EXTERNAL_STORAGE permission is not allowed.//~vc8hI~
+//vc70 2023/08/14 try tool with attr of 110(executable only) to avoid M^X vioration//~vc70I~
 //vc2W 2020/09/19 at first install, uerrexit by ualloc size=0(Gscrbuffwidth); Because notifyOptionChangedOther is called before initscreen; notify trace option by another interface//~vc2WI~
 //vc1f 2020/06/20 ARM;chk sdcard writable                          //~vc1fI~
 //vc1d 2020/06/20 ARM;use private dir when SDcard not available    //~vc1dI~
@@ -17,18 +19,31 @@ public class AxePermission                                         //~vc1bR~
 //********************************************************         //~vc1bI~
 	public AxePermission()                                         //~vc1bI~
     {                                                              //~vc1bI~
-        if (Dump.Y) Dump.println("AxePermission constructor");     //~vc1bI~
+      if (false) //TODO test                                       //~vc70I~
+		if (AxeG.osVersion>=29)  //android10(Q)                    //~vc70I~
+        {                                                          //~vc70I~
+          if (true)                                                //~vc70I~
+	        Gxeh.axeStatus|=Gxeh.AXES_SOPROC;    //TODO test                        // =0x80; // tool by permission=o110//~vc70I~
+          else                                                     //~vc70I~
+	        Gxeh.axeStatus|=Gxeh.AXES_MXTOOL;    //TODO test                        // =0x80; // tool by permission=o110//~vc70R~
+        }                                                          //~vc70I~
+        if (Dump.Y) Dump.println("AxePermission constructor axeStatus="+Gxeh.axeStatus);//~vc70R~
     }                                                              //~vc1bI~
+//********************************************************         //~vc70I~
     public void request()                                          //~vc1bR~
     {                                                              //~vc1bI~
+        if (Dump.Y) Dump.println("AxePermission request");         //~vc70I~
     	String type;                                               //~vc1bI~
         boolean rc;                                                //~vc1bI~
         int id;                                                //~vc1bI~
         if (Dump.Y) Dump.println("AxePermission");//~9930I~        //~vc1bI~
                                                                    //~vc1bI~
+	  if (AxeG.osVersion<29)  //android10                          //~vc8hI~
+      {                                                            //~vc8hI~
         type= Manifest.permission.WRITE_EXTERNAL_STORAGE;          //~vc1bI~
     	id=Axe.PERMISSION_EXTERNAL_STORAGE;	//write //~1AH1I~      //~vc1bI~
     	request(type,id);                                          //~vc1bR~
+      }                                                            //~vc8hI~
         type= Manifest.permission.READ_EXTERNAL_STORAGE;           //~vc1bI~
     	id=Axe.PERMISSION_EXTERNAL_STORAGE_READ;                   //~vc1bI~
     	request(type,id);                                          //~vc1bR~
@@ -60,7 +75,7 @@ public class AxePermission                                         //~vc1bR~
 //***************************************************************************//~9930I~//~1AhdI~//~vc1bI~
     public void onRequestPermissionsResult(int PrequestID,String[] Ptypes,int[] Presults)//~9930I~//~1AhdI~//~vc1bI~
     {                                                              //~9930I~//~1AhdI~//~vc1bI~
-        if (Dump.Y) Dump.println("AxePermission.onRequestPermissionResult reqid="+PrequestID+",type="+ com.ahsv.utils.Utils.toString(Ptypes)+",result="+ Arrays.toString(Presults));//~9930I~//~1AhdI~//~vc1bR~//+vc2WR~
+        if (Dump.Y) Dump.println("AxePermission.onRequestPermissionResult reqid="+PrequestID+",type="+ com.ahsv.utils.Utils.toString(Ptypes)+",result="+ Arrays.toString(Presults));//~9930I~//~1AhdI~//~vc1bR~//~vc2WR~
         boolean granted;                                           //~1AhdI~/~vc1bI~
         switch(PrequestID)                                         //~9930I~//~1AhdI~//~vc1bI~
         {                                                          //~9930I~//~1AhdI~//~vc1bI~
@@ -97,4 +112,18 @@ public class AxePermission                                         //~vc1bR~
         }	                                                       //~v@@@I~//~vc1bI~
         UView.showToastShort(com.ahsv.utils.Utils.getStr(R.string.PermissionGranted,Ptype));//~vc1bI~
     }                                                              //~v@@@I~//~vc1bI~
+//********************************************************         //~vc8hI~
+    private boolean hasPermissionWrite()                          //~vc8hI~
+	{                                                              //~vc8hI~
+		boolean rc=UView.isPermissionGrantedExternalStorage();     //~vc8hI~
+        if (Dump.Y) Dump.println("AxePermission hasPermission(WRITE) rc="+rc);//~vc8hI~
+        return rc;                                                 //~vc8hI~
+    }                                                              //~vc8hI~
+//********************************************************         //~vc8hI~
+    private boolean hasPermissionRead()                           //~vc8hI~
+	{                                                              //~vc8hI~
+		boolean rc=UView.isPermissionGrantedExternalStorageRead(); //~vc8hI~
+        if (Dump.Y) Dump.println("AxePermission hasPermission(READ) rc="+rc);//~vc8hI~
+        return rc;                                                 //~vc8hI~
+    }                                                              //~vc8hI~
 }//class

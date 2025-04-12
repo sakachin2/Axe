@@ -5,6 +5,12 @@
     android:layout_height="fill_parent"
     android:id="@+id/Root"
     >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="2px"
+					android:background="@color/separater"
+                 android:orientation="vertical"
+            />
 	<LinearLayout 
 		 android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -22,6 +28,7 @@
                 android:id="@+id/rgAltGr"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="5dp"
+                        android:background="#fff0f0f0"
             >
                 <RadioButton
                     android:id="@+id/rbAltGrNo"

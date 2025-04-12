@@ -1,5 +1,6 @@
-//*CID://+v@@@R~:                             update#=   64;       //~v@@@R~
+//*CID://+vc71R~:                             update#=   65;       //+vc71R~
 //************************************************************************//~v51dI~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //+vc71I~
 //v@@@:110610 Android(-DARM)                                       //~v@@@I~
 //v66r:051025 (XXE) for v66m for WXE                               //~v66rI~
 //v669:050826 (XXE)help support                                    //~v669I~
@@ -33,7 +34,8 @@ public:                                                            //~vXXEM~
                                         GdkEventConfigure *event); //~vXXEI~
 	void gxemfrm_delete            (GtkWidget  *widget,GdkEvent *event);//~vXXER~
 	void gxemfrm_destroy           (GtkWidget  *widget,GdkEvent *event);//~vXXEI~
-	void gxemfrm_onclose(void);                                    //~vXXEI~
+//    void gxemfrm_onclose(void);                                    //~vXXEI~//+vc71R~
+    void gxemfrm_onclose(int Popt);                                //+vc71I~
 	GtkWidget *gxemfrm_popupmenu_getmenuitem(int Pitemid);         //~vXXER~
 	int  gxemfrm_popupmenu_getmenuitemid(int Pindex);              //~vXXER~
 	int  gxemfrm_enabletoolbar(int Penterid);                      //~vXXEI~

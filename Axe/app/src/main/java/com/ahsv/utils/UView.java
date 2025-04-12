@@ -1,5 +1,8 @@
-//*CID://+vc42R~: update#= 327;                                    //~vc42R~
+//*CID://+vc8hR~: update#= 334;                                    //~vc8hR~
 //**********************************************************************//~v101I~
+//vc8h 2025/03/25 Android12(API31) reject WRITE_EXTERNAL_STORAGE permission//~vc8hI~
+//vc8c 2025/03/19 api21 actionbar(icon+title+menu) for alternative of Holo theme(AppCompatActivity requres those theme)//~vc8cI~
+//vc87 2025/03/18 DisplayMetrics.scaledDensity was deprecated at api34//~vc87I~
 //vc4c 2023/03/25 deprecated api31; getMetrics                     //~vc4cI~
 //vc4b 2023/03/25 deprecated api31; getRealSize                    //~vc4bI~
 //vc44 2023/03/25 api33 support;use androidx by the reason of vc43 //~vc44I~
@@ -17,6 +20,7 @@ package com.ahsv.utils;                                            //~vc09R~
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;                                    //~0913I~
@@ -43,11 +47,12 @@ import android.view.WindowMetrics;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.EmptyStackException;
-//import de.greenrobot.event.EventBus;                             //+vc42R~
+//import de.greenrobot.event.EventBus;                             //~vc42R~
 
 import com.xe.Axe.AxeG;
 import com.xe.Axe.AxeView;
@@ -120,8 +125,8 @@ public class UView                                                 //~v@@@I~
         AG.scrHeight=p.y;   //                                     //~1A6pI~
         if (Dump.Y) Dump.println("UView: getScreenSize w="+p.x+",h="+p.y);//~1506R~//~@@@@R~//~1A6pR~//~v@@@R~
         AG.dip2pix=AG.resource.getDisplayMetrics().density;        //~1428I~
-        AG.sp2pix=AG.resource.getDisplayMetrics().scaledDensity;   //~@@@@I~
-        if (Dump.Y) Dump.println("UView:getScreenSize dp2pix="+AG.dip2pix+",sp2pix="+AG.sp2pix); //~1506R~//~@@@@R~//~v@@@R~//~9717R~
+//      AG.sp2pix=AG.resource.getDisplayMetrics().scaledDensity;   //~@@@@I~//~vc87R~
+        if (Dump.Y) Dump.println("UView:getScreenSize dp2pix="+AG.dip2pix); //~1506R~//~@@@@R~//~v@@@R~//~9717R~//~vc87R~
         AG.portrait=(AG.scrWidth<AG.scrHeight);                    //~1223R~
         getTitleBarHeight();                                       //~1413M~
         getScreenRealSize(display);                                //~v@@@I~
@@ -129,6 +134,7 @@ public class UView                                                 //~v@@@I~
         if (!AG.portrait)                                          //~9807I~
             if (AG.scrWidthReal>AG.scrWidth)    //navigationBar on the right//~9807I~
                 AG.scrNavigationbarRightWidth=AG.scrWidthReal-AG.scrWidth;    //navigationBar on the right//~9807I~
+        if (Dump.Y) Dump.println("UView:getScreenSize AG.scrNavigationbarRightWidth="+AG.scrNavigationbarRightWidth);//+vc8hI~
     }                                                              //~1122M~
     //*******************************************************      //~v@@@I~
 	public static void getScreenRealSize(Display Pdisplay)         //~v@@@I~
@@ -526,6 +532,14 @@ public class UView                                                 //~v@@@I~
         if (Dump.Y) Dump.println("Uview.isPermissionGrantedExternalStorage rc="+rc);//~9B09I~
         return rc;                                                 //~9B09I~
     }                                                              //~9B09I~
+    //******************************************************************************//~vc8hI~
+    public static boolean isPermissionGrantedExternalStorageRead() //~vc8hI~
+    {                                                              //~vc8hI~
+        String type= Manifest.permission.READ_EXTERNAL_STORAGE;    //~vc8hI~
+        boolean rc=isPermissionGranted(type);                      //~vc8hI~
+        if (Dump.Y) Dump.println("Uview.isPermissionGrantedExternalStorage rc="+rc);//~vc8hI~
+        return rc;                                                 //~vc8hI~
+    }                                                              //~vc8hI~
     //******************************************************************************//~9930I~
     public static boolean isPermissionGranted(String Ptype)        //~9930I~
     {                                                              //~9930I~
@@ -582,6 +596,12 @@ public class UView                                                 //~v@@@I~
         String[] types=new String[]{Ptype};                        //~9930I~
         ActivityCompat.requestPermissions(AG.activity,types,PrequestID);//~9930I~
     }                                                              //~9930I~
+    //******************************************************************************//~vc8hI~
+    public static void requestPermission(String Ptypes[],int PrequestID)//~vc8hI~
+    {                                                              //~vc8hI~
+        if (Dump.Y) Dump.println("Uview.requestPermission types="+Utils.toString(Ptypes)+",requestID="+PrequestID);//~vc8hI~
+        ActivityCompat.requestPermissions(AG.activity,Ptypes,PrequestID);//~vc8hI~
+    }                                                              //~vc8hI~
 //    //******************************************************************************//~9B25R~
 //    public static void getBackgroundColor(Button Pbtn)           //~9B25R~
 //    {                                                            //~9B25R~
@@ -752,4 +772,13 @@ public class UView                                                 //~v@@@I~
 	    if (Dump.Y) Dump.println("UView:displayGetMetrics");       //~1aj0I~//~vc4cI~
 		Pdisplay.getMetrics(Pmetrics);                             //~1aj0I~//~vc4cI~
     }                                                              //~1aj0I~//~vc4cI~
+//******************************************************           //~@@01I~//~1ap2I~//~vc8cI~
+	public static int getActionBarHeight()                         //~@@01I~//~1ap2I~//~vc8cI~
+    {                                                              //~@@01I~//~1ap2I~//~vc8cI~
+//		ActionBar ab=AG.activity.getActionBar();              //~@@01R~//~1ap2I~//~vc8cR~
+  		androidx.appcompat.app.ActionBar ab=((AppCompatActivity)AG.activity).getSupportActionBar();            //~vc8cI~
+        int hh=ab.getHeight();                                     //~@@01I~//~1ap2I~//~vc8cI~
+        if (Dump.Y) Dump.println("UView.getActionBarHeight hh="+hh);//~@@01I~//~1ap2I~//~vc8cI~
+        return hh;                                                 //~@@01I~//~1ap2I~//~vc8cI~
+    }                                                              //~@@01I~//~1ap2I~//~vc8cI~
 }//class UView                                                     //~9410I~

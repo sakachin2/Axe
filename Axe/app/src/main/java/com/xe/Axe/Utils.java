@@ -1,6 +1,7 @@
-//*CID://+vc4zR~: update#= 129;                                    //+vc4zR~
+//*CID://+vc73R~: update#= 130;                                    //+vc73R~
 //**********************************************************************
-//vc4z 2023/05/24 use finishAndRemoveTask() for finish() from api21(A5-L)//+vc4zI~
+//vc73 2023/08/22 DUmp close not at finish but onDestroy           //+vc73I~
+//vc4z 2023/05/24 use finishAndRemoveTask() for finish() from api21(A5-L)//~vc4zI~
 //vc49 2023/03/25 deprecated api33; PackageManager.getApplicationInfo//~vc49I~
 //vc27 2020/07/11 repeatdelay for hardkbd                          //~vc27I~
 //vai3:130525 (Axe)hide internal option when release version       //~vai3I~
@@ -52,17 +53,17 @@ public class Utils
     }
 	public static void finish()
     {
-    	if (Dump.Y) Dump.println("AjagoUtils finish requested "+finished+",APILevel="+AxeG.osVersion);//+vc4zR~
+    	if (Dump.Y) Dump.println("AjagoUtils finish requested "+finished+",APILevel="+AxeG.osVersion);//~vc4zR~
     	if (finished)
         	return ;
-	  if (AxeG.osVersion>=21)  //>=android10(Q)=api-29             //+vc4zI~
-  		AxeG.main.finishAndRemoveTask();                           //+vc4zI~
-      else                                                         //+vc4zI~
+	  if (AxeG.osVersion>=21)  //>=android10(Q)=api-29             //~vc4zI~
+  		AxeG.main.finishAndRemoveTask();                           //~vc4zI~
+      else                                                         //~vc4zI~
 		AxeG.main.finish();
     	if (Dump.Y) Dump.println("AjagoUtils context finish request");
         sleep(1000);//wait subtread termination  1.0sec
-    	if (Dump.Y) Dump.println("AjagoUtils context finish request after sleep 1000");//+vc4zR~
-        Dump.close();
+    	if (Dump.Y) Dump.println("AjagoUtils context finish request after sleep 1000");//~vc4zR~
+//      Dump.close();                                              //+vc73R~
         finished=true;
     }
 	public static void sleep(long Pmilisec)

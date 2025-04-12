@@ -1,4 +1,4 @@
-//*CID://+vc08R~:                                   update#=  419  //~vc08R~
+//*CID://+vc08R~:                                   update#=  420  //~vc08R~
 //**************************************************************** //~1610I~
 //vc08:2020/06/13 Axe:architecture __arm__ is 32 bit, arm64 is __aarch64__//~vc08I~
 //vb95:170228 _URC_OK(=0) is not defined in uwind.h of llvm(used without /I)//~vb95I~
@@ -470,7 +470,7 @@ static void coffeecatch_call_old_signal_handler(const int code, siginfo_t *const
       native_code_g.sa_old[code].sa_handler(code);
     }
   }
-    UTRACEP("@@@@ call_old_signal_handler return code=%d\n",code); //~vay0R~//+vc08R~
+    UTRACEP("@@@@ call_old_signal_handler return code=%d\n",code); //~vay0R~//~vc08R~
     UTRACE_FLUSH("call_old_signal_handler exit");
 }
 #ifdef BBB                                                         //~vay0I~
@@ -1416,7 +1416,7 @@ int jnisigh_setup(JNIEnv *Penv,char *Pfuncid)                      //~vay0R~
     	t->ctx_is_set = 1;                                         //~vay0R~
     	t->threadEnv=Penv;                                         //~vay0R~
     	UstrncpyZ(t->funcid,Pfuncid,MAX_FUNCID);                   //~vay0R~
-		UTRACEP("@@@@ jnisigh_setup func=%s,setspecific:key=%x,value(t)=%p,tfuncid=%s\n",Pfuncid,native_code_thread,t,t->funcid);//~vay0R~
+		UTRACEP("@@@@ jnisigh_setup func=%s,setspecific:key=%x,value(t)=%p,t->funcid=%s\n",Pfuncid,native_code_thread,t,t->funcid);//~vay0R~//+vc08R~
     	return 0;                                                  //~vay0R~
   	}                                                              //~vay0R~
   	else                                                           //~vay0I~

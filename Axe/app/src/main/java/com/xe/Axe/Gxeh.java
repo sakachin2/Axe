@@ -1,6 +1,7 @@
-//*CID://+vc52R~: update#=  140;                                   //+vc52R~
+//*CID://+vc70R~: update#=  142;                                   //~vc52R~//~vc70R~
 //*****************************************************************//~vaafI~
-//vc52 2023/06/06 show shared storage path                         //+vc52I~
+//vc70 2023/08/14 try tool with attr of 110(executable only) to avoid M^X vioration//~vc70I~
+//vc52 2023/06/06 show shared storage path                         //~vc52I~
 //vc4x 2023/05/16 Try to get path for shared storage               //~vc4xI~
 //vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
 //vc2L 2020/09/02 display TMPDIR                                   //~vc2LI~
@@ -526,10 +527,12 @@ public static final  int AXES_ALTG_LEFTALT                        =0x10; // ALT_
 public static final  int AXES_ALTG_RIGHTSHIFT                     =0x20; // ALT_KEFY as AltGr key//~vc2gR~
 public static final  int AXES_ALTG_MASK=(AXES_ALTG_RIGHTALT | AXES_ALTG_LEFTALT | AXES_ALTG_RIGHTSHIFT);//~vc2gI~
 public static final  int AXES_GRANT_ALLFILES                      =0x40; // for >=api30 access allfiles//~vc4xI~
+public static final  int AXES_MXTOOL                              =0x80; // tool by permission=o110//~vc70I~
+public static final  int AXES_SOPROC                            =0x0100; // execute tool procedd as *.so//+vc70I~
 public static String sdRoot="/sdcard";    //update at getSDCardDirectory//~vc1fI~
 public static String sdRootPath=""; //update at getSDCardDirectory, such as /strorage.emulated.0//~vc1fR~
-public static String SharedStorageVolume;                          //+vc52I~
-public static String SharedStorageAbsPath;                         //+vc52I~
+public static String SharedStorageVolume;                          //~vc52I~
+public static String SharedStorageAbsPath;                         //~vc52I~
 //*smb                                                             //~vac6I~
 public static int      SMB_fileno;                                 //~vac6I~
 public static String[] SMB_namelist;                               //~vac6I~

@@ -30,8 +30,10 @@ Flick Distance:
 	(On soft-keyboard, this is fixed to 50% of the key height/width.)
 Directory you granted to access.
     Selecting specific directory, you can edit, add, delete files in the directory.
-    Use "SP add // " command to set your own directory.
-    To access file in the directory, specify path name like as "e //Axe/abc.txt".
+    Use "SP add //" command to set your own directory.
+    Enter "SP add //" in the command line, and in the dialog appeared, push "Use this folder".
+    If the folder name is, for example, Axe, you can then access it by "e //Axe".
+    The dialog also allows you to create a new folder.
     However, up to Android-9(R):Api28, directory access tool like as grep, xfg are not work for this directory.
 Permission:Files and Media (Option for Android-10(Q) and later)
     Show status of Permission to access All files on shared storage.
@@ -50,4 +52,4 @@ Followings are shown additionally.
 		But it's permission may be 771(owner:shell).
 		If you could use tool:adb, try "adb shell; chmod 775 ____".
 ----------------------------------------------------------------------------
-2023/06/30 ArmOption
+2025/03/30 ArmOption

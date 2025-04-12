@@ -5,6 +5,12 @@
     android:layout_height="fill_parent"
     android:id="@+id/Root"
     >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="2px"
+					android:background="@color/separater"
+                 android:orientation="vertical"
+            />
         <LinearLayout
              android:layout_width="fill_parent"
              android:layout_height="1dp"
@@ -28,14 +34,14 @@
                         android:focusable="false"
                         android:focusableInTouchMode="true"
         />
+
         <TextView
-             android:layout_height="fill_parent"
-             android:layout_width="wrap_content"
-              android:textColor="#ffffffff"
-              android:text="@string/Label_KbdSpinner"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-        />
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text="@string/Label_KbdSpinner"
+            android:textColor="#ffffffff" />
         <LinearLayout
              android:layout_width="wrap_content"
              android:layout_height="fill_parent"

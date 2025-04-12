@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--//vc8t 2025/04/02 Api35 is edgeToEdgeMode as default-->
+<!--vac8-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/lltoolbar"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    > 
+<!--
+   android:id="@+id/lltoolbar"
+-->
+<androidx.appcompat.widget.Toolbar
+   android:id="@+id/main_toolbar"
+   android:layout_width="match_parent"
+   android:layout_height="@dimen/actionbar_height"
+   android:background="?attr/colorPrimary"
+    style="@style/ActionBar_TitleText"
+   />
+<!--
+   android:layout_height="?attr/actionBarSize"
+   android:elevation="4dp"
+   android:theme="?attr/actionBarTheme"
+-->
+</LinearLayout>
+

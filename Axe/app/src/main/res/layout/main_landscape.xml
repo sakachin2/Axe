@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--//vc8q 2025/03/31 button height is too large by text overflow when landscape because initially max button in a line.-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
+    <include layout="@layout/main_actionbar" />    <!--vc8c-->
         <!--LinearLayout
              android:layout_width="fill_parent"
              android:layout_height="0px"
@@ -27,9 +29,9 @@
         <LinearLayout
              android:id="@+id/MainViewDMZ"            
              android:layout_width="fill_parent"
-             android:background="#ff303030"
              android:layout_height="5px"
              android:orientation="vertical"            
+             android:background="#ff303030"
         >
     	</LinearLayout>
 <!-- Buttons -->
@@ -47,6 +49,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="AnyX"
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button22"
@@ -55,6 +58,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="S.C"
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button23"
@@ -63,7 +67,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Caps"
                     android:layout_weight="1"
-
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button24"
@@ -72,7 +76,7 @@
                     android:layout_gravity="center_vertical"
                     android:text=""
                     android:layout_weight="1"
-
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button25"
@@ -81,7 +85,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Ctrl"
                     android:layout_weight="1"
-
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button26"
@@ -91,7 +95,7 @@
                     android:text="Alt"
                     android:layout_weight="1"
 	                    android:textColor="#ff14a804"
-
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button27"
@@ -100,6 +104,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Alt"
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button28"
@@ -108,6 +113,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Alt"
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
     <!-- Buttons1 -->
                 <Button
@@ -117,6 +123,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Any1"
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button12"
@@ -125,6 +132,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Any2"
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button13"
@@ -133,6 +141,7 @@
                     android:layout_gravity="center_vertical"
                     android:text=""
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button14"
@@ -141,6 +150,7 @@
                     android:layout_gravity="center_vertical"
                     android:text=""
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button15"
@@ -149,6 +159,7 @@
                     android:layout_gravity="center_vertical"
                     android:text=""
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button16"
@@ -157,6 +168,7 @@
                     android:layout_gravity="center_vertical"
                     android:text=""
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button17"
@@ -165,6 +177,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Alt"
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
                 <Button
                     android:id="@+id/Button18"
@@ -173,6 +186,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Alt"
                     android:layout_weight="1"
+                    android:maxLines="1"
                 />
         </LinearLayout>         <!-- Buttons -->
       </LinearLayout>           <!-- Bottoms-->

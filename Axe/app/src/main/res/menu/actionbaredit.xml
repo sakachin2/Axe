@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:context=".Axe"
+    >
+    	<group android:id="@+id/EDIT01">
 		    <item android:id="@+id/CM_CUT"
         		android:title="@string/ContextMenu_EditCut"
     		/>
+        </group>
+    	<group android:id="@+id/EDIT02">
 		    <item android:id="@+id/CM_COPY"
         		android:title="@string/ContextMenu_EditCopy"
     		/>
+        </group>
+    	<group android:id="@+id/EDIT03">
 		    <item android:id="@+id/CM_CLEAR"
         		android:title="@string/ContextMenu_EditClear"
     		/>
+        </group>
+    	<group android:id="@+id/EDIT04">
 		    <item android:id="@+id/CM_PASTEV"
         		android:title="@string/ContextMenu_EditPaste"
     		/>
+        </group>
+    	<group android:id="@+id/EDIT05">
 		    <item android:id="@+id/CM_PASTEINS"
         		android:title="@string/ContextMenu_EditPasteIns"
     		/>
+        </group>
+    	<group android:id="@+id/EDIT06">
 		    <item android:id="@+id/CM_PASTEREP"
         		android:title="@string/ContextMenu_EditPasteRep"
     		/>
+        </group>
 </menu>

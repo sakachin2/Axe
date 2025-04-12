@@ -1,6 +1,7 @@
-//*CID://+vc67R~:                                   update#=  483; //+vc67R~
+//*CID://+vc71R~:                                   update#=  484; //+vc71R~
 //**************************************************************** //~1822R~
-//vc67 2023/08/11 warning struct timeval will not be visible outside of this function//+vc67I~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //+vc71I~
+//vc67 2023/08/11 warning struct timeval will not be visible outside of this function//~vc67I~
 //vc5r 2023/07/25 try /sdcard for realpath for api<30              //~v5crI~
 //v77T:230708 ARM;locale was not set for xsub tool(pass Gjnilocale by putenv)//~v77TI~
 //v77Q:230630 (BUG)utempnam returns /sdcard, it cause permission err. use private for also XSUB; /data/local/tmp is also permission err//~v77QI~
@@ -50,7 +51,7 @@
 //v6bq:111221 icu additional directory name should be icudtxxl     //~v6bqI~
 //v6bp:111214 putenv/setenv is not effective for ICU dll;use u_setDataDirectory()//~v6bpI~
 //**************************************************************** //~1610I~
-#include <time.h>                                                  //+vc67I~
+#include <time.h>                                                  //~vc67I~
 #include <stdlib.h>                                                //~1A12R~
 #include <stdio.h>                                                 //~1A12I~
 #include <string.h>                                                //~1614I~
@@ -828,19 +829,24 @@ void setupMotionEvent(GdkEventMotion *Pevent,int Paction,int Pbutton,int Pflag,i
 //}                                                                //~1616R~
 //********************************                                 //~1802I~
 JNIEXPORT void JNICALL Java_com_xe_Axe_AxeJNI_jniTerminateXe       //~1925R~
-  (JNIEnv *Penv, jclass Pthis)                                     //~1802I~
+//  (JNIEnv *Penv, jclass Pthis)                                     //~1802I~//+vc71R~
+  (JNIEnv *Penv, jclass Pthis, jint Popt)                          //+vc71I~
 {                                                                  //~vay0I~
-	void jniTerminateXe(JNIEnv *Penv, jclass Pthis);               //~vay0I~
+//	void jniTerminateXe(JNIEnv *Penv, jclass Pthis);               //~vay0I~//+vc71R~
+  	void jniTerminateXe(JNIEnv *Penv, jclass Pthis, jint Popt);    //+vc71I~
 	NDK_TRY_CATCH(Penv,"jniTerminateXe",                           //~vay0I~
-					jniTerminateXe(Penv,Pthis);                    //~vay0I~
+//					jniTerminateXe(Penv,Pthis);                    //~vay0I~//+vc71R~
+  					jniTerminateXe(Penv,Pthis,Popt);               //+vc71I~
         		 );                                                //~vay0I~
-	UTRACEP_FLUSH("%s:return to AxeJNI\n",UTT);                    //~vc4qR~
+	UTRACEP_FLUSH("%s:return to AxeJNI opt=%d\n",UTT,Popt);                    //~vc4qR~//+vc71R~
 }                                                                  //~vay0I~
 //******                                                           //~vay0I~
-void jniTerminateXe(JNIEnv *Penv, jclass Pthis)                    //~vay0I~
+//void jniTerminateXe(JNIEnv *Penv, jclass Pthis)                    //~vay0I~//+vc71R~
+void jniTerminateXe(JNIEnv *Penv, jclass Pthis,jint Popt)          //+vc71I~
 {                                                                  //~1802I~
 //*************                                                    //~1802I~
-	gxemfrm_onclose();                                             //~1802R~
+//  gxemfrm_onclose();                                             //~1802R~//+vc71R~
+    gxemfrm_onclose(Popt);                                         //+vc71I~
 }                                                                  //~1802I~
 //********************************                                 //~1803I~
 //*gxedlg otheroption chaged                                       //~1803I~

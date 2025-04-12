@@ -1,7 +1,8 @@
-//*CID://+vb91R~:                             update#=  389;       //+vb91R~
+//*CID://+vc71R~:                             update#=  393;       //~vc71R~
 //************************************************************************//~v51dI~
-//vb91:170228 marge rh9j gxe to arm-gxe                            //+vb91I~
-//				vb74:161220 Gtk3 warning                           //+vb91I~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //~vc71I~
+//vb91:170228 marge rh9j gxe to arm-gxe                            //~vb91I~
+//				vb74:161220 Gtk3 warning                           //~vb91I~
 //v@@@:110610 Android(-DARM)                                       //~v@@@I~
 //va72:100801 LP64 wchar_t is 4byte on LP64                        //~va72I~
 //v71A:061030 Use HtmlHelp;Winhelp is deprecated at Vista;XP english ersion cannot read .hlp by the readson of codepage unsupported//~v71AI~
@@ -749,8 +750,8 @@ void popupmenu_activate_openwith(GtkWidget  *Ppmenuitem,gpointer Puparm)//~vXXEI
 //***************************************************************************//~vXXEI~
 //* search popupmenu item id tbl                                   //~vXXEI~
 //***************************************************************************//~vXXEI~
-//int popupmenu_srchid(Pitemid)                                      //~vXXEI~//+vb91R~
-int popupmenu_srchid(int Pitemid)                                  //~vb74I~//+vb91I~
+//int popupmenu_srchid(Pitemid)                                      //~vXXEI~//~vb91R~
+int popupmenu_srchid(int Pitemid)                                  //~vb74I~//~vb91I~
 {                                                                  //~vXXEI~
 	int ii;                                                        //~vXXEI~
 //********************************                                 //~vXXEI~
@@ -864,10 +865,12 @@ void gxemfrm_setwindowsize(void)                                   //~vXXEI~
 //***************************************************************************//~vXXEI~
 //* on close write ini      *************************************************//~vXXEI~
 //***************************************************************************//~vXXEI~
-void gxemfrm_onclose(void)                                         //~vXXEI~
+//void gxemfrm_onclose(void)                                         //~vXXEI~//~vc71R~
+void gxemfrm_onclose(int Popt)                                     //~vc71I~
 {                                                                  //~vXXEM~
 //  WINDOWPLACEMENT wp;                                            //~vXXEI~
 //*******************************                                  //~vXXEM~
+	UTRACEP_FLUSH("%s:opt=%d\n",UTT,Popt);                         //~vc71R~
 //  if (Mpxemain)                                                  //~vXXEI~
 //  {                                                              //~vXXEI~
         xxemain_iniput(&Mwxeinidata);//write scr size              //~vXXER~
@@ -877,10 +880,13 @@ void gxemfrm_onclose(void)                                         //~vXXEI~
 //      Mwxeinidata.WXEINIshowmaxsw=IsZoomed();                    //~vXXER~
 dprintf("close window w=%d,h=%d\n",Mwxeinidata.WXEINIframewidth,Mwxeinidata.WXEINIframeheight);//~v669R~
         uputinidata(&Mwxeinidata);                                 //~vXXEM~
+        if (Popt & 0x01)                                           //~vc71I~
+  			Gwxestat|=GWXES_ONDESTROY;                             //~vc71I~
+		UTRACEP_FLUSH("%s:call wxe_xecall Gwxestat=0x%x\n",UTT,Gwxestat);//+vc71I~
         wxe_xecall(WXE_REQ_TERM,0);	//write xe.ini                 //~vXXER~
 //  }                                                              //~vXXEI~
 //  Mpapp->WinHelp(0,HELP_QUIT);                                   //~vXXEI~
-    dprintf("mfrm onclose return\n");                              //~v669R~
+	UTRACEP_FLUSH("%s:return\n",UTT);                              //+vc71I~
     return;                                                        //~vXXEI~
 }	                                                               //~vXXEI~
 //***************************************************************************//~vXXEI~

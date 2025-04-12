@@ -1,4 +1,4 @@
-//*CID://+vc5nR~:                             update#=  314;       //~vc5nR~
+//*CID://+vc5nR~:                             update#=  318;       //~vc5nR~
 //************************************************************************//~v102I~
 //vc5n 2023/07/19 copyDoc needs copy timestamp                     //~vc5nI~
 //vc5m 2023/07/16 renameDoc create ..(1).ext file if target exist  //~vc5mI~
@@ -1029,9 +1029,9 @@ private String getOpenOption(int Popt)                                //~vc4sI~
         }                                                          //~vbyfI~
 //      int fd=pfd.getFd();                                        //~v77dR~//~v77hR~
         int fd=pfd.detachFd();                                     //~v4cvR~
-        if (Dump.Y) Dump.println(CN+"opendirDoc getFd   ="+fd);    //~v77dR~
+        if (Dump.Y) Dump.println(CN+"opendirDoc getFd fd="+fd);    //~v77dR~//~vc5nR~
 	  	AxeJNI.notify_opendirDocResult(Popt,Pfpath,fd);            //~v77dI~
-//      close(Pfpath,pfd);                                         //~v77dR~
+        close(Pfpath,pfd);                                         //~v77dR~//+vc5nR~
         if (Dump.Y) Dump.println(CN+"opendirDoc rc=0,fd="+fd);  //~v77dI~
         return 0;                                                  //~v77dI~
     }                                                              //~v77dI~
@@ -1047,8 +1047,10 @@ private String getOpenOption(int Popt)                                //~vc4sI~
             	return errno;                                      //~vbyfI~
             return ENOENT;                                         //~v4cvI~
         }                                                          //~vbyfI~
+        if (Dump.Y) Dump.println(CN+"statDoc native fd by getFd   ="+pfd.getFd());//~vc5nI~
         int fd=pfd.detachFd();                                     //~v4cvI~
-        if (Dump.Y) Dump.println(CN+"statDoc getFd   ="+fd);       //~v4cvI~
+        if (Dump.Y) Dump.println(CN+"statDoc detachFd="+fd);       //~v4cvI~//~vc5nR~
+        close(Pfpath,pfd);	                                       //+vc5nR~
 	  	AxeJNI.notify_statDocResult(Popt,Pfpath,fd);               //~v4cvI~
         if (Dump.Y) Dump.println(CN+"statDoc rc=0,fd="+fd);        //~v4cvI~
         return 0;                                                  //~v4cvI~
@@ -1341,7 +1343,7 @@ private int close(String Pfpath,ParcelFileDescriptor Ppfd)         //~v77dI~
     }                                                              //~v77hI~
 //********************************************************         //~vc5nI~
 //*not called, for Document file output                            //~vc5nI~
-//*for File set lastModified at ufile2l.copyPathInfo               //+vc5nR~
+//*for File set lastModified at ufile2l.copyPathInfo               //~vc5nR~
 //********************************************************         //~vc5nI~
 	private boolean copyPathInfo(int Popt,long PlastModified,String Ptgt,String PstrUri)//~vc5nI~
     {                                                              //~vc5nI~

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+//vc8g 2025/03/24 drop ACRA because FATAL exception by
+//                SecurityException: com.xe.AxeA9.debug: One of RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED should be specified when a receiver isn't being registered exclusively for system broadcasts
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:versionCode="1293"
-      android:versionName="1.29.3">
+      android:versionCode="1302"
+      android:versionName="1.30.2">
 <!--
       package="com.xe.Axe"
 -->
@@ -9,29 +13,36 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <!--uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE">2023/05/20del</uses-permission-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-					 android.maxSdkVersion="28"/>
+					 android:maxSdkVersion="28"/>
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
 					 />       <!--2023/05/20-->
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
     <!--uses-sdk android:minSdkVersion="15" android:targetSdkVersion="15"/--> 
     <application android:label="@string/app_name"
                  android:icon="@mipmap/wxe"
                  android:roundIcon="@mipmap/wxe"
-     					android:name="AxeACRA"
+                >
+<!--
+     	        		android:requestLegacyExternalStorage="true" vc8j
+     					android:name="AxeACRA"   //vc8g
      	        		android:theme="@style/ThemeV10"      
-     	        		android:requestLegacyExternalStorage="true"
-     	        		android:extractNativeLibs="true"
-    >
+-->
     <!--				android:debuggable="true" -->
  <!--					android:debuggable="false" true for gdbndk  -->
         <activity android:name=".Axe"
                   android:label="@string/app_name"
-                  android:screenOrientation="unspecified"
                   android:configChanges="orientation|screenSize|keyboardHidden|keyboard|screenLayout"
-                  android:windowSoftInputMode="adjustPan"
+                  android:windowSoftInputMode="adjustPan|stateHidden"
                   android:launchMode="singleTask"
      	        		android:theme="@style/ThemeV10"      
                 android:exported="true"
 		>
+<!--
+                  android:windowSoftInputMode="adjustPan"
+                  android:screenOrientation="unspecified"
+        				android:preserveLegacyExternalStorage="true"
+     	        		android:requestLegacyExternalStorage="true"
+-->
 <!--               android:windowSoftInputMode="adjustPan|stateAlwaysHidden"-->
 <!--                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden"-->
 <!--              android:windowSoftInputMode="adjustResize|stateHidden" -->

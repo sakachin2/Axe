@@ -1,4 +1,4 @@
-//*CID://+vc41R~: update#=153;                                     //~vc41R~
+//*CID://+vc41R~: update#=159;                                     //+vc41R~
 //**********************************************************************//~vaagI~
 //vc41 2023/03/25 api33 support;deprecated getDefaultDisplay       //~vc41I~
 //vc2P 2020/09/07 on N7, kbdDialogHW is shown at middle of screen. //~vc2PI~
@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;                                 //~1902I~
+import android.widget.LinearLayout;
 
 import com.ahsv.Alert;
 import com.ahsv.utils.Utils;
@@ -101,6 +102,7 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
     public AxeKbdDialogHW(Context Pcontext)                          //~1918R~//~vc1rR~
     {                                                              //~1902R~
      	super(Pcontext,DIALOG_THEME);//style for fullscreen       //~1918R~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW constructor entry");//~vc41I~
         context=Pcontext;                                          //~1918I~
                                                                    //~1902I~
 //        Display display=((WindowManager)(context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1902I~//~vc41R~
@@ -140,8 +142,8 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
         AxeG.axeKbdDialogHW=this;                                  //~vc1rI~
         defaultMap=getDefaultMap();                                           //~vc1rR~
         setOnShow();                                               //~vc2DM~
-//      if (Dump.Y) Dump.println("AxeKbdDialogHW defaultMap="+ Utils.toString(defaultMap));//~vc1rI~//+vc41R~
-        if (Dump.Y) Dump.println("AxeKbdDialogHW constructor exit");//+vc41I~
+//      if (Dump.Y) Dump.println("AxeKbdDialogHW defaultMap="+ Utils.toString(defaultMap));//~vc1rI~//~vc41R~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW constructor exit");//~vc41I~
     }                                                              //~1902R~
 //*****************************************                        //~vaihI~
 	public void setCancelByOutsideTouch(boolean Pcancel)           //~vaihI~
@@ -303,6 +305,7 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
 		int pixh=(int)(dip2pix*DIALOG_HEIGHT);                     //~vc2PI~
         if (Dump.Y) Dump.println("AxeKbdDialogHW.setFullWidth dpi2pix="+dip2pix+",height="+pixh);//~vc2PI~
         w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,pixh);//~vc2EI~//~vc2PR~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW.setFullWidth naviH="+AxeG.scrNavigationbarBottomHeightA11);//~vc8tI~
       }                                                            //~vc2EI~
     }                                                              //~1902I~
 //}//SoftInputWindow class                                         //~1902I~
@@ -729,9 +732,9 @@ public class AxeKbdDialogHW extends Dialog                           //~1918R~//
 	}                                                              //~vc2DI~
     private void onShowDlg()                                            //~vc2DI~
     {                                                              //~vc2DI~
-        if (Dump.Y) Dump.println("AxeKbdDialogHW.onShowDlg");      //+vc41I~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW.onShowDlg");      //~vc41I~
     	if (swConfigChangedNew)                                    //~vc2DR~
     	    configChangedForDialogReopen();                        //~vc2DR~
-        if (Dump.Y) Dump.println("AxeKbdDialogHW.onShowDlg exit"); //+vc41I~
+        if (Dump.Y) Dump.println("AxeKbdDialogHW.onShowDlg exit"); //~vc41I~
     }                                                              //~vc2DI~
 }

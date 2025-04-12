@@ -1,4 +1,4 @@
-//*CID://+vc2nR~:                             update#=  287;       //~vc2nR~
+//*CID://+vc2nR~:                             update#=  290;       //~vc2nR~
 //******************************************************************
 //vc2n 2020/08/03 Dump.e when selected null on popup               //~vc2nI~
 //vc2m 2020/08/03 show modifier effective for caps,Sym,Fn,AltG,AltGS on AxeKbd//~vc2mI~
@@ -270,7 +270,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
                 final float endingVelocityX = mSwipeTracker.getXVelocity();//~@@@@I~
                 final float endingVelocityY = mSwipeTracker.getYVelocity();//~@@@@I~
                 if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener:onFling ending velocity X="+endingVelocityX+",Y="+endingVelocityY);//~@@@@I~//~vc2nR~
-                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener:onFling swipe mSwipeThreshold="+mSwipeThreshold+",mDisambiguateSwipe="+mDisambiguateSwipe);//~@@@@I~//+vc2nR~
+                if (Dump.Y) Dump.println("AxeKbdView.SimpleOnGestureListener:onFling swipe mSwipeThreshold="+mSwipeThreshold+",mDisambiguateSwipe="+mDisambiguateSwipe);//~@@@@I~//~vc2nR~
                 boolean sendDownKey = false;                       //~@@@@I~
                 if (velocityX > mSwipeThreshold && absY < absX && deltaX > travelX) {//~@@@@I~
                     if (mDisambiguateSwipe && endingVelocityX < velocityX / 4) {//~@@@@I~
@@ -329,7 +329,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
             @Override                                              //~vaaiI~
             public boolean onSingleTapUp(MotionEvent e)                           //~vaaiI~
             {                                                      //~vaaiI~
-		        if (Dump.Y) Dump.println("onSingleTapUp swPending="+swPendingKeyDownEvent+",event="+e.toString());//~vaaiR~
+		        if (Dump.Y) Dump.println("AxeKbdView.onSingleTapUp swPending="+swPendingKeyDownEvent+",event="+e.toString());//~vaaiR~//+vc2nR~
     	        sendPendingKeyDownEvent();                            //~vaaiI~
                 return false;                                      //~vaaiI~
             }                                                      //~vaaiI~
@@ -452,7 +452,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
 //*************************************                            //~@@@@I~
     public void onKey(int primaryCode, int[] keyCodes)             //~@@@@R~
     {                                                              //~@@@@I~
-    	if (Dump.Y) Dump.println("AxeKbdView onKey:primarycode="+Integer.toHexString(primaryCode)+",swFlickTimerOn="+swFlickTimerOn);//~vaaiI~
+    	if (Dump.Y) Dump.println("AxeKbdView onKey:primarycode=0x"+Integer.toHexString(primaryCode)+",swFlickTimerOn="+swFlickTimerOn+",keyCodes="+keyCodes);//~vaaiI~//+vc2nR~
     	if (swFlickTimerOn)                                        //~vaaiI~
         {                                                          //~vaaiI~
         	if (swPendingKeyDownEvent)                             //~vaaiR~
@@ -522,7 +522,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
                     	code=primaryCode;                         //~@@@@I~
                     }                                              //~vaauI~
                 }                                                  //~@@@@I~
-                if (Dump.Y) Dump.println("AxeKbdView keycode by label="+Integer.toHexString(code));//~@@@@R~
+                if (Dump.Y) Dump.println("AxeKbdView keycode by label=0x"+Integer.toHexString(code));//~@@@@R~//+vc2nR~
             }                                                      //~@@@@I~
             if (code!=0)                                           //~@@@@I~
             {                                                      //~@@@@I~
@@ -1097,7 +1097,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
 //        if (Dump.Y) Dump.println("AxeKbdView onBuffDraw this="+this.toString());//~vc2nR~
 //        if (Dump.Y) Dump.println("AxeKbdView keys="+keys.length+","+keys.toString());//~vc2nR~
         paint.setColor(mKeyTextColor);
-        if (Dump.Y) Dump.println("AxeKbdView keysTextColor="+Integer.toString(mKeyTextColor));//~vc2nR~
+        if (Dump.Y) Dump.println("AxeKbdView keysTextColor="+Integer.toHexString(mKeyTextColor));//~vc2nR~
         boolean drawSingleKey = false;
         if (invalidKey != null && canvas.getClipBounds(clipRegion)) {
           // Is clipRegion completely contained within the invalidated key?
@@ -1112,6 +1112,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
         final int keyCount = keys.length;
 //        if (Dump.Y) Dump.println("AxeKbdView buffDraw "+this.toString());//~vc2nR~
 //        if (Dump.Y) Dump.println("AxeKbdView labeltextsize="+mLabelTextSize+",keytextsize="+mKeyTextSize);//~vc2nR~
+        if (Dump.Y) Dump.println("AxeKbdView drawSingleKey="+drawSingleKey+",invalidKey="+invalidKey);//~vc2nR~
         initPaintF(mPaint,keys[0],padding); 	//for flick key    //~vaagR~
         for (int i = 0; i < keyCount; i++) {
             final Key key = keys[i];
@@ -1441,7 +1442,7 @@ public /*private*/ void initGestureDetector() {                    //~@@@@I~
 //********************************************************         //~vaaiI~
     public void sendPendingKeyDownEvent()                                      //~vaaiI~
     {                                                              //~vaaiI~
-    	if (Dump.Y) Dump.println("AxeKbdView sendPendingKeyDownEvent swpending="+swPendingKeyDownEvent);//~vaaiR~//~vc12R~
+    	if (Dump.Y) Dump.println("AxeKbdView sendPendingKeyDownEvent swpending="+swPendingKeyDownEvent+",delayedText="+delayedText+",delayedKeyCode=0x"+Integer.toHexString(delayedKeyCode));//+vc2nR~
         if (!swPendingKeyDownEvent)                                //~vaaiR~
         	return;                                                //~vaaiI~
 		swFlickTimerOn=false;                                      //~vaaiI~

@@ -1,5 +1,6 @@
-//*CID://+vc17R~:                                   update#=  346; //~vc17R~
+//*CID://+vc71R~:                                   update#=  348; //+vc71R~
 //**************************************************************** //~1610I~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //+vc71I~
 //vc17 2020/06/15 malloc/free requires malloc.h                    //~vc17I~
 //vay0:140710 (Axe)jni exception handling                          //~vay0I~
 //vak2:130822 Axe:ndk-r9 warning                                   //~vak2I~
@@ -252,7 +253,9 @@ void gdk_beep(void)                                                //~1617M~
     penv=getThreadEnv();                                           //~1714I~
 	UTRACEP("beep env=%p\n",penv);                                 //~1714R~
     C2J_GETMETHODID_RETIFERR(penv,beep,"()V");                     //~1714R~
+	UTRACEP_FLUSH("%s:beep after getMethod\n",UTT);                //~vc17I~
     C2J_VOIDVOID(penv,beep);                              //~1714R~//~1718R~
+	UTRACEP_FLUSH("%s:beep after voidvoid\n",UTT);                 //~vc17I~
     return;                                                        //~1617I~
 }                                                                  //~1617M~
 //*************************************************                //~1617M~
@@ -288,7 +291,8 @@ void	   gtk_main_quit	   (void)                              //~1617I~
 //****************************                                     //~1714I~
     penv=getThreadEnv();                                           //~1714I~
 	UTRACEP("gdk_main_quit env=%p\n",penv);                        //~1714R~
-    gxemfrm_onclose();      //putinidata(gtk calls at gtk_main_quit but)//~1929I~
+//  gxemfrm_onclose();      //putinidata(gtk calls at gtk_main_quit but)//~1929I~//+vc71R~
+    gxemfrm_onclose(0);      //putinidata(gtk calls at gtk_main_quit but)//+vc71I~
     C2J_GETMETHODID_RETIFERR(penv,quit,"()V");                     //~1714R~
     C2J_VOIDVOID(penv,quit);                              //~1714R~//~1718R~
     return;                                                        //~1617I~
@@ -617,7 +621,7 @@ GtkWidget *lookup_widget(GtkWidget *Pwidget,char *Pname)           //~1618R~
     jstring jname;                                                 //~1715I~
 //****************************                                     //~1714I~
     penv=getThreadEnv();                                           //~1714I~
-	UTRACEP("lookup_widget env=%p,parent=%p,childname=%s\n",penv,Pwidget,Pname);//~1714R~//+vc17R~
+	UTRACEP("lookup_widget env=%p,parent=%p,childname=%s\n",penv,Pwidget,Pname);//~1714R~//~vc17R~
     jname=utf8z2jstring(penv,Pname);                               //~1715R~
     C2J_GETMETHODID_GOTOIFERR(penv,lookup_widget,"(Ljava/lang/String;)Landroid/view/View;");//~1717R~
 //  view=C2J_OBJ(penv,lookup_widget,jname);           //~1715R~    //~vay0R~

@@ -1,4 +1,4 @@
-//*CID://+vc43R~: update#=  243;                                   //~vc43R~
+//*CID://+vc43R~: update#=  244;                                   //~vc43R~
 //*****************************************************************//~vaatI~
 //vc43 2023/03/25 api33 support;android.support.v7.widget.AppCompatImageView is not descendant of View(remove() fails)//~vc43I~
 //vc2S 2020/09/12 add ruler width option                           //~vc2SI~
@@ -129,7 +129,7 @@ public class AxeScreen extends androidx.appcompat.widget.AppCompatImageView//~vc
     }                                                              //~1606I~
     private void setupPaint()                                           //~1608I~
     {                                                              //~1608I~
-        if (Dump.Y) Dump.println("AxeScreen.setupPaint");          //+vc43I~
+        if (Dump.Y) Dump.println("AxeScreen.setupPaint");          //~vc43I~
         paintText=new Paint(Paint.ANTI_ALIAS_FLAG);                //~1620R~
         paintFill=new Paint();                                     //~1620R~
         paintLine=new Paint();                                     //~1620I~
@@ -140,7 +140,7 @@ public class AxeScreen extends androidx.appcompat.widget.AppCompatImageView//~vc
 //  	listPL=new ArrayList<PendingLine>();                       //~1809I~//~1826R~
         paintCursor=new Paint();                                   //~vabbI~
 //      paintCursor.setXfermode(new PixelXorXfermode(0xffffff));//inverse mode//~vabbR~
-        if (Dump.Y) Dump.println("AxeScreen.setupPaint exit");     //+vc43I~
+        if (Dump.Y) Dump.println("AxeScreen.setupPaint exit");     //~vc43I~
     }                                                              //~1608I~
 ///////////////////////////////////////////////////////////////////////////////~1606I~
 //***************************                                      //~va15I~//~1826I~
@@ -241,7 +241,7 @@ public class AxeScreen extends androidx.appcompat.widget.AppCompatImageView//~vc
     @Override                                                      //~1606I~
     public void onMeasure(int Pw,int Ph)                           //~1606I~
     {                                                              //~1606I~
-        if (Dump.Y) Dump.println("AxeScreen.onMeasure w="+Pw+",H="+Ph);      //~1606I~//~vc1rR~
+        if (Dump.Y) Dump.println("AxeScreen.onMeasure w="+Pw+",H="+Ph+",AxeG.screenW="+AxeG.screenW+",H="+AxeG.screenH);      //~1606I~//~vc1rR~//+vc43R~
         setMeasuredDimension(AxeG.screenW,AxeG.screenH);           //~1606I~
     }                                                              //~1606I~
 //*********************************************************        //~vaatR~

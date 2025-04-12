@@ -1,9 +1,14 @@
-//*CID://+vc2KR~:                             update#=  107;       //~vc2KR~
+//*CID://+vc8gR~:                             update#=  108;       //+vc8gR~
 //*****************************************************************************************//~vabeR~
+//vc8g 2025/03/24 drop ACRA because FATAL exception by             //+vc8gI~
+//                SecurityException: com.xe.AxeA9.debug: One of RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED should be specified when a receiver isn't being registered exclusively for system broadcasts//+vc8gI~
 //vc2K 2020/08/28 receive intent(View/Edit)                        //~vc2KI~
 //*****************************************************************************************//~vabeR~
 package com.xe.Axe;
 
+import static android.content.Context.RECEIVER_NOT_EXPORTED;
+
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -58,8 +63,8 @@ public class AxeBCR extends BroadcastReceiver                      //~vc2KR~
         }                                                          //~vc2KI~
     }                                                              //~vc2KI~
     //*********************************************************    //~vc2KI~
-    //*for ACTION_VIEW,no register requied, Manifest definition required//+vc2KI~
-    //*********************************************************    //+vc2KI~
+    //*for ACTION_VIEW,no register requied, Manifest definition required//~vc2KI~
+    //*********************************************************    //~vc2KI~
     public void register()                                         //~vc2KI~
 	{
         if (Dump.Y) Dump.println("AxeBCR.register swRegistered="+swRegistered);//~vc2KR~
@@ -79,7 +84,8 @@ public class AxeBCR extends BroadcastReceiver                      //~vc2KR~
         	return;                                                //~vc2KR~
     	}                                                          //~vc2KR~
                                                                    //~vc2KI~
-        AxeG.activity.registerReceiver(this, filter);              //~vc2KI~
+//      AxeG.activity.registerReceiver(this, filter);              //~vc2KI~//+vc8gR~
+        registerReceiver(filter);                                  //+vc8gI~
 //      filter = new IntentFilter(Intent.ACTION_EDIT);             //~vc2KR~
 		try                                                        //~vc2KR~
     	{                                                          //~vc2KR~
@@ -90,8 +96,27 @@ public class AxeBCR extends BroadcastReceiver                      //~vc2KR~
 			Utils.showToast("mimetyoe err"+e);                     //~vc2KR~
         	return;                                                //~vc2KR~
     	}                                                          //~vc2KR~
-        AxeG.activity.registerReceiver(this, filter);              //~vc2KI~
+//      AxeG.activity.registerReceiver(this, filter);              //~vc2KI~//+vc8gR~
+        registerReceiver(filter);                                  //+vc8gI~
 	}
+    //*********************************************************    //+vc8gI~
+    private void registerReceiver(IntentFilter Pfilter)            //+vc8gI~
+    {                                                              //+vc8gI~
+        if (Dump.Y) Dump.println("AxeBCR.registerReceiver filter="+Pfilter);//+vc8gI~
+        if (AxeG.osVersion>33)  //android13                        //+vc8gI~
+        {                                                          //+vc8gI~
+			registerReceiver33(Pfilter);                            //+vc8gI~
+            return;                                                //+vc8gI~
+    	}                                                          //+vc8gI~
+        AxeG.activity.registerReceiver(this,Pfilter);              //+vc8gI~
+    }                                                              //+vc8gI~
+    //**********************************                           //+vc8gI~
+	@TargetApi(33)                                                 //+vc8gI~
+	private void registerReceiver33(IntentFilter Pfilter)          //+vc8gI~
+    {                                                              //+vc8gI~
+        if (Dump.Y) Dump.println("AxeBCR.registerReceiver33 filter="+Pfilter);//+vc8gI~
+        AxeG.activity.registerReceiver(this,Pfilter,RECEIVER_NOT_EXPORTED);      //+vc8gI~
+    }                                                              //+vc8gI~
     //*********************************************************    //~vc2KI~
     public void unregister()                                       //~vc2KI~
     {                                                              //~vc2KI~
@@ -110,8 +135,8 @@ public class AxeBCR extends BroadcastReceiver                      //~vc2KR~
     	uriReceived(Pintent);                                       //~vc2KI~
 	}                                                              //~vc2KI~
     //*********************************************************    //~vc2KI~
-    //*for ACTION_VIEW,startActivity() pass request, if already up, newIntent will be called//+vc2KI~
-    //*********************************************************    //+vc2KI~
+    //*for ACTION_VIEW,startActivity() pass request, if already up, newIntent will be called//~vc2KI~
+    //*********************************************************    //~vc2KI~
     public void onNewIntent(Intent Pintent)                        //~vc2KI~
     {                                                              //~vc2KI~
       	if (Dump.Y) Dump.println("AxeBCR.onNewIntent");            //~vc2KI~

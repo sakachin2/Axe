@@ -15,9 +15,9 @@
 <!-- all of above bottom buttons -->
     <LinearLayout
          android:layout_width="fill_parent"
-         android:layout_height="1px"
+         android:layout_height="2px"
          android:orientation="horizontal"
-	    android:background="#fff0f0f0"
+				 android:background="@color/separater"
     />
     <LinearLayout
          android:layout_width="fill_parent"
@@ -117,8 +117,8 @@
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="1px"
+				 android:background="@color/separater"
          android:orientation="horizontal"
-	    android:background="#ffffffff"
     />
     <LinearLayout
          android:id="@+id/DialogButtons"

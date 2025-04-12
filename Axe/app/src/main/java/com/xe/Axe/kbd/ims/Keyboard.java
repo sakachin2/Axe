@@ -1,4 +1,7 @@
-//*CID://+@@@@R~:                             update#=   19;       //~@@@@I~
+//*CID://+vc8tR~:                             update#=   22;       //~vc8tR~
+//***************************************************************************//+vc8tI~
+//vc8t 2025/04/02 Api35 is edgeToEdgeMode as default               //~vc8tI~
+//***************************************************************************//+vc8tI~
 /*
  * Copyright (C) 2008-2009 Google Inc.
  * 
@@ -22,6 +25,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 
 import com.ahsv.utils.Utils;
+import com.xe.Axe.AxeG;
 import com.xe.Axe.R;                                          //~@@@@R~
 import com.xe.Axe.Dump;//~@@@@I~
 import android.content.Context;
@@ -359,7 +363,7 @@ public /*private*/ int mDisplayWidth;                              //~@@@@R~
             } else if (codesValue.type == TypedValue.TYPE_STRING) {
                 codes = parseCSV(codesValue.string.toString());
             }
-//          if (Dump.Y) Dump.println("Keyboard.Key.constructor codes="+ Utils.toHexString(codes));//+@@@@R~
+//          if (Dump.Y) Dump.println("Keyboard.Key.constructor codes="+ Utils.toHexString(codes));//~@@@@R~
             
             iconPreview = a.getDrawable(/*com.android.internal.*/R.styleable.Keyboard_Key_iconPreview);//~@@@@R~
             if (iconPreview != null) {
@@ -543,7 +547,11 @@ public /*private*/ int mDisplayWidth;                              //~@@@@R~
         mDisplayWidth = dm.widthPixels;
         mDisplayHeight = dm.heightPixels;
         //Log.v(TAG, "keyboard's display metrics:" + dm);
-
+        if (Dump.Y) Dump.println("Keyboard mDisplayWidth="+mDisplayWidth+",mDisplayHeight="+mDisplayHeight+",edgeMode="+AxeG.swEdgeMode);//~@@@@I~//+vc8tR~
+        if (AxeG.swEdgeMode)                                       //+vc8tI~
+        {                                                          //+vc8tI~
+	        adjustEdgeMode();                                      //+vc8tI~
+        }                                                          //+vc8tR~
         mDefaultHorizontalGap = 0;
         mDefaultWidth = mDisplayWidth / 10;
         mDefaultVerticalGap = 0;
@@ -553,6 +561,14 @@ public /*private*/ int mDisplayWidth;                              //~@@@@R~
         mKeyboardMode = modeId;
         loadKeyboard(context, context.getResources().getXml(xmlLayoutResId));
     }
+    //******************************************************************//+vc8tI~
+    private void adjustEdgeMode()                                  //+vc8tI~
+    {                                                              //+vc8tI~
+	    if (Dump.Y) Dump.println("Keyboard.adjustEdgeMode AxeG.displayPL="+AxeG.displayPL+",LeftWidthA11="+AxeG.scrNavigationbarLeftWidthA11+",RightWidthA11="+AxeG.scrNavigationbarRightWidthA11);//+vc8tI~
+        if (AxeG.displayPL==AxeG.LANDSCAPE)                        //+vc8tI~
+			mDisplayWidth-=(AxeG.scrNavigationbarLeftWidthA11+AxeG.scrNavigationbarRightWidthA11);//+vc8tI~
+	    if (Dump.Y) Dump.println("Keyboard.adjustEdgeMode mDisplayWidth="+mDisplayWidth);//+vc8tI~
+    }                                                              //+vc8tI~
 
     /**
      * <p>Creates a blank keyboard from the given resource file and populates it with the specified

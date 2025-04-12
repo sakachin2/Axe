@@ -1,5 +1,17 @@
-//*CID://+vc60R~:                             update#=  112;       //~vc60R~
+//*CID://+vc8AR~:                             update#=  171;       //~vc8AR~
 //*****************************************************************************************//~vabeR~
+//vc8A 2025/04/08 by FULL_USER, start by horizontal-land, adjustEdgeMode is not effective because onconfigurration change occures after adjustEdgeMode//~vc8AI~
+//vc8y 2025/04/07 for vc8u, use SCREEN_ORIENTATION_FULL_SENSOR(onConfiguration changed occrs always) and dismiss softkbd//~vc8yI~
+//vc8w 2025/04/06 logcat shows                                     //~vc8wI~
+//                I EmojiCompatManager: EmojiCompatManager.getEmojiCompatIfLoaded():343 EmojiCompat.init() was never called.//~vc8wI~
+//                I EmojiCompatManager: java.lang.IllegalStateException: EmojiCompat is not initialized. Please call EmojiCompat.init() first//~vc8wI~
+//vc8u 2025/04/06 close softKbd for closed foldable at layoutChange. befause No orientationChange ocuurs when rotated.//~vc8uI~
+//vc8h 2025/03/25 from Android10(API29), WRITE_EXTERNAL_STORAGE permission is not allowed.//~vc8hI~
+//vc8c 2025/03/19 api21 actionbar(icon+title+menu) for alternative of Holo theme(AppCompatActivity requres those theme)//~vc8cI~
+//vc8a 2025/03/19 onMenuItemSelected could not be override, it is final//~vc8aI~
+//vc89 2025/03/19 Activity-->AppCompatActivity for launcher=registerForActivityResult(contract,cb);//~vc89I~
+//2023/02/28 vay4 API30 deprecated startActivityForResult; use registerForActivityResult//~vay4I~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //~vc71I~
 //vc60 2023/08/03 mediaview as openWith                            //~vc60I~
 //vc5f 2023/07/10 Dump at onWindowFocusChanged by AxeG.axeScreen==null because not yet getScreenSize return W=H=0//~vc5fI~
 //vc4y 2023/05/22 >=android11(Api30),access all file option setting by setting-android related dialog//~vc4yI~
@@ -34,9 +46,13 @@
 //*****************************************************************************************//~vabeR~
 package com.xe.Axe;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -49,6 +65,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.activity.ComponentActivity;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;  //~vay4I~
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;//~vay1I~//~vay4I~
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ahsv.AG;
 import com.ahsv.utils.URunnable;
 import com.ahsv.utils.URunnableI;
@@ -56,12 +81,33 @@ import com.ahsv.utils.USAF;
 import com.ahsv.utils.Utils;
 import com.xe.Axe.kbd.AxeKbdDialogHW;
 
+import java.io.File;                                               //~vc71I~
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
+import android.graphics.Rect;                                      //~vay1I~//~vc8uI~
 
-public class Axe extends Activity                                  //~vaiqR~
+import androidx.core.provider.FontRequest;
+import androidx.core.util.Consumer;                                //~vay1I~//~vc8uI~
+import androidx.emoji.text.EmojiCompat;
+import androidx.emoji.text.FontRequestEmojiCompatConfig;
+import androidx.window.layout.DisplayFeature;                      //~vay1R~//~vc8uI~
+import androidx.window.layout.FoldingFeature;                      //~vay1R~//~vc8uI~
+import androidx.window.layout.WindowInfoTracker;                   //~vay1R~//~vc8uI~
+import androidx.window.layout.WindowLayoutInfo;                    //~vay1R~//~vc8uI~
+import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter;//~vay1M~//~vc8uI~
+import java.util.List;                                             //~vay1I~//~vc8uI~
+import java.util.concurrent.Executor;                              //~vay1I~//~vc8uI~
+                                                                   //~vc8uI~
+import static com.xe.Axe.AxeG.*;                                   //~vc8uI~
+
+//public class Axe extends Activity                                  //~vaiqR~//~vay4R~
+//public class Axe extends ComponentActivity                       //~vay4R~
+public class Axe extends AppCompatActivity                         //~vay4I~
                     implements AxeAlertI                           //~vaiqI~
                       , URunnableI    //at stop APP                  //~vc10I~
 {                                                                  //~vaiqI~
+    public static final String CN="Axe.";                          //~vay4R~
     public static final int PERMISSION_LOCATION=1;                 //~vc10I~
     public static final int PERMISSION_EXTERNAL_STORAGE=2;         //~vc1bI~
     public static final int PERMISSION_EXTERNAL_STORAGE_READ=3;         //~vc10I~//~vc1bI~
@@ -76,7 +122,10 @@ public class Axe extends Activity                                  //~vaiqR~
     private AxeAlert initAlertDialog2;                             //~vaiqI~
     private AxePermission aAxePermission;                          //~vc1bI~
     public static final int AXES_ORIENTATION_CHANGING=   0x01;      //~vaicI~
-    //~1930I~
+    public static final int AXES_ORIENTATION_CHANGE_BEFORE_INIT=   0x02;//~vc8AI~
+    private final LayoutStateChangeCallback layoutStateChangeCallback=new LayoutStateChangeCallback();//~vay1I~//~vc8uI~
+    private WindowInfoTrackerCallbackAdapter windowInfoTracker;    //~vay1I~//~vc8uI~
+	//****************************************************************//~vc8uI~
     @Override                                                      //~1526I~
     public void onCreate(Bundle icicle)                            //~1526I~
 	{                                                              //~1526I~
@@ -91,6 +140,8 @@ public class Axe extends Activity                                  //~vaiqR~
             	requestWindowFeature(Window.FEATURE_LEFT_ICON);    //~vay5I~
 //        if (AxeG.isDebuggable)                                   //~vaiqI~//~vc10R~
 //          Dump.open("dump.dat");                                 //~1528I~//~vc10R~
+		 	windowInfoTracker=new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this));//~vay1I~//~vay6M~//~vc8uI~
+//          initEmoji();                                           //~vc8wR~
             AxeView.setContentView();                              //~1606R~
             if (AxeG.startupCtr==0)                                //~vaiqI~
             {                                                      //~vaiqI~
@@ -116,6 +167,7 @@ public class Axe extends Activity                                  //~vaiqR~
     public void onNewIntent(Intent Pintent)                        //~vc2KI~
 	{                                                              //~vc2KI~
         if (Dump.Y) Dump.println("Axe:onNewIntent intent="+Utils.toString(Pintent));//~vc2KI~
+        super.onNewIntent(Pintent);                                //~vc89I~
         AxeG.axeBCR.onNewIntent(Pintent);                          //~vc2KI~
     }                                                              //~vc2KI~
 //****************************************                         //~vaiqI~
@@ -140,8 +192,11 @@ public class Axe extends Activity                                  //~vaiqR~
     @Override                                                      //~1526I~
     public boolean onOptionsItemSelected(MenuItem Pitem)           //~1527R~
 	{                                                              //~1526I~
+        if (Dump.Y) Dump.println("Axe:OnOptionItemSelected Pitem="+Pitem);//~vc8cI~
     	try                                                        //~1527I~
         {                                                          //~1527I~
+        	if (onClickHome(Pitem))                                //~vc8cI~
+            	return true;                                       //~vc8cI~
 	    	AxeG.axeMenu.onOptionMenuSelected(Pitem);		//setup menu//~1527R~
         }                                                          //~1527I~
         catch(Exception e)                                         //~1527I~
@@ -170,6 +225,7 @@ public class Axe extends Activity                                  //~vaiqR~
     @Override                                                      //~1527I~
     public boolean onContextItemSelected(MenuItem Pitem)           //~1527I~
     {                                                              //~1527I~
+        if (Dump.Y) Dump.println("Axe:OnCotextItemSelected Pitem="+Pitem);//~vc8cI~
         boolean rc=false;                                          //~1527I~
     	try                                                        //~1527I~
         {                                                          //~1527I~
@@ -231,8 +287,9 @@ public class Axe extends Activity                                  //~vaiqR~
 //                      return;                                    //~vaiqI~//~vc2UR~
                     }                                              //~vaiqI~
 			        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged new AxeView");//~vaiqR~//~vc1bR~
-					AxeG.axeView=new AxeView();                    //~vaiqI~
-			        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged new AxeView end");//~vaiqR~//~vc1bR~
+//  				AxeG.axeView=new AxeView();                    //~vaiqI~//~vc8AR~
+    				new AxeView();  //axeView is set at constructor//~vc8AI~
+			        if (Dump.Y) Dump.println("Axe.onWindowFocusChanged new AxeView end");//~vaiqR~//~vc1bR~//~vc8AR~
                   if (initFirsttime!=0)                            //~vc2UI~
                   {                                                //~vc2UI~
                     initFirsttime=3;	//jni init end             //~vaiqI~
@@ -243,10 +300,21 @@ public class Axe extends Activity                                  //~vaiqR~
 		        if (initAlertDialog2!=null)                        //~vaiqI~
     				dismissInitAlertDialog();                      //~vaiqI~
 			  if (!scrinitialized)                              //~1715I~
+              {                                                    //~vc8AI~
                   if (AxeView.isMeasured())                        //~1715I~
                   {                                                //~1715I~
                       scrinitialized=AxeG.axeView.initScreen();  //set axeView!=NULL before JNI call//~1715I~
                   }                                                //~1715I~
+              }                                                    //~vc8AI~
+              else                                                 //~vc8AI~
+              {                                                    //~vc8AI~
+    				if ((axeStat & AXES_ORIENTATION_CHANGE_BEFORE_INIT)!=0)//~vc8AI~
+                    {                                              //~vc8AI~
+		    	    	if (Dump.Y) Dump.println("Axe.onWindowFocusChanged configChangedBeforeInit");//~vc8AI~
+			        	AxeG.axeView.orientationChanged();         //~vc8AI~
+	    				axeStat &= ~AXES_ORIENTATION_CHANGE_BEFORE_INIT;//~vc8AI~
+                    }                                              //~vc8AI~
+              }                                                    //~vc8AI~
 //          View v=getCurrentFocus();      	                       //~vaiqR~
             if (v==AxeG.axeScreen)                                 //~1827I~
             {                                                      //~vc5fI~
@@ -279,12 +347,14 @@ public class Axe extends Activity                                  //~vaiqR~
     public void onConfigurationChanged(Configuration Pcfg)         //~1526I~
 	{                                                              //~1526I~
     	super.onConfigurationChanged(Pcfg);                        //~1526I~
+        if (Dump.Y) Dump.println("Axe.onConfigurationChanged cfg="+Pcfg);//~vc8wI~
         boolean orichanged=(Pcfg.orientation==Configuration.ORIENTATION_PORTRAIT)!=(AxeG.displayPL==0);//~1606R~
         if (Dump.Y) Dump.println("Axe.onConfigurationChanged orichanged="+orichanged);//~vc1bR~
         if (Dump.Y) Dump.println("Axe.onConfigurationChanged keyboard="+Integer.toHexString(Pcfg.keyboard));//~vai8I~//~vc1bR~
         if (Dump.Y) Dump.println("Axe.onConfigurationChanged keyboardHidden="+Integer.toHexString(Pcfg.keyboardHidden));//~vai8I~//~vc1bR~
         if (Dump.Y) Dump.println("Axe.onConfigurationChanged hardKeyboardHidden="+Integer.toHexString(Pcfg.hardKeyboardHidden));//~vai8I~//~vc1bR~
         if (Dump.Y) Dump.println("Axe.onConfigurationChanged screenLayout="+Integer.toHexString(Pcfg.screenLayout));//~vai8I~//~vc1bR~
+        if (Dump.Y) Dump.println("Axe.onConfigurationChanged scrinitialized="+scrinitialized);//~vc8yI~
         boolean swChangeKbd=(Pcfg.hardKeyboardHidden!=AxeG.hardKeyboard);                      //~vc1rR~//~vc1tI~
         AxeG.setHardKeyboard(Pcfg);                                //~vc1tI~
 //      if (!AxeDlgKbdLayoutHW.configChanged(swChangeKbd))	//AxeDlgKbdLayout is not opened//~vc1tI~//~vc26R~
@@ -305,6 +375,12 @@ public class Axe extends Activity                                  //~vaiqR~
         		Dump.println(e,"onConfigurationChanged");          //~vayeI~
         	  }                                                    //~vayeI~
             }                                                      //~1821I~
+            else                                                   //~vc8AI~
+            {                                                      //~vc8AI~
+		        if (Dump.Y) Dump.println("Axe.onConfigurationChanged before screeninitialized");//~vc8AI~
+                if (AxeG.swEdgeMode)  //if FULL_SENSOR, rotatation occur at start//+vc8AI~
+    				axeStat|=AXES_ORIENTATION_CHANGE_BEFORE_INIT;  //+vc8AR~
+            }                                                      //~vc8AI~
     		axeStat&=~AXES_ORIENTATION_CHANGING;                   //~vaicI~
         }                                                          //~vaicI~
 	}                                                              //~1526I~
@@ -317,20 +393,24 @@ public class Axe extends Activity                                  //~vaiqR~
 //      View v=getCurrentFocus();                                  //~vaiqM~
 //     	AxeG.mainView.requestFocus();                              //~vaiqM~
     	AxeG.axeBCR.onStart();                                     //~vc2KI~
+	    setWindowTracker(true/*set*/);                             //~vay1I~//~vc8uI~
 	}                                                              //~vaiqM~
     @Override                                                      //~vc60I~
     public void onStop()                                            //~vc60I~
 	{                                                              //~vc60I~
     	super.onStop();                                           //~vc60I~
         if (Dump.Y) Dump.println("onStop");                        //~vc60I~
-    	AxeDlgMediaView.onStopMain();                              //+vc60R~
+    	AxeDlgMediaView.onStopMain();                              //~vc60R~
+        if (AxeG.swEdgeMode)                                       //~vc8uI~
+		    setWindowTracker(false/*remove*/);                         //~vay1I~//~vc8uR~
 	}                                                              //~vc60I~
     @Override                                                      //~1A02I~
     public void onPause()                                          //~1A02I~
     {                                                              //~1A02I~
         if (Dump.Y) Dump.println("onPause");                       //~1A02I~
     	super.onPause();                                           //~1A02I~
-    	AxeG.axeBCR.onPause();                                     //~vc2KI~
+        if (AxeG.swEdgeMode)                                       //~vc8uI~
+	    	AxeG.axeBCR.onPause();                                     //~vc2KI~//~vc8uR~
     }                                                              //~1A02I~
     @Override                                                      //~1A02I~
     public void onResume()                                         //~1A02I~
@@ -364,18 +444,54 @@ public class Axe extends Activity                                  //~vaiqR~
         if (Dump.Y) Dump.println("onSaveInstanceState");           //~1A09I~
     	super.onSaveInstanceState(Pbundle);                        //~1A09I~
     }                                                              //~1A09I~
+//**************************************                           //~vc71I~
+    private void clearLockfile()                                   //~vc71I~
+	{                                                              //~vc71I~
+		String fnm=AG.dcmdLockfile;                                //~vc71I~
+		if (Dump.Y) Dump.println("clearLockfile AG.dcmdLockfile="+fnm);//~vc71I~
+        if (fnm==null)                                             //~vc71I~
+        	return;                                                //~vc71I~
+        try                                                        //~vc71R~
+        {                                                          //~vc71R~
+        	File f=new File(fnm);                                  //~vc71I~
+            boolean swExist=f.exists();                            //~vc71I~
+            if (Dump.Y) Dump.println("clearLockfile isExist:"+swExist);//~vc71I~
+            if (swExist)                                           //~vc71I~
+            {                                                      //~vc71I~
+            	boolean rc=f.delete();                             //~vc71R~
+		        if (Dump.Y) Dump.println("clearLockfile issue delete rc="+rc);//~vc71I~
+            }                                                      //~vc71I~
+        }                                                          //~vc71R~
+        catch(Exception e)                                         //~vc71R~
+        {                                                          //~vc71R~
+            if (Dump.Y) Dump.println("clearLockfile FileNotFound:"+fnm);//~vc71R~
+        }                                                          //~vc71R~
+		AG.dcmdLockfile=null;                                      //~vc71I~
+    }                                                              //~vc71I~
 //**************************************                           //~1607I~
     @Override                                                      //~1607I~
     public void onDestroy()                                        //~1607I~
 	{                                                              //~1607I~
-        super.onDestroy();                                         //~1607I~
+        if (Dump.Y) Dump.println("OnDestroy entry");               //~vc71I~
+//        if (!destroying)                                         //~vc71R~
+//        {                                                        //~vc71R~
+//            if (Dump.Y) Dump.println("OnDestroy call AxeJNI.terminatexe");//~vc71R~
+//            AxeJNI.terminatexe(1/*onDestroy*/);                  //~vc71R~
+//            if (Dump.Y) Dump.println("OnDestroy returned AxeJNI.terminatexe");//~vc71R~
+//        }                                                        //~vc71R~
+		clearLockfile();                                           //~vc71I~
+//      super.onDestroy();                                         //~1607I~//~vc71R~
     	 destroying=true;                                           //~1607I~
-    	AxeG.axeBCR.onDestroy();                                   //~vc2KI~
+      	AxeG.axeBCR.onDestroy();                                   //~vc2KI~//~vc71R~
         if (Dump.Y) Dump.println("OnDestroy configchange="+Integer.toHexString(getChangingConfigurations())+",isfinishing="+isFinishing()+",initfirsttime sw="+initFirsttime);//~vayeR~
-        Dump.close();                                              //~1607I~
 //    if (isFinishing())                                           //~vayeR~
 //language change calls onDestry , app restart after it.           //~vayeI~
 //thaen cause illeagal state exception at AxeView:initScreen.add screen to frame(already parented)//~vayeI~
+//        if (Dump.Y) Dump.println("OnDestroy before sleep 100");  //~vc71R~
+//        Utils.sleep(100); //100ms                                //~vc71R~
+//        if (Dump.Y) Dump.println("OnDestroy after sleep 100");   //~vc71R~
+        Dump.close();                                              //~1607I~//~vc71M~
+        super.onDestroy();                                         //~vc71I~
         Utils.exit(0,true);	//System.exit() to kill myself to clear static variable//~1607I~
     }                                                              //~1607I~
 //*********                                                        //~1607I~
@@ -505,16 +621,30 @@ public class Axe extends Activity                                  //~vaiqR~
 		return 0;                                                  //~vaiqI~
 	}                                                              //~vaiqI~
     //******************************************                   //~vayaI~
-	@Override                                                      //~vayaI~
-	public boolean onMenuItemSelected(int Pfeature,MenuItem Pitem) //~vayaI~
-    {                                                              //~vayaI~
-		if (Pitem.getItemId()==android.R.id.home)                  //~vayaI~
-        {                                                          //~vayaI~
-	    	AxeG.axeMenu.onClickHomeButton();                      //~vayaI~
-        	return true;	//exausted                             //~vayaI~
-        }                                                          //~vayaI~
-        return super.onMenuItemSelected(Pfeature,Pitem);           //~vayaI~
-	}                                                              //~vayaI~
+//    @Override                                                      //~vayaI~//~vc8aR~
+//    public boolean onMenuItemSelected(int Pfeature,MenuItem Pitem) //~vayaI~//~vc8aR~
+//    {                                                              //~vayaI~//~vc8aR~
+//        if (Pitem.getItemId()==android.R.id.home)                  //~vayaI~//~vc8aR~
+//        {                                                          //~vayaI~//~vc8aR~
+//            AxeG.axeMenu.onClickHomeButton();                      //~vayaI~//~vc8aR~
+//            return true;    //exausted                             //~vayaI~//~vc8aR~
+//        }                                                          //~vayaI~//~vc8aR~
+//        return super.onMenuItemSelected(Pfeature,Pitem);           //~vayaI~//~vc8aR~
+//    }                                                              //~vayaI~//~vc8aR~
+    //******************************************                   //~vc8cI~
+    public boolean onClickHome(MenuItem Pitem)                     //~vc8cI~
+    {                                                              //~vc8cI~
+    	int id=Pitem.getItemId();                                  //~vc8cI~
+        if (Dump.Y) Dump.println("Axe.onClickHome Pitem="+Pitem+",id=0x"+Integer.toHexString(id)+",androidHome=0x"+Integer.toHexString(android.R.id.home));//~vc8cR~
+        boolean rc=false;                                          //~vc8cI~
+        if (id==android.R.id.home)                                 //~vc8cI~
+        {                                                          //~vc8cI~
+            AxeG.axeMenu.onClickHomeButton();                      //~vc8cI~
+            rc=true;                                               //~vc8cI~
+        }                                                          //~vc8cI~
+        if (Dump.Y) Dump.println("Axe.onClickHome rc="+rc);        //~vc8cI~
+        return rc;                                                 //~vc8cI~
+    }                                                              //~vc8cI~
 //***********************************************************      //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
     public void destroyClose()                                     //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
     {                                                              //~@@@@I~//~@@@2I~//~@@@@I~//~vc10I~
@@ -557,6 +687,7 @@ public class Axe extends Activity                                  //~vaiqR~
     {                                                              //~vc1bI~
     	try                                                        //~vc1bI~
         {                                                          //~vc1bI~
+	        super.onRequestPermissionsResult(PrequestID, Ptypes, Presults);//studio request call super//~vay1R~//~vc89I~
         	if (Dump.Y) Dump.println("Axe.onRequestPermissionResult reqid="+PrequestID+",type="+ com.ahsv.utils.Utils.toString(Ptypes)+",result="+ Arrays.toString(Presults));//~vc1bR~//~vc2UR~
             if (Presults.length!=0)                                 //~vc1bI~
 	        	aAxePermission.onRequestPermissionsResult(PrequestID,Ptypes,Presults);//~vc1bR~
@@ -579,6 +710,7 @@ public class Axe extends Activity                                  //~vaiqR~
     	try                                                        //~vc4qI~
         {                                                          //~vc4qI~
         	if (Dump.Y) Dump.println("Axe.onActivityResult reqid="+PrequestID+",result="+Presult+",intent="+Pintent);//~vc4qI~
+			super.onActivityResult(PrequestID,Presult,Pintent);	//if not called,compile err//~1ak2I~//~vc89I~
             if ((PrequestID & REQID_SAF)!=0)                       //~vc4qI~
 	        	USAF.onActivityResult(PrequestID,Presult,Pintent);//~vc4qI~
         }                                                          //~vc4qI~
@@ -587,4 +719,113 @@ public class Axe extends Activity                                  //~vaiqR~
         	Dump.println(e,"Axe.onActivityResult reqID="+PrequestID);//~vc4qI~
         }                                                          //~vc4qI~
     }                                                              //~vc4qI~
+//*****************************************************************************************//~vay4I~
+//*registerForActivityResult should be here(in class of Activity) to avoid compile error//~vay4I~
+//*****************************************************************************************//~vay4I~
+@TargetApi(30)                                                     //~vay4I~
+@SuppressWarnings("unchecked")                                     //~vay4I~
+	public ActivityResultLauncher<Intent> startActivityForResult_30_register(int PreqCode )//~vay4I~
+    {                                                              //~vay1I~//~vay4I~
+        if (Dump.Y) Dump.println(CN+"startActivityForResult_30_register reqCode="+PreqCode);//~vay1I~//~vay4I~
+        ActivityResultContract contract=new ActivityResultContracts.StartActivityForResult();//~vay1I~//~vay4I~
+		ActivityResultCallback<ActivityResult> cb=new ActivityResultCallback<ActivityResult>()//~vay1I~//~vay4I~
+				{                                                  //~vay1I~//~vay4I~
+                	int reqCode=PreqCode;                          //~vay4I~
+                    @Override                                      //~vay1I~//~vay4I~
+                    public void onActivityResult(ActivityResult Presult)//~vay1I~//~vay4I~
+                    {                                              //~vay1I~//~vay4I~
+				        if (Dump.Y) Dump.println(CN+"startActivityForResult_30_register onActivityResult reqCode="+reqCode);//~vay4I~
+                        try                                        //~vay1I~//~vay4I~
+                        {                                          //~vay1I~//~vay4I~
+                            int resultcode=Presult.getResultCode();        //~vay1I~//~vay4I~
+                            Intent intent=Presult.getData();       //~vay1I~//~vay4I~
+                            if (Dump.Y) Dump.println(CN+"startActivityForResult_30 onActivityResultCallback result="+resultcode+",reqcode="+reqCode+",intent="+intent);//~vay4I~
+//							AG.aMainActivity.onActivityResult(reqCode,resultcode,intent);//~vay4I~
+  							AxeG.main.onActivityResult(reqCode,resultcode,intent);//~vay4R~
+                        }                                          //~vay1I~//~vay4I~
+                        catch(Exception e)                         //~vay1I~//~vay4I~
+                        {                                          //~vay1I~//~vay4I~
+                            Dump.println(e,CN+"startActivityForResult_30 onActivityResultCallback");//~vay4I~
+                        }                                          //~vay1I~//~vay4I~
+                    }                                              //~vay1I~//~vay4I~
+                } ;                                                //~vay1I~//~vay4I~
+    	ActivityResultLauncher<Intent> launcher=registerForActivityResult(contract,cb);//~vay1I~//~vay4I~
+        if (Dump.Y) Dump.println(CN+"startActivityForResult_30_register return launcher="+launcher);//~vay4I~
+        return launcher;                                           //~vay4I~
+    }                                                              //~vay1I~//~vay4I~
+//*****************************************************************************************//~vay4I~
+@TargetApi(30)                                                     //~vay4I~
+	public void startActivityForResult_30_launch(ActivityResultLauncher<Intent> Plauncher,Intent Pintent)//~vay4I~
+    {                                                              //~vay4I~
+        if (Dump.Y) Dump.println(CN+"startActivityForResult_30_launch intent="+Pintent+",launcher="+Plauncher);//~vay4I~
+        Plauncher.launch(Pintent);                                 //~vay4I~
+    }                                                              //~vay4I~
+//*****************************************************************//~vay1I~//~vc8uI~
+//*****************************************************************//~vc8uI~
+//*****************************************************************//~vc8uI~
+	class LayoutStateChangeCallback implements Consumer<WindowLayoutInfo>//~vay1I~//~vc8uI~
+    {                                                              //~vay1I~//~vc8uI~
+       @Override                                                   //~vay1I~//~vc8uI~
+       public void accept(WindowLayoutInfo PlayoutInfo)            //~vay1I~//~vc8uI~
+       {                                                           //~vay1I~//~vc8uI~
+           	Axe.this.runOnUiThread( () ->                 //~vay1I~//~vc8uR~
+   			{                                                      //~vay1I~//~vc8uI~
+		        if (Dump.Y) Dump.println(CN+"LayoutStateChangeCallback accept START isFoldableDevice="+AG.foldingFeature);//~vay1R~//~vc8uI~
+        	  if (AG.foldingFeature)                               //~vayMI~//~vc8uI~
+              {                                                    //~vayZI~//~vc8uI~
+  				AG.foldingFeatureOpened=layoutChanged(PlayoutInfo);//~vay1I~//~vc8uI~
+                if (AxeG.swEdgeMode)                               //~vc8yI~
+	                AxeView.requestOrientationEdgeMode();          //~vc8yI~
+//        		UView.getScreenSize();	//open/close determind     //~vayZI~//~vc8uR~
+        		AxeView.getDisplayRegion(); //re-evaluate          //~vc8uI~
+              }                                                    //~vayZI~//~vc8uI~
+		      if (Dump.Y) Dump.println(CN+"LayoutStateChangeCallback accept END");//~vayrI~//~vc8uR~
+           	});                                                    //~vay1I~//~vc8uI~
+       	}//accept                                                  //~vay1I~//~vc8uI~
+        //*******************************************************  //~vay1I~//~vc8uI~
+        public int layoutChanged(WindowLayoutInfo PlayoutInfo)     //~vayKI~//~vc8uI~
+        {                                                          //~vay1I~//~vc8uI~
+            if (Dump.Y) Dump.println(CN+"layoutChanged foldingFeature="+AG.foldingFeature+",layoutinfo="+PlayoutInfo.toString());//~vay1R~//~vc8uI~
+        	List<DisplayFeature> list=PlayoutInfo.getDisplayFeatures();//~vay1I~//~vc8uI~
+        	int sz=list.size();                                    //~vay1I~//~vc8uI~
+            int open=FOLDING_STATE_CLOSE;                          //~vayKI~//~vc8uI~
+            if (sz!=0)                                             //~vay1I~//~vc8uI~
+            {                                                      //~vay1I~//~vc8uI~
+        		DisplayFeature df=(DisplayFeature)list.get(0);     //~vay1I~//~vc8uI~
+            	Rect r=df.getBounds();                             //~vay1I~//~vc8uI~
+                FoldingFeature ff=(FoldingFeature)df;              //~vay1I~//~vc8uI~
+                FoldingFeature.OcclusionType tp=ff.getOcclusionType();//~vay1I~//~vc8uI~
+                FoldingFeature.State  st=ff.getState();            //~vay1I~//~vc8uI~
+                if (st==FoldingFeature.State.HALF_OPENED           //~vay1I~//~vc8uI~
+                ||  st==FoldingFeature.State.FLAT)                 //~vay1I~//~vc8uI~
+            		open=FOLDING_STATE_OPEN;                       //~vayKI~//~vc8uI~
+            }                                                      //~vay1I~//~vc8uI~
+            if (Dump.Y) Dump.println(CN+"layoutChanged rc open="+open);//~vay1I~//~vc8uI~
+            return open;                                           //~vay1I~//~vc8uI~
+        }                                                          //~vay1I~//~vc8uI~
+   	}//class                                                       //~vay1I~//~vc8uI~
+    private void setWindowTracker(boolean Pset)                    //~vay1R~//~vc8uI~
+    {                                                              //~vay1I~//~vc8uI~
+    	if (Dump.Y) Dump.println(CN+"setWindowTracker Pset="+Pset);//~vay1R~//~vc8uI~
+       	if (Pset)                                                  //~vay1I~//~vc8uI~
+       	{                                                          //~vay1I~//~vc8uI~
+       		windowInfoTracker.addWindowLayoutInfoListener(AG.activity,(Executor) Runnable::run,layoutStateChangeCallback);//~vay1I~//~vc8uI~
+        }                                                          //~vay1I~//~vc8uI~
+        else                                                       //~vay1I~//~vc8uI~
+        {                                                          //~vay1I~//~vc8uI~
+	    	windowInfoTracker.removeWindowLayoutInfoListener(layoutStateChangeCallback);//~vay1I~//~vc8uI~
+        }                                                          //~vay1I~//~vc8uI~
+   }                                                               //~5122I~//~vay1I~//~vc8uI~
+//*****************************************************************************************//~vay4I~//~vc8uI~
+//    private void initEmoji()                                     //~vc8wR~
+//    {                                                            //~vc8wR~
+//        if (Dump.Y) Dump.println(CN+"initEmoji");                //~vc8wR~
+//        FontRequest fontRequest = new FontRequest(               //~vc8wR~
+//                "com.example.fontprovider",                      //~vc8wR~
+//                "com.example",                                   //~vc8wR~
+//                "emoji compat Font Query",                       //~vc8wR~
+//                CERTIFICATES);                                   //~vc8wR~
+//        EmojiCompat.Config config = new FontRequestEmojiCompatConfig(this, fontRequest);//~vc8wR~
+//        EmojiCompat.init(config);                                //~vc8wR~
+//   }                                                             //~vc8wR~
 }//class                                                           //~1621R~

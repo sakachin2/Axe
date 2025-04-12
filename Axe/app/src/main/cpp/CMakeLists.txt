@@ -1,9 +1,12 @@
+#//vc8C 2025/04/11 Build bundle failes by "libiconv.a is reserved name".(toybox prepares iconv, but do not accep cp932 etc)
 #cmake_minimum_required(VERSION 3.10.2)
 cmake_minimum_required(VERSION 3.22.1)
 #cmake_minimum_required(VERSION 3.18.1)
 #cmake_minimum_required(VERSION 3.17.3)##~v700M~
 project(AxeA9)
 ##############################
+set(LIBICONV_L iconv116)               #vc8C
+set(LIBICONV_A libiconv116.a)          #vc8C
 set(OUT_SUBDIR ${CMAKE_BUILD_TYPE}/${ANDROID_ABI})
 set(INCLUDE_ULIB_UPDATE ${CMAKE_HOME_DIRECTORY}/csub/ulib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin/${OUT_SUBDIR})
@@ -16,8 +19,10 @@ set(DEVCONUP_LIBS ${DEVCONUP}/libs/${OUT_SUBDIR})
 #set(RESOURCE_LIBS ${CMAKE_HOME_DIRECTORY}/../resources/lib/${ANDROID_ABI})
 #set(RESOURCE_BIN  ${CMAKE_HOME_DIRECTORY}/../resources/bin/${ANDROID_ABI})
 #set(RESOURCE_LIBS ${CMAKE_HOME_DIRECTORY}/../resources/lib/${OUT_SUBDIR})
-set(RESOURCE_LIBS ${CMAKE_HOME_DIRECTORY}/../resources/libs/${OUT_SUBDIR})   #2023/06/15 lib-->libs
+#set(RESOURCE_LIBS ${CMAKE_HOME_DIRECTORY}/../resources/libs/${OUT_SUBDIR})   #2023/06/15 lib-->libs
+set(RESOURCE_LIBS ${CMAKE_HOME_DIRECTORY}/../resources/lib/${OUT_SUBDIR})     #2023/08/18
 set(RESOURCE_BIN  ${CMAKE_HOME_DIRECTORY}/../resources/bin/${OUT_SUBDIR})
+set(SOURCESET     ${CMAKE_HOME_DIRECTORY}/libs/${OUT_SUBDIR})
 #set(LIBDIR_ICONV ${DEVCONUP_LIBS})           #vc57
 #set(LIBDIR_ICONV  ${LIBRARY_OUTPUT_PATH})     #vc57
  set(LIBDIR_ICONV  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})     #vc57

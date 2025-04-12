@@ -1,3 +1,4 @@
+##vc81 2025/03/17 ndk compile err(update by ulib/xe):vbz5:240120 try vbz3 to XXE(apichk by char extent)
 #==exec-compile==arm-linux-androideabi-gcc
 #-c
 #-o
@@ -184,6 +185,7 @@ add_library(
             ${ULIB}/uregex.c
             ${ULIB}/ulibarm.c
             ${ULIB}/uprocExit.c        #2023/06/22
+            ../../ulib/arm/uvio2.c          #vc81
              )
 #debug and release exchanging deletes other side debug/release so save to DevConUp 
 add_custom_command (TARGET userxxe_nc POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libuserxxe_nc.a ${DEVCONUP_LIBS})

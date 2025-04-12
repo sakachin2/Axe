@@ -12,7 +12,7 @@ You can set is 0 to 8 on each lines.
 "AltG" is for input native characters for your language.
 Set combination with keyboard keys on the dialog "Hard Kbd Layout".
 
-Long press the button to change function, insert a button and delete the button.
+Long press the button on the bottom line to change function, insert a button and delete the button.
 
 Disable direction button's Repeatable :
    You can change buttons function by long-press
@@ -23,4 +23,4 @@ Disable direction button's Repeatable :
    Or long-click after set Shortcut to On.
 
 ----------------------------------------------------------------------------
-2020/07/29 AxeBtnLayout
+2025/03/30 AxeBtnLayout

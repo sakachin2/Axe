@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--//vc8f 2025/03/23 default thema changed(RagioButton)-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
      android:id="@+id/ListViewLine"
      android:layout_width="fill_parent"
@@ -19,7 +20,10 @@
 	         android:focusableInTouchMode="false"
 	         android:longClickable="false"
 	         android:clickable="false"
+            android:background="#ff202020"
+            android:textColor="#ffffffff"
     />                                         
+        <!--vc8f add background,textClor-->
     <TextView
         android:id="@+id/Value"
         android:layout_height="wrap_content"

@@ -1,7 +1,8 @@
-//*CID://+vc4xR~:                                   update#=  207; //~vc4xR~
+//*CID://+vc70R~:                                   update#=  210; //~vc4xR~//~vc70R~
 //**************************************************************** //~1610I~
 //jnia.h                                                           //~vay0R~
 //**************************************************************** //~1610I~
+//vc70 2023/08/14 try tool with attr of 110(executable only) to avoid M^X vioration//~vc70I~
 //vc4x 2023/05/16 Try to get path for shared storage               //~vc4xI~
 //vby8:230415 (ARM)open document file                              //~vby8I~
 //vc4p 2023/03/30 android10(api29) executable permission; try Manifest:extractNativeLibs=true and getApplicationInfo().nativeLibrary//~vc4pI~
@@ -57,7 +58,9 @@ JNIEXT int     GaxeStatus;                                         //~vc1dI~
 #define AXES_ALTGR_RIGHTALT                       0x08  // use Left-Alt as AltGr//~vc2gR~
 #define AXES_ALTGR_LEFTALT                        0x10  // use Left-Alt as AltGr//~vc2gI~
 #define AXES_ALTGR_RIGHTSHIFT                     0x20  // use RightShift as AltGr//~vc2gR~
-#define AXES_GRANT_ALLFILES                       0x40  // permit access allfiles for API>=30//+vc4xR~
+#define AXES_GRANT_ALLFILES                       0x40  // permit access allfiles for API>=30//~vc4xR~
+#define AXES_MXTOOL                               0x80  // tool by permission=o110//~vc70I~
+#define AXES_SOPROC                             0x0100  // execute tool process as *.so//~vc70I~
 JNIEXT char   *Gjnisdpath;                                         //~1A06I~
 JNIEXT char   *GjnisdRoot;                                         //~vc1fI~
 JNIEXT char   *GjnisdRootPath;                                     //~vc1iI~
@@ -123,7 +126,7 @@ JNIEXT jfieldID staticFID_mCurrentFilenameType;                    //~vay7I~
 #define PRINT_EXCEPTION(env,comment) \
     if ((*(env))->ExceptionCheck(env)) \
     {                                            \
-    	UTRACEP("ExceptionCheck:%s\n",comment);  \
+    	UTRACEP_FLUSH("ExceptionCheck:%s\n",comment);  \
 	    (*(env))->ExceptionDescribe(env);        \
     }                                                              //~1715I~
 //*array JNI func dose not indicate by return code;but may throwed exception//~1715I~
@@ -154,6 +157,7 @@ JNIEXT jfieldID staticFID_mCurrentFilenameType;                    //~vay7I~
 #define C2J_VOIDVOID(env,method) \
                                	C2J_PRE(env,method)\
 									(*env)->CallStaticVoidMethod(env,Gclass,staticMethod_##method);\
+                       UTRACEP_FLUSH("%s:AFTER C2J_PRE",UTT);\
 								C2J_POST(env)                      //~vay0I~
 //#define C2J_VOID(env,method,...)  (*env)->CallStaticVoidMethod(env,Gclass,staticMethod_##method,__VA_ARGS__)//~vay0R~
 #define C2J_VOID(env,method,...)  \
@@ -184,12 +188,12 @@ JNIEXT jfieldID staticFID_mCurrentFilenameType;                    //~vay7I~
         	method=C2J_GETSTATICMETHODID(env,#mname,parm);      \
             if (!method)                             \
             {                                        \
-                UTRACEP("method(%s) not found\n",#mname);\
+                UTRACEP_FLUSH("method(%s) not found\n",#mname);\
 				PRINT_EXCEPTION(env,"C2J_GETMETHODID_RETIFERR") \
                 return;                              \
             }                                        \
 	        staticMethod_##mname=method;               \
-            UTRACEP("method(%s) is %p\n",#mname,staticMethod_##mname);\
+            UTRACEP_FLUSH("method(%s) is %p\n",#mname,staticMethod_##mname);\
         }                                            \
     }                                                              //~1616M~
 #define C2J_GETMETHODID_GOTOIFERR(env,mname,parm)         \

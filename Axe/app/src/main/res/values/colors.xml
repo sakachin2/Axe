@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--//vc8t 2025/04/02 Api35 is edgeToEdgeMode as default-->
 <resources>
     <color name="menu_fg">#FFFFFFFF</color>
     <color name="menu_bg">#FF202020</color>
     <color name="menu_divider">#FF808080</color>
     <color name="popupmenu">#FF000000</color>
     <color name="separater">#00bfff</color>  <!--deepSkyBlue-->
+    <color name="menu_white">#00bfff</color>  <!--deepSkyBlue-->
+    <color name="menu_text">#00bfff</color>  <!--deepSkyBlue-->
+    <color name="alert_bg">#ffc0c0c0</color> 
+    <color name="main_primary_dark">#3700b3</color> <!--vc8t--> 
 </resources>

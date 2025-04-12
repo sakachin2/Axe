@@ -1,6 +1,8 @@
-//*CID://+vc60R~: update#=    282;                                 //+vc60R~
+//*CID://+vc8cR~: update#=    303;                                 //~vc8cR~
 //**********************************************************************//~1107I~
-//vc60 2023/08/03 mediaview as openWith                            //+vc60I~
+//vc8n 2025/03/30 when rotated, home icon disappear                //~vc8cI~
+//vc8c 2025/03/19 api21 actionbar(icon+title+menu) for alternative of Holo theme(AppCompatActivity requres those theme)//~vc8cI~
+//vc60 2023/08/03 mediaview as openWith                            //~vc60I~
 //vc5s 2023/07/25 drop pause option on stop                        //~vc5sI~
 //vc5q 2023/07/23 reject the function transfer file to mime app because//~vc5qI~
 //                From android7:android.os.FileUriExposedException: file:///data/user/0/com.xe.AxeA9.debug/files/myhome/x1.c exposed beyond app through Intent.getData()//~vc5qI~
@@ -22,7 +24,7 @@
 package com.xe.Axe;                                                //~1527I~
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
+//import android.app.ActionBar;                                    //~vc8cR~
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -31,6 +33,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.appcompat.app.ActionBar;                           //~vc8cI~
+import androidx.core.view.MenuCompat;
+//~vc8cI~
 import com.ahsv.dialog.HelpDialog;
 
 //**********************************************************************//~1107I~
@@ -87,7 +92,7 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     	inflater=AxeG.activity.getMenuInflater();                   //~1527I~
         registerContextMenu(AxeG.mainView); //request callback onCreateContextMenu()//~1527I~
 //        setupPopupMenuTitle();                                   //~1927R~
-		enableHomeButton();                                        //~vayaI~
+//		enableHomeButton();                                        //~vayaI~//~vc8cR~
     }                                                              //~1107I~
 //    private void setupPopupMenuTitle()                           //~1927R~
 //    {                                                            //~1927R~
@@ -108,6 +113,7 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
 //* called only once                                               //~1527M~
  	public  void onCreateOptionMenu(Menu Pmenu)                    //~1527M~
 	{                                                              //~1527M~
+        if (Dump.Y) Dump.println("AxeMenu onCreateOptionMenu Pmenu="+Pmenu);//~vc60I~
         if (AxeG.osVersion>=AxeG.HONEYCOMB)  //android3            //~vay5I~
         {                                                          //~vay5I~
             onCreateOptionMenu_V11(Pmenu);                         //~vay5I~
@@ -124,6 +130,7 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
 //**************                                                   //~vay5I~
  	public static void staticCreateOptionMenu(Menu Pmenu)          //~vay5I~
 	{                                                              //~vay5I~
+        if (Dump.Y) Dump.println("AxeMenu staticCreateOptionMenu Pmenu="+Pmenu);//~vc8gI~
         MenuInflater inf=AxeG.activity.getMenuInflater();          //~vay5I~
         inf.inflate(R.menu.actionbar,Pmenu);                       //~vay5I~
     }                                                              //~vay5I~
@@ -259,7 +266,7 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
 //*************************************************                //~1122I~
     public void onCreateContextMenu(ContextMenu Pmenu,View Pview,ContextMenuInfo Pinfo)//~1121I~
     {                                                                  //~1107I~//~1121R~
-		if (Dump.Y) Dump.println("AxeMenu:onCreateContextMenu menuType="+menuType+",View="+Pview.toString());                                       //~1306I~//~1528R~
+		if (Dump.Y) Dump.println("AxeMenu:onCreateContextMenu menuType="+menuType+",ViewId="+Integer.toHexString(Pview.getId())+",View="+Pview.toString());                                       //~1306I~//~1528R~//~vc8cR~
         int rid;                                                   //~1528I~
 //        switch(menuType)                                           //~1528I~//~vc53R~
 //        {                                                          //~1528I~//~vc53R~
@@ -289,7 +296,9 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
 //      default:                                                   //~vc53I~
             rid=R.menu.contextmenu;                                //~vc53I~
 //      }                                                          //~vc53I~
+		if (Dump.Y) Dump.println("AxeMenu:onCreateContextMenu inflate id="+Integer.toHexString(rid));//~vc8cI~
         inflater.inflate(rid,Pmenu);                               //~1927I~
+        MenuCompat.setGroupDividerEnabled(Pmenu,true);             //~vc8cR~
         if (menuType==MT_POPUP)                                    //~1927I~
         	createPopupMenu(Pmenu);                                //~1927I~
     }                                                                  //~1107I~//~1121R~
@@ -602,8 +611,8 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     private void onFileOpenWith()                                  //~vainI~
     {                                                              //~vainI~
     	if (Dump.Y) Dump.println("AxeMenu FileOpenWith");          //~vainI~
-//      if (true)                                                  //~vc5qI~//+vc60R~
-        if (false)                                                 //+vc60I~
+//      if (true)                                                  //~vc5qI~//~vc60R~
+        if (false)                                                 //~vc60I~
         {                                                          //~vc5qI~
         	Utils.showToastLong(R.string.NotSupportedOpenWith);    //~vc5qR~
             return;                                                //~vc5qI~
@@ -731,18 +740,54 @@ public class AxeMenu implements AxeAlertI                           //~1527R~
     	showContextMenu(MT_ACTIONBAR);	//callback:onCreateContextMenu//~vay5I~
     }                                                              //~vay5I~
 //****************************************************             //~vayaI~
-//from ICS enable required,before ICS it is default                //~vayaI~
+//from AxeView when setContentView                                 //~vc8cR~
 //****************************************************             //~vayaI~
-    public void enableHomeButton()                                 //~vayaI~
+//  public void enableHomeButton()                                 //~vayaI~//~vc8cR~
+    public static void enableHomeButton()                          //~vc8cI~
     {                                                              //~vayaI~
         if (AxeG.osVersion>=AxeG.ICE_CREAM_SANDWICH)  //android4 api14//~vayaR~
 		    enableHomeButton_V11();                                 //~vayaI~
     }                                                              //~vayaI~
     @TargetApi(AxeG.ICE_CREAM_SANDWICH)                           //~vayaR~
-    public void enableHomeButton_V11()                             //~vayaI~
+//  public void enableHomeButton_V11()                             //~vayaI~//~vc8cR~
+    private static void enableHomeButton_V11()                     //~vc8cI~
     {                                                              //~vayaI~
-    	ActionBar ab=AxeG.activity.getActionBar();                 //~vayaR~
+//    	ActionBar ab=AxeG.activity.getActionBar();                 //~vayaR~//~vc8cR~
+      	ActionBar ab=AxeG.supportActionBar;                       //~vc8cI~
+        if (Dump.Y) Dump.println("AxeMenu.enableHomeButton_V11 supportActionBar="+ab);//~vc60I~//~vc8cR~
+        if (Dump.Y) Dump.println("AxeView.enableHomeButton_V11 1 displayOption="+AxeG.supportActionBar.getDisplayOptions());//~vc8cR~
+      if (ab!=null)                                                //~vc60I~
+      {                                                            //~vc8cI~
+      	if (true)                                                  //~vc8cI~
+        {                                                          //~vc8cI~
+            int optOn=ActionBar.DISPLAY_HOME_AS_UP;                //~vc8cR~
+            int optMask=ActionBar.DISPLAY_USE_LOGO;                //~vc8cI~
+   	    	ab.setDisplayOptions(optOn,optMask);                   //~vc8cR~
+	    	ab.setDisplayHomeAsUpEnabled(true);                    //~vc8cI~
+          	int rid=AxeG.isDebuggable?R.drawable.wxe_debug:R.drawable.wxe;//+vc8cR~
+//TEST    	int rid=R.drawable.wxe_debug;                          //+vc8cR~
+      		ab.setHomeAsUpIndicator(rid);                          //~vc8cR~
+	        if (Dump.Y) Dump.println("AxeMenu.enableHomeButton_V11 setHomeAsUpIndicator rid="+Integer.toHexString(rid));//~vc8cI~
+        }                                                          //~vc8cI~
+        else                                                       //~vc8cI~
+      	if (true)                                                  //~vc8cI~
+        {                                                          //~vc8cI~
+//          int optOn=ActionBar.DISPLAY_USE_LOGO;                  //~vc8cR~
+//          int optOn=ActionBar.DISPLAY_SHOW_HOME;                 //~vc8cR~
+            int optOn=ActionBar.DISPLAY_HOME_AS_UP;                //~vc8cI~
+//          int optMask=ActionBar.DISPLAY_SHOW_HOME;               //~vc8cR~
+            int optMask=0;                                         //~vc8cI~
+// 	    	ab.setDisplayOptions(optOn,optMask);                   //~vc8cR~
+    	    if (Dump.Y) Dump.println("AxeView.enableHomeButton_V11 2 DisplayOption="+AxeG.supportActionBar.getDisplayOptions());//~vc8cR~
+    	ab.setDisplayHomeAsUpEnabled(true);                        //~vc8cR~
+//      	ab.setDisplayUseLogoEnabled(true);                     //~vc8cR~
+//    	ab.setDisplayHomeAsUpEnabled(true);                        //~vc8cR~
+      	ab.setHomeAsUpIndicator(R.drawable.wxe);                //~vc8cI~
+    	    if (Dump.Y) Dump.println("AxeView.enableHomeButton_V11 3 displayOption="+AxeG.supportActionBar.getDisplayOptions());//~vc8cI~
+        }                                                          //~vc8cI~
+        else                                                       //~vc8cI~
     	ab.setHomeButtonEnabled(true);                             //~vayaI~
+      }                                                            //~vc8cI~
     }                                                              //~vayaI~
 //***************                                                  //~vayaI~
     public void onClickHomeButton()                                //~vayaI~

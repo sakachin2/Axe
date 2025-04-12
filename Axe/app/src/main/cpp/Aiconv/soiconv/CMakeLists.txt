@@ -90,4 +90,5 @@ add_custom_command (TARGET iconv_so POST_BUILD
 #	 COMMAND ${CMAKE_COMMAND} -E copy ${EXECUTABLE_OUTPUT_PATH}/iconvbin   ${DEVCONUP_BIN}/iconv    #vc58
      COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libiconv_so.so   ${RESOURCE_LIBS}
      COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libiconv_so.so   ${DEVCONUP_LIBS}
+#    COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_OUTPUT_PATH}/libiconv_so.so   ${SOURCESET}
 	)

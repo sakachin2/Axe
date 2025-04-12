@@ -1,7 +1,9 @@
-//*CID://+vc06R~:                             update#=  349;
+//*CID://+vbz5R~:                             update#=  351;       //+vbz5R~
 //*********************************************************************//~v440I~
 //* wxe interface definition                                       //~v440I~
 //*********************************************************************//~v440I~
+//vc81 2025/03/17 ndk compile err(update by ulib/xe):vbz5:240120 try vbz3 to XXE(apichk by char extent)//+vbz5I~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //~vc71I~
 //vc06:2020/06/10 Axe:GWXES_UPDATEMENU not defined. correct anyway for pass compile
 //vc05:2020/06/10 Axe:WXEM_SETRGN2 not defined. correct anyway for pass compile
 //vc04:2020/06/10 GWXES_SELECTALL not defined. correct anyway
@@ -115,7 +117,8 @@ extern  "C"                                                        //~v440I~
 #endif //UTF8EBCD raw ebcdic file support                          //~va5yI~
   #define GWXES_KBDEVENT     0x0800 //kbdevent                     //~va7DI~
   #define GWXES_SELECTALL    0x1000 //parm to func_lmark_file      //~vbd2I~//~vc04I~
-  #define GWXES_UPDATEMENU   0x2000 //update File menu enabl/disable//~vbdnI~//+vc06I~
+  #define GWXES_UPDATEMENU   0x2000 //update File menu enabl/disable//~vbdnI~//~vc06I~
+  #define GWXES_ONDESTROY    0x4000 //by swipeout app              //~vc71I~
                                                                    //~va20M~
   EXTERN  void *Gpwxei;    //ptr t WXEINTF                         //~va20M~
 #endif                                                             //~va20M~
@@ -380,6 +383,7 @@ int wxe_dndcopyfile(int Popt,int Pseq,int Ptot,char *Psource,char *Ptarget);//~v
                                )                                   //~vb4rI~//~vb91I~
                                                                    //~va3dI~
 	int  wxe_uerrexitmsgbox(char *Ppmsg);	                       //~vaf5I~//~vb91M~
+    int xxe_GetCursorWidth(int Popt,ULONG Pucs);                   //+vbz5I~
 #endif	// .c                                                      //~v440I~
 #ifdef __cplusplus                                                 //~v440I~
 }                                                                  //~v440I~

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--//vc8m 2025/03/30 AllFileAccess is from A11(api30). show option by disabled(not gone)-->
+<!--//vc8f 2025/03/23 default thema changed(RagioButton)-->
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -12,6 +14,12 @@
 	            android:focusable="true"
 	            android:focusableInTouchMode="true"
         />	<!--dummy for avaoid ime popup;and requestFocus on Name field was comment outed-->
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="2px"
+					android:background="@color/separater"
+                 android:orientation="vertical"
+            />
 
         <LinearLayout
              android:id="@+id/ScrollViewContainer"
@@ -32,23 +40,28 @@
                     <LinearLayout
                          android:layout_width="fill_parent"
                          android:layout_height="1px"
-                          android:background="#fff0f0f0"
+						  android:background="@color/separater"
                          android:orientation="vertical"
                     />
                     <TextView
                          android:layout_width="fill_parent"
                          android:layout_height="wrap_content"
-                        android:background="#ff202020"
                         android:text="@string/Setup_ArmOpt_Orientation"
                     />
+<!--  vc8f
+                        android:background="#ff202020"
+-->
                     <RadioGroup
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/SCREEN_ORIENTATION"
-                        android:background="#ff404040"
                         android:text="@string/Setup_ArmOpt_Orientation"
+                        android:background="#fff0f0f0"
                         >
+<!--  vc8f
+                        android:background="#ff404040"
+-->
                         <RadioButton
                             android:id="@+id/SCREEN_FIX_LANDSCAPE"
                             android:layout_height="wrap_content"
@@ -71,9 +84,12 @@
                     <LinearLayout
                          android:layout_width="fill_parent"
                          android:layout_height="1px"
-                          android:background="#fff0f0f0"
+						  android:background="@color/separater"
                          android:orientation="vertical"
                     />
+<!--
+                          android:background="#fff0f0f0" vc8m
+-->
                     <CheckBox
                         android:id="@+id/RESET_MODIFIER"
                         android:layout_width="fill_parent"
@@ -89,17 +105,22 @@
                     <TextView
                          android:layout_width="fill_parent"
                          android:layout_height="wrap_content"
-                        android:background="#ff202020"
                         android:text="@string/Setup_ArmOpt_HomeButtonKey"
                     />
+<!-- vc8f
+                        android:background="#ff202020"
+-->
                     <RadioGroup
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/HOMEBUTTONKEY"
-                        android:background="#ff404040"
                         android:text="@string/Setup_ArmOpt_HomeButtonKey"
+                        android:background="#fff0f0f0"
                         >
+<!-- vc8f
+                        android:background="#ff404040"
+-->
                         <RadioButton
                             android:id="@+id/HOMEBUTTON_NONE"
                             android:layout_height="wrap_content"
@@ -149,7 +170,7 @@
                     <LinearLayout
                          android:layout_width="fill_parent"
                          android:layout_height="1px"
-                          android:background="#fff0f0f0"
+						  android:background="@color/separater"
                          android:orientation="vertical"
                     />
                     <TextView
@@ -166,8 +187,10 @@
                             android:id="@+id/CURRENT_IME"
                              android:layout_height="wrap_content"
                              android:layout_width="wrap_content"
-        	                android:background="#ff202020"
                         />         
+<!-- vc8f
+        	                android:background="#ff202020"
+-->
                         <Button
                             android:id="@+id/IM_PICKER"
                              android:text="@string/Setup_IM_Picker"
@@ -197,7 +220,7 @@
                     <LinearLayout
                          android:layout_width="fill_parent"
                          android:layout_height="1px"
-                          android:background="#fff0f0f0"
+						  android:background="@color/separater"
                          android:orientation="vertical"
                     />
                     <LinearLayout
@@ -283,7 +306,7 @@
                         <LinearLayout
                              android:layout_width="fill_parent"
                              android:layout_height="1px"
-                              android:background="#fff0f0f0"
+						  android:background="@color/separater"
                              android:orientation="horizontal"
                         />
                         <TextView
@@ -307,7 +330,7 @@
                         <LinearLayout
                              android:layout_width="fill_parent"
                              android:layout_height="1px"
-                              android:background="#ffd0d0d0"
+						  android:background="@color/separater"
                              android:orientation="horizontal"
                         />
                         <TextView
@@ -363,7 +386,8 @@
                                  android:layout_width="wrap_content"
                                 android:layout_gravity="center_vertical"
             	                 android:id="@+id/tvAllFileVolume"
-                            />         
+                                 android:text="@string/tvAllFileNone"
+                            />         <!--vc8m-->
                             <TextView
                                  android:text="@string/tvAllFileAbsPath"
                                  android:layout_height="wrap_content"
@@ -376,13 +400,14 @@
                                  android:layout_width="wrap_content"
                                 android:layout_gravity="center_vertical"
             	                 android:id="@+id/tvAllFileAbsPath"
-                            />         
+                                 android:text="@string/tvAllFileNone"
+                            />      <!--vc8m-->   
                     	</LinearLayout>
                     </LinearLayout>  <!--allFileAccess-->
                     <LinearLayout
                          android:layout_width="fill_parent"
                          android:layout_height="1px"
-                          android:background="#fff0f0f0"
+						  android:background="@color/separater"
                          android:orientation="vertical"
                     />
                     <LinearLayout
@@ -520,7 +545,7 @@
                         <LinearLayout
                              android:layout_width="fill_parent"
                              android:layout_height="1px"
-                              android:background="#fff0f0f0"
+						  android:background="@color/separater"
                              android:orientation="vertical"
                         />
                         <!--TextView
@@ -540,7 +565,11 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/DEBUG_TRACE"
+                        android:background="#fff0f0f0"
                             >
+<!-- vc8f
+                        android:background="#fff0f0f0"   add
+-->
                             <RadioButton
                                 android:id="@+id/DEBUG_TRACE_OFF"
                                 android:layout_height="wrap_content"
@@ -574,7 +603,11 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/DEBUG_DUMP"
+                        android:background="#fff0f0f0" 
                             >
+<!-- vc8f
+                        android:background="#fff0f0f0"   add
+-->
                             <RadioButton
                                 android:id="@+id/DEBUG_DUMP_OFF"
                                 android:layout_height="wrap_content"
@@ -639,7 +672,7 @@
                     <LinearLayout
                          android:layout_width="fill_parent"
                          android:layout_height="1px"
-                          android:background="#fff0f0f0"
+						  android:background="@color/separater"
                          android:orientation="vertical"
                     />
                 </LinearLayout> <!-- layout in scrollview -->

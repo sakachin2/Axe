@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--//vc8t 2025/04/02 Api35 is edgeToEdgeMode as default -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+             android:background="#ff202020"
+        >
+       <!--  android:background="#ff802020"-->
+    	<LinearLayout
+        	android:orientation="vertical"
+        	android:layout_width="fill_parent"
+        	android:layout_height="1dp"
+             android:background="#ff208020"
+        />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    >   <!--vc8t margin left/right for landscape edgemode-->
+        <LinearLayout
+             android:id="@+id/kbd_MarginL"               
+            android:orientation="horizontal"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+        />   <!--vc8t margin right for landscape edgemode-->
+        <FrameLayout
+             android:id="@+id/KBDFRAME"               
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:background="#ff002080"
+        >                                              
+    	</FrameLayout>
+        <LinearLayout
+             android:id="@+id/kbd_MarginR"               
+            android:orientation="horizontal"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+        />   <!--vc8t margin right for landscape edgemode-->
+    </LinearLayout>   <!--margin left/right for landscape edgemode-->
+    	<LinearLayout
+        	android:orientation="vertical"
+        	android:layout_width="fill_parent"
+        	android:layout_height="1dp"
+             android:background="#ff208020"
+        />
+    	<LinearLayout
+             android:id="@+id/SpaceNavi"               
+        	android:orientation="vertical"
+        	android:layout_width="fill_parent"
+        	android:layout_height="1px"
+        />   <!--vc8t-->
+</LinearLayout>

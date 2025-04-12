@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+//vc8k 2025/03/29 softkbd preview is white out
 /* 
 **
 ** Copyright 2008, The Android Open Source Project
@@ -22,8 +23,12 @@
     android:layout_width="wrap_content" 
     android:layout_height="80sp"
     android:textSize="40sp"
-    android:textColor="?android:attr/textColorPrimaryInverse"
+    android:textColor="#ff104010"
     android:minWidth="32dip"
     android:gravity="center"
-    android:background="@drawable/keyboard_key_feedback"
+    android:background="#ffe0e0e0"
     />
+<!--
+    android:textColor="?android:attr/textColorPrimaryInverse"  vc8k 
+    android:background="@drawable/keyboard_key_feedback"
+-->

@@ -1,4 +1,4 @@
-//*CID://+vc5rR~:                             update#=  263;       //~vc5rR~
+//*CID://+vc5rR~:                             update#=  265;       //~vc5rR~
 //************************************************************************//~v102I~
 //vc5r 2023/07/25 try /sdcard for realpath for api<30              //~vc5rI~
 //vc52 2023/06/06 show shared storage path                         //~vc52I~
@@ -71,7 +71,7 @@ public class USAF                                                  //~vc4qR~
     private static final String CN="USAF.";                        //~vc4qR~
                                                                    //~vc4qI~
     private static final String typeDocument="application/text";   //~vc4qI~
-    private static final String PREFIX_SDCARD="/sdcard";            //+vc5rI~
+    private static final String PREFIX_SDCARD="/sdcard";            //~vc5rI~
     private static final int AID_CREATE_FILE=Axe.REQID_SAF+1;      //~vc4qR~
     private static final int AID_OPEN_FILE=Axe.REQID_SAF+2;        //~vc4qR~
     private static final int AID_OPEN_TREE=Axe.REQID_SAF+3;        //~vc4qR~
@@ -1407,6 +1407,7 @@ public class USAF                                                  //~vc4qR~
     {                                                              //~vc4xI~
       try                                                          //~vc4xI~
       {                                                            //~vc4xI~
+        chkExternalStorage();   //TODO test                        //~vc5rI~
 		if (AxeG.osVersion>=24)  //android7.0(N)                   //~vc4xI~
         {                                                          //~vc4xI~
         	List<StorageVolume> volList=SM.getStorageVolumes();       //~vc4xI~
@@ -1422,6 +1423,39 @@ public class USAF                                                  //~vc4qR~
       	Dump.printlnNoMsg(e,"getStorageVolume");                   //~vc4xI~
       }                                                            //~vc4xI~
     }                                                              //~vc4xI~
+//********************************************************         //~vc5rI~
+    public void chkExternalStorage()     //for TEST                //~vc5rI~
+    {                                                              //~vc5rI~
+        File dir;                                                  //~vc5rI~
+        dir = Environment.getExternalStorageDirectory();           //~vc5rI~
+        if (Dump.Y) Dump.println(CN+"chkExternalStorage externalStorageDir="+dir.getAbsolutePath());//~vc5rI~
+                                                                   //~vc5rI~
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);//~vc5rI~
+        if (Dump.Y) Dump.println(CN+"chkExternalStorage externalStoragePublicDirectory DOWNLOADS="+dir.getAbsolutePath());//~vc5rI~
+                                                                   //~vc5rI~
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);//~vc5rI~
+        if (Dump.Y) Dump.println(CN+"chkExternalStorage externalStoragePublicDirectory DCIM="+dir.getAbsolutePath());//~vc5rI~
+                                                                   //~vc5rI~
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);//~vc5rI~
+        if (Dump.Y) Dump.println(CN+"chkExternalStorage externalStoragePublicDirectory PICTURES="+dir.getAbsolutePath());//~vc5rI~
+                                                                   //~vc5rI~
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);//~vc5rI~
+        if (Dump.Y) Dump.println(CN+"chkExternalStorage externalStoragePublicDirectory MUSIC="+dir.getAbsolutePath());//~vc5rI~
+                                                                   //~vc5rI~
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);//~vc5rI~
+        if (Dump.Y) Dump.println(CN+"chkExternalStorage externalStoragePublicDirectory MOVIES="+dir.getAbsolutePath());//~vc5rI~
+                                                                   //~vc5rI~
+        final File[] dirs = AG.context.getExternalFilesDirs(null);    //~vc5rI~
+        if (Dump.Y) Dump.println(CN+"chkExternalStorage context.getExternalFilesDirs ctr="+dirs.length);//+vc5rI~
+        if (dirs != null) {                                        //+vc5rR~
+            for (int i = 0; i < dirs.length; i++) {                //+vc5rR~
+                dir = dirs[i];                                     //~vc5rI~
+                if (Dump.Y) Dump.println(CN+"chkExternalStorage context.getExternalFilesDirs i="+i+",dir="+dir);//+vc5rI~
+                if (dir == null) continue;                         //~vc5rI~
+                if (Dump.Y) Dump.println(CN+"chkExternalStorage context.getExternalFilesDirs="+dir.getAbsolutePath());//~vc5rI~
+            }                                                      //~vc5rI~
+        }                                                          //~vc5rI~
+    }                                                              //~vc5rI~
 //********************************************************         //~vc4xI~
 //02:205245.735:USAF.showVol vol=StorageVolume: 内部共有ストレージ //~vc4xI~
 //02:205245.736:USAF.showVol api>=24 description=内部共有ストレージ//~vc4xI~

@@ -1,4 +1,5 @@
-##*CID:##+v700R~:                             update#=   92;
+##*CID:##+v700R~:                             update#=   97;
+#//vc8C 2025/04/11 Build bundle failes by "libiconv.a is reserved name".(toybox prepares iconv, but do not accep cp932 etc)##~v700I~
 # Sets the minimum version of CMake required to build the native
 # library. You should either keep the default value or only pass a
 # value of 3.4.0 or lower.
@@ -81,7 +82,7 @@ set(CFLGS2 "-Wno-invalid-source-encoding -Wno-misleading-indentation")##~v700R~
 #set(LDFLAGS3 "-e __libc_main")        #2023/06/16##~v700R~
 #set(LDFLAGS3 "-e main" -shared -fPIC -pie -E)        #2023/06/16##~v700R~
 #set(LDFLAGS3 -shared -fPIC -pie)        #2023/06/16##~v700R~
-#set(LDFLAGS3 -e main -shared -fPIC -pie -E)        #2023/06/16##~v700I~
+#set(LDFLAGS3 -e main -shared -fPIC -pie -E)        #2023/06/16##~v700R~
 #set(LDFLAGS3 -Wl,--static -Wl,--gc-sections)        #2023/06/16##~v700R~
 #set(LDFLAGS3              -Wl,--gc-sections)        #2023/06/23##~v700R~
 #set(EXECUTABLE_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/bin)
@@ -161,25 +162,25 @@ add_library(xlow_so     SHARED  ${XSUB}/xlow.c)##~v700R~
 add_library(xmj_so      SHARED  ${XSUB}/xmj.c)##~v700R~
 add_library(xpe_so      SHARED  ${XSUB}/xpe.c)##~v700R~
 add_library(xts_so      SHARED  ${XSUB}/xts.c)##~v700R~
-add_library(xtestenv_so SHARED  ${XSUB}/xtestenv.c) #2023/06/16##+v700R~
+add_library(xtestenv_so SHARED  ${XSUB}/xtestenv.c) #2023/06/16##~v700R~
 ##########~v700I~
-target_compile_options(xbc_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xci_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xcv_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xdc_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xdd_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xdig_so      PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xds_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xfc_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xff_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xfg_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xfmt_so      PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xfs_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xlow_so      PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xmj_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xpe_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xts_so       PRIVATE ${CFLGS3})##+v700I~
-target_compile_options(xtestenv_so  PRIVATE ${CFLGS3})##+v700I~
+target_compile_options(xbc_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xci_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xcv_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xdc_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xdd_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xdig_so      PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xds_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xfc_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xff_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xfg_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xfmt_so      PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xfs_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xlow_so      PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xmj_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xpe_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xts_so       PRIVATE ${CFLGS3})##~v700I~
+target_compile_options(xtestenv_so  PRIVATE ${CFLGS3})##~v700I~
 ##+v700I~
 ##+v700I~
 ##########~v700I~
@@ -221,7 +222,8 @@ find_library( FIND_ULIBNC
 #set(LINK_LIBS ${FIND_ULIBNC} ${ICONV_LIBS}/libiconv.a log ${OPT_STRIP})##~v700R~
 #et(LINK_LIBS ${FIND_ULIBNC}  iconv                    log ${OPT_STRIP})##~v700R~
 #set(LINK_LIBS ${FIND_ULIBNC}  ${ICONV_LIBS}/libiconv.a log ${OPT_STRIP})  #vc57##~v700R~
-set(LINK_LIBS ${FIND_ULIBNC}   iconv            log ${OPT_STRIP})  #vc57##~v700I~
+#set(LINK_LIBS ${FIND_ULIBNC}   iconv            log ${OPT_STRIP})  #vc57##~v700R~
+set(LINK_LIBS ${FIND_ULIBNC}   ${LIBICONV_L}     log ${OPT_STRIP})  #vc8C##+v700R~
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAG} --verbose")
 target_link_libraries(xbc  ${LINK_LIBS})
 target_link_libraries(xci  ${LINK_LIBS})
@@ -241,23 +243,23 @@ target_link_libraries(xpe  ${LINK_LIBS})
 target_link_libraries(xts  ${LINK_LIBS})
 target_link_libraries(xtestenv  ${LINK_LIBS})##~v700R~
 ######################~v700I~
-target_link_libraries(xfc_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xbc_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xci_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xcv_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xdc_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xdd_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xdig_so     ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xds_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xfc_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xff_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xfg_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xfmt_so     ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xfs_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xlow_so     ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xmj_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xpe_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
-target_link_libraries(xts_so      ${LINK_LIBS} ${LDFLAGS3})##+v700R~
+target_link_libraries(xfc_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xbc_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xci_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xcv_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xdc_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xdd_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xdig_so     ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xds_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xfc_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xff_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xfg_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xfmt_so     ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xfs_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xlow_so     ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xmj_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xpe_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
+target_link_libraries(xts_so      ${LINK_LIBS} ${LDFLAGS3})##~v700R~
 target_link_libraries(xtestenv_so ${LINK_LIBS} ${LDFLAGS3}) #2023/06/16##~v700R~
 ##+v700I~
 ####################

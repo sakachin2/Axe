@@ -1,7 +1,8 @@
-//*CID://+vc1xR~: update#= 437;                                    //~vaxbR~//~vc1sR~//~vc1wR~//~vc1xR~
+//*CID://+vc8fR~: update#= 438;                                    //+vc8fR~
 //**********************************************************************//~1528I~
 //*ListView                                                        //~1530R~
 //**********************************************************************//~vaxbI~
+//vc8f 2025/03/23 default thema changed(RagioButton)               //+vc8fI~
 //vc1x 2020/07/08 member variable is initialized when defualt constructor defined(not non default constructor is define)//~vc1xI~
 //vc1w 2020/07/06 AxeKbd updatelog extends KbdLayoutHW             //~vc1wI~
 //vc1s 2020/06/29 hardKeyboard layout;set default                  //~vc1sI~
@@ -216,7 +217,8 @@ public class AxeList                                                  //~1114//~
 	protected static final int DATA_ERR       =1;                    //~1529I~//~vc1sR~
 	protected static final int DATA_NORMAL    =0;                    //~1529I~//~vc1sR~
 	protected static final int COLOR_BG       =Color.WHITE;          //~1530R~//~vc1sR~
-	protected static final int COLOR_BG_DISABLE=0xff808080;        //~vc1sR~
+//	protected static final int COLOR_BG_DISABLE=0xff808080;        //~vc1sR~//+vc8fR~
+  	protected static final int COLOR_BG_DISABLE=0xffc0c0f0;        //+vc8fI~
 	protected static final int COLOR_BG_ENABLE6=0xffe8e8e8;        //~vc1wI~
 	protected static final int COLOR_BG_ENABLE5=0xffe0e0e0;        //~vc1wI~
 	protected static final int COLOR_BG_ENABLE4=0xffe8e8e8;        //~vc1sR~
@@ -260,14 +262,14 @@ public class AxeList                                                  //~1114//~
 	{                                                              //~vc1xR~
         if (Dump.Y) Dump.println("AxeList.defuaultConstructor");   //~vc1xR~
 	}	//member init                                              //~vc1xR~
-//    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~@@@@I~//~vc1wR~//+vc1xR~
-//    {                                                              //~@@@@I~//~vc1wR~//+vc1xR~
-//        axeList=this;                                              //~vc1wR~//+vc1xR~
-//        dialogId=PdialogId;                                        //~@@@@I~//~vc1wR~//+vc1xR~
-//        menuId=Pmenuid;                                            //~@@@@I~//~vc1wR~//+vc1xR~
-//        rowId=Prowid;                                              //~@@@@I~//~vc1wR~//+vc1xR~
-//        listView=(ListView)(PlayoutView.findViewById(VIEWID_LIST));//~@@@@I~//~vc1wR~//+vc1xR~
-//    }                                                              //~@@@@I~//~vc1wR~//+vc1xR~
+//    public AxeList(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~@@@@I~//~vc1wR~//~vc1xR~
+//    {                                                              //~@@@@I~//~vc1wR~//~vc1xR~
+//        axeList=this;                                              //~vc1wR~//~vc1xR~
+//        dialogId=PdialogId;                                        //~@@@@I~//~vc1wR~//~vc1xR~
+//        menuId=Pmenuid;                                            //~@@@@I~//~vc1wR~//~vc1xR~
+//        rowId=Prowid;                                              //~@@@@I~//~vc1wR~//~vc1xR~
+//        listView=(ListView)(PlayoutView.findViewById(VIEWID_LIST));//~@@@@I~//~vc1wR~//~vc1xR~
+//    }                                                              //~@@@@I~//~vc1wR~//~vc1xR~
     public void initInstance(int PdialogId,ViewGroup PlayoutView,int Pmenuid,int Prowid)//~vc1wR~
     {                                                              //~vc1wI~
         if (Dump.Y) Dump.println("AxeList.initInstance menuid="+Integer.toHexString(Pmenuid)+",rowid="+Integer.toHexString(Prowid));//~vc1wI~

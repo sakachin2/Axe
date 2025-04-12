@@ -1,5 +1,6 @@
-//*CID://+vc18R~:                             update#=  501;       //~vc18R~
+//*CID://+vc71R~:                             update#=  502;       //+vc71R~
 //***************************************************************************//~v516I~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //+vc71I~
 //vc18 2020/06/15 ARM not support UTSSTART(unused symbol warning)  //~vc18I~
 //vain:130601 Axe:Bug:popup menu did not processed selected menu item//~vainI~
 //v@@@:110610 Android(-DARM)                                       //~v@@@I~
@@ -573,7 +574,7 @@ void OnChar(GtkIMContext *Ppimcontext,const gchar *Pstr,GtkWidget *Ppwidget)//~v
 	len=strlen(Pstr);                                              //~v79zI~
 	dprintf("gxeview.OnChar IME commit string=%s,len=%d\n",Pstr,len);             //~v79zI~//~vc18R~
 	UTRACEP("gxeview.OnChar Gxxstat=0x%x,Pstr=%c=0x%x\n",Gxxestat,*Pstr,*Pstr);//~vc18R~
-	UTRACED("gxeview.OnChar Pstr",Pstr,len);                       //+vc18R~
+	UTRACED("gxeview.OnChar Pstr",Pstr,len);                       //~vc18R~
   if (Gxxestat & GXXES_KBDNOUTF8)                                  //~v79zI~
   {                                                                //~v79zI~
   	 pstrlocale=(gchar*)Pstr;                                      //~v79zR~
@@ -949,7 +950,8 @@ void gxeview_OnExit(void)                                          //~v59zI~
 {                                                                  //~v59zI~
 	 dprintf("on_exit_activate  \n");                               //~v667R~
 //  gtk_signal_emit_by_name(GTK_OBJECT(Gpframe),"delete_event","menu-exit");//~vXXER~
-    gxemfrm_onclose();	//write ini                                //~vXXEM~
+//  gxemfrm_onclose();	//write ini                                //~vXXEM~//+vc71R~
+    gxemfrm_onclose(0/*onDestroy:off*/);	//write ini            //+vc71I~
     gtk_main_quit();                                               //~vXXEI~
     return;                                                        //~v59zI~
 }                                                                  //~v59zI~

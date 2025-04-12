@@ -1,5 +1,12 @@
-//*CID://+vc5bR~: update#=  217;                                   //~vc5aR~//~vc5bR~
+//*CID://+vc8AR~: update#=  285;                                   //+vc8AR~
 //*************************************************************    //~vab0I~
+//vc8A 2025/04/08 by FULL_USER, start by horizontal-land, adjustEdgeMode is not effective because onconfigurration change occures after adjustEdgeMode//~vc8yI~
+//vc8y 2025/04/07 for vc8u, use SCREEN_ORIENTATION_FULL_SENSOR(onConfiguration changed occrs always) and dismiss softkbd//~vc8yI~
+//vc8t 2025/04/02 Api35 is edgeToEdgeMode as default               //~vc8tI~
+//vc8s 2025/04/01 Api33:navigation bar height when gesturemode, use not inset:systemGesture but inset:nabigationBar|displayCutout//~vc8sI~
+//vc8p 2025/03/30 navigationbar is not transparent for Axe.        //~vc8pI~
+//vc8n 2025/03/30 when rotated, home icon disappear                //~vc8nI~
+//vc8c 2025/03/19 api21 actionbar(icon+title+menu) for alternative of Holo theme(AppCompatActivity requres those theme)//~vc8cI~
 //vc5b 2023/06/29 (Bug)titlebar bottome sometime invalid when rotated. use 1st time value//~vc5bI~
 //vc5a 2023/06/28 (Bug)g10(Api30:A11) portrait, bottom buttons was hidden//~vc5aI~
 //vc42 2023/03/25 api33 support;deprecated display.getSize()       //~vc42I~
@@ -38,9 +45,12 @@ import android.view.WindowManager;
 import android.view.WindowMetrics;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.ahsv.AG;
 import com.ahsv.utils.UView;
 import com.ahsv.utils.Utils;                                        //~vc42I~
+import com.xe.Axe.kbd.AxeKbdDialog;
 
 import java.util.Arrays;
 
@@ -51,6 +61,11 @@ public class AxeView                                               //~1606R~
 	private static final int LL_BUTTONS=R.id.Buttons;//parent of frame view//~1606I~
 	private static final int LL_BUTTONS1=R.id.Buttons1;//parent of frame view//~vc2lI~
 	private static final int LL_BUTTONSDMZ=R.id.MainViewDMZ;
+	private static final int LL_STATUSBAR=R.id.SpaceStatusbar;     //~vc8tI~
+	private static final int LL_NAVIGATIONBAR=R.id.SpaceNavigationbar;//~vc8tI~
+	private static final int LL_TOOLBAR=R.id.lltoolbar;            //~vc8tI~
+	private static final int LL_MARGINL=R.id.llMainLandLeftSpace;  //~vc8tI~
+	private static final int LL_MARGINR=R.id.llMainLandRightSpace; //~vc8tI~
 //  private Canvas[] canvasPL=new Canvas[2];     //portrate and landscape//~1608R~
     private Bitmap[] bitmapPL=new Bitmap[2];                      //~1606I~
     private int[] scrWidth=new int[2],scrHeight=new int[2];
@@ -69,6 +84,8 @@ public class AxeView                                               //~1606R~
 	//*******************************                              //~1822I~
 	public AxeView()                                               //~1528R~
     {   
+	    if (Dump.Y) Dump.println("AxeView constructor");           //~vc8yI~
+        AxeG.axeView=this;                                         //~vc8AR~
 	    AxeProp.initFiles();                                       //~1A11R~
     	AxeDlgArmOption.updateEnvPath(false/*PswJNICall*/);	//update Gxeh.envPath(contain $Data1) by Gxeh.addPath(~/sh:_/bin/)        //~vc1pI~//~vay2I~
         AxeG.axeJNI=new AxeJNI();   //avoid GC by static ref       //~1713I~
@@ -118,9 +135,12 @@ public class AxeView                                               //~1606R~
 		rc=setScreenSize();                                        //~1715R~
         return rc;                                                 //~1715I~
     }                                                              //~0914I~
-//*************************                                        //~1606M~
+//******************************************************           //~vc8yR~
+//*from Axe.onConfigurationChanged                                 //~vc8yI~
+//******************************************************           //~vc8yI~
 	public void orientationChanged()                               //~1606M~
     {                                                              //~1606M~
+		AxeKbdDialog.dismissDlg();                                 //~vc8yI~
         parentView.removeView(screen);                             //~1607M~
 	    if (Dump.Y) Dump.println("AxeView orientation changed remove screen from parentview:"+parentView.toString());//~1821I~
 		setContentView();                                          //~1606I~
@@ -182,7 +202,8 @@ public class AxeView                                               //~1606R~
 //        if (!useland)                                              //~1607R~//~1810R~
 //            pl=0;       //Portlate:two line button layout          //~1606I~//~1810R~
         v=AxeG.mainViewPL[pl];                                     //~1606I~
-        if (Dump.Y) Dump.println("SetContentView pl=="+pl);        //~1606I~
+        if (Dump.Y) Dump.println("AxeView.SetContentView pl=="+pl+",v="+v);//~1606I~//~vc8nR~//~vc8yR~
+        boolean sw1stPL=(v==null);                                 //~vc8nI~
         if (v==null)                                               //~1606I~
         {                                                          //~1606I~
         	id=AxeG.mainLayoutIdPL[pl];                            //~1606I~
@@ -205,8 +226,38 @@ public class AxeView                                               //~1606R~
           if (AxeG.osVersion<AxeG.HONEYCOMB)  //<android3=api-11 required?//~vay5R~
     		AxeG.activity.getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,iconRid);//~1811I~
         }                                                          //~1607I~
+        setActionBar(v);                                           //~vc8cI~
+        if (sw1stPL)	//1st Port or Land                         //~vc8nI~
+        	AxeMenu.enableHomeButton();                            //~vc8nR~
+        if (AxeG.swEdgeMode)                                       //~vc8tI~
+            adjustEdgeMode(v);                                     //~vc8tI~
         if (Dump.Y) Dump.println("SetContentView="+v.toString());  //~1607R~
     }                                                              //~1606I~
+//******************************************************************//~vc8cI~
+    private static void setActionBar(View Pview)                          //~vc8cI~
+    {                                                              //~vc8cI~
+        if (Dump.Y) Dump.println("setActionBar view="+Pview);      //~vc8cI~
+        Toolbar tb=Pview.findViewById(R.id.main_toolbar);          //~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar toolbar="+tb);//~vc8cI~
+        int rid=AxeG.isDebuggable?R.drawable.wxe_debug:R.drawable.wxe;//~vc8cI~
+//      tb.setLogo(rid);                                           //~vc8cI~//~vc8nR~
+        int tbh=tb.getHeight();                                    //~vc8cI~
+        if (Dump.Y) Dump.println("setActionBar toolbar="+tb+",height="+tbh);//~vc8cR~
+        AxeG.main.setSupportActionBar(tb);                         //~vc8cR~
+        AxeG.supportActionBar=AxeG.main.getSupportActionBar();//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar getSupportActionBar="+AxeG.main.getSupportActionBar());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar left="+tb.getCurrentContentInsetLeft());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar right="+tb.getCurrentContentInsetRight());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar start="+tb.getCurrentContentInsetStart());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar startNavi="+tb.getContentInsetStartWithNavigation());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar end="+tb.getCurrentContentInsetEnd());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar endAction="+tb.getContentInsetEndWithActions());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar MarginStart="+tb.getTitleMarginStart());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar MarginEnd="+tb.getTitleMarginEnd());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar Menu="+tb.getMenu());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar OverflowIcon="+tb.getOverflowIcon());//~vc8cI~
+        if (Dump.Y) Dump.println("AxeView.setActionBar displayOption="+AxeG.supportActionBar.getDisplayOptions());//~vc8cI~
+    }                                                              //~vc8cI~
 ////**************                                                 //~1606R~
 //    private void measureSize()                                   //~1606R~
 //    {                                                            //~1606R~
@@ -265,7 +316,7 @@ public class AxeView                                               //~1606R~
 //  public void createBitmap(int Pw,int Ph)                        //~1607R~//~vc5aR~
     private void createBitmap(int Pw,int Ph)                       //~vc5aI~
     {                                                              //~1606I~
-	    if (Dump.Y) Dump.println("AxeView createBitmap ("+Pw+","+Ph+")"+",navigationBottomHeight="+AxeG.scrNavigationbarBottomHeightA11);//~vc5aR~
+	    if (Dump.Y) Dump.println("AxeView createBitmap ("+Pw+","+Ph+")"+",navigationbarBottomHeight="+AxeG.scrNavigationbarBottomHeightA11);//~vc5aR~//~vc8sR~
         bitmap=bitmapPL[AxeG.displayPL];                            //~1606R~
         int bitmapH=scrHeight[AxeG.displayPL];                     //~1607R~
 	    if (Dump.Y) Dump.println("AxeView oldBitmapH="+bitmapH);   //~1608I~
@@ -312,6 +363,9 @@ public class AxeView                                               //~1606R~
     public static void getDisplaySize(Display Pdisplay,Point Ppoint)//~vam6I~//~vc42R~
     {                                                              //~1A6pI~//~vc42I~
         if (Dump.Y) Dump.println("AxeView: getDisplaySize osVersion="+Build.VERSION.SDK_INT);//~vataI~//~vc42R~
+		if (Build.VERSION.SDK_INT>=35)   //android-15              //~vc8tI~
+			getDisplaySize35(Pdisplay,Ppoint);                     //~vc8tI~
+        else                                                       //~vc8tI~
 		if (Build.VERSION.SDK_INT>=33)   //android-13(T)           //~vataI~//~vc42I~
 			getDisplaySize33(Pdisplay,Ppoint);                     //~vataI~//~vc42I~
         else                                                       //~vataI~//~vc42I~
@@ -324,6 +378,62 @@ public class AxeView                                               //~1606R~
 			getDisplaySize29(Pdisplay,Ppoint);                     //~1aj0I~//~vc42I~
 	    if (Dump.Y) Dump.println("AxeView:getDisplaySize point="+Ppoint);//~vam6I~//~vc42R~
     }                                                              //~1A6pI~//~vc42I~
+    //*******************************************************      //~vc8tI~
+    @TargetApi(35)   //>=35 Android15                              //~vc8tI~
+	public static void getDisplaySize35(Display Pdisplay,Point Ppoint)//~vc8tI~
+    {                                                              //~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35");      //~vc8tI~
+        WindowMetrics wm=AxeG.activity.getWindowManager().getCurrentWindowMetrics();//~vc8tI~
+	    int ww0=wm.getBounds().width();                            //~vc8tI~
+	    int hh0=wm.getBounds().height();                           //~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 windowMetrics ww="+ww0+",hh="+hh0);//~vc8tI~
+        Rect rectDecor=getDecorViewRect();                         //~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 rectDecor="+rectDecor.toString());//~vc8tI~
+        Insets insetnavi=wm.getWindowInsets().getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars());//TODO test//~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 insetnavi="+insetnavi.toString());//~vc8tI~
+        Insets insetstatus=wm.getWindowInsets().getInsetsIgnoringVisibility(WindowInsets.Type.statusBars());//TODO test//~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 insetstatus="+insetstatus.toString());//~vc8tI~
+        Insets insetstatusv=wm.getWindowInsets().getInsets(WindowInsets.Type.statusBars());//TODO test//~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 insetstatusvisual="+insetstatusv.toString());//~vc8tI~
+        Insets insetnaviv=wm.getWindowInsets().getInsets(WindowInsets.Type.navigationBars());//TODO test//~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 insetnaviv="+Utils.toString(insetnaviv));//~vc8tI~
+        AxeG.swNavigationbarLeft=insetnaviv.left!=0;               //~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 AxeG.swNavigationbarLeft="+AxeG.swNavigationbarLeft);//~vc8tI~
+        Insets insetsys=wm.getWindowInsets().getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());//TODO test//~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 insetsys="+insetsys.toString());//~vc8tI~
+        Insets insetsysv=wm.getWindowInsets().getInsets(WindowInsets.Type.systemBars());//TODO test//~vc8tI~
+//        if (Dump.Y) Dump.println("AxeView:getDisplaySize35 insetsysv="+insetsysv.toString());//~vc8tR~
+//        Insets insetsd=wm.getWindowInsets().getInsets(WindowInsets.Type.safeDrawing());//TODO test//~vc8tI~
+//        if (Dump.Y) Dump.println("AxeView:getDisplaySize35 inset safeDrawing="+insetsd.toString());//~vc8tI~
+//        Insets insetsg=wm.getWindowInsets().getInsets(WindowInsets.Type.safeGestures());//TODO test//~vc8tI~
+//        if (Dump.Y) Dump.println("AxeView:getDisplaySize35 inset safeGesture="+insetsg.toString());//~vc8tI~
+//        Insets insetsc=wm.getWindowInsets().getInsets(WindowInsets.Type.safeContent());//TODO test//~vc8tI~
+//        if (Dump.Y) Dump.println("AxeView:getDisplaySize35 inset safeContent="+insetsc.toString());//~vc8tI~
+                                                                   //~vc8tI~
+        Insets inset=wm.getWindowInsets().getInsets(WindowInsets.Type.systemGestures());//~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 inset systemGesture="+Utils.toString(inset));//~vc8tI~
+                                                                   //~vc8tI~
+        Insets insetsnc=wm.getWindowInsets().getInsetsIgnoringVisibility//~vc8tI~
+						(WindowInsets.Type.systemBars()|WindowInsets.Type.navigationBars()|WindowInsets.Type.displayCutout());//~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 inset NabigationBars or displayCutout="+Utils.toString(insetsnc));//~vc8tI~
+                                                                   //~vc8tI~
+        inset=insetsnc;                                            //~vc8tI~
+                                                                   //~vc8tI~
+        int ww,hh;                                                 //~vc8tI~
+        AxeG.swNavigationbarGestureMode=inset.left!=0 && inset.right !=0 && inset.top!=0 && inset.bottom!=0;//~vc8tI~
+        AxeG.scrNavigationbarLeftWidthA11=inset.left;              //~vc8tI~
+        AxeG.scrNavigationbarRightWidthA11=inset.right;            //~vc8tI~
+        AxeG.scrNavigationbarBottomHeightA11=inset.bottom;         //~vc8tI~
+        AxeG.scrStatusBarHeight=inset.top;                         //~vc8tI~
+        ww=ww0-AxeG.scrNavigationbarRightWidthA11;                 //~vc8tI~
+        if (AxeG.swEdgeMode)                                       //~vc8tI~
+       		ww-=AxeG.scrNavigationbarLeftWidthA11;                 //~vc8tI~
+//      hh=hh0-(AxeG.scrStatusBarHeight+AxeG.scrNavigationbarBottomHeightA11);//~vc8tR~
+        hh=hh0-(AxeG.scrNavigationbarBottomHeightA11);	//statusbarHeight is by titlebarTop//~vc8tI~
+        Ppoint.x=ww; Ppoint.y=hh;                                  //~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 navigationbar bottomHA11="+AxeG.scrNavigationbarBottomHeightA11+",leftWA11="+AxeG.scrNavigationbarLeftWidthA11+",rightWA11="+AxeG.scrNavigationbarRightWidthA11+",swgesturemode="+AxeG.swNavigationbarGestureMode);//~vc8tI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize35 point="+Ppoint.toString()+",statusBarHeight="+AxeG.scrStatusBarHeight);//~vc8tI~
+    }                                                              //~vc8tI~
     //*******************************************************      //~vataI~//~vc42I~
     @TargetApi(33)   //>=33 Android13           //~vataI~          //~vc42I~
 	public static void getDisplaySize33(Display Pdisplay,Point Ppoint)              //~vataI~//~vc42I~
@@ -348,18 +458,28 @@ public class AxeView                                               //~1606R~
                                                                    //~vataI~//~vc42I~
         Insets inset=wm.getWindowInsets().getInsets(WindowInsets.Type.systemGestures());//~vataI~//~vc42I~
 	    if (Dump.Y) Dump.println("AxeView:getDisplaySize33 inset systemGesture="+Utils.toString(inset));//~vataI~//~vc42R~
+                                                                   //~vc8sI~
+        Insets insetsnc=wm.getWindowInsets().getInsetsIgnoringVisibility      //~vam6M~//~1am3I~//~va54I~//~vc8sR~
+						(WindowInsets.Type.systemBars()|WindowInsets.Type.navigationBars()|WindowInsets.Type.displayCutout());//~vam6M~//~1am3I~//~va54I~//~vc8sR~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize33 inset NabigationBars or displayCutout="+Utils.toString(insetsnc));//~vc8sR~
+                                                                   //~vc8sI~
+        inset=insetsnc;                                            //~vc8sR~
                                                                    //~vataI~//~vc42I~
         int ww,hh;                                                 //~vataI~//~vc42I~
         AxeG.swNavigationbarGestureMode=inset.left!=0 && inset.right !=0 && inset.top!=0 && inset.bottom!=0;//~vataI~//~vc42R~
         ww=ww0-inset.left-inset.right;                             //~vataI~//~vc42I~
         hh=hh0-inset.bottom;  //fullscreen(no title) mode,bottom is 3button/gesture navigationbar//~vataI~//~vc42I~
+      if (false)	//navigationbar is not transparent             //~vc8sI~
+      {                                                            //~vc8sI~
         if (ww0>hh0)	//landscape                                //~vataI~//~vc42I~
         {                                                          //~vataI~//~vc42I~
             hh=hh0; //hide navigationbar at MainActivity           //~vataR~//~vc42I~
-            ww=ww0; //fill hidden navigationbar, but right buttons has to be shift to left//~vataR~//~vc42I~
+//          ww=ww0; //fill hidden navigationbar, but right buttons has to be shift to left//~vataR~//~vc42I~//~vc8pR~
+	    	if (Dump.Y) Dump.println("AxeView:getDisplaySize33 landscape width(-navigation)="+ww);//~vc8pI~
         }                                                          //~vataI~//~vc42I~
         else                                                       //~vataI~//~vc42I~
 	        ww=ww0;                                                //~vataI~//~vc42I~
+      }                                                            //~vc8sI~
         AxeG.scrNavigationbarBottomHeightA11=inset.bottom;           //~vataI~//~vc42R~
         int marginLR;                                              //~vataI~//~vc42I~
 //        if (AxeG.swNavigationbarGestureMode)                       //~vataR~//~vc42R~
@@ -397,9 +517,15 @@ public class AxeView                                               //~1606R~
         WindowInsets windowInsets=metrics.getWindowInsets();       //~vam6M~//~vc42I~
         Insets inset=windowInsets.getInsetsIgnoringVisibility      //~vam6M~//~vc42I~
 						(WindowInsets.Type.navigationBars()|WindowInsets.Type.displayCutout());//~vam6M~//~vc42I~
-	    if (Dump.Y) Dump.println("AxeView:getDisplaySize31 inset="+inset);//~vataI~//~vc42R~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize31 inset navigationBar+displayCutOut="+inset);//~vataI~//~vc42R~//~vc8sR~
+                                                                   //~vc8sI~
+        Insets insetsnc=windowInsets.getInsetsIgnoringVisibility   //~vc8sI~
+						(WindowInsets.Type.systemBars()|WindowInsets.Type.navigationBars()|WindowInsets.Type.displayCutout());//~vc8sI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize33 inset NabigationBars or displayCutout="+Utils.toString(insetsnc));//~vc8sI~
+                                                                   //~vc8sI~
         int insetWW=inset.right+inset.left;                        //~vam6M~//~vc42I~
-        int insetHH=inset.top+inset.bottom;                        //~vam6M~//~vc42I~
+//      int insetHH=inset.top+inset.bottom;                        //~vam6M~//~vc42I~//~vc8sR~
+        int insetHH=inset.bottom;    //top is by getTitlebarHeight //~vc8sI~
         Rect rectDecor=getDecorViewRect();                         //~vam6M~//~vataM~//~vc42I~
 	    if (Dump.Y) Dump.println("AxeView:getDisplaySize31 rectRecor="+rectDecor.toString());//~vataI~//~vc42R~
 	    if (Dump.Y) Dump.println("AxeView:getDisplaySize31 insetWW="+insetWW+",insetHH="+insetHH+",insets="+inset);//~vam6M~//~vc42R~
@@ -465,6 +591,17 @@ public class AxeView                                               //~1606R~
         Insets insetGesture=wm.getWindowInsets().getInsets(WindowInsets.Type.systemGestures());//~vc5aI~
         AxeG.swNavigationbarGestureMode=insetGesture.left!=0 && insetGesture.right !=0 && insetGesture.top!=0 && insetGesture.bottom!=0;//~vc5aI~
 	    if (Dump.Y) Dump.println("AxeView:getGestureSize30 insetGesture="+Utils.toString(insetGesture)+",gesturemode="+AxeG.swNavigationbarGestureMode);//~vc5aR~
+      if (true)                                                    //~vc8sI~
+      {                                                            //~vc8sI~
+        Insets insetsnc=wm.getWindowInsets().getInsetsIgnoringVisibility//~vc8sI~
+						(WindowInsets.Type.systemBars()|WindowInsets.Type.navigationBars()|WindowInsets.Type.displayCutout());//~vc8sI~
+	    if (Dump.Y) Dump.println("AxeView:getDisplaySize30 inset systemBar+NabigationBars+displayCutout="+Utils.toString(insetsnc));//~vc8sI~
+        AxeG.scrNavigationbarRightWidthA11=insetsnc.left+insetsnc.right;//~vc8sI~
+        AxeG.scrNavigationbarBottomHeightA11=insetsnc.bottom;      //~vc8sI~
+        AxeG.scrStatusBarHeight=insetsnc.top;                      //~vc8sI~
+      }                                                            //~vc8sI~
+      else                                                         //~vc8sI~
+      {                                                            //~vc8sI~
         AxeG.scrNavigationbarBottomHeightA11=insetGesture.bottom;  //~vc5aI~
         Rect rectDecor=getDecorViewRect();                         //~vaegI~//~vc5aI~
         int marginLR;                                              //~vc5aI~
@@ -492,8 +629,9 @@ public class AxeView                                               //~1606R~
 //        int ww=PpointReal.x-insetWW;                             //~vc5aR~
 //        int hh=PpointReal.y-insetHH;                             //~vc5aR~
 //        if (Dump.Y) Dump.println("AxeView:getGestureSize30 ww="+ww+",hh="+hh);//~vc5aR~
+      }                                                            //~vc8sI~
 	    if (Dump.Y) Dump.println("AxeView:getGestureSize30 navigationbar bottomHA11="+AxeG.scrNavigationbarBottomHeightA11+",leftWA11="+AxeG.scrNavigationbarLeftWidthA11+",rightWA11="+AxeG.scrNavigationbarRightWidthA11+",swgesturemode="+AxeG.swNavigationbarGestureMode);//~vc5aI~
-	    if (Dump.Y) Dump.println("AxeView:getGestureSize30 statusBarHeight="+AxeG.scrStatusBarHeight);//~vc5aI~
+	    if (Dump.Y) Dump.println("AxeView:getGestureSize30 statusBarHeight="+AxeG.scrStatusBarHeight);//~vc8sR~
     }                                                              //~vc5aI~
     //*******************************************************      //~1aj0I~//~vc42I~
     //*size contains titlebar exclude statusbar and navigationbar  //~vaefI~//~vc42I~
@@ -600,17 +738,28 @@ public class AxeView                                               //~1606R~
     {                                                              //~1606I~
         int w,h;                                                   //~1606I~
         float dip2pix=AxeG.resource.getDisplayMetrics().density;   //~1606M~
-        if (Dump.Y) Dump.println("dp2pix="+dip2pix);               //~1606M~
+        if (Dump.Y) Dump.println("AxeView.getScreenSize start dp2pix="+dip2pix);               //~1606M~//~vc8pR~
         getDisplaySize();                                          //~1606R~
         int pl=AxeG.displayPL;                                     //~1715R~
 //*calc by button height and title size                            //~1606I~
 	    getTitleBarHeight();                                       //~1606M~
 		int btnh=getButtonHeight();                                //~1607R~
-        if (Dump.Y) Dump.println("AxeView: button height="+btnh);  //~1607R~
+        if (Dump.Y) Dump.println("AxeView: button height="+btnh+",titleBarBottom="+AxeG.titleBarBottom);//~vc8pR~
 		w=AxeG.displayW;                                           //~1606R~
         h=AxeG.displayH-(btnh+AxeG.titleBarBottom);                              //~1606I~
         h-=AxeG.bottomSpaceHeight;                                 //~vab0I~
         if (Dump.Y) Dump.println("AxeView: getScreenSize image w="+w+",h="+h+",btnh="+btnh+",bottomspace="+AxeG.bottomSpaceHeight);//~1714R~//~vab0R~
+        int abh=AxeG.actionBarHeight;                              //~vc8cI~
+        if (abh==0)                                                //~vc8cI~
+        {                                                          //~vc8cI~
+        	abh=UView.getActionBarHeight();                        //~vc8cR~
+	        AxeG.actionBarHeight=abh;                              //~vc8cI~
+        }                                                          //~vc8cI~
+        if (Dump.Y) Dump.println("AxeView: getScreenSize actionBarHeight="+abh);//~vc8cI~
+        h-=abh;                                                    //~vc8cI~
+        h-=AxeG.titleBarTop;                                       //~vc8cI~
+        if (Dump.Y) Dump.println("AxeView: getScreenSize edgeMode -titlebarTop="+AxeG.titleBarTop+",h="+h);//~vc8BI~
+//h+=60; //TEST                                                    //~vc8pI~
         scrWidth[pl]=w;                                            //~1606I~
         scrHeight[pl]=h;                                           //~1606I~
         scrDip2Pix[pl]=dip2pix;                                    //~1606I~
@@ -631,10 +780,17 @@ public class AxeView                                               //~1606R~
         if (Dump.Y) Dump.println("AxeView:getScreenSize pl="+pl+",scrHeight="+Arrays.toString(scrHeight)+",scrWidth="+ Arrays.toString(scrWidth));//~vc5aI~
         return pl;                                                 //~1606I~
     }                                                              //~1606I~
+    //*******************************************************      //~vc8sI~
 //  public void getTitleBarHeight()                            //~1606I~//~vc5bR~
     private void getTitleBarHeight()                               //~vc5bI~
     {                                                              //~1606I~
         if (Dump.Y) Dump.println("AxeView.getTitleBarHeight entrry TitleBar top="+AxeG.titleBarTop+",bottom="+AxeG.titleBarBottom);//~vc5bI~
+		if (Build.VERSION.SDK_INT>=30)                             //~vc8sR~
+        {                                                          //~vc8sI~
+	        AxeG.titleBarTop=getTitleBarHeight30();                //~vc8sR~
+	        AxeG.titleBarBottom=0;                                 //~vc8sI~
+        }                                                          //~vc8sI~
+        else                                                       //~vc8sI~
       if (AxeG.titleBarBottom==0)                                  //~vc5bR~
       {                                                            //~vc5bR~
         Rect rect=new Rect();                                      //~1606I~
@@ -648,6 +804,18 @@ public class AxeView                                               //~1606R~
       }                                                            //~vc5bI~
         if (Dump.Y) Dump.println("AxeView.getTitleBarHeight exit TitleBar top="+AxeG.titleBarTop+",bottom="+AxeG.titleBarBottom);//~1606I~//~vc5bR~
     }                                                              //~1606I~
+    //*******************************************************      //~vc8sI~
+    @TargetApi(30)                                                 //~vc8sR~
+    private int getTitleBarHeight30()                              //~vc8sR~
+    {                                                              //~vc8sI~
+        WindowMetrics wm=AxeG.activity.getWindowManager().getCurrentWindowMetrics();//~vc8sI~
+        Insets inset=wm.getWindowInsets().getInsetsIgnoringVisibility//~vc8sI~
+						(WindowInsets.Type.systemBars());          //~vc8sI~
+	    if (Dump.Y) Dump.println("AxeView:getTitlebarHeight inset systembars="+Utils.toString(inset));//~vc8sR~
+        int rc=inset.top;                                          //~vc8sI~
+        if (Dump.Y) Dump.println("AxeView.getTitleBarHeight31 rc="+rc);//~vc8sR~
+        return rc;
+    }                                                              //~vc8sI~
     public int getButtonHeight()                                  //~1607I~
     {                                                              //~1607I~
     	int btnh;                                                  //~1607I~
@@ -687,7 +855,7 @@ public class AxeView                                               //~1606R~
 	public static boolean isMeasured()                             //~1606I~
     {                                                              //~1606I~
         LinearLayout v=(LinearLayout)AxeG.mainView.findViewById(PARENTVIEW);//~1606I~
-        if (Dump.Y) Dump.println("AxeView.isMEasured v.gwtWidth="+v.getWidth());//+vc5bI~
+        if (Dump.Y) Dump.println("AxeView.isMEasured v.gwtWidth="+v.getWidth());//~vc5bI~
         return v.getWidth()!=0;		//height may be 0 yet          //~1606I~
     }                                                              //~1606I~
     //******************************************                   //~1822I~
@@ -707,19 +875,40 @@ public class AxeView                                               //~1606R~
             ori=ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;   //~vayeI~
             break;                                                 //~1822I~
         case AxeButtonLayout.ROTATE:                               //~1822I~
-	        ori=ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;       //~1822I~
+//	        ori=ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;       //~1822I~//~vc8tR~
+// 	        ori=ActivityInfo.SCREEN_ORIENTATION_USER;              //~vc8tI~//~vc8yR~
+//  	    ori=ActivityInfo.SCREEN_ORIENTATION_SENSOR;   //TODO TEST(4)//~vc8tI~//~vc8yR~
+  	        ori=ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED; //later update when closed folding device//~vc8yI~
             break;                                                 //~1822I~
         default:                                                   //~1822I~
         	rc=false;                                              //~1822I~
         }                                                          //~1822I~
-        if (Dump.Y) Dump.println("AxeView setOrientationFix="+ori);//~1822I~
+        if (Dump.Y) Dump.println("AxeView requestOrientationFix="+ori+",Porientation="+Porientation);//~1822I~//~vc8tR~//~vc8yR~
         if (rc)                                                    //~1822I~
         {                                                          //~1822I~
         	AxeG.activity.setRequestedOrientation(ori);            //~1822I~
-	        if (Dump.Y) Dump.println("requestedOri ori="+ori);     //~1822I~
+	        if (Dump.Y) Dump.println("requestedOrientationFix ori="+ori);     //~1822I~//~vc8yR~
         }                                                          //~1822I~
         return rc;                                                 //~1822I~
     }                                                              //~1822I~
+    //******************************************                   //~vc8yI~
+    //*from Axe layoutChanged when EdgeMode                        //~vc8yI~
+    //******************************************                   //~vc8yI~
+    public static void requestOrientationEdgeMode()             //~vc8yI~
+    {                                                              //~vc8yI~
+    //****************                                             //~vc8yI~
+    	int parmOri=AxeButtonLayout.getOrientationFix();           //~vc8yI~
+        if (Dump.Y) Dump.println("AxeView requestOrientationFixEdgeMode parmOri="+parmOri+",foldingFeature="+AxeG.foldingFeature+",opened="+AxeG.foldingFeatureOpened);//~vc8yI~
+        if (parmOri==AxeButtonLayout.ROTATE)                        //~vc8yI~
+        {                                                          //~vc8yI~
+        	if (AxeG.foldingFeature && AxeG.foldingFeatureOpened==AxeG.FOLDING_STATE_CLOSE)//~vc8yI~
+            {                                                      //~vc8yI~
+				int ori=ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR;//~vc8yI~
+	        	AxeG.activity.setRequestedOrientation(ori);        //~vc8yI~
+		        if (Dump.Y) Dump.println("requestedOrientationEdgeMode ori="+ori+"(FULL_SENSOR)");//~vc8yR~
+            }                                                      //~vc8yI~
+        }                                                          //~vc8yI~
+    }                                                              //~vc8yI~
     //******************************************                   //~vaiqI~
     public static void startInitializeInfo()                       //~vaiqR~
     {                                                              //~vaiqI~
@@ -747,4 +936,93 @@ public class AxeView                                               //~1606R~
 		if (Dump.Y) Dump.println("AxeView.getRealMetrics_31 metrics="+metrics);//~vam6R~//~vc42I~
         return metrics;                                            //~vam6I~//~vc42I~
     }                                                              //~vam6I~//~vc42I~
+//******************************************************************//~vc8tI~
+    private static void adjustEdgeMode(View Pview)                 //~vc8tI~
+    {                                                              //~vc8tI~
+        if (Dump.Y) Dump.println("AxeView.adjustEdgeMode view="+Pview);//~vc8tR~
+        if (Dump.Y) Dump.println("AxeView.adjustEdgeMode statusbarH="+AxeG.scrStatusBarHeight+",navigationbarH="+AxeG.scrNavigationbarBottomHeightA11);//~vc8tR~
+        if (Dump.Y) Dump.println("AxeView.adjustEdgeMode AxeG.displayW="+AxeG.displayW+",AxeG.displayPL="+AxeG.displayPL);//~vc8tR~
+		int ww,hh;                                                 //~vc8tI~
+		ViewGroup.LayoutParams lp;                                           //~vc8tI~
+        //***************                                          //~vc8tI~
+        LinearLayout llstatusbar=(LinearLayout)Pview.findViewById(LL_STATUSBAR);//~vc8tM~
+  		ww=ViewGroup.LayoutParams.MATCH_PARENT;                    //~vc8tR~
+		hh=AxeG.scrStatusBarHeight;                                //~vc8tI~
+		lp=llstatusbar.getLayoutParams();                          //~vc8tI~
+        lp.width=ww; lp.height=hh;                                 //~vc8tI~
+		llstatusbar.setLayoutParams(lp);                           //~vc8tI~
+        if (Dump.Y) Dump.println("AxeView.adjustEdgeMode statusbar layoutParam="+lp);//~vc8tI~
+                                                                   //~vc8tI~
+        LinearLayout llnavigationbar=(LinearLayout)Pview.findViewById(LL_NAVIGATIONBAR);//~vc8tI~
+		ww=ViewGroup.LayoutParams.MATCH_PARENT;                    //~vc8tI~
+		hh=AxeG.scrNavigationbarBottomHeightA11;                   //~vc8tI~
+		lp=llnavigationbar.getLayoutParams();                      //~vc8tI~
+        lp.width=ww; lp.height=hh;                                 //~vc8tI~
+		llnavigationbar.setLayoutParams(lp);                       //~vc8tI~
+        if (Dump.Y) Dump.println("AxeView.adjustEdgeMode navigationbar layoutParam="+lp);//~vc8tI~
+      if (false)                                                   //~vc8tR~
+      {                                                            //~vc8tI~
+        if (AxeG.displayPL==AxeG.LANDSCAPE)                        //~vc8tR~
+        {                                                          //~vc8tI~
+          if (true)                                                //~vc8tI~
+          {                                                        //~vc8tI~
+            LinearLayout lltoolbar=(LinearLayout)Pview.findViewById(LL_TOOLBAR);//~vc8tR~
+            ww=AxeG.displayW;                                      //~vc8tR~
+            hh=ViewGroup.LayoutParams.WRAP_CONTENT;                //~vc8tR~
+            lp=lltoolbar.getLayoutParams();                        //~vc8tR~
+            lp.width=ww; lp.height=hh;                             //~vc8tR~
+            lltoolbar.setLayoutParams(lp);                         //~vc8tR~
+            if (Dump.Y) Dump.println("AxeView.adjustEdgeMode toolbar layoutParam="+lp);//~vc8tR~
+          }                                                        //~vc8tI~
+                                                                   //~vc8tI~
+            int left=AxeG.scrNavigationbarLeftWidthA11;            //~vc8tI~
+//          int right=AxeG.scrNavigationbarRightWidthA11;          //~vc8tI~
+            int right=0;                                           //~vc8tI~
+            lp=Pview.getLayoutParams();                            //~vc8tR~
+        	if (Dump.Y) Dump.println("AxeView:getScreenSize Pview.layoutParams="+lp);//~vc8tI~
+            ViewGroup.MarginLayoutParams mlp=(ViewGroup.MarginLayoutParams)lp;//~vc8tI~
+            mlp.setMargins(left,0,right,0);                        //~vc8tR~
+            Pview.setLayoutParams(mlp);                            //~vc8tI~
+        	if (Dump.Y) Dump.println("AxeView:getScreenSize marginLayoutParams="+mlp);//~vc8tI~
+        }                                                          //~vc8tI~
+      }                                                            //~vc8tI~
+      if (true)                                                    //~vc8tI~
+      {                                                            //~vc8tI~
+        if (AxeG.displayPL==AxeG.LANDSCAPE)                        //~vc8tI~
+        {                                                          //~vc8tI~
+          if (false)                                               //~vc8tI~
+          {                                                        //~vc8tI~
+            LinearLayout lltoolbar=(LinearLayout)Pview.findViewById(LL_TOOLBAR);//~vc8tI~
+            ww=AxeG.displayW;                                      //~vc8tI~
+            hh=ViewGroup.LayoutParams.WRAP_CONTENT;                //~vc8tI~
+            lp=lltoolbar.getLayoutParams();                        //~vc8tI~
+            lp.width=ww; lp.height=hh;                             //~vc8tI~
+            lltoolbar.setLayoutParams(lp);                         //~vc8tI~
+            if (Dump.Y) Dump.println("AxeView.adjustEdgeMode toolbar layoutParam="+lp);//~vc8tI~
+          }//actionbar                                             //~vc8tM~
+                                                                   //~vc8tI~
+            ww=AxeG.scrNavigationbarLeftWidthA11;                  //~vc8tI~
+            if (ww>0)                                              //~vc8tI~
+            {                                                      //~vc8tI~
+	            LinearLayout llMarginL=(LinearLayout)Pview.findViewById(LL_MARGINL);//~vc8tI~
+                hh=ViewGroup.LayoutParams.MATCH_PARENT;            //~vc8tI~
+                lp=llMarginL.getLayoutParams();                    //~vc8tI~
+                lp.width=ww; lp.height=hh;                         //~vc8tI~
+                llMarginL.setLayoutParams(lp);                     //~vc8tI~
+                if (Dump.Y) Dump.println("AxeView.adjustEdgeMode marginLeft ww="+ww+",layoutParam="+lp);//~vc8tI~
+            }                                                      //~vc8tI~
+                                                                   //~vc8tI~
+            ww=AxeG.scrNavigationbarRightWidthA11;                 //~vc8tI~
+            if (ww>0)                                              //~vc8tI~
+            {                                                      //~vc8tI~
+	            LinearLayout llMarginR=(LinearLayout)Pview.findViewById(LL_MARGINR);//~vc8tI~
+                hh=ViewGroup.LayoutParams.MATCH_PARENT;            //~vc8tI~
+                lp=llMarginR.getLayoutParams();                    //~vc8tI~
+                lp.width=ww; lp.height=hh;                         //~vc8tI~
+                llMarginR.setLayoutParams(lp);                     //~vc8tI~
+                if (Dump.Y) Dump.println("AxeView.adjustEdgeMode marginRight ww="+ww+",layoutParam="+lp);//~vc8tI~
+            }                                                      //~vc8tI~
+      	}//landscape                                               //~vc8tI~
+      }                                                            //~vc8tR~
+	}//adjustEdgeMode                                              //~vc8tI~
 }                                                                  //~1528R~

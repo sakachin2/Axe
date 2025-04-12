@@ -2,8 +2,8 @@
 <!-- //vad2:120423 (Axe)Charset option by Arm related option dialog -->
 <resources>
     <string name="app_name">Axe</string>
-    <string name="Version">Axe V1.29.3\n			By 水巻マチ</string>
-    <string name="VerDate">2023/08/11</string>
+    <string name="Version">Axe V1.30.2\n			By 水巻マチ</string>
+    <string name="VerDate">2025/04/12</string>
 
     <string name="OptionMenu_Stop">終了</string>
     <string name="OptionMenu_Menu">メニュー</string>
@@ -509,7 +509,7 @@
     <string name="Prompt_TerminalButton_Not_Selected">ボタン名を選択する</string>
 
     <string name="DialogTitle_ButtonLayout">ボタン配置</string>
-    <string name="HelpTitle_ButtonLayout">Button Arrangement</string>
+    <string name="HelpTitle_ButtonLayout">ボタン配置</string>
     <!--string name="Help_ButtonLayout">
    		"縦長画面の時下端2行に表示するボタンの数を指定する\n"
    		"有効な数は０から８\n"
@@ -735,7 +735,10 @@
     <string name="Setup_RulerWidth">ルーラー 線幅（pixel)</string>
     <string name="Setup_RulerWidthMax">Max:%1$d</string>
     <string name="Err_ManageAllFiles">共有ストレージアクセス用オプション \"すべてのファイルを管理する\"を設定できませんでした".</string>
+<!--
     <string name="labelAllFile">許可：ファイルとメディア</string>
+-->
+    <string name="labelAllFile">許可：ファイルとメディア (Android-11 から有効)</string> <!--vc8m-->
     <string name="tvAllFileAll">すべてのファイル</string>
     <string name="tvAllFileMedia">メディアのみ</string>
     <string name="btnAllFile">変更</string>

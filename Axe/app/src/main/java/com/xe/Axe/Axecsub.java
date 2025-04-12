@@ -1,7 +1,8 @@
-//*CID://+vaiqR~: update#=   99;                                   //+vaiqR~
-//*****************************************************************//+vaiqI~
-//vaiq:130606 Axe:issue initial setup Alert(Be paitient)           //+vaiqI~
-//*****************************************************************//+vaiqI~
+//*CID://+vc71R~: update#=  100;                                   //+vc71R~
+//*****************************************************************//~vaiqI~
+//vc71 2023/08/20 clear *.lock of =6 when destroyed by Home+swipe  //+vc71I~
+//vaiq:130606 Axe:issue initial setup Alert(Be paitient)           //~vaiqI~
+//*****************************************************************//~vaiqI~
 package com.xe.Axe;                                                //~@@@@I~
 
 //*****************************************************************//~1606I~
@@ -87,7 +88,8 @@ public class Axecsub                                               //~1622R~
     public static void umsgbox2Reply(int Pbuttonid)                //~1802I~
     {                                                              //~1802I~
         if (Pbuttonid==AxeAlert.BUTTON_POSITIVE)                   //~1802I~
-        	AxeJNI.terminatexe();                                  //~1802I~
+//      	AxeJNI.terminatexe();                                  //~1802I~//+vc71R~
+        	AxeJNI.terminatexe(0/*onDestroy:off*/);                //+vc71I~
     }                                                              //~1802I~
 //**************************************************************** //~v55ZI~//~1808I~
 //setup timer callback                                             //~vXXEI~//~1808I~
@@ -119,7 +121,7 @@ public class Axecsub                                               //~1622R~
         }                                                          //~1A22I~
 		return 0;                                                  //~1A22I~
 	}                                                              //~1A22I~
-//****************************************************             //+vaiqI~
+//****************************************************             //~vaiqI~
 	@Override
 	public int alertOnShow(AxeAlert Paxealert,boolean Pdismiss) {
 		return 0;
